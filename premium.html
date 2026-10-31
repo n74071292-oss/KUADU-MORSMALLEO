@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="CodePath Premium plans priced in Ghana cedis"><title>CodePath Premium — Ghana Cedis</title><link rel="stylesheet" href="style.css"></head>
+<body><header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">&lt;/&gt;</span><span>Kuadu<span class="brand-accent">code</span></span></a><nav class="nav-links" aria-label="Main navigation"><a href="index.html#explore">Explore</a><a href="video-lessons.html">Video lessons</a><a href="index.html#premium">Premium</a></nav><a class="top-cta" href="index.html">Home ↗</a></header>
+<main class="page-wrap"><span class="eyebrow">KUADUCODE MEMBERSHIP</span><h1>Choose your <span class="brand-accent">Premium plan</span></h1><p class="hero-text">Pick the learning package that fits your goals. Prices are shown in Ghana cedis (GHS).</p>
+<div class="plan-grid">
+<article class="plan-card"><span class="premium-badge">STARTER</span><h2>GHS 20</h2><p>Starter access</p><ul><li>Extra practice tasks</li><li>Beginner project checklist</li><li>Self-study plan</li></ul><button class="btn btn-primary choose-plan" data-plan="Starter" data-price="20">Choose Starter</button></article>
+<article class="plan-card"><span class="premium-badge">POPULAR</span><h2>GHS 40</h2><p>Practice Plus</p><ul><li>Starter benefits</li><li>Intermediate project briefs</li><li>Debugging exercises</li><li>Progress review checklist</li></ul><button class="btn btn-primary choose-plan" data-plan="Practice Plus" data-price="40">Choose Practice Plus</button></article>
+<article class="plan-card"><span class="premium-badge">BUILDER</span><h2>GHS 75</h2><p>Project Builder</p><ul><li>Practice Plus benefits</li><li>Advanced project challenges</li><li>Testing and code review guides</li><li>Portfolio project roadmap</li></ul><button class="btn btn-primary choose-plan" data-plan="Project Builder" data-price="75">Choose Project Builder</button></article>
+<article class="plan-card"><span class="premium-badge">PRO</span><h2>GHS 120</h2><p>Pro Learning Pack</p><ul><li>Project Builder benefits</li><li>Full multi-language project path</li><li>Deployment and security checklist</li><li>Capstone project rubric</li></ul><button class="btn btn-primary choose-plan" data-plan="Pro Learning Pack" data-price="120">Choose Pro</button></article>
+</div>
+<section class="payment-panel" id="payment"><span class="eyebrow">PAYMENT METHOD</span><h2>MTN Mobile Money (MoMo)</h2><p>Select a package above, then enter the MTN MoMo number you want to use. The selected amount will be displayed before continuing.</p>
+<form id="momoForm">
+<label for="selectedPlan">Selected plan</label><input id="selectedPlan" name="plan" value="Starter" readonly>
+<label for="selectedPrice">Amount (GHS)</label><input id="selectedPrice" name="amount" value="20.00" readonly>
+<label for="momoNumber">MTN MoMo phone number</label><input id="momoNumber" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="e.g. 0241234567" pattern="(0[0-9]{9}|\+233[0-9]{9})" required>
+<label for="payerName">Name (optional)</label><input id="payerName" name="payer" autocomplete="name" placeholder="Name on your learning account">
+<button class="btn btn-primary" type="submit">Continue with MTN MoMo →</button>
+<p id="momoMessage" class="payment-message" role="status" aria-live="polite"></p>
+</form>
+</section>
+<p><a href="index.html">← Return to KuaduCode</a></p></main>
+<script>
+const planButtons=document.querySelectorAll('.choose-plan');
+planButtons.forEach(button=>button.addEventListener('click',()=>{
+ document.getElementById('selectedPlan').value=button.dataset.plan;
+ document.getElementById('selectedPrice').value=Number(button.dataset.price).toFixed(2);
+ document.getElementById('payment').scrollIntoView({behavior:'smooth',block:'start'});
+}));
+document.getElementById('momoForm').addEventListener('submit',event=>{
+ event.preventDefault();
+ const phone=document.getElementById('momoNumber').value.trim();
+ if(!/^(0[0-9]{9}|\+233[0-9]{9})$/.test(phone)){
+  document.getElementById('momoMessage').textContent='Enter a valid Ghanaian phone number, for example 0241234567 or +233241234567.';
+  return;
+ }
+ document.getElementById('momoMessage').textContent='Demo checkout only: GHS '+document.getElementById('selectedPrice').value+' for '+document.getElementById('selectedPlan').value+' is selected. No payment has been requested and your wallet has not been charged. MTN MoMo API credentials and server-side transaction verification must be configured to enable real payment.';
+});
+</script></body></html>
