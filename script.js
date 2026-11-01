@@ -1,4 +1,4 @@
-
+"use strict";
 
 document.addEventListener("DOMContentLoaded", () => {
   const languages = [
@@ -462,33 +462,15 @@ Write a function that accepts a slice of scores and returns the average plus an 
       const searchable = `${language.name} ${language.description} ${language.categoryName} ${language.level}`.toLowerCase();
       return matchesCategory && searchable.includes(query);
     });
-    
-(function () {
-    
 
-  
-    if (window.location.protocol === "http:") {
-
-      
-        const secureURL = new URL(window.location.href);
-
-        secureURL.protocol = "https:";
-
-        
-        window.location.replace(secureURL.href);
-    }
-})();
-
-
-
-   const resultCount.textContent = `Showing ${filtered.length} of ${languages.length} languages`;
+    resultCount.textContent = `Showing ${filtered.length} of ${languages.length} languages`;
     languageHeading.textContent = activeCategory === "all"
       ? "Popular languages"
       : categoryGrid.querySelector(`[data-category="${activeCategory}"] strong`).textContent;
 
     emptyState.hidden = filtered.length !== 0;
 
-  
+    // All interpolated language data is local, predefined content.
     grid.innerHTML = filtered.map(language => {
       const done = completed.includes(language.id);
       return `
