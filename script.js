@@ -642,5 +642,127 @@ const testimonial = {
 
 console.log(`“${testimonial.quote}”`);
 console.log(`— ${testimonial.name}, ${testimonial.role}`);
+'use strict';
+
+const http = require('node:http');
+const { randomBytes } = require('node:crypto');
+
+// Session data is kept in memory, so it resets when the server restarts.
+const sessions = new Map();
+const SESSION_COOKIE = 'PHPSESSID';
+const MAX_BODY_SIZE = 16_384;
+
+function sendJson(res, status, payload, sessionId, secure) {
+  const headers = {
+    'Content-Type': 'application/json; charset=utf-8',
+    'X-Content-Type-Options': 'nosniff',
+    'Cache-Control': 'no-store',
+    'Set-Cookie': `${SESSION_COOKIE}=${sessionId}; Path=/; HttpOnly; SameSite=Lax${secure ? '; Secure' : ''}`
+  };
+  res.writeHead(status, headers);
+  res.end(JSON.stringify(payload));
+}
+
+function readSessionId(req) {
+  const cookies = (req.headers.cookie || '').split(';');
+  for (const cookie of cookies) {
+    const separator = cookie.indexOf('=');
+    if (separator < 0) continue;
+    if (cookie.slice(0, separator).trim() === SESSION_COOKIE) {
+      return cookie.slice(separator + 1).trim();
+    }
+  }
+  return '';
+}
+
+const server = http.createServer(async (req, res) => {
+  const forwardedProto = req.headers['x-forwarded-proto'];
+  const secure = Boolean(req.socket.encrypted) || forwardedProto === 'https';
+  let sessionId = readSessionId(req);
+
+  // Rotate unknown or malformed IDs to avoid accepting caller-chosen sessions.
+  if (!/^[a-f0-9]{64}$/.test(sessionId) || !sessions.has(sessionId)) {
+    sessionId = randomBytes(32).toString('hex');
+    sessions.set(sessionId, { completed: [] });
+  }
+  const session = sessions.get(sessionId);
+
+  let url;
+  try {
+    url = new URL(req.url || '/', `http://${req.headers.host || 'localhost'}`);
+  } catch {
+    return sendJson(res, 400, { ok: false, error: 'Invalid request URL.' }, sessionId, secure);
+  }
+
+  if (req.method === 'POST') {
+    const origin = req.headers.origin;
+    const host = req.headers.host || '';
+    if (origin) {
+      let originHost = '';
+      try {
+        originHost = new URL(origin).host;
+      } catch {
+        // An invalid Origin is treated as cross-origin.
+      }
+      if (!originHost || originHost.toLowerCase() !== host.toLowerCase()) {
+        return sendJson(res, 403, { ok: false, error: 'Cross-origin request blocked.' }, sessionId, secure);
+      }
+    }
+
+    const contentLength = Number.parseInt(req.headers['content-length'] || '0', 10);
+    if (contentLength > MAX_BODY_SIZE) {
+      req.resume();
+      return sendJson(res, 413, { ok: false, error: 'Request too large.' }, sessionId, secure);
+    }
+  }
+
+  const action = url.searchParams.get('action') || '';
+
+  if (action === 'progress' && req.method === 'GET') {
+    return sendJson(res, 200, { ok: true, completed: [...session.completed] }, sessionId, secure);
+  }
+
+  if (action === 'progress' && req.method === 'POST') {
+    const chunks = [];
+    let size = 0;
+    for await (const chunk of req) {
+      size += chunk.length;
+      if (size > MAX_BODY_SIZE) {
+        return sendJson(res, 413, { ok: false, error: 'Request too large.' }, sessionId, secure);
+      }
+      chunks.push(chunk);
+    }
+
+    let body;
+    try {
+      body = JSON.parse(Buffer.concat(chunks).toString('utf8'));
+    } catch {
+      body = null;
+    }
+    if (!body || typeof body !== 'object' || Array.isArray(body) || !Array.isArray(body.completed)) {
+      return sendJson(res, 400, { ok: false, error: 'Send JSON with a completed array.' }, sessionId, secure);
+    }
+
+    if (body.completed.length > 100) {
+      return sendJson(res, 413, { ok: false, error: 'Too many lesson IDs.' }, sessionId, secure);
+    }
+
+    const valid = body.completed.filter(
+      id => typeof id === 'string' && /^[a-z0-9_-]{1,40}$/.test(id)
+    );
+    session.completed = [...new Set(valid)];
+    return sendJson(res, 200, { ok: true, completed: session.completed }, sessionId, secure);
+  }
+
+  if (action === 'health' && req.method === 'GET') {
+    return sendJson(res, 200, { ok: true, app: 'CodePath API', node: process.version }, sessionId, secure);
+  }
+
+  return sendJson(res, 404, { ok: false, error: 'Endpoint not found.' }, sessionId, secure);
+});
+
+const port = Number.parseInt(process.env.PORT || '8000', 10);
+server.listen(port);
+
 
 
