@@ -1,1 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https-redirect.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Learn programming languages by category with beginner-friendly paths, lessons, and examples.">
+  <meta name="theme-color" content="#10131c">
+  <title>CodePath — Learn to Code</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="CodePath home">
+      <span class="brand-mark" aria-hidden="true">&lt;/&gt;</span>
+      <span>code<span class="brand-accent">path</span></span>
+    </a>
+    <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+      <a href="#explore">Explore</a>
+      <a href="video-lessons.html">Video lessons</a>
+      <a href="#premium">Premium</a>
+      <a href="#learning-path">Learning paths</a>
+      <a href="#about">About</a>
+    </nav>
+    <a class="top-cta" href="#explore">Start learning <span aria-hidden="true">↗</span></a>
+    <button class="mobile-menu" id="mobileMenu" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+  </header>
 
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="live-dot"></span> YOUR CODING JOURNEY STARTS HERE</div>
+        <h1>Learn to code.<br><span>Build your future.</span></h1>
+        <p class="hero-text">Explore programming languages, follow a learning path, and practise one small step at a time. No experience needed.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#explore">Explore languages <span aria-hidden="true">→</span></a>
+          <a class="btn btn-quiet" href="#learning-path">View learning paths</a>
+        </div>
+        <div class="hero-proof">
+          <div class="avatar-stack" aria-hidden="true"><span>👩🏽‍💻</span><span>👨🏾‍💻</span><span>👩🏻‍💻</span></div>
+          <p><strong>Start at your own pace</strong><br><small>Beginner-friendly guides and examples</small></p>
+        </div>
+      </div>
+      <div class="hero-art" aria-label="Illustration of code on a computer screen"><img class="hero-image" src="images/hero-coding.svg" alt="Colourful illustration of a code editor on a computer screen" fetchpriority="high">
+        <div class="glow glow-one"></div><div class="glow glow-two"></div>
+        <div class="code-window">
+          <div class="window-bar"><div class="window-dots"><i></i><i></i><i></i></div><span>hello_world.js</span><span class="window-menu">•••</span></div>
+          <div class="code-content">
+            <div><span class="line-no">01</span><span class="code-purple">const</span> <span class="code-blue">dream</span> = <span class="code-green">"developer"</span>;</div>
+            <div><span class="line-no">02</span></div>
+            <div><span class="line-no">03</span><span class="code-purple">function</span> <span class="code-yellow">startJourney</span>() {</div>
+            <div><span class="line-no">04</span>&nbsp;&nbsp;<span class="code-blue">learn</span>(<span class="code-green">"every day"</span>);</div>
+            <div><span class="line-no">05</span>&nbsp;&nbsp;<span class="code-purple">return</span> <span class="code-green">"You can do it!"</span>;</div>
+            <div><span class="line-no">06</span>}</div>
+            <div><span class="line-no">07</span></div>
+            <div><span class="line-no">08</span><span class="code-muted">// Your story starts now ✨</span></div>
+          </div>
+          <div class="terminal"><span class="terminal-prompt">›</span> <span>startJourney()</span><span class="terminal-cursor"></span><b> You can do it!</b></div>
+        </div>
+        <div class="floating-card float-top"><span class="float-icon">⚡</span><div><strong>Learn by doing</strong><small>One concept at a time</small></div></div>
+        <div class="floating-card float-bottom"><span class="float-icon green">✓</span><div><strong>Your progress</strong><small id="heroProgress">0 lessons completed</small></div></div>
+      </div>
+    </section>
+
+    <section class="stats-row" aria-label="Website features">
+      <div><strong>10+</strong><span>Languages to explore</span></div>
+      <div><strong>4</strong><span>Learning categories</span></div>
+      <div><strong>100%</strong><span>Learn at your pace</span></div>
+      <div><strong>∞</strong><span>Ideas to build</span></div>
+    </section>
+
+    <section class="explore section" id="explore">
+      <div class="section-heading">
+        <div><span class="eyebrow">FIND YOUR STARTING POINT</span><h2>Explore coding <span>categories</span></h2><p>Choose what you want to create. We'll help you find the right language.</p></div>
+      </div>
+      <div class="category-grid" id="categoryGrid">
+        <button class="category-card active" data-category="all"><span class="category-symbol">✳</span><span><strong>All languages</strong><small>Explore everything</small></span><span class="category-arrow">↗</span></button>
+        <button class="category-card" data-category="web"><img class="category-thumb" src="images/web-development.svg" alt="" loading="lazy"><span class="category-symbol orange">&lt;/&gt;</span><span><strong>Web development</strong><small>Websites & web apps</small></span><span class="category-arrow">↗</span></button>
+        <button class="category-card" data-category="data"><img class="category-thumb" src="images/data-ai.svg" alt="" loading="lazy"><span class="category-symbol blue">▥</span><span><strong>Data & AI</strong><small>Data, automation & AI</small></span><span class="category-arrow">↗</span></button>
+        <button class="category-card" data-category="mobile"><img class="category-thumb" src="images/mobile-apps.svg" alt="" loading="lazy"><span class="category-symbol pink">▣</span><span><strong>Mobile apps</strong><small>Apps for phones</small></span><span class="category-arrow">↗</span></button>
+        <button class="category-card" data-category="systems"><img class="category-thumb" src="images/systems-games.svg" alt="" loading="lazy"><span class="category-symbol green">⌘</span><span><strong>Systems & games</strong><small>Games & low-level code</small></span><span class="category-arrow">↗</span></button>
+      </div>
+
+      <div class="language-toolbar">
+        <div><h3 id="languageHeading">Popular languages</h3><p id="resultCount">Showing all languages</p></div>
+        <label class="search-box"><span aria-hidden="true">⌕</span><input id="languageSearch" type="search" placeholder="Search languages..." autocomplete="off" aria-label="Search programming languages"><kbd>/</kbd></label>
+      </div>
+      <div class="language-grid" id="languageGrid" aria-live="polite"></div>
+      <p class="empty-state" id="emptyState" hidden>No languages match that search. Try another keyword.</p>
+    </section>
+
+    <section class="learning-section section" id="learning-path">
+      <div class="learning-banner">
+        <div class="learning-copy"><span class="eyebrow">A SIMPLE PLAN THAT WORKS</span><h2>Not sure where to begin?</h2><p>Follow a learning path built around your goal. Start with the basics, practise with small projects, and keep building.</p><a class="btn btn-primary" href="#explore">Choose your first language <span aria-hidden="true">→</span></a></div>
+        <div class="path-steps">
+          <div class="path-step"><span class="step-number">01</span><div><strong>Pick a goal</strong><small>Websites, apps, data or games</small></div><span class="step-check">✓</span></div>
+          <div class="path-connector"></div>
+          <div class="path-step"><span class="step-number">02</span><div><strong>Learn the basics</strong><small>Understand one concept at a time</small></div><span class="step-check">✓</span></div>
+          <div class="path-connector"></div>
+          <div class="path-step"><span class="step-number">03</span><div><strong>Build a small project</strong><small>Turn knowledge into something real</small></div><span class="step-check">↗</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section section" id="about">
+      <div class="about-icon">&lt;?&gt;</div>
+      <div><span class="eyebrow">CODE WITH CONFIDENCE</span><h2>Every expert was once a beginner.</h2><p>CodePath helps you discover programming languages and choose what to learn next. The included lessons are starter guides; keep practising and consult official documentation as you grow.</p></div>
+    </section>
+  
+    <section class="section premium-section" id="premium">
+      <div class="section-heading"><div><span class="eyebrow">LEVEL UP YOUR SKILLS</span><h2>CodePath <span>Premium</span></h2><p>Choose a learning package from GHS 20, with MTN Mobile Money checkout interface.</p></div></div>
+      <div class="premium-card">
+        <div><span class="premium-badge">PREMIUM MEMBERSHIP</span><h3>Build beyond the basics</h3><p class="premium-price">From GHS 20 <span>per package</span></p><p>Choose Starter, Practice Plus, Project Builder, or Pro Learning Pack.</p>
+        <ul><li>Advanced project briefs across all 13 languages</li><li>Beginner, intermediate and advanced challenge paths</li><li>Project checklists and debugging exercises</li><li>Video lesson directory and guided study plans</li><li>Progress review checklist</li></ul>
+        <a class="btn btn-primary" href="premium.html">View plans & MTN MoMo <span aria-hidden="true">→</span></a>
+        <small class="premium-note">MTN MoMo API integration is required before real payments can be collected.</small></div>
+        <div class="premium-art" aria-hidden="true"><span>$_</span><span>{ }</span><span>01</span><span>⚡</span></div>
+      </div>
+    </section>
+</main>
+
+  <footer class="footer"><a class="brand" href="#"><span class="brand-mark">&lt;/&gt;</span><span>code<span class="brand-accent">path</span></span></a><p>Small steps. Real skills. Big ideas.</p><span>© <span id="year"></span> CodePath Learning</span></footer>
+
+  <dialog class="lesson-dialog" id="lessonDialog" aria-labelledby="dialogTitle">
+    <button class="dialog-close" id="dialogClose" aria-label="Close lesson">×</button>
+    <div class="dialog-icon" id="dialogIcon">JS</div>
+    <span class="eyebrow" id="dialogCategory">WEB DEVELOPMENT</span>
+    <h2 id="dialogTitle">Learn JavaScript</h2>
+    <p id="dialogDescription"></p>
+    <div class="lesson-block"><h3>Your first concept</h3><p id="dialogLesson"></p><pre><code id="dialogCode"></code></pre><button class="copy-button" id="copyCode">Copy example</button></div>
+    <div class="lesson-tip"><strong>Practice tip</strong><p id="dialogTip"></p></div>
+    <button class="btn btn-primary complete-button" id="completeLesson">Mark lesson complete ✓</button>
+    <p class="dialog-note" id="dialogNote"></p>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
