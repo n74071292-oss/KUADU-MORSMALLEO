@@ -481,7 +481,7 @@ Write a function that accepts a slice of scores and returns the average plus an 
 
 
 
-    resultCount.textContent = `Showing ${filtered.length} of ${languages.length} languages`;
+   const resultCount.textContent = `Showing ${filtered.length} of ${languages.length} languages`;
     languageHeading.textContent = activeCategory === "all"
       ? "Popular languages"
       : categoryGrid.querySelector(`[data-category="${activeCategory}"] strong`).textContent;
