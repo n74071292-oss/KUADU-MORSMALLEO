@@ -633,4 +633,14 @@ rl.on('line', (line) => {
 
   if (interactive) rl.prompt();
 });
+const testimonial = {
+  quote:
+    'Working with this team was an absolute pleasure. They listened to our needs, delivered beautiful results, and made the whole process feel effortless. I couldn’t be happier with the experience!',
+  name: 'Jordan Lee',
+  role: 'Small Business Owner',
+};
+
+console.log(`“${testimonial.quote}”`);
+console.log(`— ${testimonial.name}, ${testimonial.role}`);
+
 
