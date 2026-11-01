@@ -76,7 +76,6 @@ button{cursor:pointer}
 @media(max-width:390px){.brand{font-size:19px}.top-cta{display:none}.category-grid{grid-template-columns:1fr}.hero h1{font-size:42px}.about-icon{width:52px;height:52px;font-size:16px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
-/* Local illustrations bundled with this website */
 .hero-art{isolation:isolate}
 .hero-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:24px;opacity:.28;z-index:-1;pointer-events:none}
 .category-card{position:relative;overflow:hidden}
@@ -84,10 +83,8 @@ button{cursor:pointer}
 .language-art{width:100%;height:112px;object-fit:cover;border-radius:9px;margin-bottom:17px;border:1px solid rgba(255,255,255,.08)}
 @media(max-width:700px){.category-thumb{width:40px;height:36px}.language-art{height:145px}}
 
-/* Expanded lesson text: preserve paragraph breaks and improve readability. */
 #dialogLesson { white-space: pre-line; line-height: 1.75; }
 
-/* Premium membership section */
 .premium-section{padding-top:2rem;padding-bottom:4rem}
 .premium-card{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(180px,1fr);gap:2rem;align-items:center;padding:clamp(1.5rem,4vw,3rem);border:1px solid rgba(143,123,255,.35);border-radius:24px;background:linear-gradient(135deg,rgba(114,88,255,.13),rgba(22,26,42,.96));box-shadow:0 24px 70px rgba(0,0,0,.18)}
 .premium-badge{display:inline-block;padding:.45rem .75rem;border-radius:999px;background:rgba(143,123,255,.18);color:#bcb0ff;font-size:.75rem;font-weight:800;letter-spacing:.1em}
@@ -105,7 +102,6 @@ button{cursor:pointer}
 .notice-box{padding:1rem 1.2rem;border:1px solid rgba(255,190,80,.35);border-radius:12px;background:rgba(255,190,80,.07);line-height:1.6}
 @media(max-width:700px){.premium-card{grid-template-columns:1fr}.premium-art{min-height:130px}.premium-art span{min-height:65px}}
 
-/* GHS Premium plans and MTN MoMo checkout */
 .plan-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:2rem 0}
 .plan-card{display:flex;flex-direction:column;align-items:flex-start;padding:1.4rem;border:1px solid rgba(143,123,255,.28);border-radius:18px;background:linear-gradient(160deg,rgba(143,123,255,.09),rgba(22,26,42,.96))}
 .plan-card h2{font-size:2rem;margin:1rem 0 .2rem}.plan-card p{color:var(--muted,#a6abc0)}
@@ -117,24 +113,3 @@ button{cursor:pointer}
 .payment-panel input:focus{outline:2px solid #9b8cff;outline-offset:2px}
 .payment-panel input[readonly]{opacity:.85}
 .payment-message{min-height:1.5em;line-height:1.6}
-
-/* AI Code Lab navigation and interaction polish */
-.nav-links a[href="#ai-lab"]{color:#d6caff;background:rgba(166,139,255,.12);border:1px solid rgba(166,139,255,.25);padding:6px 10px;border-radius:8px;transition:color .2s ease,background .2s ease,border-color .2s ease,transform .2s ease}
-.nav-links a[href="#ai-lab"]:hover{color:#fff;background:rgba(166,139,255,.23);border-color:rgba(166,139,255,.55);transform:translateY(-1px)}
-.ai-lab{animation:lab-enter .7s both;animation-timeline:view();animation-range:entry 0% entry 22%}
-.lab-panel{box-shadow:0 18px 55px rgba(0,0,0,.2);transition:border-color .25s ease,box-shadow .25s ease}
-.lab-panel:focus-within{border-color:rgba(166,139,255,.65);box-shadow:0 18px 55px rgba(0,0,0,.25),0 0 0 3px rgba(166,139,255,.08)}
-.lab-toolbar button{transition:transform .18s ease,filter .18s ease,box-shadow .18s ease}
-.lab-toolbar button:hover{transform:translateY(-2px)}
-.lab-toolbar .lab-run:hover{box-shadow:0 6px 20px rgba(116,89,232,.32)}
-.lab-toolbar button:active{transform:translateY(0) scale(.98)}
-#labEditor{transition:border-color .2s ease,box-shadow .2s ease}
-#labEditor:focus{outline:none;border-color:#8b75f4;box-shadow:0 0 0 3px rgba(139,117,244,.15)}
-#labPreview{animation:preview-arrive .35s ease both}
-@keyframes lab-enter{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-@keyframes preview-arrive{from{opacity:.65;transform:scale(.99)}to{opacity:1;transform:scale(1)}}
-@media(prefers-reduced-motion:reduce){.nav-links a[href="#ai-lab"],.lab-panel,.lab-toolbar button,#labEditor,#labPreview{transition:none!important;animation:none!important}}
-
-
-
-
