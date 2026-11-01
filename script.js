@@ -462,6 +462,24 @@ Write a function that accepts a slice of scores and returns the average plus an 
       const searchable = `${language.name} ${language.description} ${language.categoryName} ${language.level}`.toLowerCase();
       return matchesCategory && searchable.includes(query);
     });
+    ```javascript
+(function () {
+    "use strict";
+
+    // Check whether the current connection is HTTP
+    if (window.location.protocol === "http:") {
+
+        // Build the secure HTTPS URL
+        const secureURL = new URL(window.location.href);
+
+        secureURL.protocol = "https:";
+
+        // Redirect the visitor to HTTPS
+        window.location.replace(secureURL.href);
+    }
+})();
+
+
 
     resultCount.textContent = `Showing ${filtered.length} of ${languages.length} languages`;
     languageHeading.textContent = activeCategory === "all"
