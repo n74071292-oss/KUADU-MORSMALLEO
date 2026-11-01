@@ -603,3 +603,34 @@ Write a function that accepts a slice of scores and returns the average plus an 
   updateProgressText();
   renderLanguages();
 });
+const readline = require('node:readline');
+const vm = require('node:vm');
+
+const context = vm.createContext({ console });
+const interactive = Boolean(process.stdin.isTTY);
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+  prompt: interactive ? '> ' : undefined,
+});
+
+if (interactive) rl.prompt();
+
+rl.on('line', (line) => {
+  if (line.trim() === '.exit') {
+    rl.close();
+    return;
+  }
+
+  if (line.trim()) {
+    try {
+      const result = vm.runInContext(line, context);
+      if (result !== undefined) console.log(result);
+    } catch (error) {
+      console.error(`${error.name}: ${error.message}`);
+    }
+  }
+
+  if (interactive) rl.prompt();
+});
+
