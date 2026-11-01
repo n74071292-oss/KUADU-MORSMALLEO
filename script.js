@@ -425,7 +425,7 @@ Write a function that accepts a slice of scores and returns the average plus an 
     try {
       const value = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
       return Array.isArray(value)
-        ? value.filter(id => languages.some(language => language.id === id))
+        ? [...new Set(value.filter(id => languages.some(language => language.id === id)))]
         : [];
     } catch {
       return [];
@@ -464,9 +464,10 @@ Write a function that accepts a slice of scores and returns the average plus an 
     });
 
     resultCount.textContent = `Showing ${filtered.length} of ${languages.length} languages`;
+    const selectedCategory = categoryGrid.querySelector(`[data-category="${activeCategory}"] strong`);
     languageHeading.textContent = activeCategory === "all"
       ? "Popular languages"
-      : categoryGrid.querySelector(`[data-category="${activeCategory}"] strong`).textContent;
+      : selectedCategory?.textContent || "Popular languages";
 
     emptyState.hidden = filtered.length !== 0;
 
