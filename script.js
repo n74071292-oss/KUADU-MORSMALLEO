@@ -419,7 +419,6 @@ Write a function that accepts a slice of scores and returns the average plus an 
   let activeLanguage = null;
   let toastTimer;
 
-  // Progress is a convenience feature, not a security-sensitive record.
   const STORAGE_KEY = "codepath.completedLessons";
   function readProgress() {
     try {
@@ -471,7 +470,6 @@ Write a function that accepts a slice of scores and returns the average plus an 
 
     emptyState.hidden = filtered.length !== 0;
 
-    // All interpolated language data is local, predefined content.
     grid.innerHTML = filtered.map(language => {
       const done = completed.includes(language.id);
       return `
@@ -545,7 +543,6 @@ Write a function that accepts a slice of scores and returns the average plus an 
 
   search.addEventListener("input", renderLanguages);
 
-  // "/" focuses search when the visitor is not typing in a field.
   document.addEventListener("keydown", event => {
     const target = event.target;
     const isTyping = target instanceof HTMLInputElement ||
