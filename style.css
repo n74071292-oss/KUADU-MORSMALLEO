@@ -113,3 +113,13 @@ button{cursor:pointer}
 .payment-panel input:focus{outline:2px solid #9b8cff;outline-offset:2px}
 .payment-panel input[readonly]{opacity:.85}
 .payment-message{min-height:1.5em;line-height:1.6}
+.koose {
+      display: inline-block;
+      padding: 0.7rem 1rem;
+      color: white;
+      background: #2563eb;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      font: 600 1rem sans-serif;
+    }
+    a:hover { background: #1d4ed8; }
