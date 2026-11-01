@@ -117,3 +117,24 @@ button{cursor:pointer}
 .payment-panel input:focus{outline:2px solid #9b8cff;outline-offset:2px}
 .payment-panel input[readonly]{opacity:.85}
 .payment-message{min-height:1.5em;line-height:1.6}
+
+/* AI Code Lab navigation and interaction polish */
+.nav-links a[href="#ai-lab"]{color:#d6caff;background:rgba(166,139,255,.12);border:1px solid rgba(166,139,255,.25);padding:6px 10px;border-radius:8px;transition:color .2s ease,background .2s ease,border-color .2s ease,transform .2s ease}
+.nav-links a[href="#ai-lab"]:hover{color:#fff;background:rgba(166,139,255,.23);border-color:rgba(166,139,255,.55);transform:translateY(-1px)}
+.ai-lab{animation:lab-enter .7s both;animation-timeline:view();animation-range:entry 0% entry 22%}
+.lab-panel{box-shadow:0 18px 55px rgba(0,0,0,.2);transition:border-color .25s ease,box-shadow .25s ease}
+.lab-panel:focus-within{border-color:rgba(166,139,255,.65);box-shadow:0 18px 55px rgba(0,0,0,.25),0 0 0 3px rgba(166,139,255,.08)}
+.lab-toolbar button{transition:transform .18s ease,filter .18s ease,box-shadow .18s ease}
+.lab-toolbar button:hover{transform:translateY(-2px)}
+.lab-toolbar .lab-run:hover{box-shadow:0 6px 20px rgba(116,89,232,.32)}
+.lab-toolbar button:active{transform:translateY(0) scale(.98)}
+#labEditor{transition:border-color .2s ease,box-shadow .2s ease}
+#labEditor:focus{outline:none;border-color:#8b75f4;box-shadow:0 0 0 3px rgba(139,117,244,.15)}
+#labPreview{animation:preview-arrive .35s ease both}
+@keyframes lab-enter{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes preview-arrive{from{opacity:.65;transform:scale(.99)}to{opacity:1;transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.nav-links a[href="#ai-lab"],.lab-panel,.lab-toolbar button,#labEditor,#labPreview{transition:none!important;animation:none!important}}
+
+
+
+
