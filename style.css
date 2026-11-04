@@ -18,7 +18,7 @@ button{cursor:pointer}
 .brand{display:inline-flex;align-items:center;gap:10px;font:700 22px 'Space Grotesk',sans-serif;letter-spacing:-.8px}
 .brand-mark{width:35px;height:35px;display:grid;place-items:center;border-radius:11px;background:var(--purple);color:#171326;font-size:14px}
 .brand-accent{color:var(--purple)}
-.nav-links{display:flex;gap:34px;color:var(--muted);font-size:13px}
+.nav-links{display:flex;gap:34px;color:orange;font-size:13px,border-style:solid,border-color:white,border-radius:50px; }
 .nav-links a:hover{color:var(--text)}
 .top-cta{background:var(--purple);color:#171326;padding:10px 17px;border-radius:9px;font-weight:700;font-size:13px}
 .mobile-menu{display:none;background:transparent;border:0;color:var(--text);font-size:25px}
