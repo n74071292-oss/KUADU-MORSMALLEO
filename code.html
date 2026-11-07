@@ -3,20 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuadu AI — Funtastic Neural Coding Studio with Dynamic AI</title>
+    <title>KuaduCode™ — Code Lab & Studio</title>
     <style>
         :root {
-            --bg-base: #06050b;
-            --bg-surface: #0e0c19;
-            --bg-elevated: #17142b;
-            --border-color: #3b2e7a;
-            --text-main: #f5f3ff;
-            --text-muted: #9b93c9;
-            --anime-cyan: #00f0ff;
-            --anime-pink: #ff007f;
-            --anime-purple: #9d00ff;
-            --anime-green: #39ff14;
-            --anime-yellow: #ffee00;
+            --bg-deep: #09080f;
+            --bg-surface: #12101e;
+            --bg-panel: #1a172c;
+            --border-line: #2e2850;
+            --text-main: #f4f2ff;
+            --text-muted: #948fb8;
+            --accent-primary: #7c3aed;
+            --accent-glow: #06b6d4;
+            --success-green: #10b981;
+            --code-text: #34d399;
         }
 
         * {
@@ -27,109 +26,105 @@
         }
 
         body {
-            background-color: var(--bg-base);
+            background-color: var(--bg-deep);
             color: var(--text-main);
             display: flex;
             flex-direction: column;
             height: 100vh;
             overflow: hidden;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(157, 0, 255, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 40%);
         }
 
-        /* Top Navigation Header */
+        /* Top Brand Header */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 24px;
+            padding: 12px 20px;
             background-color: var(--bg-surface);
-            border-bottom: 1px solid var(--border-color);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid var(--border-line);
         }
 
-        .logo-area {
+        .brand {
             display: flex;
             align-items: center;
-            gap: 12px;
-        }
-
-        .logo-badge {
-            background: linear-gradient(135deg, var(--anime-pink), var(--anime-purple));
-            color: white;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-shadow: 0 0 10px rgba(255, 0, 127, 0.5);
-            animation: pulseGlow 2s infinite alternate;
-        }
-
-        .logo-title {
+            gap: 10px;
+            font-weight: 700;
             font-size: 1.1rem;
-            font-weight: 600;
-            background: linear-gradient(90deg, var(--text-main), var(--anime-cyan));
+            letter-spacing: 0.5px;
+        }
+
+        .brand span {
+            background: linear-gradient(135deg, var(--accent-glow), var(--accent-primary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .header-actions {
+        .tm-badge {
+            font-size: 0.65rem;
+            background: var(--accent-primary);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            vertical-align: super;
+            font-weight: 800;
+        }
+
+        .header-controls {
             display: flex;
             gap: 10px;
         }
 
         .btn {
-            background: var(--bg-elevated);
+            background: var(--bg-panel);
             color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 8px 16px;
+            border: 1px solid var(--border-line);
+            padding: 6px 14px;
             border-radius: 6px;
             cursor: pointer;
+            font-size: 0.85rem;
             font-weight: 500;
-            transition: all 0.2s ease;
+            transition: all 0.2s;
         }
 
         .btn:hover {
-            border-color: var(--anime-cyan);
-            box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+            border-color: var(--accent-glow);
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--anime-cyan), var(--anime-purple));
-            color: #06050b;
-            font-weight: 700;
+        .btn-action {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-glow));
+            color: white;
             border: none;
+            font-weight: 600;
         }
 
-        /* Workspace Layout */
+        /* Workspace Grid */
         .workspace {
             display: flex;
             flex: 1;
             overflow: hidden;
         }
 
-        /* Sidebar / Chat Section */
-        sidebar {
-            width: 420px;
+        /* Assistant Sidebar */
+        aside {
+            width: 380px;
             background-color: var(--bg-surface);
-            border-right: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-line);
             display: flex;
             flex-direction: column;
         }
 
-        .chat-header {
-            padding: 16px;
-            font-size: 0.95rem;
+        .sidebar-title {
+            padding: 14px 16px;
+            font-size: 0.9rem;
             font-weight: 600;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--anime-cyan);
+            border-bottom: 1px solid var(--border-line);
+            color: var(--accent-glow);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .chat-messages {
+        .chat-stream {
             flex: 1;
             padding: 16px;
             overflow-y: auto;
@@ -138,179 +133,122 @@
             gap: 12px;
         }
 
-        .message {
-            padding: 12px 16px;
-            border-radius: 12px;
-            max-width: 92%;
+        .chat-bubble {
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.88rem;
             line-height: 1.4;
-            font-size: 0.9rem;
+            max-width: 90%;
             word-break: break-word;
         }
 
-        .message.ai {
-            background-color: var(--bg-elevated);
-            border-left: 3px solid var(--anime-pink);
+        .chat-bubble.assistant {
+            background-color: var(--bg-panel);
+            border-left: 3px solid var(--accent-primary);
             align-self: flex-start;
         }
 
-        .message.ai code {
-            background: rgba(0, 0, 0, 0.4);
-            padding: 2px 6px;
-            border-radius: 4px;
-            color: var(--anime-cyan);
-            font-family: monospace;
-        }
-
-        .message.user {
-            background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(157, 0, 255, 0.1));
-            border: 1px solid var(--border-color);
+        .chat-bubble.user {
+            background-color: rgba(124, 58, 237, 0.2);
+            border: 1px solid var(--border-line);
             align-self: flex-end;
         }
 
-        .file-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(0, 240, 255, 0.15);
-            border: 1px solid var(--anime-cyan);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            margin-bottom: 6px;
-            color: var(--anime-cyan);
+        .chat-bubble code {
+            background: rgba(0,0,0,0.4);
+            padding: 2px 5px;
+            border-radius: 4px;
+            color: var(--accent-glow);
+            font-family: monospace;
         }
 
-        .chat-input-area {
-            padding: 16px;
-            border-top: 1px solid var(--border-color);
-            background-color: var(--bg-base);
+        .chat-input-zone {
+            padding: 14px;
+            border-top: 1px solid var(--border-line);
+            background-color: var(--bg-deep);
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .upload-dropzone {
-            border: 2px dashed var(--border-color);
-            border-radius: 8px;
-            padding: 12px;
+        .upload-box {
+            border: 1px dashed var(--border-line);
+            padding: 8px;
+            border-radius: 6px;
             text-align: center;
+            font-size: 0.78rem;
+            color: var(--text-muted);
             cursor: pointer;
-            background: var(--bg-surface);
-            transition: all 0.2s;
             position: relative;
+            background: var(--bg-surface);
         }
 
-        .upload-dropzone:hover, .upload-dropzone.dragover {
-            border-color: var(--anime-cyan);
-            background: rgba(0, 240, 255, 0.05);
-        }
-
-        .upload-dropzone input[type="file"] {
+        .upload-box input {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             opacity: 0;
             cursor: pointer;
         }
 
-        .upload-label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .upload-label span {
-            color: var(--anime-cyan);
-            font-weight: 600;
-        }
-
-        .attached-preview {
-            display: none;
-            align-items: center;
-            justify-content: space-between;
-            background: var(--bg-elevated);
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            border: 1px solid var(--border-color);
-        }
-
-        .attached-preview.active {
+        .input-row {
             display: flex;
+            gap: 6px;
         }
 
-        .remove-file {
-            color: var(--anime-pink);
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .chat-row {
-            display: flex;
-            gap: 8px;
-        }
-
-        .chat-input {
+        .chat-text-input {
             flex: 1;
-            background-color: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            padding: 10px 14px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-line);
+            padding: 8px 12px;
             border-radius: 6px;
             color: var(--text-main);
             outline: none;
+            font-size: 0.85rem;
         }
 
-        .chat-input:focus {
-            border-color: var(--anime-pink);
-            box-shadow: 0 0 8px rgba(255, 0, 127, 0.2);
+        .chat-text-input:focus {
+            border-color: var(--accent-glow);
         }
 
-        /* Main Editor Window */
-        .editor-container {
+        /* Main Editor Section */
+        .editor-main {
             flex: 1;
             display: flex;
             flex-direction: column;
-            background-color: var(--bg-base);
+            background-color: var(--bg-deep);
         }
 
-        .tabs-bar {
+        .tab-bar {
             display: flex;
             background-color: var(--bg-surface);
-            border-bottom: 1px solid var(--border-color);
-            padding-left: 12px;
+            border-bottom: 1px solid var(--border-line);
+            padding-left: 10px;
         }
 
-        .tab {
-            padding: 10px 20px;
-            font-size: 0.85rem;
+        .file-tab {
+            padding: 10px 18px;
+            font-size: 0.82rem;
             color: var(--text-muted);
             cursor: pointer;
             border-bottom: 2px solid transparent;
-            transition: color 0.2s;
         }
 
-        .tab:hover {
-            color: var(--text-main);
+        .file-tab.active {
+            color: var(--accent-glow);
+            border-bottom-color: var(--accent-glow);
+            background-color: var(--bg-deep);
         }
 
-        .tab.active {
-            color: var(--anime-cyan);
-            border-bottom-color: var(--anime-cyan);
-            background-color: var(--bg-base);
-        }
-
-        .code-view {
+        .code-area {
             flex: 1;
             padding: 20px;
             font-family: 'Courier New', Courier, monospace;
-            font-size: 0.95rem;
-            color: var(--anime-green);
+            font-size: 0.92rem;
+            color: var(--code-text);
             overflow: auto;
             white-space: pre-wrap;
             outline: none;
-        }
-
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 5px var(--anime-pink); }
-            100% { box-shadow: 0 0 20px var(--anime-cyan); }
+            line-height: 1.5;
         }
     </style>
 </head>
@@ -318,225 +256,115 @@
 
     <!-- Header -->
     <header>
-        <div class="logo-area">
-            <div class="logo-badge">KUADU</div>
-            <span class="logo-title">Neural Coding Studio v4.0 (Smart AI Engine)</span>
+        <div class="brand">
+            <span>KuaduCode</span><span class="tm-badge">TM</span> Code Lab
         </div>
-        <div class="header-actions">
-            <button class="btn" id="settings-btn">Settings</button>
-            <button class="btn btn-primary" id="run-btn">⚡ Run Code</button>
+        <div class="header-controls">
+            <button class="btn" id="clear-btn">Clear Workspace</button>
+            <button class="btn btn-action" id="run-code-btn">▶ Run Code</button>
         </div>
     </header>
 
     <!-- Workspace -->
     <div class="workspace">
-        <!-- Sidebar Chat -->
-        <sidebar>
-            <div class="chat-header">
-                <span>AI Neural Copilot</span>
-                <span style="color: var(--anime-green); font-size: 0.75rem;">● Online</span>
+        <!-- AI Assistant Sidebar -->
+        <aside>
+            <div class="sidebar-title">
+                <span>KuaduCode™ Assistant</span>
+                <span style="color: var(--success-green); font-size: 0.7rem;">● Ready</span>
             </div>
-            <div class="chat-messages" id="chat-messages">
-                <div class="message ai">
-                    ✨ Hello operator! Ask me any coding question or upload a file. I will analyze your query and give direct, tailored answers and code examples!
+            <div class="chat-stream" id="chat-stream">
+                <div class="chat-bubble assistant">
+                    👋 Welcome to KuaduCode™ Lab! Type your coding questions, paste queries, or upload code files below for instant answers.
                 </div>
             </div>
-            
-            <div class="chat-input-area">
-                <div class="attached-preview" id="attached-preview">
-                    <span id="file-name-display">📎 file.js</span>
-                    <span class="remove-file" id="remove-file-btn" title="Remove file">✕</span>
+            <div class="chat-input-zone">
+                <div class="upload-box" id="dropzone">
+                    <input type="file" id="file-uploader">
+                    📁 Drop or browse a file to load into workspace
                 </div>
+                <div class="input-row">
+                    <input type="text" class="chat-text-input" id="user-query" placeholder="Ask a question (e.g. 'How do loops work?')">
+                    <button class="btn btn-action" id="send-query-btn">Ask</button>
+                </div>
+            </div>
+        </aside>
 
-                <div class="upload-dropzone" id="dropzone">
-                    <input type="file" id="file-upload-input">
-                    <div class="upload-label">
-                        📁 Drag & drop code files here or <span>browse</span>
-                    </div>
-                </div>
-
-                <div class="chat-row">
-                    <input type="text" class="chat-input" id="chat-input" placeholder="Ask a question (e.g., 'How do I center a div?')">
-                    <button class="btn btn-primary" id="send-btn">Send</button>
-                </div>
+        <!-- Code Editor Area -->
+        <main class="editor-main">
+            <div class="tab-bar">
+                <div class="file-tab active" data-file="index.html">index.html</div>
+                <div class="file-tab" data-file="main.css">main.css</div>
+                <div class="file-tab" data-file="app.js">app.js</div>
             </div>
-        </sidebar>
-
-        <!-- Main Editor Area -->
-        <div class="editor-container">
-            <div class="tabs-bar">
-                <div class="tab active" data-file="code.html">code.html</div>
-                <div class="tab" data-file="styles.css">styles.css</div>
-                <div class="tab" data-file="neural-engine.js">neural-engine.js</div>
-            </div>
-            <div class="code-view" id="code-view" contenteditable="true" spellcheck="false">
-&lt;!-- Welcome to Kuadu Funtastic Code Editor --&gt;
-&lt;div class="cyber-card"&gt;
-    &lt;h1&gt;System Operational&lt;/h1&gt;
-    &lt;p&gt;Your neural pathways are synced and ready for deployment.&lt;/p&gt;
-&lt;/div&gt;</div>
-        </div>
+            <div class="code-area" id="code-editor" contenteditable="true" spellcheck="false"></div>
+        </main>
     </div>
 
-    <!-- Script with Smart Question-Answering AI Engine -->
+    <!-- Script Engine -->
     <script>
-        const files = {
-            "code.html": `<!-- Welcome to Kuadu Funtastic Code Editor -->\n<div class="cyber-card">\n    <h1>System Operational</h1>\n    <p>Your neural pathways are synced and ready for deployment.</p>\n</div>`,
-            "styles.css": `/* Kuadu Cyberpunk Stylesheet */\n.cyber-card {\n    background: linear-gradient(135deg, #0e0c19, #17142b);\n    border: 1px solid #00f0ff;\n    padding: 24px;\n    border-radius: 12px;\n    box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);\n}`,
-            "neural-engine.js": `// Kuadu Neural Engine Core\nconsole.log("Neural matrix initialized successfully...");\nfunction executeSync() {\n    return "Status: Funtastic ⚡";\n}`
+        // Clean, empty workspace files (No templates)
+        const workspaceFiles = {
+            "index.html": "<!-- Write your HTML structure here -->\n",
+            "main.css": "/* Write your styles here */\n",
+            "app.js": "// Write your JavaScript logic here\n"
         };
 
-        let currentFile = "code.html";
-        let uploadedFile = null;
+        let activeFile = "index.html";
+        const editor = document.getElementById("code-editor");
+        editor.innerText = workspaceFiles[activeFile];
 
-        const tabs = document.querySelectorAll('.tab');
-        const codeView = document.getElementById('code-view');
-
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                files[currentFile] = codeView.innerText;
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                currentFile = tab.getAttribute('data-file');
-                codeView.innerText = files[currentFile];
+        // Tab Switching Handler
+        document.querySelectorAll(".file-tab").forEach(tab => {
+            tab.addEventListener("click", () => {
+                workspaceFiles[activeFile] = editor.innerText;
+                document.querySelectorAll(".file-tab").forEach(t => t.classList.remove("active"));
+                tab.classList.add("active");
+                activeFile = tab.getAttribute("data-file");
+                editor.innerText = workspaceFiles[activeFile];
             });
         });
 
-        // File upload handling
-        const fileInput = document.getElementById('file-upload-input');
-        const attachedPreview = document.getElementById('attached-preview');
-        const fileNameDisplay = document.getElementById('file-name-display');
-        const removeFileBtn = document.getElementById('remove-file-btn');
-        const dropzone = document.getElementById('dropzone');
+        // Save on typing
+        editor.addEventListener("input", () => {
+            workspaceFiles[activeFile] = editor.innerText;
+        });
 
-        function handleFileSelected(file) {
-            uploadedFile = file;
-            fileNameDisplay.textContent = `📎 ${file.name} (${Math.round(file.size / 1024)} KB)`;
-            attachedPreview.classList.add('active');
-            dropzone.style.display = 'none';
-
+        // File Upload Ingestion
+        const fileUploader = document.getElementById("file-uploader");
+        fileUploader.addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
             const reader = new FileReader();
-            reader.onload = function(e) {
-                const content = e.target.result;
-                files[file.name] = content;
-                if(!document.querySelector(`.tab[data-file="${file.name}"]`)) {
-                    const tabsBar = document.querySelector('.tabs-bar');
-                    const newTab = document.createElement('div');
-                    newTab.className = 'tab active';
-                    newTab.setAttribute('data-file', file.name);
-                    newTab.textContent = file.name;
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tabsBar.appendChild(newTab);
-                    currentFile = file.name;
-                    codeView.innerText = content;
-                }
+            reader.onload = function(evt) {
+                const content = evt.target.result;
+                workspaceFiles[file.name] = content;
+                
+                // Create tab if missing
+                if (!document.querySelector(`.file-tab[data-file="${file.name}"]`)) { const newTab = document.createElement("div"); newTab.className = "file-tab active"; newTab.setAttribute("data-file", file.name); newTab.textContent = file.name; document.querySelectorAll(".file-tab").forEach(t => t.classList.remove("active")); document.querySelector(".tab-bar").appendChild(newTab); } activeFile = file.name; editor.innerText = content;  addChatBubble(`📁 Loaded <strong>${file.name}</strong> into your KuaduCode™ editor workspace.`, "assistant");
             };
-            if(file.type.includes('text') || file.name.endsWith('.js') || file.name.endsWith('.html') || file.name.endsWith('.css') || file.name.endsWith('.json')) {
-                reader.readAsText(file);
-            }
+            reader.readAsText(file);
+        });
+
+        // Chat & Question Assistant Engine
+        const chatStream = document.getElementById("chat-stream");
+        const queryInput = document.getElementById("user-query");
+        const sendBtn = document.getElementById("send-query-btn");
+
+        function addChatBubble(text, sender) {
+            const bubble = document.createElement("div");
+            bubble.className = `chat-bubble ${sender}`;
+            bubble.innerHTML = text;
+            chatStream.appendChild(bubble);
+            chatStream.scrollTop = chatStream.scrollHeight;
         }
 
-        fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) handleFileSelected(e.target.files[0]);
-        });
+        function handleUserQuery() {
+            const query = queryInput.value.trim();
+            if (!query) return;
 
-        removeFileBtn.addEventListener('click', () => {
-            uploadedFile = null;
-            attachedPreview.classList.remove('active');
-            dropzone.style.display = 'block';
-            fileInput.value = '';
-        });
+            addChatBubble(query, "user");
+            queryInput.value = "";
 
-        ['dragenter', 'dragover'].forEach(eventName => {
-            dropzone.addEventListener(eventName, (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
-        });
-        ['dragleave', 'drop'].forEach(eventName => {
-            dropzone.addEventListener(eventName, (e) => { e.preventDefault(); dropzone.classList.remove('dragover'); });
-        });
-        dropzone.addEventListener('drop', (e) => {
-            if (e.dataTransfer.files.length > 0) handleFileSelected(e.dataTransfer.files[0]);
-        });
-
-        // 🧠 Intelligent Question-Answering AI Engine
-        function generateAIAnswer(query, fileName) {
-            const q = query.toLowerCase();
-
-            if (fileName) {
-                return `✨ I've analyzed your file <code>${fileName}</code>. It has been loaded into tab <strong>${fileName}</strong>. Everything looks structurally clean, but let me know if you want me to refactor or fix any logic inside it!`;
-            }
-
-            if (q.includes('center') || q.includes('align')) {
-                return `To center items perfectly in CSS, use Flexbox! Here is how:<br><code>display: flex;<br>justify-content: center;<br>align-items: center;</code>`;
-            } else if (q.includes('css') || q.includes('style') || q.includes('color')) {
-                return `CSS controls presentation. You can edit your design right now by switching to the <code>styles.css</code> tab above and tweaking properties like colors, borders, and shadows!`;
-            } else if (q.includes('javascript') || q.includes('js') || q.includes('function') || q.includes('code')) {
-                return `JavaScript handles runtime interaction. Check out your <code>neural-engine.js</code> tab to add custom event listeners, loops, or APIs.`;
-            } else if (q.includes('hello') || q.includes('hi') || q.includes('hey')) {
-                return `Hello operator! Ready to write some incredible code today. What project are we tackling?`;
-            } else if (q.includes('help') || q.includes('what can you do')) {
-                return `I am Kuadu AI! You can ask me technical questions, upload code files via drag-and-drop, edit code in real-time tabs, or run simulation tests.`;
-            } else {
-                return `⚡ Great question regarding "<em>${query}</em>". To implement this in your active file (<code>${currentFile}</code>), ensure your syntax matches standard standards. Would you like me to generate a complete snippet for this?`;
-            }
-        }
-
-        // Interactive Chat Logic
-        const chatInput = document.getElementById('chat-input');
-        const sendBtn = document.getElementById('send-btn');
-        const chatMessages = document.getElementById('chat-messages');
-
-        function handleSendMessage() {
-            const text = chatInput.value.trim();
-            if (!text && !uploadedFile) return;
-
-            const userMsg = document.createElement('div');
-            userMsg.className = 'message user';
-            
-            let messageHTML = '';
-            let attachedName = uploadedFile ? uploadedFile.name : null;
-            if (uploadedFile) {
-                messageHTML += `<div class="file-chip">📎 ${uploadedFile.name}</div>`;
-            }
-            if (text) {
-                messageHTML += `<div>${text}</div>`;
-            }
-            userMsg.innerHTML = messageHTML;
-            chatMessages.appendChild(userMsg);
-            
-            chatInput.value = '';
-            uploadedFile = null;
-            attachedPreview.classList.remove('active');
-            dropzone.style.display = 'block';
-            fileInput.value = '';
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            // Generate smart dynamic answer
             setTimeout(() => {
-                const aiMsg = document.createElement('div');
-                aiMsg.className = 'message ai';
-                aiMsg.innerHTML = generateAIAnswer(text, attachedName);
-                chatMessages.appendChild(aiMsg);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }, 600);
-        }
-
-        sendBtn.addEventListener('click', handleSendMessage);
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') handleSendMessage();
-        });
-
-        document.getElementById('run-btn').addEventListener('click', () => {
-            const aiMsg = document.createElement('div');
-            aiMsg.className = 'message ai';
-            aiMsg.style.borderColor = 'var(--anime-green)';
-            aiMsg.innerHTML = `🚀 <strong>Execution Success!</strong><br>Successfully executed <code>${currentFile}</code>. All systems operational!`;
-            chatMessages.appendChild(aiMsg);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        });
-
-        document.getElementById('settings-btn').addEventListener('click', () => {
-            alert("Kuadu Studio: Smart Neural Copilot is actively running with dynamic intent matching.");
-        });
-    </script>
-</body>
-</html>
+                let answer = `KuaduCode™ Assistant: I can help you write code for "<em>${query}</em>". Try adding your logic in the active <code>
