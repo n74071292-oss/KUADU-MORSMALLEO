@@ -3,28 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KuaduCode — Professional Multi-Language IDE & Code Runner</title>
+    <title>KuaduCode — Anime Edition IDE & Code Runner</title>
     <style>
         :root {
-            --bg-base: #0f1117;
-            --bg-surface: #161922;
-            --bg-elevated: #1e222d;
-            --border-color: #2a2f3d;
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --accent-primary: #8b5cf6;
-            --accent-hover: #7c3aed;
-            --accent-success: #10b981;
-            --accent-pink: #ec4899;
-        }
-
-        body.light-mode {
-            --bg-base: #f8fafc;
-            --bg-surface: #ffffff;
-            --bg-elevated: #f1f5f9;
-            --border-color: #cbd5e1;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
+            --bg-base: #080711;
+            --bg-surface: #100f1d;
+            --bg-elevated: #1a1831;
+            --border-color: #2e2858;
+            --text-main: #f3f0ff;
+            --text-muted: #9b93c9;
+            --anime-cyan: #00f0ff;
+            --anime-pink: #ff007f;
+            --anime-purple: #9d00ff;
+            --anime-green: #39ff14;
+            --anime-yellow: #ffee00;
         }
 
         * {
@@ -32,7 +24,6 @@
             margin: 0;
             padding: 0;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
         }
 
         body {
@@ -42,6 +33,34 @@
             flex-direction: column;
             height: 100vh;
             overflow: hidden;
+            position: relative;
+        }
+
+        /* Floating Anime Cyber Particles background effect */
+        .particles {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--anime-cyan);
+            border-radius: 50%;
+            animation: floatUp 8s infinite linear;
+            opacity: 0.2;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        header, .lang-tabs, .workspace {
+            z-index: 1;
         }
 
         header {
@@ -50,7 +69,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 2px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(157, 0, 255, 0.15);
         }
 
         .brand {
@@ -60,71 +80,75 @@
         }
 
         .brand-logo {
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-pink));
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
+            background: linear-gradient(135deg, var(--anime-cyan), var(--anime-pink));
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 800;
+            font-weight: 900;
             color: white;
-            font-size: 1.2rem;
-            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
-            animation: pulseGlow 3s infinite alternate;
+            font-size: 1.3rem;
+            box-shadow: 0 0 15px var(--anime-pink);
+            animation: neonPulse 2s infinite alternate;
         }
 
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3); }
-            100% { box-shadow: 0 4px 20px rgba(236, 72, 153, 0.5); }
+        @keyframes neonPulse {
+            0% { box-shadow: 0 0 10px var(--anime-pink), inset 0 0 5px var(--anime-cyan); }
+            100% { box-shadow: 0 0 25px var(--anime-cyan), inset 0 0 10px var(--anime-pink); }
         }
 
         header h1 {
-            font-size: 1.2rem;
-            font-weight: 700;
+            font-size: 1.3rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--anime-cyan), var(--anime-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
         }
 
         .header-controls {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             align-items: center;
         }
 
-        .theme-toggle-btn {
-            background: var(--bg-elevated);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 6px 12px;
-            border-radius: 20px;
-            cursor: pointer;
+        .status-badge {
             font-size: 0.8rem;
+            color: var(--anime-green);
+            background: var(--bg-elevated);
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--anime-green);
+            display: flex;
+            align-items: center;
+            gap: 6px;
             font-weight: 600;
-            transition: all 0.2s ease;
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.2);
         }
 
-        .theme-toggle-btn:hover {
-            transform: scale(1.05);
-            background: var(--accent-primary);
-            color: white;
-            border-color: var(--accent-primary);
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--anime-green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--anime-green);
+            animation: blink 1.5s infinite;
         }
 
-        .header-badge {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            background: var(--bg-elevated);
-            padding: 6px 12px;
-            border-radius: 20px;
-            border: 1px solid var(--border-color);
+        @keyframes blink {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(0.8); }
         }
 
         .lang-tabs {
             display: flex;
             background-color: var(--bg-surface);
-            padding: 10px 20px;
-            gap: 8px;
+            padding: 12px 20px;
+            gap: 10px;
             overflow-x: auto;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 2px solid var(--border-color);
             scrollbar-width: thin;
         }
 
@@ -132,34 +156,36 @@
             background-color: var(--bg-elevated);
             color: var(--text-muted);
             border: 1px solid var(--border-color);
-            padding: 7px 14px;
-            border-radius: 8px;
+            padding: 8px 18px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 0.85rem;
-            font-weight: 500;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             white-space: nowrap;
         }
 
         .tab-btn:hover {
-            color: var(--text-main);
-            border-color: var(--accent-primary);
-            transform: translateY(-2px);
+            color: var(--anime-cyan);
+            border-color: var(--anime-cyan);
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
         }
 
         .tab-btn.active {
-            background-color: var(--accent-primary);
+            background: linear-gradient(135deg, var(--anime-purple), var(--anime-pink));
             color: #ffffff;
-            border-color: var(--accent-primary);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+            border-color: var(--anime-pink);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 0, 127, 0.5);
         }
 
         .tab-btn.premium {
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-pink));
-            color: #fff;
+            background: linear-gradient(135deg, var(--anime-yellow), #ff5500);
+            color: #0b0711;
             border: none;
-            font-weight: 600;
+            font-weight: 800;
+            box-shadow: 0 0 15px rgba(255, 238, 0, 0.4);
         }
 
         .workspace {
@@ -167,14 +193,14 @@
             grid-template-columns: 1fr 1fr;
             flex: 1;
             background-color: var(--bg-base);
-            gap: 12px;
-            padding: 12px;
+            gap: 14px;
+            padding: 14px;
             overflow: hidden;
-            animation: fadeIn 0.4s ease-out;
+            animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -183,21 +209,22 @@
             flex-direction: column;
             background-color: var(--bg-surface);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
+            border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-            transition: border-color 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
         }
 
         .pane:hover {
-            border-color: rgba(139, 92, 246, 0.4);
+            border-color: var(--anime-cyan);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
         }
 
         .pane-header {
             background-color: var(--bg-elevated);
-            padding: 10px 16px;
-            font-size: 0.85rem;
-            font-weight: 600;
+            padding: 12px 18px;
+            font-size: 0.9rem;
+            font-weight: 700;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -207,7 +234,7 @@
 
         .pane-actions {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             align-items: center;
         }
 
@@ -215,8 +242,8 @@
             background: var(--bg-surface);
             color: var(--text-muted);
             border: 1px solid var(--border-color);
-            padding: 4px 10px;
-            border-radius: 5px;
+            padding: 5px 12px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 0.75rem;
             font-weight: 600;
@@ -224,27 +251,28 @@
         }
 
         .action-btn:hover {
-            color: var(--text-main);
-            border-color: var(--text-main);
+            color: var(--anime-cyan);
+            border-color: var(--anime-cyan);
             background: var(--bg-elevated);
+            transform: translateY(-1px);
         }
 
         .run-btn {
-            background-color: var(--accent-success);
-            color: white;
+            background: linear-gradient(135deg, var(--anime-green), #00aa44);
+            color: #080711;
             border: none;
-            padding: 5px 12px;
-            border-radius: 5px;
+            padding: 6px 16px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 0.8rem;
-            font-weight: 600;
+            font-size: 0.85rem;
+            font-weight: 800;
             transition: all 0.2s ease;
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.4);
         }
 
         .run-btn:hover {
-            background-color: #059669;
-            transform: scale(1.05);
-            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+            transform: scale(1.08) rotate(-1deg);
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.7);
         }
 
         textarea {
@@ -252,10 +280,10 @@
             background-color: var(--bg-surface);
             color: var(--text-main);
             border: none;
-            padding: 18px;
+            padding: 20px;
             resize: none;
             font-family: 'Fira Code', 'Courier New', Courier, monospace;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             outline: none;
             line-height: 1.6;
             tab-size: 4;
@@ -263,18 +291,14 @@
 
         .output-container {
             flex: 1;
-            background-color: #050608;
-            color: #34d399;
-            padding: 18px;
+            background-color: #040308;
+            color: var(--anime-cyan);
+            padding: 20px;
             font-family: 'Fira Code', 'Courier New', Courier, monospace;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             overflow-y: auto;
             white-space: pre-wrap;
-        }
-
-        body.light-mode .output-container {
-            background-color: #0f172a;
-            color: #38bdf8;
+            box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.05);
         }
 
         iframe {
@@ -292,7 +316,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            animation: fadeIn 0.4s ease-out;
+            animation: slideUp 0.4s ease-out;
         }
 
         .premium-hero {
@@ -302,10 +326,13 @@
         }
 
         .premium-hero h2 {
-            color: var(--accent-pink);
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             margin-bottom: 12px;
-            font-weight: 800;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--anime-yellow), var(--anime-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 25px rgba(255, 0, 127, 0.4);
         }
 
         .pricing-cards {
@@ -319,31 +346,35 @@
 
         .price-card {
             background-color: var(--bg-elevated);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
             padding: 32px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
         }
 
         .price-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--accent-pink);
-            box-shadow: 0 12px 30px rgba(236, 72, 153, 0.2);
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--anime-pink);
+            box-shadow: 0 0 30px rgba(255, 0, 127, 0.3);
         }
 
         .price-card h3 {
-            font-size: 1.25rem;
+            font-size: 1.35rem;
             margin-bottom: 8px;
+            color: var(--text-main);
         }
 
         .price-amount {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--accent-success);
+            font-size: 2.3rem;
+            font-weight: 900;
+            color: var(--anime-green);
             margin-bottom: 18px;
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
         }
 
         .price-features {
@@ -357,35 +388,35 @@
         }
 
         .price-features li::before {
-            content: "✓ ";
-            color: var(--accent-success);
-            font-weight: bold;
+            content: "⚡ ";
+            color: var(--anime-yellow);
         }
 
         .momo-btn {
-            background: linear-gradient(135deg, #fbbf24, #d97706);
-            color: #12151c;
+            background: linear-gradient(135deg, var(--anime-yellow), #ff7700);
+            color: #080711;
             border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: 700;
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: 800;
             cursor: pointer;
-            font-size: 0.95rem;
-            transition: all 0.2s ease;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 238, 0, 0.3);
         }
 
         .momo-btn:hover {
-            transform: scale(1.03);
-            filter: brightness(1.05);
-            box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(255, 238, 0, 0.6);
+            filter: brightness(1.1);
         }
 
         /* Modal Animation */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(9, 10, 15, 0.75);
-            backdrop-filter: blur(6px);
+            background: rgba(4, 3, 8, 0.85);
+            backdrop-filter: blur(8px);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -402,25 +433,25 @@
 
         .modal-content {
             background: var(--bg-elevated);
-            border: 1px solid var(--border-color);
-            padding: 35px;
-            border-radius: 16px;
+            border: 2px solid var(--anime-cyan);
+            padding: 40px;
+            border-radius: 20px;
             width: 100%;
-            max-width: 420px;
+            max-width: 440px;
             text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            transform: scale(0.9);
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 0 40px rgba(0, 240, 255, 0.3);
+            transform: scale(0.8) rotate(-3deg);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .modal-overlay.active .modal-content {
-            transform: scale(1);
+            transform: scale(1) rotate(0deg);
         }
 
         .modal-content h3 {
-            color: #fbbf24;
+            color: var(--anime-yellow);
             margin-bottom: 12px;
-            font-size: 1.4rem;
+            font-size: 1.5rem;
         }
 
         .modal-content p {
@@ -433,18 +464,19 @@
             width: 100%;
             padding: 14px;
             background: var(--bg-surface);
-            border: 1px solid var(--border-color);
+            border: 2px solid var(--border-color);
             color: var(--text-main);
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 1.1rem;
             margin-bottom: 24px;
             outline: none;
             text-align: center;
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
         .modal-input:focus {
-            border-color: #fbbf24;
+            border-color: var(--anime-cyan);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
         }
 
         .modal-actions {
@@ -454,59 +486,61 @@
 
         .modal-btn-confirm {
             flex: 1;
-            background: var(--accent-success);
-            color: white;
+            background: var(--anime-green);
+            color: #080711;
             border: none;
             padding: 12px;
-            border-radius: 8px;
-            font-weight: 700;
+            border-radius: 10px;
+            font-weight: 800;
             cursor: pointer;
-            transition: filter 0.2s;
+            transition: all 0.2s;
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
         }
 
         .modal-btn-confirm:hover {
-            filter: brightness(1.1);
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(57, 255, 20, 0.7);
         }
 
         .modal-btn-cancel {
             flex: 1;
-            background: #374151;
+            background: #2e2858;
             color: white;
             border: none;
             padding: 12px;
-            border-radius: 8px;
+            border-radius: 10px;
             font-weight: 700;
             cursor: pointer;
             transition: background 0.2s;
         }
 
         .modal-btn-cancel:hover {
-            background: #4b5563;
+            background: #40367a;
         }
 
         .search-box {
             width: 100%;
             max-width: 1000px;
-            padding: 14px 20px;
+            padding: 16px 24px;
             margin-bottom: 25px;
             background-color: var(--bg-elevated);
-            border: 1px solid var(--border-color);
+            border: 2px solid var(--border-color);
             color: var(--text-main);
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 1rem;
             outline: none;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
 
         .search-box:focus {
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 10px rgba(139, 92, 246, 0.2);
+            border-color: var(--anime-cyan);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
         }
 
         .lang-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 12px;
+            gap: 14px;
             width: 100%;
             max-width: 1000px;
         }
@@ -514,25 +548,25 @@
         .lang-card {
             background-color: var(--bg-elevated);
             border: 1px solid var(--border-color);
-            padding: 14px 18px;
-            border-radius: 8px;
+            padding: 16px 20px;
+            border-radius: 12px;
             font-size: 0.9rem;
             color: var(--text-muted);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .lang-card:hover {
-            transform: translateY(-2px);
-            border-color: var(--accent-primary);
+            transform: translateY(-4px) scale(1.02);
+            border-color: var(--anime-cyan);
             color: var(--text-main);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
         }
 
         .lang-card strong {
-            color: var(--text-main);
+            color: var(--anime-cyan);
         }
 
         @media(max-width: 768px) {
@@ -548,14 +582,18 @@
 </head>
 <body>
 
+    <!-- Floating Cyber Particles -->
+    <div class="particles" id="particles-container"></div>
+
     <header>
         <div class="brand">
             <div class="brand-logo">K</div>
-            <h1>KuaduCode IDE</h1>
+            <h1>KuaduCode Anime IDE</h1>
         </div>
         <div class="header-controls">
-            <button class="theme-toggle-btn" onclick="toggleTheme()">🌓 Theme</button>
-            <div class="header-badge">🇬🇭 MTN MoMo Ready</div>
+            <div class="status-badge">
+                <div class="status-dot"></div> MTN MoMo Active 🇬🇭
+            </div>
         </div>
     </header>
 
@@ -585,29 +623,42 @@
             <p id="modal-desc">Enter your MTN number to approve payment.</p>
             <input type="tel" id="momo-phone" class="modal-input" placeholder="024 XXX XXXX" maxlength="10">
             <div class="modal-actions">
-                <button class="modal-btn-confirm" onclick="confirmMoMoPayment()">Authorize</button>
+                <button class="modal-btn-confirm" onclick="confirmMoMoPayment()">Authorize ⚡</button>
                 <button class="modal-btn-cancel" onclick="closeMoMoModal()">Cancel</button>
             </div>
         </div>
     </div>
 
     <script>
+        // Generate ambient floating particles for anime cyber effect
+        const particleContainer = document.getElementById('particles-container');
+        for (let i = 0; i < 25; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = `${Math.random() * 100}%`;
+            p.style.width = `${Math.random() * 4 + 2}px`;
+            p.style.height = p.style.width;
+            p.style.animationDuration = `${Math.random() * 6 + 4}s`;
+            p.style.animationDelay = `${Math.random() * 5}s`;
+            particleContainer.appendChild(p);
+        }
+
         const templates = {
             web: {
-                html: '<h1>Hello Web Developer!</h1>\n<p>Edit HTML, CSS, or JS to see live updates.</p>',
-                css: 'body { font-family: sans-serif; text-align: center; margin-top: 40px; color: #333; }',
-                js: 'console.log("KuaduCode Web console ready!");'
+                html: '<h1>Hello Otaku Developer! ⚡</h1>\n<p>Edit HTML, CSS, or JS to see live anime magic.</p>',
+                css: 'body { font-family: sans-serif; text-align: center; margin-top: 50px; background: linear-gradient(135deg, #100f1d, #1a1831); color: #00f0ff; }',
+                js: 'console.log("KuaduCode Anime Console Active 🚀");'
             },
-            python: `print("Hello from KuaduCode Python!")\nx = 15\ny = 25\nprint(f"The sum of x + y is {x + y}")`,
-            java: `public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello from KuaduCode Java!");\n    }\n}`,
-            cpp: `#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "Hello from KuaduCode C++!" << endl;\n    return 0;\n}`,
-            csharp: `using System;\n\nclass Program {\n    static void Main() {\n        Console.WriteLine("Hello from KuaduCode C#!");\n    }\n}`,
-            go: `package main\nimport "fmt"\n\nfunc main() {\n    fmt.Println("Hello from KuaduCode Go!")\n}`,
-            typescript: `const greeting: string = "Hello from KuaduCode TypeScript!";\nconsole.log(greeting);`,
-            swift: `print("Hello from KuaduCode Swift!")`,
-            kotlin: `fun main() {\n    println("Hello from KuaduCode Kotlin!")\n}`,
-            sql: `CREATE TABLE learners (id INT, name TEXT);\nINSERT INTO learners VALUES (1, 'Kofi');\nSELECT * FROM learners;`,
-            r: `cat("Hello from KuaduCode R!\\n")`
+            python: `print("⚡ Konnichiwa from KuaduCode Python!")\npower_level = 9001\nprint(f"Developer Power Level: {power_level}")`,
+            java: `public class Main {\n    public static void main(String[] args) {\n        System.out.println("⚡ Hello Java Anime Coder!");\n    }\n}`,
+            cpp: `#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "⚡ Hello C++ Cyberpunk!" << endl;\n    return 0;\n}`,
+            csharp: `using System;\n\nclass Program {\n    static void Main() {\n        Console.WriteLine("⚡ Hello C# Otaku!");\n    }\n}`,
+            go: `package main\nimport "fmt"\n\nfunc main() {\n    fmt.Println("⚡ Hello Go Matrix!")\n}`,
+            typescript: `const coder: string = "TypeScript Ninja";\nconsole.log(\`⚡ Hello \${coder}!\`);`,
+            swift: `print("⚡ Hello Swift Developer!")`,
+            kotlin: `fun main() {\n    println("⚡ Hello Kotlin Hero!")\n}`,
+            sql: `CREATE TABLE anime_heroes (id INT, name TEXT);\nINSERT INTO anime_heroes VALUES (1, 'Naruto');\nSELECT * FROM anime_heroes;`,
+            r: `cat("⚡ Hello R Data Samurai!\\n")`
         };
 
         const pistonRuntimes = {
@@ -630,9 +681,14 @@
         let currentLang = 'web';
         let selectedPlan = { amount: 0, name: '' };
 
-        function toggleTheme() {
-            document.body.classList.toggle('light-mode');
-        }
+        // Keyboard Shortcut: Ctrl+Enter / Cmd+Enter to Run
+        window.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                if (currentLang !== 'web' && currentLang !== 'premium') {
+                    runLiveCode();
+                }
+            }
+        });
 
         function switchLanguage(lang) {
             currentLang = lang;
@@ -665,48 +721,48 @@
                 workspace.innerHTML = `
                     <div class="premium-dashboard">
                         <div class="premium-hero">
-                            <h2>👑 KuaduCode Premium Membership</h2>
-                            <p>Unlock all 200+ language project briefs and advanced challenge paths instantly via MTN Mobile Money.</p>
+                            <h2>👑 KuaduCode Anime Elite Membership</h2>
+                            <p>Unlock all 200+ language cyber directories and legendary challenge paths instantly via MTN Mobile Money.</p>
                         </div>
 
                         <div class="pricing-cards">
                             <div class="price-card">
                                 <div>
-                                    <h3>Starter Package</h3>
+                                    <h3>Genin Package</h3>
                                     <div class="price-amount">10 GHS</div>
                                     <ul class="price-features">
-                                        <li>Basic starter guides</li>
-                                        <li>Introductory challenges</li>
+                                        <li>Starter cyber guides</li>
+                                        <li>Basic anime challenges</li>
                                         <li>MTN MoMo instant prompt</li>
                                     </ul>
                                 </div>
-                                <button class="momo-btn" onclick="openMoMoModal(10, 'Starter Package')">Pay 10 GHS via MoMo</button>
+                                <button class="momo-btn" onclick="openMoMoModal(10, 'Genin Package')">Pay 10 GHS via MoMo ⚡</button>
                             </div>
 
-                            <div class="price-card" style="border-color: #ec4899;">
+                            <div class="price-card" style="border-color: var(--anime-pink);">
                                 <div>
-                                    <h3>Practice Plus</h3>
+                                    <h3>Jonin Master</h3>
                                     <div class="price-amount">20 GHS</div>
                                     <ul class="price-features">
                                         <li>Full 200+ language directory</li>
                                         <li>Intermediate track briefs</li>
-                                        <li>Project checklists</li>
+                                        <li>Cyber project checklists</li>
                                     </ul>
                                 </div>
-                                <button class="momo-btn" onclick="openMoMoModal(20, 'Practice Plus')">Pay 20 GHS via MoMo</button>
+                                <button class="momo-btn" onclick="openMoMoModal(20, 'Jonin Master')">Pay 20 GHS via MoMo ⚡</button>
                             </div>
 
                             <div class="price-card">
                                 <div>
-                                    <h3>Pro Learning Pack</h3>
+                                    <h3>Hokage Legend</h3>
                                     <div class="price-amount">45 GHS</div>
                                     <ul class="price-features">
-                                        <li>Lifetime all-access pass</li>
-                                        <li>Advanced project briefs</li>
-                                        <li>Guided study plans</li>
+                                        <li>Lifetime VIP all-access</li>
+                                        <li>Advanced samurai briefs</li>
+                                        <li>Master study blueprints</li>
                                     </ul>
                                 </div>
-                                <button class="momo-btn" onclick="openMoMoModal(45, 'Pro Learning Pack')">Pay 45 GHS via MoMo</button>
+                                <button class="momo-btn" onclick="openMoMoModal(45, 'Hokage Legend')">Pay 45 GHS via MoMo ⚡</button>
                             </div>
                         </div>
 
@@ -720,18 +776,24 @@
                 workspace.innerHTML = `
                     <div class="pane">
                         <div class="pane-header">
-                            <span>💻 ${lang.toUpperCase()} Editor</span>
+                            <span>💻 ${lang.toUpperCase()} Cyber Editor</span>
                             <div class="pane-actions">
                                 <button class="action-btn" onclick="resetTemplate()">Reset</button>
                                 <button class="action-btn" onclick="copyCode('code-input')">Copy</button>
-                                <button class="run-btn" onclick="runLiveCode()">▶ Run</button>
+                                <button class="run-btn" onclick="runLiveCode()">⚡ Run (Ctrl+↵)</button>
                             </div>
                         </div>
                         <textarea id="code-input">${templates[lang]}</textarea>
                     </div>
                     <div class="pane">
-                        <div class="pane-header">📤 Execution Output</div>
-                        <div class="output-container" id="output-console">Click 'Run' to execute your program...</div>
+                        <div class="pane-header">
+                            <span>📤 Cyber Console Output</span>
+                            <div class="pane-actions">
+                                <button class="action-btn" onclick="clearOutput()">Clear</button>
+                                <button class="action-btn" onclick="copyCode('output-console')">Copy Log</button>
+                            </div>
+                        </div>
+                        <div class="output-container" id="output-console">Click 'Run' to unleash your program...</div>
                     </div>
                 `;
             }
@@ -740,11 +802,11 @@
         async function runLiveCode() {
             const codeInput = document.getElementById('code-input').value;
             const consoleBox = document.getElementById('output-console');
-            consoleBox.innerHTML = `Executing ${currentLang.toUpperCase()} code... Please wait...`;
+            consoleBox.innerHTML = `⚡ Executing ${currentLang.toUpperCase()} code in the Matrix... Please wait...`;
 
             const runtime = pistonRuntimes[currentLang];
             if (!runtime) {
-                consoleBox.innerHTML = "Error: Execution runtime is not configured for this language.";
+                consoleBox.innerHTML = "Error: Execution runtime not configured for this language.";
                 return;
             }
 
@@ -759,7 +821,7 @@
                     })
                 });
 
-                if (!response.ok) throw new Error(`Server returned status ${response.status}`);
+                if (!response.ok) throw new Error(`Server status ${response.status}`);
 
                 const data = await response.json();
                 
@@ -773,12 +835,12 @@
                     if (stderr) finalOutput += `[Runtime Error]\n${stderr}\n\n`;
                     if (stdout) finalOutput += stdout;
 
-                    consoleBox.innerHTML = finalOutput.trim() || "Program executed successfully with no output.";
+                    consoleBox.innerHTML = finalOutput.trim() || "Program executed successfully with zero errors!";
                 } else {
-                    consoleBox.innerHTML = "Error: Unexpected response structure from execution server.";
+                    consoleBox.innerHTML = "Error: Unexpected server payload structure.";
                 }
             } catch (err) {
-                consoleBox.innerHTML = `Execution Error: Unable to reach code runner API.\nDetails: ${err.message}`;
+                consoleBox.innerHTML = `Execution Error: Unable to reach runner server.\nDetails: ${err.message}`;
             }
         }
 
@@ -787,17 +849,27 @@
             document.getElementById('code-input').value = templates[currentLang];
         }
 
-        function copyCode(elementId) {
-            const text = document.getElementById(elementId).value;
+        function clearOutput() {
+            document.getElementById('output-console').innerHTML = "Console cleared.";
+        }
+
+        function copyCode(targetId) {
+            let text = "";
+            const el = document.getElementById(targetId);
+            if (el.tagName === 'TEXTAREA' || el.tagName === 'INPUT') {
+                text = el.value;
+            } else {
+                text = el.innerText;
+            }
             navigator.clipboard.writeText(text).then(() => {
-                alert('📋 Code copied to clipboard!');
+                alert('⚡ Copied to clipboard successfully!');
             });
         }
 
         function openMoMoModal(amount, planName) {
             selectedPlan = { amount, name: planName };
             document.getElementById('modal-title').innerText = `MTN MoMo: ${planName}`;
-            document.getElementById('modal-desc').innerText = `You are about to pay ${amount} GHS. Enter your MTN number below:`;
+            document.getElementById('modal-desc').innerText = `You are about to unlock ${planName} for ${amount} GHS. Enter your MTN number below:`;
             document.getElementById('momo-phone').value = '';
             document.getElementById('momo-modal').classList.add('active');
         }
@@ -813,7 +885,7 @@
                 return;
             }
             closeMoMoModal();
-            alert(`✅ Payment request sent successfully to ${phone} for ${selectedPlan.amount} GHS (${selectedPlan.name}). Please check your phone and approve the prompt.`);
+            alert(`⚡ Payment request sent successfully to ${phone} for ${selectedPlan.amount} GHS (${selectedPlan.name}). Check your phone to approve!`);
         }
 
         function filterLanguages() {
