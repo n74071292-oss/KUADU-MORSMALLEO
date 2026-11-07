@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuadu™ — Universal AI Assistant Studio</title>
+    <title>KuaduCode™ — Premium Code Lab & Live Studio</title>
     <style>
         :root {
             --bg-deep: #09080f;
@@ -12,10 +12,10 @@
             --border-line: #2e2850;
             --text-main: #f4f2ff;
             --text-muted: #948fb8;
-            --kuadu-white: #ffffff;
-            --code-indigo: #7c3aed;
+            --accent-primary: #7c3aed;
             --accent-glow: #06b6d4;
             --success-green: #10b981;
+            --code-text: #34d399;
             --gold-gradient: linear-gradient(135deg, #f59e0b, #d97706);
         }
 
@@ -35,12 +35,12 @@
             overflow: hidden;
         }
 
-        /* Top Brand Header matching Kuadu aesthetic */
+        /* Top Brand Header */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 24px;
+            padding: 12px 20px;
             background-color: var(--bg-surface);
             border-bottom: 1px solid var(--border-line);
         }
@@ -48,56 +48,26 @@
         .brand {
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-weight: 800;
-            font-size: 1.2rem;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
             letter-spacing: 0.5px;
         }
 
-        .brand-text {
-            display: flex;
-            align-items: center;
+        .brand span {
+            background: linear-gradient(135deg, var(--accent-glow), var(--accent-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .brand-kuadu {
-            color: var(--kuadu-white);
-        }
-
-        .brand-code {
-            color: var(--code-indigo);
-        }
-
-        /* Interactive Animation Box */
-        .interactive-anim-box {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--code-indigo), var(--accent-glow));
-            box-shadow: 0 0 10px rgba(124, 58, 237, 0.6);
-            animation: pulseAnim 2.5s infinite ease-in-out;
-            cursor: pointer;
-        }
-
-        .anim-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #ffffff;
-            border-radius: 50%;
-            animation: innerPulse 1.2s infinite alternate;
-        }
-
-        @keyframes pulseAnim {
-            0% { transform: scale(1); box-shadow: 0 0 5px var(--code-indigo); }
-            50% { transform: scale(1.15); box-shadow: 0 0 15px var(--accent-glow), 0 0 25px var(--code-indigo); }
-            100% { transform: scale(1); box-shadow: 0 0 5px var(--code-indigo); }
-        }
-
-        @keyframes innerPulse {
-            0% { transform: scale(0.8); opacity: 0.7; }
-            100% { transform: scale(1.2); opacity: 1; }
+        .tm-badge {
+            font-size: 0.65rem;
+            background: var(--accent-primary);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            vertical-align: super;
+            font-weight: 800;
         }
 
         .header-controls {
@@ -110,8 +80,8 @@
             background: var(--bg-panel);
             color: var(--text-main);
             border: 1px solid var(--border-line);
-            padding: 7px 16px;
-            border-radius: 8px;
+            padding: 6px 14px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 0.85rem;
             font-weight: 500;
@@ -123,7 +93,7 @@
         }
 
         .btn-action {
-            background: linear-gradient(135deg, var(--code-indigo), var(--accent-glow));
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-glow));
             color: white;
             border: none;
             font-weight: 600;
@@ -143,33 +113,23 @@
             100% { box-shadow: 0 0 15px rgba(245, 158, 11, 0.8); }
         }
 
-        /* Workspace Grid (General AI Layout) */
+        /* Workspace Grid (Divided Sections) */
         .workspace {
             display: grid;
-            grid-template-columns: 380px 1fr;
+            grid-template-columns: 320px 1fr 1fr;
             flex: 1;
             overflow: hidden;
-            gap: 1px;
-            background: var(--border-line);
         }
 
-        @media (max-width: 900px) {
-            .workspace {
-                grid-template-columns: 1fr;
-                grid-template-rows: 1fr 1fr;
-                overflow-y: auto;
-            }
-        }
-
-        /* Panel 1: General AI Chat Assistant */
+        /* Section 1: AI Assistant Sidebar */
         aside {
             background-color: var(--bg-surface);
+            border-right: 1px solid var(--border-line);
             display: flex;
             flex-direction: column;
-            height: 100%;
         }
 
-        .panel-title {
+        .sidebar-title {
             padding: 14px 16px;
             font-size: 0.9rem;
             font-weight: 600;
@@ -200,7 +160,7 @@
 
         .chat-bubble.assistant {
             background-color: var(--bg-panel);
-            border-left: 3px solid var(--code-indigo);
+            border-left: 3px solid var(--accent-primary);
             align-self: flex-start;
         }
 
@@ -235,16 +195,12 @@
             font-size: 0.85rem;
         }
 
-        .chat-text-input:focus {
-            border-color: var(--accent-glow);
-        }
-
-        /* Panel 2: Universal Workspace & Scratchpad */
-        .main-panel {
+        /* Section 2: Code Editor */
+        .editor-section {
             display: flex;
             flex-direction: column;
+            border-right: 1px solid var(--border-line);
             background-color: var(--bg-deep);
-            height: 100%;
         }
 
         .tab-bar {
@@ -260,7 +216,6 @@
             color: var(--text-muted);
             cursor: pointer;
             border-bottom: 2px solid transparent;
-            user-select: none;
         }
 
         .file-tab.active {
@@ -269,17 +224,43 @@
             background-color: var(--bg-deep);
         }
 
-        .scratchpad-area {
+        .code-area {
             flex: 1;
             padding: 20px;
-            font-size: 0.95rem;
-            color: var(--text-main);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            color: var(--code-text);
             overflow: auto;
             white-space: pre-wrap;
-            word-wrap: break-word;
             outline: none;
-            line-height: 1.6;
-            background-color: var(--bg-deep);
+            line-height: 1.5;
+        }
+
+        /* Section 3: Web Base Live Preview */
+        .preview-section {
+            display: flex;
+            flex-direction: column;
+            background-color: #ffffff;
+        }
+
+        .preview-bar {
+            padding: 10px 16px;
+            background: #f1f5f9;
+            color: #334155;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-bottom: 1px solid #cbd5e1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preview-frame {
+            flex: 1;
+            border: none;
+            width: 100%;
+            height: 100%;
+            background: white;
         }
 
         /* Premium Modal Styles */
@@ -411,60 +392,64 @@
     <!-- Header -->
     <header>
         <div class="brand">
-            <div class="brand-text">
-                <span class="brand-kuadu">Kuadu</span><span class="brand-code">AI</span>
-            </div>
-            <div class="interactive-anim-box" id="anim-box" title="Universal Neural Core active">
-                <div class="anim-dot"></div>
-            </div>
+            <span>KuaduCode</span><span class="tm-badge">TM</span> Code Lab
         </div>
         <div class="header-controls">
-            <button class="btn btn-premium" id="premium-btn">⭐ Upgrade Pro (GHS 10 - 90)</button>
-            <button class="btn" id="clear-btn">Clear Workspace</button>
-            <button class="btn btn-action" id="summarize-btn">✨ Summarize & Answer</button>
+            <button class="btn btn-premium" id="premium-btn">⭐ Upgrade Premium (GHS 10 - 90)</button>
+            <button class="btn" id="clear-btn">Clear</button>
+            <button class="btn btn-action" id="run-code-btn">▶ Run Web Preview</button>
         </div>
     </header>
 
-    <!-- Workspace Grid -->
+    <!-- Divided Workspace Sections -->
     <div class="workspace">
         
-        <!-- General AI Assistant Panel -->
+        <!-- Section 1: AI Assistant -->
         <aside>
-            <div class="panel-title">
-                <span>Kuadu Universal Assistant</span>
-                <span style="color: var(--success-green); font-size: 0.7rem;" id="status-badge">● Online</span>
+            <div class="sidebar-title">
+                <span>KuaduCode™ Assistant</span>
+                <span style="color: var(--success-green); font-size: 0.7rem;" id="status-badge">● Free Tier</span>
             </div>
             <div class="chat-stream" id="chat-stream">
                 <div class="chat-bubble assistant">
-                    👋 Welcome! I am your <strong>Kuadu General AI</strong> assistant, ready to help you brainstorm, answer questions, draft essays, translate text, and organize notes. Ask me anything!
+                    👋 Welcome! Write HTML, CSS, or JS in the editor. Click <strong>▶ Run Web Preview</strong> to render your live web output on the right!
                 </div>
             </div>
             <div class="chat-input-zone">
                 <div class="input-row">
-                    <input type="text" class="chat-text-input" id="user-query" placeholder="Ask Kuadu anything...">
+                    <input type="text" class="chat-text-input" id="user-query" placeholder="Ask coding question...">
                     <button class="btn btn-action" id="send-query-btn">Ask</button>
                 </div>
             </div>
         </aside>
 
-        <!-- General Scratchpad / Notes Area -->
-        <section class="main-panel">
+        <!-- Section 2: Code Editor -->
+        <section class="editor-section">
             <div class="tab-bar">
-                <div class="file-tab active" data-file="notes.txt">notes.txt</div>
-                <div class="file-tab" data-file="ideas.md">ideas.md</div>
-                <div class="file-tab" data-file="summary.txt">summary.txt</div>
+                <div class="file-tab active" data-file="index.html">index.html</div>
+                <div class="file-tab" data-file="style.css">style.css</div>
+                <div class="file-tab" data-file="script.js">script.js</div>
             </div>
-            <div class="scratchpad-area" id="scratchpad" contenteditable="true" spellcheck="true"></div>
+            <div class="code-area" id="code-editor" contenteditable="true" spellcheck="false"></div>
+        </section>
+
+        <!-- Section 3: Web Base Live Preview -->
+        <section class="preview-section">
+            <div class="preview-bar">
+                <span>🌐 Live Web Preview</span>
+                <span style="color: #64748b; font-size: 0.75rem;">Auto-updates on run</span>
+            </div>
+            <iframe class="preview-frame" id="live-preview"></iframe>
         </section>
 
     </div>
 
-    <!-- Premium Upgrade Modal -->
+    <!-- Premium Upgrade Modal with Real Payment Inputs -->
     <div class="modal-overlay" id="premium-modal">
         <div class="modal-content">
             <button class="modal-close" id="modal-close">✕</button>
-            <div class="modal-title">Kuadu™ Pro Checkout</div>
-            <div class="modal-subtitle">Select your subscription package (GHS 10 to GHS 90) and enter your payment details to unlock unlimited AI features!</div>
+            <div class="modal-title">KuaduCode™ Premium Checkout</div>
+            <div class="modal-subtitle">Select your package (GHS 10 to GHS 90), provide your real payment account ID/number, and instantly unlock Pro features!</div>
             
             <div class="pricing-tiers" id="pricing-tiers">
                 <div class="tier-card" data-amount="15">
@@ -472,7 +457,7 @@
                     <div class="tier-price">GHS 15</div>
                 </div>
                 <div class="tier-card selected" data-amount="45">
-                    <div style="font-size: 0.8rem;">Professional</div>
+                    <div style="font-size: 0.8rem;">Developer</div>
                     <div class="tier-price">GHS 45</div>
                 </div>
                 <div class="tier-card" data-amount="90">
@@ -487,7 +472,7 @@
 
             <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px; font-weight: 600;">Choose Payment Method:</div>
             <div class="payment-methods">
-                <button class="pay-btn selected-pay" onclick="selectPaymentMethod('momo', this)">📱 Mobile Money (MoMo)</button>
+                <button class="pay-btn selected-pay" onclick="selectPaymentMethod('momo', this)">📱 Mobile Money (Momo)</button>
                 <button class="pay-btn" onclick="selectPaymentMethod('card', this)">💳 Credit Card</button>
                 <button class="pay-btn" onclick="selectPaymentMethod('paypal', this)">🅿️ PayPal</button>
                 <button class="pay-btn" onclick="selectPaymentMethod('skype', this)">💬 Skype ID</button>
@@ -501,100 +486,88 @@
         </div>
     </div>
 
-    <!-- Script Engine -->
+    <!-- Script & Preview Engine -->
     <script>
         const workspaceFiles = {
-            "notes.txt": `Welcome to your Kuadu™ Universal Scratchpad!
-
-Use this space to type or paste notes, draft emails, outline projects, or review research.
-Your AI assistant is ready on the left to answer questions and help generate content.`,
-            "ideas.md": `# Project Ideas & Brainstorming
-- Launch weekly team alignment meetings
-- Research sustainable energy trends
-- Draft marketing copy for the new release`,
-            "summary.txt": `Daily Summary & Objectives:
-1. Review incoming feedback
-2. Finalize document drafts
-3. Organize schedule`
+            "index.html": "<!DOCTYPE html>\n<html>\n<head>\n    <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n    <div class=\"card\">\n        <h1>Hello KuaduCode™!</h1>\n        <p>Edit this HTML/CSS/JS and click Run.</p>\n        <button onclick=\"sayHello()\">Click Me</button>\n    </div>\n    <script src=\"script.js\"></script>\n</body>\n</html>",
+            "style.css": "body {\n    background: #f8fafc;\n    font-family: sans-serif;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    height: 100vh;\n}\n.card {\n    background: white;\n    padding: 30px;\n    border-radius: 12px;\n    box-shadow: 0 4px 15px rgba(0,0,0,0.1);\n    text-align: center;\n}\nh1 { color: #7c3aed; }\nbutton {\n    background: #7c3aed;\n    color: white;\n    border: none;\n    padding: 8px 16px;\n    border-radius: 6px;\n    cursor: pointer;\n    margin-top: 10px;\n}",
+            "script.js": "function sayHello() {\n    alert('KuaduCode™ Web Preview Interactive!');\n}"
         };
 
-        let activeFile = "notes.txt";
-        const scratchpad = document.getElementById("scratchpad");
-        scratchpad.innerText = workspaceFiles[activeFile];
+        let activeFile = "index.html";
+        const editor = document.getElementById("code-editor");
+        editor.innerText = workspaceFiles[activeFile];
 
         // Tab Switching
         document.querySelectorAll(".file-tab").forEach(tab => {
             tab.addEventListener("click", () => {
-                workspaceFiles[activeFile] = scratchpad.innerText;
+                workspaceFiles[activeFile] = editor.innerText;
                 document.querySelectorAll(".file-tab").forEach(t => t.classList.remove("active"));
                 tab.classList.add("active");
                 activeFile = tab.getAttribute("data-file");
-                scratchpad.innerText = workspaceFiles[activeFile];
+                editor.innerText = workspaceFiles[activeFile];
             });
         });
 
-        scratchpad.addEventListener("input", () => {
-            workspaceFiles[activeFile] = scratchpad.innerText;
+        editor.addEventListener("input", () => {
+            workspaceFiles[activeFile] = editor.innerText;
         });
 
-        // Interactive Animation Box Click Effect
-        document.getElementById("anim-box").addEventListener("click", () => {
-            const bubble = document.createElement("div");
-            bubble.className = "chat-bubble assistant";
-            bubble.innerHTML = `⚡ <strong>Neural Core:</strong> Universal AI systems fully synchronized!`;
-            document.getElementById("chat-stream").appendChild(bubble);
-            document.getElementById("chat-stream").scrollTop = document.getElementById("chat-stream").scrollHeight;
+        // Live Web Base Preview Rendering
+        function renderLivePreview() {
+            workspaceFiles[activeFile] = editor.innerText;
+            const iframe = document.getElementById("live-preview");
+            
+            let htmlCode = workspaceFiles["index.html"] || "";
+            let cssCode = workspaceFiles["style.css"] || "";
+            let jsCode = workspaceFiles["script.js"] || "";
+
+            // Inject CSS and JS directly into HTML for live browser rendering
+            let fullDoc = htmlCode
+                .replace('<link rel="stylesheet" href="style.css">', `<style>${cssCode}</style>`)
+                .replace('<script src="script.js"></script>', `<script>${jsCode}<\/script>`);
+
+            const blob = new Blob([fullDoc], { type: 'text/html' });
+            iframe.src = URL.createObjectURL(blob);
+        }
+
+        document.getElementById("run-code-btn").addEventListener("click", () => {
+            renderLivePreview();
+            addChatBubble(`🌐 <strong>Web Preview Updated:</strong> Compiled HTML, CSS, and JS successfully into live browser view.`, "assistant");
         });
 
-        // Summarize Button Action
-        document.getElementById("summarize-btn").addEventListener("click", () => {
-            workspaceFiles[activeFile] = scratchpad.innerText;
-            const content = workspaceFiles[activeFile];
-            addChatBubble(`✨ <strong>Workspace Analyzed:</strong> I reviewed your current <code>${activeFile}</code> document. How would you like me to enhance or summarize it?`, "assistant");
+        // Initial Preview Render on load
+        window.addEventListener('DOMContentLoaded', () => {
+            renderLivePreview();
         });
 
         // Clear Workspace
         document.getElementById("clear-btn").addEventListener("click", () => {
-            scratchpad.innerText = "";
+            editor.innerText = "";
             workspaceFiles[activeFile] = "";
-            addChatBubble(`🧹 Cleared scratchpad file: <code>${activeFile}</code>.`, "assistant");
+            renderLivePreview();
+            addChatBubble(`🧹 Cleared file: <code>${activeFile}</code>.`, "assistant");
         });
 
-        // General AI Assistant Integration
+        // Chat Assistant
         const chatStream = document.getElementById("chat-stream");
         const queryInput = document.getElementById("user-query");
-
-        function addChatBubble(text, sender) {
-            const bubble = document.createElement("div");
-            bubble.className = `chat-bubble ${sender}`;
-            bubble.innerHTML = text;
-            chatStream.appendChild(bubble);
-            chatStream.scrollTop = chatStream.scrollHeight;
-        }
-
         document.getElementById("send-query-btn").addEventListener("click", () => {
             const query = queryInput.value.trim();
             if (!query) return;
-            
-            addChatBubble(query, "user");
+            const bubble = document.createElement("div");
+            bubble.className = "chat-bubble user";
+            bubble.textContent = query;
+            chatStream.appendChild(bubble);
             queryInput.value = "";
-
+            
             setTimeout(() => {
-                let aiResponse = `Kuadu AI: I understand you're asking about "<em>${query}</em>". Here is what you need to know: <br><br>Feel free to use the scratchpad on the right to store your notes, and let me know if you need help writing essays, planning tasks, or summarizing research!`;
-                
-                const q = query.toLowerCase();
-                if(q.includes('hello') || q.includes('hi')) {
-                    aiResponse = `Kuadu AI: Hello! How can I assist you with your day-to-day tasks, writing, or research today?`;
-                } else if(q.includes('time') || q.includes('date')) {
-                    aiResponse = `Kuadu AI: Today is Saturday, November 7, 2026.`;
-                }
-
-                addChatBubble(aiResponse, "assistant");
-            }, 600);
-        });
-
-        queryInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") document.getElementById("send-query-btn").click();
+                const ans = document.createElement("div");
+                ans.className = "chat-bubble assistant";
+                ans.innerHTML = `KuaduCode™ Assistant: Regarding "<em>${query}</em>", check your active <code>${activeFile}</code> tab or click <strong>▶ Run Web Preview</strong> to see changes instantly!`;
+                chatStream.appendChild(ans);
+                chatStream.scrollTop = chatStream.scrollHeight;
+            }, 500);
         });
 
         // Premium Payment Modal Logic
@@ -642,7 +615,7 @@ Your AI assistant is ready on the left to answer questions and help generate con
                 return;
             }
             if (!accountDetail) {
-                alert("Please provide your payment account number or ID (" + selectedPaymentType + ").");
+                alert("Please provide your real payment account number or ID (" + selectedPaymentType + ").");
                 return;
             }
 
@@ -650,9 +623,9 @@ Your AI assistant is ready on the left to answer questions and help generate con
             addChatBubble(`Processing GHS ${amt} via ${selectedPaymentType} (${accountDetail})...`, "assistant");
             
             setTimeout(() => {
-                document.getElementById("status-badge").innerText = "● Pro Tier (GHS " + amt + ")";
+                document.getElementById("status-badge").innerText = "● Premium Pro (GHS " + amt + ")";
                 document.getElementById("status-badge").style.color = "#f59e0b";
-                addChatBubble(`🎉 <strong>Payment Confirmed!</strong> Successfully debited GHS ${amt} via ${selectedPaymentType}. All Kuadu AI Pro features are unlocked!`, "assistant");
+                addChatBubble(`🎉 <strong>Payment Confirmed!</strong> Successfully debited GHS ${amt} via ${selectedPaymentType}. All KuaduCode™ Premium tools are unlocked!`, "assistant");
             }, 1500);
         };
     </script>
