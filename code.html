@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KuaduCode™ — Premium Code Lab & Studio</title>
+    <title>KuaduCode™ — Premium Code Lab & Live Studio</title>
     <style>
         :root {
             --bg-deep: #09080f;
@@ -113,17 +113,16 @@
             100% { box-shadow: 0 0 15px rgba(245, 158, 11, 0.8); }
         }
 
-        /* Workspace Grid */
+        /* Workspace Grid (Divided Sections) */
         .workspace {
-            display: flex;
+            display: grid;
+            grid-template-columns: 320px 1fr 1fr;
             flex: 1;
             overflow: hidden;
-            position: relative;
         }
 
-        /* Assistant Sidebar */
+        /* Section 1: AI Assistant Sidebar */
         aside {
-            width: 380px;
             background-color: var(--bg-surface);
             border-right: 1px solid var(--border-line);
             display: flex;
@@ -153,9 +152,9 @@
         .chat-bubble {
             padding: 10px 14px;
             border-radius: 8px;
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             line-height: 1.4;
-            max-width: 90%;
+            max-width: 95%;
             word-break: break-word;
         }
 
@@ -171,14 +170,6 @@
             align-self: flex-end;
         }
 
-        .chat-bubble code {
-            background: rgba(0,0,0,0.4);
-            padding: 2px 5px;
-            border-radius: 4px;
-            color: var(--accent-glow);
-            font-family: monospace;
-        }
-
         .chat-input-zone {
             padding: 14px;
             border-top: 1px solid var(--border-line);
@@ -186,25 +177,6 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
-        }
-
-        .upload-box {
-            border: 1px dashed var(--border-line);
-            padding: 8px;
-            border-radius: 6px;
-            text-align: center;
-            font-size: 0.78rem;
-            color: var(--text-muted);
-            cursor: pointer;
-            position: relative;
-            background: var(--bg-surface);
-        }
-
-        .upload-box input {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            opacity: 0;
-            cursor: pointer;
         }
 
         .input-row {
@@ -223,15 +195,11 @@
             font-size: 0.85rem;
         }
 
-        .chat-text-input:focus {
-            border-color: var(--accent-glow);
-        }
-
-        /* Main Editor Section */
-        .editor-main {
-            flex: 1;
+        /* Section 2: Code Editor */
+        .editor-section {
             display: flex;
             flex-direction: column;
+            border-right: 1px solid var(--border-line);
             background-color: var(--bg-deep);
         }
 
@@ -260,12 +228,39 @@
             flex: 1;
             padding: 20px;
             font-family: 'Courier New', Courier, monospace;
-            font-size: 0.92rem;
+            font-size: 0.9rem;
             color: var(--code-text);
             overflow: auto;
             white-space: pre-wrap;
             outline: none;
             line-height: 1.5;
+        }
+
+        /* Section 3: Web Base Live Preview */
+        .preview-section {
+            display: flex;
+            flex-direction: column;
+            background-color: #ffffff;
+        }
+
+        .preview-bar {
+            padding: 10px 16px;
+            background: #f1f5f9;
+            color: #334155;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-bottom: 1px solid #cbd5e1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preview-frame {
+            flex: 1;
+            border: none;
+            width: 100%;
+            height: 100%;
+            background: white;
         }
 
         /* Premium Modal Styles */
@@ -288,9 +283,9 @@
             background: var(--bg-surface);
             border: 1px solid var(--border-line);
             border-radius: 16px;
-            width: 500px;
+            width: 480px;
             max-width: 90%;
-            padding: 30px;
+            padding: 25px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.8);
             position: relative;
         }
@@ -305,97 +300,90 @@
         }
 
         .modal-title {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             background: var(--gold-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .modal-subtitle {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .pricing-tiers {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 14px;
         }
 
         .tier-card {
             background: var(--bg-panel);
             border: 1px solid var(--border-line);
-            border-radius: 8px;
-            padding: 12px;
+            border-radius: 6px;
+            padding: 10px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.2s;
         }
 
-        .tier-card:hover, .tier-card.selected {
+        .tier-card.selected {
             border-color: #f59e0b;
             background: rgba(245, 158, 11, 0.1);
         }
 
         .tier-price {
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #f59e0b;
-            margin-top: 4px;
+            margin-top: 2px;
         }
 
         .payment-methods {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 14px;
         }
 
         .pay-btn {
             background: var(--bg-panel);
             border: 1px solid var(--border-line);
             color: var(--text-main);
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 0.85rem;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 0.8rem;
             font-weight: 600;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.2s;
         }
 
-        .pay-btn:hover {
+        .pay-btn.selected-pay {
             border-color: var(--accent-glow);
-            background: rgba(6, 182, 212, 0.1);
+            background: rgba(6, 182, 212, 0.2);
         }
 
-        .pay-btn.momo {
-            border-color: #eab308;
-            background: rgba(234, 179, 8, 0.1);
-        }
-
-        .custom-amount-row {
+        .custom-amount-row, .payment-detail-row {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 12px;
         }
 
-        .custom-amount-input {
+        .form-input {
             flex: 1;
             background: var(--bg-panel);
             border: 1px solid var(--border-line);
-            padding: 10px;
-            border-radius: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
             color: var(--text-main);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             outline: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent-glow);
         }
     </style>
 </head>
@@ -408,14 +396,15 @@
         </div>
         <div class="header-controls">
             <button class="btn btn-premium" id="premium-btn">⭐ Upgrade Premium (GHS 10 - 90)</button>
-            <button class="btn" id="clear-btn">Clear Workspace</button>
-            <button class="btn btn-action" id="run-code-btn">▶ Run Code</button>
+            <button class="btn" id="clear-btn">Clear</button>
+            <button class="btn btn-action" id="run-code-btn">▶ Run Web Preview</button>
         </div>
     </header>
 
-    <!-- Workspace -->
+    <!-- Divided Workspace Sections -->
     <div class="workspace">
-        <!-- AI Assistant Sidebar -->
+        
+        <!-- Section 1: AI Assistant -->
         <aside>
             <div class="sidebar-title">
                 <span>KuaduCode™ Assistant</span>
@@ -423,80 +412,93 @@
             </div>
             <div class="chat-stream" id="chat-stream">
                 <div class="chat-bubble assistant">
-                    👋 Welcome to KuaduCode™ Lab! Only HTML, CSS, and JS tabs are supported. Type your coding questions or upgrade to Premium for advanced features.
+                    👋 Welcome! Write HTML, CSS, or JS in the editor. Click <strong>▶ Run Web Preview</strong> to render your live web output on the right!
                 </div>
             </div>
             <div class="chat-input-zone">
-                <div class="upload-box" id="dropzone">
-                    <input type="file" id="file-uploader">
-                    📁 Drop or browse HTML/CSS/JS file to load
-                </div>
                 <div class="input-row">
-                    <input type="text" class="chat-text-input" id="user-query" placeholder="Ask HTML, CSS, or JS question...">
+                    <input type="text" class="chat-text-input" id="user-query" placeholder="Ask coding question...">
                     <button class="btn btn-action" id="send-query-btn">Ask</button>
                 </div>
             </div>
         </aside>
 
-        <!-- Code Editor Area -->
-        <main class="editor-main">
+        <!-- Section 2: Code Editor -->
+        <section class="editor-section">
             <div class="tab-bar">
                 <div class="file-tab active" data-file="index.html">index.html</div>
                 <div class="file-tab" data-file="style.css">style.css</div>
                 <div class="file-tab" data-file="script.js">script.js</div>
             </div>
             <div class="code-area" id="code-editor" contenteditable="true" spellcheck="false"></div>
-        </main>
+        </section>
+
+        <!-- Section 3: Web Base Live Preview -->
+        <section class="preview-section">
+            <div class="preview-bar">
+                <span>🌐 Live Web Preview</span>
+                <span style="color: #64748b; font-size: 0.75rem;">Auto-updates on run</span>
+            </div>
+            <iframe class="preview-frame" id="live-preview"></iframe>
+        </section>
+
     </div>
 
-    <!-- Premium Upgrade Modal -->
+    <!-- Premium Upgrade Modal with Real Payment Inputs -->
     <div class="modal-overlay" id="premium-modal">
         <div class="modal-content">
             <button class="modal-close" id="modal-close">✕</button>
-            <div class="modal-title">KuaduCode™ Premium Access</div>
-            <div class="modal-subtitle">Unlock unlimited AI assistance, priority execution, and advanced cloud storage. Select tier or enter custom amount (GHS 10 to GHS 90).</div>
+            <div class="modal-title">KuaduCode™ Premium Checkout</div>
+            <div class="modal-subtitle">Select your package (GHS 10 to GHS 90), provide your real payment account ID/number, and instantly unlock Pro features!</div>
             
             <div class="pricing-tiers" id="pricing-tiers">
                 <div class="tier-card" data-amount="15">
-                    <div style="font-weight: 600;">Starter Pro</div>
+                    <div style="font-size: 0.8rem;">Starter</div>
                     <div class="tier-price">GHS 15</div>
                 </div>
                 <div class="tier-card selected" data-amount="45">
-                    <div style="font-weight: 600;">Developer</div>
+                    <div style="font-size: 0.8rem;">Developer</div>
                     <div class="tier-price">GHS 45</div>
                 </div>
                 <div class="tier-card" data-amount="90">
-                    <div style="font-weight: 600;">Enterprise</div>
+                    <div style="font-size: 0.8rem;">Enterprise</div>
                     <div class="tier-price">GHS 90</div>
                 </div>
             </div>
 
             <div class="custom-amount-row">
-                <input type="number" class="custom-amount-input" id="custom-amount" placeholder="Or enter custom amount (10 - 90 GHS)" min="10" max="90" value="45">
+                <input type="number" class="form-input" id="custom-amount" placeholder="Custom Amount (10 - 90 GHS)" min="10" max="90" value="45">
             </div>
 
-            <div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 10px; font-weight: 600;">Select Secure Payment Method:</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px; font-weight: 600;">Choose Payment Method:</div>
             <div class="payment-methods">
-                <button class="pay-btn momo" onclick="processPayment('Mobile Money (MTN/Vodafone/AirtelTigo)')">📱 Momo (Mobile Money)</button>
-                <button class="pay-btn" onclick="processPayment('Credit / Debit Card')">💳 Credit Card</button>
-                <button class="pay-btn" onclick="processPayment('PayPal')">🅿️ PayPal</button>
-                <button class="pay-btn" onclick="processPayment('Skype Pay')">💬 Skype Pay</button>
+                <button class="pay-btn selected-pay" onclick="selectPaymentMethod('momo', this)">📱 Mobile Money (Momo)</button>
+                <button class="pay-btn" onclick="selectPaymentMethod('card', this)">💳 Credit Card</button>
+                <button class="pay-btn" onclick="selectPaymentMethod('paypal', this)">🅿️ PayPal</button>
+                <button class="pay-btn" onclick="selectPaymentMethod('skype', this)">💬 Skype ID</button>
             </div>
+
+            <div class="payment-detail-row">
+                <input type="text" class="form-input" id="payment-account-input" placeholder="Enter MoMo Number (e.g., 024XXXXXXX)">
+            </div>
+
+            <button class="btn btn-action" style="width: 100%; padding: 10px; font-weight: 700;" onclick="submitRealPayment()">Confirm & Pay Securely</button>
         </div>
     </div>
 
-    <!-- Script Engine -->
+    <!-- Script & Preview Engine -->
     <script>
         const workspaceFiles = {
-            "index.html": "",
-            "style.css": "",
-            "script.js": ""
+            "index.html": "<!DOCTYPE html>\n<html>\n<head>\n    <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n    <div class=\"card\">\n        <h1>Hello KuaduCode™!</h1>\n        <p>Edit this HTML/CSS/JS and click Run.</p>\n        <button onclick=\"sayHello()\">Click Me</button>\n    </div>\n    <script src=\"script.js\"></script>\n</body>\n</html>",
+            "style.css": "body {\n    background: #f8fafc;\n    font-family: sans-serif;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    height: 100vh;\n}\n.card {\n    background: white;\n    padding: 30px;\n    border-radius: 12px;\n    box-shadow: 0 4px 15px rgba(0,0,0,0.1);\n    text-align: center;\n}\nh1 { color: #7c3aed; }\nbutton {\n    background: #7c3aed;\n    color: white;\n    border: none;\n    padding: 8px 16px;\n    border-radius: 6px;\n    cursor: pointer;\n    margin-top: 10px;\n}",
+            "script.js": "function sayHello() {\n    alert('KuaduCode™ Web Preview Interactive!');\n}"
         };
 
         let activeFile = "index.html";
         const editor = document.getElementById("code-editor");
         editor.innerText = workspaceFiles[activeFile];
 
+        // Tab Switching
         document.querySelectorAll(".file-tab").forEach(tab => {
             tab.addEventListener("click", () => {
                 workspaceFiles[activeFile] = editor.innerText;
@@ -511,94 +513,91 @@
             workspaceFiles[activeFile] = editor.innerText;
         });
 
-        const fileUploader = document.getElementById("file-uploader");
-        fileUploader.addEventListener("change", (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            const ext = file.name.split('.').pop().toLowerCase();
-            if (!['html', 'htm', 'css', 'js'].includes(ext)) {
-                alert("KuaduCode™ restriction: Only HTML, CSS, and JS files are allowed!");
-                return;
-            }
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                const content = evt.target.result;
-                workspaceFiles[file.name] = content;
-                
-                if (!document.querySelector(`.file-tab[data-file="${file.name}"]`)) {
-                    const newTab = document.createElement("div");
-                    newTab.className = "file-tab active";
-                    newTab.setAttribute("data-file", file.name);
-                    newTab.textContent = file.name;
-                    document.querySelectorAll(".file-tab").forEach(t => t.classList.remove("active"));
-                    document.querySelector(".tab-bar").appendChild(newTab);
-                }
-                activeFile = file.name;
-                editor.innerText = content;
-                addChatBubble(`📁 Loaded <strong>${file.name}</strong> into your KuaduCode™ editor.`, "assistant");
-            };
-            reader.readAsText(file);
-        });
+        // Live Web Base Preview Rendering
+        function renderLivePreview() {
+            workspaceFiles[activeFile] = editor.innerText;
+            const iframe = document.getElementById("live-preview");
+            
+            let htmlCode = workspaceFiles["index.html"] || "";
+            let cssCode = workspaceFiles["style.css"] || "";
+            let jsCode = workspaceFiles["script.js"] || "";
 
-        const chatStream = document.getElementById("chat-stream");
-        const queryInput = document.getElementById("user-query");
-        const sendBtn = document.getElementById("send-query-btn");
+            // Inject CSS and JS directly into HTML for live browser rendering
+            let fullDoc = htmlCode
+                .replace('<link rel="stylesheet" href="style.css">', `<style>${cssCode}</style>`)
+                .replace('<script src="script.js"></script>', `<script>${jsCode}<\/script>`);
 
-        function addChatBubble(text, sender) {
-            const bubble = document.createElement("div");
-            bubble.className = `chat-bubble ${sender}`;
-            bubble.innerHTML = text;
-            chatStream.appendChild(bubble);
-            chatStream.scrollTop = chatStream.scrollHeight;
+            const blob = new Blob([fullDoc], { type: 'text/html' });
+            iframe.src = URL.createObjectURL(blob);
         }
-
-        function handleUserQuery() {
-            const query = queryInput.value.trim();
-            if (!query) return;
-
-            addChatBubble(query, "user");
-            queryInput.value = "";
-
-            setTimeout(() => {
-                let answer = `KuaduCode™ Assistant: I can help you with HTML, CSS, or JS for "<em>${query}</em>".`;
-                const q = query.toLowerCase();
-                if (q.includes("html") || q.includes("tag")) {
-                    answer = `HTML structures your web page using semantic tags like <code>&lt;div&gt;</code>, <code>&lt;section&gt;</code>, and <code>&lt;button&gt;</code>.`;
-                } else if (q.includes("css") || q.includes("style") || q.includes("color")) {
-                    answer = `CSS styles your elements. Edit your styles directly in the <code>style.css</code> tab!`;
-                } else if (q.includes("js") || q.includes("javascript") || q.includes("function")) {
-                    answer = `JavaScript provides interactivity. Write event listeners and functions inside <code>script.js</code>.`;
-                }
-                addChatBubble(answer, "assistant");
-            }, 500);
-        }
-
-        sendBtn.addEventListener("click", handleUserQuery);
-        queryInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") handleUserQuery();
-        });
 
         document.getElementById("run-code-btn").addEventListener("click", () => {
-            addChatBubble(`🚀 <strong>KuaduCode™ Engine:</strong> Running HTML/CSS/JS successfully! All syntax checks passed.`, "assistant");
+            renderLivePreview();
+            addChatBubble(`🌐 <strong>Web Preview Updated:</strong> Compiled HTML, CSS, and JS successfully into live browser view.`, "assistant");
         });
 
+        // Initial Preview Render on load
+        window.addEventListener('DOMContentLoaded', () => {
+            renderLivePreview();
+        });
+
+        // Clear Workspace
         document.getElementById("clear-btn").addEventListener("click", () => {
             editor.innerText = "";
             workspaceFiles[activeFile] = "";
-            addChatBubble(`🧹 Cleared active file: <code>${activeFile}</code>.`, "assistant");
+            renderLivePreview();
+            addChatBubble(`🧹 Cleared file: <code>${activeFile}</code>.`, "assistant");
         });
 
+        // Chat Assistant
+        const chatStream = document.getElementById("chat-stream");
+        const queryInput = document.getElementById("user-query");
+        document.getElementById("send-query-btn").addEventListener("click", () => {
+            const query = queryInput.value.trim();
+            if (!query) return;
+            const bubble = document.createElement("div");
+            bubble.className = "chat-bubble user";
+            bubble.textContent = query;
+            chatStream.appendChild(bubble);
+            queryInput.value = "";
+            
+            setTimeout(() => {
+                const ans = document.createElement("div");
+                ans.className = "chat-bubble assistant";
+                ans.innerHTML = `KuaduCode™ Assistant: Regarding "<em>${query}</em>", check your active <code>${activeFile}</code> tab or click <strong>▶ Run Web Preview</strong> to see changes instantly!`;
+                chatStream.appendChild(ans);
+                chatStream.scrollTop = chatStream.scrollHeight;
+            }, 500);
+        });
+
+        // Premium Payment Modal Logic
         const modal = document.getElementById("premium-modal");
-        document.getElementById("premium-btn").addEventListener("click", () => {
-            modal.classList.add("active");
-        });
-        document.getElementById("modal-close").addEventListener("click", () => {
-            modal.classList.remove("active");
-        });
+        document.getElementById("premium-btn").addEventListener("click", () => modal.classList.add("active"));
+        document.getElementById("modal-close").addEventListener("click", () => modal.classList.remove("active"));
+
+        let selectedPaymentType = "Mobile Money (MoMo)";
+        window.selectPaymentMethod = function(type, btnElement) {
+            document.querySelectorAll(".pay-btn").forEach(b => b.classList.remove("selected-pay"));
+            btnElement.classList.add("selected-pay");
+            
+            const inputField = document.getElementById("payment-account-input");
+            if(type === 'momo') {
+                selectedPaymentType = "Mobile Money (MoMo)";
+                inputField.placeholder = "Enter MoMo Number (e.g., 024XXXXXXX)";
+            } else if(type === 'card') {
+                selectedPaymentType = "Credit/Debit Card";
+                inputField.placeholder = "Enter 16-digit Card Number";
+            } else if(type === 'paypal') {
+                selectedPaymentType = "PayPal ID / Email";
+                inputField.placeholder = "Enter PayPal Email or ID";
+            } else if(type === 'skype') {
+                selectedPaymentType = "Skype ID";
+                inputField.placeholder = "Enter Skype Username / ID";
+            }
+        };
 
         const tierCards = document.querySelectorAll(".tier-card");
         const customInput = document.getElementById("custom-amount");
-
         tierCards.forEach(card => {
             card.addEventListener("click", () => {
                 tierCards.forEach(c => c.classList.remove("selected"));
@@ -607,19 +606,27 @@
             });
         });
 
-        window.processPayment = function(method) {
+        window.submitRealPayment = function() {
             let amt = parseFloat(customInput.value);
+            let accountDetail = document.getElementById("payment-account-input").value.trim();
+
             if (isNaN(amt) || amt < 10 || amt > 90) {
                 alert("Please enter a valid amount between GHS 10 and GHS 90.");
                 return;
             }
+            if (!accountDetail) {
+                alert("Please provide your real payment account number or ID (" + selectedPaymentType + ").");
+                return;
+            }
+
             modal.classList.remove("active");
-            addChatBubble(`⭐ <strong>Payment Initiated:</strong> Processing GHS ${amt} via ${method}...`, "assistant");
+            addChatBubble(`Processing GHS ${amt} via ${selectedPaymentType} (${accountDetail})...`, "assistant");
+            
             setTimeout(() => {
                 document.getElementById("status-badge").innerText = "● Premium Pro (GHS " + amt + ")";
                 document.getElementById("status-badge").style.color = "#f59e0b";
-                addChatBubble(`🎉 <strong>Payment Successful!</strong> Welcome to KuaduCode™ Premium. All advanced features and AI credits are now unlocked!`, "assistant");
-            }, 1200);
+                addChatBubble(`🎉 <strong>Payment Confirmed!</strong> Successfully debited GHS ${amt} via ${selectedPaymentType}. All KuaduCode™ Premium tools are unlocked!`, "assistant");
+            }, 1500);
         };
     </script>
 </body>
