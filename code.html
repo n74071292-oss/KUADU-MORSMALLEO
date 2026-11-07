@@ -49,10 +49,15 @@
         .brand {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 12px;
             font-weight: 800;
             font-size: 1.2rem;
             letter-spacing: 0.5px;
+        }
+
+        .brand-text {
+            display: flex;
+            align-items: center;
         }
 
         .brand-kuadu {
@@ -63,15 +68,38 @@
             color: var(--code-indigo);
         }
 
-        .tm-badge {
-            font-size: 0.65rem;
-            background: var(--code-indigo);
-            color: white;
-            padding: 2px 6px;
-            border-radius: 4px;
-            vertical-align: super;
-            font-weight: 800;
-            margin-left: 4px;
+        /* Interactive Animation Box replacing TM badge */
+        .interactive-anim-box {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--code-indigo), var(--accent-glow));
+            box-shadow: 0 0 10px rgba(124, 58, 237, 0.6);
+            animation: pulseAnim 2.5s infinite ease-in-out;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .anim-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            animation: innerPulse 1.2s infinite alternate;
+        }
+
+        @keyframes pulseAnim {
+            0% { transform: scale(1); box-shadow: 0 0 5px var(--code-indigo); }
+            50% { transform: scale(1.15); box-shadow: 0 0 15px var(--accent-glow), 0 0 25px var(--code-indigo); }
+            100% { transform: scale(1); box-shadow: 0 0 5px var(--code-indigo); }
+        }
+
+        @keyframes innerPulse {
+            0% { transform: scale(0.8); opacity: 0.7; }
+            100% { transform: scale(1.2); opacity: 1; }
         }
 
         .header-controls {
@@ -412,10 +440,15 @@
 </head>
 <body>
 
-    <!-- Header matching Kuadu-Morsmalleo brand theme -->
+    <!-- Header matching Kuadu-Morsmalleo brand theme with Interactive Animation -->
     <header>
         <div class="brand">
-            <span class="brand-kuadu">Kuadu</span><span class="brand-code">code</span><span class="tm-badge">TM</span>
+            <div class="brand-text">
+                <span class="brand-kuadu">Kuadu</span><span class="brand-code">code</span>
+            </div>
+            <div class="interactive-anim-box" id="anim-box" title="Interactive Neural Core active">
+                <div class="anim-dot"></div>
+            </div>
         </div>
         <div class="header-controls">
             <button class="btn btn-premium" id="premium-btn">⭐ Upgrade Premium (GHS 10 - 90)</button>
@@ -430,7 +463,7 @@
         <!-- Section 1: AI Assistant -->
         <aside>
             <div class="sidebar-title">
-                <span>KuaduCode™ Assistant</span>
+                <span>KuaduCode Assistant</span>
                 <span style="color: var(--success-green); font-size: 0.7rem;" id="status-badge">● Free Tier</span>
             </div>
             <div class="chat-stream" id="chat-stream">
@@ -471,7 +504,7 @@
     <div class="modal-overlay" id="premium-modal">
         <div class="modal-content">
             <button class="modal-close" id="modal-close">✕</button>
-            <div class="modal-title">KuaduCode™ Premium Checkout</div>
+            <div class="modal-title">KuaduCode Premium Checkout</div>
             <div class="modal-subtitle">Select your package (GHS 10 to GHS 90), provide your real payment account ID/number, and instantly unlock Pro features!</div>
             
             <div class="pricing-tiers" id="pricing-tiers">
@@ -519,7 +552,7 @@
 </head>
 <body>
     <div class="card">
-        <h1>Hello KuaduCode™!</h1>
+        <h1>Hello KuaduCode!</h1>
         <p>Edit this HTML/CSS/JS and click Run.</p>
         <button onclick="sayHello()">Click Me</button>
     </div>
@@ -553,7 +586,7 @@ button {
     margin-top: 10px;
 }`,
             "script.js": `function sayHello() {
-    alert('KuaduCode™ Web Preview Interactive!');
+    alert('KuaduCode Web Preview Interactive!');
 }`
         };
 
@@ -574,6 +607,15 @@ button {
 
         editor.addEventListener("input", () => {
             workspaceFiles[activeFile] = editor.innerText;
+        });
+
+        // Interactive Animation Box Click Effect
+        document.getElementById("anim-box").addEventListener("click", () => {
+            const bubble = document.createElement("div");
+            bubble.className = "chat-bubble assistant";
+            bubble.innerHTML = `⚡ <strong>Neural Core Ping:</strong> All systems operating at peak efficiency!`;
+            document.getElementById("chat-stream").appendChild(bubble);
+            document.getElementById("chat-stream").scrollTop = document.getElementById("chat-stream").scrollHeight;
         });
 
         // Live Web Base Preview Rendering
@@ -624,7 +666,7 @@ button {
             setTimeout(() => {
                 const ans = document.createElement("div");
                 ans.className = "chat-bubble assistant";
-                ans.innerHTML = `KuaduCode™ Assistant: Regarding "<em>${query}</em>", check your active <code>${activeFile}</code> tab or click <strong>▶ Run Web Preview</strong> to see changes instantly!`;
+                ans.innerHTML = `KuaduCode Assistant: Regarding "<em>${query}</em>", check your active <code>${activeFile}</code> tab or click <strong>▶ Run Web Preview</strong> to see changes instantly!`;
                 chatStream.appendChild(ans);
                 chatStream.scrollTop = chatStream.scrollHeight;
             }, 500);
@@ -685,7 +727,7 @@ button {
             setTimeout(() => {
                 document.getElementById("status-badge").innerText = "● Premium Pro (GHS " + amt + ")";
                 document.getElementById("status-badge").style.color = "#f59e0b";
-                addChatBubble(`🎉 <strong>Payment Confirmed!</strong> Successfully debited GHS ${amt} via ${selectedPaymentType}. All KuaduCode™ Premium tools are unlocked!`, "assistant");
+                addChatBubble(`🎉 <strong>Payment Confirmed!</strong> Successfully debited GHS ${amt} via ${selectedPaymentType}. All KuaduCode Premium tools are unlocked!`, "assistant");
             }, 1500);
         };
     </script>
