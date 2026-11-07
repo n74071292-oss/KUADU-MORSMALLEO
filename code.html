@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuadu AI — Funtastic Neural Coding Studio</title>
+    <title>Kuadu AI — Funtastic Neural Coding Studio with File Upload</title>
     <style>
         :root {
             --bg-base: #06050b;
@@ -33,7 +33,6 @@
             flex-direction: column;
             height: 100vh;
             overflow: hidden;
-            position: relative;
             background-image: 
                 radial-gradient(circle at 10% 20%, rgba(157, 0, 255, 0.1) 0%, transparent 40%),
                 radial-gradient(circle at 90% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 40%);
@@ -112,7 +111,7 @@
 
         /* Sidebar / Chat Section */
         sidebar {
-            width: 380px;
+            width: 400px;
             background-color: var(--bg-surface);
             border-right: 1px solid var(--border-color);
             display: flex;
@@ -142,9 +141,10 @@
         .message {
             padding: 12px 16px;
             border-radius: 12px;
-            max-width: 85%;
+            max-width: 90%;
             line-height: 1.4;
             font-size: 0.9rem;
+            word-break: break-word;
         }
 
         .message.ai {
@@ -159,10 +159,85 @@
             align-self: flex-end;
         }
 
+        /* Upload preview chip inside messages */
+        .file-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 240, 255, 0.15);
+            border: 1px solid var(--anime-cyan);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            margin-bottom: 6px;
+            color: var(--anime-cyan);
+        }
+
         .chat-input-area {
             padding: 16px;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-base);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Drag & Drop Upload Zone */
+        .upload-dropzone {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            background: var(--bg-surface);
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .upload-dropzone:hover, .upload-dropzone.dragover {
+            border-color: var(--anime-cyan);
+            background: rgba(0, 240, 255, 0.05);
+        }
+
+        .upload-dropzone input[type="file"] {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .upload-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .upload-label span {
+            color: var(--anime-cyan);
+            font-weight: 600;
+        }
+
+        .attached-preview {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-elevated);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .attached-preview.active {
+            display: flex;
+        }
+
+        .remove-file {
+            color: var(--anime-pink);
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .chat-row {
             display: flex;
             gap: 8px;
         }
@@ -203,6 +278,11 @@
             color: var(--text-muted);
             cursor: pointer;
             border-bottom: 2px solid transparent;
+            transition: color 0.2s;
+        }
+
+        .tab:hover {
+            color: var(--text-main);
         }
 
         .tab.active {
@@ -219,6 +299,7 @@
             color: var(--anime-green);
             overflow: auto;
             white-space: pre-wrap;
+            outline: none;
         }
 
         @keyframes pulseGlow {
@@ -233,11 +314,11 @@
     <header>
         <div class="logo-area">
             <div class="logo-badge">KUADU</div>
-            <span class="logo-title">Neural Coding Studio v3.0</span>
+            <span class="logo-title">Neural Coding Studio v3.5 (Upload Enabled)</span>
         </div>
         <div class="header-actions">
-            <button class="btn">Settings</button>
-            <button class="btn btn-primary">⚡ Run Code</button>
+            <button class="btn" id="settings-btn">Settings</button>
+            <button class="btn btn-primary" id="run-btn">⚡ Run Code</button>
         </div>
     </header>
 
@@ -249,33 +330,213 @@
                 <span>AI Neural Copilot</span>
                 <span style="color: var(--anime-green); font-size: 0.75rem;">● Online</span>
             </div>
-            <div class="chat-messages">
+            <div class="chat-messages" id="chat-messages">
                 <div class="message ai">
-                    ✨ Hello operator! I'm your Kuadu AI assistant. How can we make your project exceptionally funtastic today?
+                    ✨ Hello operator! Upload code snippets, images, or assets directly into the chat below, and I'll analyze or integrate them for you!
                 </div>
             </div>
+            
             <div class="chat-input-area">
-                <input type="text" class="chat-input" placeholder="Ask Kuadu to code or refactor...">
-                <button class="btn btn-primary">Send</button>
+                <!-- Attached File Preview -->
+                <div class="attached-preview" id="attached-preview">
+                    <span id="file-name-display">📎 file.js</span>
+                    <span class="remove-file" id="remove-file-btn" title="Remove file">✕</span>
+                </div>
+
+                <!-- Drag & Drop Upload Zone -->
+                <div class="upload-dropzone" id="dropzone">
+                    <input type="file" id="file-upload-input">
+                    <div class="upload-label">
+                        📁 Drag & drop files here or <span>browse</span>
+                    </div>
+                </div>
+
+                <div class="chat-row">
+                    <input type="text" class="chat-input" id="chat-input" placeholder="Ask Kuadu or discuss uploaded file...">
+                    <button class="btn btn-primary" id="send-btn">Send</button>
+                </div>
             </div>
         </sidebar>
 
         <!-- Main Editor Area -->
         <div class="editor-container">
             <div class="tabs-bar">
-                <div class="tab active">code.html</div>
-                <div class="tab">styles.css</div>
-                <div class="tab">neural-engine.js</div>
+                <div class="tab active" data-file="code.html">code.html</div>
+                <div class="tab" data-file="styles.css">styles.css</div>
+                <div class="tab" data-file="neural-engine.js">neural-engine.js</div>
             </div>
-            <div class="code-view">
+            <div class="code-view" id="code-view" contenteditable="true" spellcheck="false">
 &lt;!-- Welcome to Kuadu Funtastic Code Editor --&gt;
 &lt;div class="cyber-card"&gt;
     &lt;h1&gt;System Operational&lt;/h1&gt;
     &lt;p&gt;Your neural pathways are synced and ready for deployment.&lt;/p&gt;
-&lt;/div&gt;
-            </div>
+&lt;/div&gt;</div>
         </div>
     </div>
 
+    <!-- Script with File Upload Functionality -->
+    <script>
+        const files = {
+            "code.html": `<!-- Welcome to Kuadu Funtastic Code Editor -->\n<div class="cyber-card">\n    <h1>System Operational</h1>\n    <p>Your neural pathways are synced and ready for deployment.</p>\n</div>`,
+            "styles.css": `/* Kuadu Cyberpunk Stylesheet */\n.cyber-card {\n    background: linear-gradient(135deg, #0e0c19, #17142b);\n    border: 1px solid #00f0ff;\n    padding: 24px;\n    border-radius: 12px;\n    box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);\n}`,
+            "neural-engine.js": `// Kuadu Neural Engine Core\nconsole.log("Neural matrix initialized successfully...");\nfunction executeSync() {\n    return "Status: Funtastic ⚡";\n}`
+        };
+
+        let currentFile = "code.html";
+        let uploadedFile = null;
+
+        // Tab Switching Logic
+        const tabs = document.querySelectorAll('.tab');
+        const codeView = document.getElementById('code-view');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                files[currentFile] = codeView.innerText;
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentFile = tab.getAttribute('data-file');
+                codeView.innerText = files[currentFile];
+            });
+        });
+
+        // File Upload Handlers
+        const fileInput = document.getElementById('file-upload-input');
+        const attachedPreview = document.getElementById('attached-preview');
+        const fileNameDisplay = document.getElementById('file-name-display');
+        const removeFileBtn = document.getElementById('remove-file-btn');
+        const dropzone = document.getElementById('dropzone');
+
+        function handleFileSelected(file) {
+            uploadedFile = file;
+            fileNameDisplay.textContent = `📎 ${file.name} (${Math.round(file.size / 1024)} KB)`;
+            attachedPreview.classList.add('active');
+            dropzone.style.display = 'none';
+
+            // If it's a text file or code, read and load into editor automatically
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const content = e.target.result;
+                // Add as a new tab or update current
+                files[file.name] = content;
+                
+                // Create new tab dynamically if not exists
+                if(!document.querySelector(`.tab[data-file="${file.name}"]`)) {
+                    const tabsBar = document.querySelector('.tabs-bar');
+                    const newTab = document.createElement('div');
+                    newTab.className = 'tab active';
+                    newTab.setAttribute('data-file', file.name);
+                    newTab.textContent = file.name;
+                    
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabsBar.appendChild(newTab);
+                }
+            };
+            if(file.type.includes('text') || file.name.endsWith('.js') || file.name.endsWith('.html') || file.name.endsWith('.css') || file.name.endsWith('.json')) {
+                reader.readAsText(file);
+            }
+        }
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileSelected(e.target.files[0]);
+            }
+        });
+
+        removeFileBtn.addEventListener('click', () => {
+            uploadedFile = null;
+            attachedPreview.classList.remove('active');
+            dropzone.style.display = 'block';
+            fileInput.value = '';
+        });
+
+        // Drag and drop events
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropzone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropzone.classList.add('dragover');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropzone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropzone.classList.remove('dragover');
+            }, false);
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+            if (e.dataTransfer.files.length > 0) {
+                handleFileSelected(e.dataTransfer.files[0]);
+            }
+        });
+
+        // Interactive Chat Logic
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+        const chatMessages = document.getElementById('chat-messages');
+
+        function handleSendMessage() {
+            const text = chatInput.value.trim();
+            if (!text && !uploadedFile) return;
+
+            // Append User Message with attachment chip if present
+            const userMsg = document.createElement('div');
+            userMsg.className = 'message user';
+            
+            let messageHTML = '';
+            if (uploadedFile) {
+                messageHTML += `<div class="file-chip">📎 ${uploadedFile.name}</div>`;
+            }
+            if (text) {
+                messageHTML += `<div>${text}</div>`;
+            }
+            userMsg.innerHTML = messageHTML;
+            chatMessages.appendChild(userMsg);
+            
+            const currentAttached = uploadedFile;
+            
+            // Clear input and attachments
+            chatInput.value = '';
+            uploadedFile = null;
+            attachedPreview.classList.remove('active');
+            dropzone.style.display = 'block';
+            fileInput.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // Simulate AI Response
+            setTimeout(() => {
+                const aiMsg = document.createElement('div');
+                aiMsg.className = 'message ai';
+                let reply = `⚡ Processed your request successfully!`;
+                if (currentAttached) {
+                    reply = `✨ Successfully ingested <strong>${currentAttached.name}</strong>. Neural analysis complete and integrated into your workspace!`;
+                } else if (text) {
+                    reply = `⚡ AI Copilot: "${text}" analyzed and optimized!`;
+                }
+                aiMsg.innerHTML = reply;
+                chatMessages.appendChild(aiMsg);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 900);
+        }
+
+        sendBtn.addEventListener('click', handleSendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleSendMessage();
+        });
+
+        // Run Code & Settings Buttons
+        document.getElementById('run-btn').addEventListener('click', () => {
+            const aiMsg = document.createElement('div');
+            aiMsg.className = 'message ai';
+            aiMsg.style.borderColor = 'var(--anime-green)';
+            aiMsg.innerHTML = `🚀 <strong>Execution Success!</strong><br>Successfully ran active file <code>${currentFile}</code>. Funtastic status confirmed!`;
+            chatMessages.appendChild(aiMsg);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
+
+        document.getElementById('settings-btn').addEventListener('click', () => {
+            alert("Kuadu Studio: Upload filters set to accept code, images, and documents up to 50MB!");
+        });
+    </script>
 </body>
 </html>
