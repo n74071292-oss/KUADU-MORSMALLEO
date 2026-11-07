@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KuaduCode™ — Premium Code Lab & Live Studio</title>
+    <title>Kuadu™ — Universal Code & AI Studio</title>
     <style>
         :root {
             --bg-deep: #09080f;
@@ -12,7 +12,8 @@
             --border-line: #2e2850;
             --text-main: #f4f2ff;
             --text-muted: #948fb8;
-            --accent-primary: #7c3aed;
+            --kuadu-white: #ffffff;
+            --code-indigo: #7c3aed;
             --accent-glow: #06b6d4;
             --success-green: #10b981;
             --code-text: #34d399;
@@ -40,7 +41,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 20px;
+            padding: 14px 24px;
             background-color: var(--bg-surface);
             border-bottom: 1px solid var(--border-line);
         }
@@ -48,26 +49,56 @@
         .brand {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            font-size: 1.1rem;
+            gap: 12px;
+            font-weight: 800;
+            font-size: 1.2rem;
             letter-spacing: 0.5px;
         }
 
-        .brand span {
-            background: linear-gradient(135deg, var(--accent-glow), var(--accent-primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .brand-text {
+            display: flex;
+            align-items: center;
         }
 
-        .tm-badge {
-            font-size: 0.65rem;
-            background: var(--accent-primary);
-            color: white;
-            padding: 2px 6px;
-            border-radius: 4px;
-            vertical-align: super;
-            font-weight: 800;
+        .brand-kuadu {
+            color: var(--kuadu-white);
+        }
+
+        .brand-code {
+            color: var(--code-indigo);
+        }
+
+        /* Interactive Animation Box */
+        .interactive-anim-box {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--code-indigo), var(--accent-glow));
+            box-shadow: 0 0 10px rgba(124, 58, 237, 0.6);
+            animation: pulseAnim 2.5s infinite ease-in-out;
+            cursor: pointer;
+        }
+
+        .anim-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            animation: innerPulse 1.2s infinite alternate;
+        }
+
+        @keyframes pulseAnim {
+            0% { transform: scale(1); box-shadow: 0 0 5px var(--code-indigo); }
+            50% { transform: scale(1.15); box-shadow: 0 0 15px var(--accent-glow), 0 0 25px var(--code-indigo); }
+            100% { transform: scale(1); box-shadow: 0 0 5px var(--code-indigo); }
+        }
+
+        @keyframes innerPulse {
+            0% { transform: scale(0.8); opacity: 0.7; }
+            100% { transform: scale(1.2); opacity: 1; }
         }
 
         .header-controls {
@@ -80,8 +111,8 @@
             background: var(--bg-panel);
             color: var(--text-main);
             border: 1px solid var(--border-line);
-            padding: 6px 14px;
-            border-radius: 6px;
+            padding: 7px 16px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 0.85rem;
             font-weight: 500;
@@ -93,7 +124,7 @@
         }
 
         .btn-action {
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-glow));
+            background: linear-gradient(135deg, var(--code-indigo), var(--accent-glow));
             color: white;
             border: none;
             font-weight: 600;
@@ -113,23 +144,125 @@
             100% { box-shadow: 0 0 15px rgba(245, 158, 11, 0.8); }
         }
 
-        /* Workspace Grid (Divided Sections) */
+        /* Main Workspace Container */
         .workspace {
-            display: grid;
-            grid-template-columns: 320px 1fr 1fr;
+            display: flex;
             flex: 1;
             overflow: hidden;
+            background: var(--border-line);
+            position: relative;
         }
 
-        /* Section 1: AI Assistant Sidebar */
-        aside {
-            background-color: var(--bg-surface);
-            border-right: 1px solid var(--border-line);
+        /* Primary Workspace: Editor & Live Preview Side-by-Side */
+        .main-editor-preview-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            flex: 1;
+            height: 100%;
+            background: var(--bg-deep);
+        }
+
+        @media (max-width: 900px) {
+            .main-editor-preview-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr 1fr;
+            }
+        }
+
+        /* Section 1: Code Editor with HTML, CSS, JS, PHP tabs */
+        .editor-section {
             display: flex;
             flex-direction: column;
+            background-color: var(--bg-deep);
+            height: 100%;
+            border-right: 1px solid var(--border-line);
         }
 
-        .sidebar-title {
+        .tab-bar {
+            display: flex;
+            background-color: var(--bg-surface);
+            border-bottom: 1px solid var(--border-line);
+            padding-left: 10px;
+        }
+
+        .file-tab {
+            padding: 10px 18px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            user-select: none;
+        }
+
+        .file-tab.active {
+            color: var(--accent-glow);
+            border-bottom-color: var(--accent-glow);
+            background-color: var(--bg-deep);
+        }
+
+        .code-area {
+            flex: 1;
+            padding: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            color: var(--code-text);
+            overflow: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            outline: none;
+            line-height: 1.5;
+            tab-size: 4;
+        }
+
+        /* Section 2: Web Base Live Preview */
+        .preview-section {
+            display: flex;
+            flex-direction: column;
+            background-color: #ffffff;
+            height: 100%;
+        }
+
+        .preview-bar {
+            padding: 10px 16px;
+            background: #f1f5f9;
+            color: #334155;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-bottom: 1px solid #cbd5e1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preview-frame {
+            flex: 1;
+            border: none;
+            width: 100%;
+            height: 100%;
+            background: white;
+        }
+
+        /* Section 3: AI Assistant Drawer (Top Right Panel) */
+        .ai-drawer {
+            position: absolute;
+            top: 0;
+            right: -420px;
+            width: 400px;
+            height: 100%;
+            background-color: var(--bg-surface);
+            border-left: 1px solid var(--border-line);
+            display: flex;
+            flex-direction: column;
+            transition: right 0.3s ease-in-out;
+            z-index: 500;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+        }
+
+        .ai-drawer.open {
+            right: 0;
+        }
+
+        .ai-header {
             padding: 14px 16px;
             font-size: 0.9rem;
             font-weight: 600;
@@ -138,6 +271,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: var(--bg-panel);
+        }
+
+        .ai-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            cursor: pointer;
         }
 
         .chat-stream {
@@ -160,7 +302,7 @@
 
         .chat-bubble.assistant {
             background-color: var(--bg-panel);
-            border-left: 3px solid var(--accent-primary);
+            border-left: 3px solid var(--code-indigo);
             align-self: flex-start;
         }
 
@@ -195,72 +337,8 @@
             font-size: 0.85rem;
         }
 
-        /* Section 2: Code Editor */
-        .editor-section {
-            display: flex;
-            flex-direction: column;
-            border-right: 1px solid var(--border-line);
-            background-color: var(--bg-deep);
-        }
-
-        .tab-bar {
-            display: flex;
-            background-color: var(--bg-surface);
-            border-bottom: 1px solid var(--border-line);
-            padding-left: 10px;
-        }
-
-        .file-tab {
-            padding: 10px 18px;
-            font-size: 0.82rem;
-            color: var(--text-muted);
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-        }
-
-        .file-tab.active {
-            color: var(--accent-glow);
-            border-bottom-color: var(--accent-glow);
-            background-color: var(--bg-deep);
-        }
-
-        .code-area {
-            flex: 1;
-            padding: 20px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.9rem;
-            color: var(--code-text);
-            overflow: auto;
-            white-space: pre-wrap;
-            outline: none;
-            line-height: 1.5;
-        }
-
-        /* Section 3: Web Base Live Preview */
-        .preview-section {
-            display: flex;
-            flex-direction: column;
-            background-color: #ffffff;
-        }
-
-        .preview-bar {
-            padding: 10px 16px;
-            background: #f1f5f9;
-            color: #334155;
-            font-size: 0.8rem;
-            font-weight: 600;
-            border-bottom: 1px solid #cbd5e1;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .preview-frame {
-            flex: 1;
-            border: none;
-            width: 100%;
-            height: 100%;
-            background: white;
+        .chat-text-input:focus {
+            border-color: var(--accent-glow);
         }
 
         /* Premium Modal Styles */
@@ -392,64 +470,76 @@
     <!-- Header -->
     <header>
         <div class="brand">
-            <span>KuaduCode</span><span class="tm-badge">TM</span> Code Lab
+            <div class="brand-text">
+                <span class="brand-kuadu">Kuadu</span><span class="brand-code">code</span>
+            </div>
+            <div class="interactive-anim-box" id="anim-box" title="Neural Core active">
+                <div class="anim-dot"></div>
+            </div>
         </div>
         <div class="header-controls">
-            <button class="btn btn-premium" id="premium-btn">⭐ Upgrade Premium (GHS 10 - 90)</button>
+            <button class="btn btn-action" id="ai-toggle-btn">💬 AI Assistant</button>
+            <button class="btn btn-premium" id="premium-btn">⭐ Upgrade Pro (GHS 10 - 90)</button>
             <button class="btn" id="clear-btn">Clear</button>
             <button class="btn btn-action" id="run-code-btn">▶ Run Web Preview</button>
         </div>
     </header>
 
-    <!-- Divided Workspace Sections -->
+    <!-- Workspace Container -->
     <div class="workspace">
         
-        <!-- Section 1: AI Assistant -->
-        <aside>
-            <div class="sidebar-title">
-                <span>KuaduCode™ Assistant</span>
-                <span style="color: var(--success-green); font-size: 0.7rem;" id="status-badge">● Free Tier</span>
+        <!-- Primary Container: Editor & Live Preview -->
+        <div class="main-editor-preview-container">
+            
+            <!-- Code Editor Section with HTML, CSS, JS, PHP tabs -->
+            <section class="editor-section">
+                <div class="tab-bar">
+                    <div class="file-tab active" data-file="index.html">index.html</div>
+                    <div class="file-tab" data-file="style.css">style.css</div>
+                    <div class="file-tab" data-file="script.js">script.js</div>
+                    <div class="file-tab" data-file="index.php">index.php</div>
+                </div>
+                <div class="code-area" id="code-editor" contenteditable="true" spellcheck="false"></div>
+            </section>
+
+            <!-- Web Base Live Preview Section -->
+            <section class="preview-section">
+                <div class="preview-bar">
+                    <span>🌐 Live Web Preview</span>
+                    <span style="color: #64748b; font-size: 0.75rem;">Auto-updates on run</span>
+                </div>
+                <iframe class="preview-frame" id="live-preview"></iframe>
+            </section>
+
+        </div>
+
+        <!-- AI Assistant Drawer (Positioned on top-right panel) -->
+        <aside class="ai-drawer" id="ai-drawer">
+            <div class="ai-header">
+                <span>Gemini AI Assistant</span>
+                <button class="ai-close-btn" id="ai-close-btn">✕</button>
             </div>
             <div class="chat-stream" id="chat-stream">
                 <div class="chat-bubble assistant">
-                    👋 Welcome! Write HTML, CSS, or JS in the editor. Click <strong>▶ Run Web Preview</strong> to render your live web output on the right!
+                    ✨ Hello! I am your <strong>Gemini AI</strong> assistant. Ask me anything, or let me help you write and debug your HTML, CSS, JavaScript, and PHP code!
                 </div>
             </div>
             <div class="chat-input-zone">
                 <div class="input-row">
-                    <input type="text" class="chat-text-input" id="user-query" placeholder="Ask coding question...">
+                    <input type="text" class="chat-text-input" id="user-query" placeholder="Ask Gemini...">
                     <button class="btn btn-action" id="send-query-btn">Ask</button>
                 </div>
             </div>
         </aside>
 
-        <!-- Section 2: Code Editor -->
-        <section class="editor-section">
-            <div class="tab-bar">
-                <div class="file-tab active" data-file="index.html">index.html</div>
-                <div class="file-tab" data-file="style.css">style.css</div>
-                <div class="file-tab" data-file="script.js">script.js</div>
-            </div>
-            <div class="code-area" id="code-editor" contenteditable="true" spellcheck="false"></div>
-        </section>
-
-        <!-- Section 3: Web Base Live Preview -->
-        <section class="preview-section">
-            <div class="preview-bar">
-                <span>🌐 Live Web Preview</span>
-                <span style="color: #64748b; font-size: 0.75rem;">Auto-updates on run</span>
-            </div>
-            <iframe class="preview-frame" id="live-preview"></iframe>
-        </section>
-
     </div>
 
-    <!-- Premium Upgrade Modal with Real Payment Inputs -->
+    <!-- Premium Upgrade Modal -->
     <div class="modal-overlay" id="premium-modal">
         <div class="modal-content">
             <button class="modal-close" id="modal-close">✕</button>
-            <div class="modal-title">KuaduCode™ Premium Checkout</div>
-            <div class="modal-subtitle">Select your package (GHS 10 to GHS 90), provide your real payment account ID/number, and instantly unlock Pro features!</div>
+            <div class="modal-title">KuaduCode Pro Checkout</div>
+            <div class="modal-subtitle">Select your package (GHS 10 to GHS 90), provide your payment details, and instantly unlock Pro features!</div>
             
             <div class="pricing-tiers" id="pricing-tiers">
                 <div class="tier-card" data-amount="15">
@@ -472,7 +562,7 @@
 
             <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px; font-weight: 600;">Choose Payment Method:</div>
             <div class="payment-methods">
-                <button class="pay-btn selected-pay" onclick="selectPaymentMethod('momo', this)">📱 Mobile Money (Momo)</button>
+                <button class="pay-btn selected-pay" onclick="selectPaymentMethod('momo', this)">📱 Mobile Money (MoMo)</button>
                 <button class="pay-btn" onclick="selectPaymentMethod('card', this)">💳 Credit Card</button>
                 <button class="pay-btn" onclick="selectPaymentMethod('paypal', this)">🅿️ PayPal</button>
                 <button class="pay-btn" onclick="selectPaymentMethod('skype', this)">💬 Skype ID</button>
@@ -489,9 +579,55 @@
     <!-- Script & Preview Engine -->
     <script>
         const workspaceFiles = {
-            "index.html": "<!DOCTYPE html>\n<html>\n<head>\n    <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n    <div class=\"card\">\n        <h1>Hello KuaduCode™!</h1>\n        <p>Edit this HTML/CSS/JS and click Run.</p>\n        <button onclick=\"sayHello()\">Click Me</button>\n    </div>\n    <script src=\"script.js\"></script>\n</body>\n</html>",
-            "style.css": "body {\n    background: #f8fafc;\n    font-family: sans-serif;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    height: 100vh;\n}\n.card {\n    background: white;\n    padding: 30px;\n    border-radius: 12px;\n    box-shadow: 0 4px 15px rgba(0,0,0,0.1);\n    text-align: center;\n}\nh1 { color: #7c3aed; }\nbutton {\n    background: #7c3aed;\n    color: white;\n    border: none;\n    padding: 8px 16px;\n    border-radius: 6px;\n    cursor: pointer;\n    margin-top: 10px;\n}",
-            "script.js": "function sayHello() {\n    alert('KuaduCode™ Web Preview Interactive!');\n}"
+            "index.html": `<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="card">
+        <h1>Hello KuaduCode!</h1>
+        <p>Edit HTML, CSS, JS, or PHP and click Run.</p>
+        <button onclick="sayHello()">Click Me</button>
+    </div>
+    <script src="script.js"><\\/script>
+</body>
+</html>`,
+            "style.css": `body {
+    background: #f8fafc;
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-align: center;
+}
+h1 { color: #7c3aed; }
+button {
+    background: #7c3aed;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+}`,
+            "script.js": `function sayHello() {
+    alert('KuaduCode Live Preview Interactive!');
+}`,
+            "index.php": `<?php
+// PHP Backend Logic Simulator
+$appName = "KuaduCode™ Studio";
+$version = "2.6";
+echo "<!-- PHP Loaded: " . $appName . " v" . $version . " -->";
+?>`
         };
 
         let activeFile = "index.html";
@@ -513,6 +649,21 @@
             workspaceFiles[activeFile] = editor.innerText;
         });
 
+        // AI Drawer Toggle
+        const aiDrawer = document.getElementById("ai-drawer");
+        document.getElementById("ai-toggle-btn").addEventListener("click", () => {
+            aiDrawer.classList.toggle("open");
+        });
+        document.getElementById("ai-close-btn").addEventListener("click", () => {
+            aiDrawer.classList.remove("open");
+        });
+
+        // Neural Core Animation Ping
+        document.getElementById("anim-box").addEventListener("click", () => {
+            aiDrawer.classList.add("open");
+            addChatBubble(`⚡ <strong>Neural Core Ping:</strong> AI Assistant drawer activated!`, "assistant");
+        });
+
         // Live Web Base Preview Rendering
         function renderLivePreview() {
             workspaceFiles[activeFile] = editor.innerText;
@@ -521,11 +672,11 @@
             let htmlCode = workspaceFiles["index.html"] || "";
             let cssCode = workspaceFiles["style.css"] || "";
             let jsCode = workspaceFiles["script.js"] || "";
+            let phpCode = workspaceFiles["index.php"] || "";
 
-            // Inject CSS and JS directly into HTML for live browser rendering
-            let fullDoc = htmlCode
+            let fullDoc = `<!-- Simulated PHP Output: ${phpCode.length > 20 ? 'Active' : 'Empty'} -->\n` + htmlCode
                 .replace('<link rel="stylesheet" href="style.css">', `<style>${cssCode}</style>`)
-                .replace('<script src="script.js"></script>', `<script>${jsCode}<\/script>`);
+                .replace('<script src="script.js"><\\/script>', `<script>${jsCode}<\/script>`);
 
             const blob = new Blob([fullDoc], { type: 'text/html' });
             iframe.src = URL.createObjectURL(blob);
@@ -533,15 +684,13 @@
 
         document.getElementById("run-code-btn").addEventListener("click", () => {
             renderLivePreview();
-            addChatBubble(`🌐 <strong>Web Preview Updated:</strong> Compiled HTML, CSS, and JS successfully into live browser view.`, "assistant");
+            addChatBubble(`🌐 <strong>Web Preview Updated:</strong> Compiled HTML, CSS, JS, and PHP successfully into live browser view.`, "assistant");
         });
 
-        // Initial Preview Render on load
         window.addEventListener('DOMContentLoaded', () => {
             renderLivePreview();
         });
 
-        // Clear Workspace
         document.getElementById("clear-btn").addEventListener("click", () => {
             editor.innerText = "";
             workspaceFiles[activeFile] = "";
@@ -549,25 +698,41 @@
             addChatBubble(`🧹 Cleared file: <code>${activeFile}</code>.`, "assistant");
         });
 
-        // Chat Assistant
+        // Gemini AI Assistant Chat Integration
         const chatStream = document.getElementById("chat-stream");
         const queryInput = document.getElementById("user-query");
+
+        function addChatBubble(text, sender) {
+            const bubble = document.createElement("div");
+            bubble.className = `chat-bubble ${sender}`;
+            bubble.innerHTML = text;
+            chatStream.appendChild(bubble);
+            chatStream.scrollTop = chatStream.scrollHeight;
+        }
+
         document.getElementById("send-query-btn").addEventListener("click", () => {
             const query = queryInput.value.trim();
             if (!query) return;
-            const bubble = document.createElement("div");
-            bubble.className = "chat-bubble user";
-            bubble.textContent = query;
-            chatStream.appendChild(bubble);
-            queryInput.value = "";
             
+            addChatBubble(query, "user");
+            queryInput.value = "";
+
             setTimeout(() => {
-                const ans = document.createElement("div");
-                ans.className = "chat-bubble assistant";
-                ans.innerHTML = `KuaduCode™ Assistant: Regarding "<em>${query}</em>", check your active <code>${activeFile}</code> tab or click <strong>▶ Run Web Preview</strong> to see changes instantly!`;
-                chatStream.appendChild(ans);
-                chatStream.scrollTop = chatStream.scrollHeight;
-            }, 500);
+                let geminiAnswer = `Gemini AI: I analyzed your query about "<em>${query}</em>". Check your active <code>${activeFile}</code> tab or click <strong>▶ Run Web Preview</strong> to see the results live!`;
+                
+                const q = query.toLowerCase();
+                if(q.includes('php')) {
+                    geminiAnswer = `Gemini AI: PHP code can be added in your <code>index.php</code> tab for server-side processing simulation.`;
+                } else if(q.includes('html') || q.includes('css')) {
+                    geminiAnswer = `Gemini AI: You can style elements using flexbox or CSS variables inside <code>style.css</code>.`;
+                }
+
+                addChatBubble(geminiAnswer, "assistant");
+            }, 600);
+        });
+
+        queryInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") document.getElementById("send-query-btn").click();
         });
 
         // Premium Payment Modal Logic
@@ -615,7 +780,7 @@
                 return;
             }
             if (!accountDetail) {
-                alert("Please provide your real payment account number or ID (" + selectedPaymentType + ").");
+                alert("Please provide your payment account number or ID (" + selectedPaymentType + ").");
                 return;
             }
 
@@ -623,9 +788,7 @@
             addChatBubble(`Processing GHS ${amt} via ${selectedPaymentType} (${accountDetail})...`, "assistant");
             
             setTimeout(() => {
-                document.getElementById("status-badge").innerText = "● Premium Pro (GHS " + amt + ")";
-                document.getElementById("status-badge").style.color = "#f59e0b";
-                addChatBubble(`🎉 <strong>Payment Confirmed!</strong> Successfully debited GHS ${amt} via ${selectedPaymentType}. All KuaduCode™ Premium tools are unlocked!`, "assistant");
+                addChatBubble(`🎉 <strong>Payment Confirmed!</strong> Successfully debited GHS ${amt} via ${selectedPaymentType}. All KuaduCode Pro features are unlocked!`, "assistant");
             }, 1500);
         };
     </script>
