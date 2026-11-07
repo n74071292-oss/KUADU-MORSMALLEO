@@ -62,6 +62,7 @@
             display: inline-block;
             box-shadow: 0 0 12px rgba(66, 133, 244, 0.5);
             animation: pulseSparkle 3s infinite ease-in-out;
+            cursor: pointer;
         }
 
         @keyframes pulseSparkle {
@@ -215,7 +216,7 @@
             background: white;
         }
 
-        /* Kuaducode AI Drawer (Gemini Style) */
+        /* Kuadu AI Drawer (Gemini Interface Style) */
         .ai-drawer {
             position: absolute;
             top: 0;
@@ -475,11 +476,11 @@
     <!-- Header -->
     <header>
         <div class="brand">
-            <div class="gemini-sparkle" id="sparkle-trigger" title="Kuaducode AI Core"></div>
+            <div class="gemini-sparkle" id="sparkle-trigger" title="Kuadu AI Core"></div>
             <span class="brand-text">Kuaducode</span>
         </div>
         <div class="header-controls">
-            <button class="btn btn-action" id="ai-toggle-btn">✨ Kuaducode AI</button>
+            <button class="btn btn-action" id="ai-toggle-btn">✨ Kuadu AI</button>
             <button class="btn btn-premium" id="premium-btn">⭐ Upgrade Pro (GHS 10 - 90)</button>
             <button class="btn" id="clear-btn">Clear</button>
             <button class="btn btn-action" id="run-code-btn">▶ Run Web Preview</button>
@@ -514,23 +515,23 @@
 
         </div>
 
-        <!-- Kuaducode AI Drawer (Gemini Interface Style) -->
+        <!-- Kuadu AI Drawer (Gemini Interface Style) -->
         <aside class="ai-drawer" id="ai-drawer">
             <div class="ai-header">
                 <div class="ai-title-flex">
                     <div class="gemini-sparkle" style="width: 18px; height: 18px;"></div>
-                    <span>Kuaducode AI</span>
+                    <span>Kuadu AI</span>
                 </div>
                 <button class="ai-close-btn" id="ai-close-btn">✕</button>
             </div>
             <div class="chat-stream" id="chat-stream">
                 <div class="chat-bubble assistant">
-                    Hello! I'm <strong>Kuaducode AI</strong>, powered by advanced intelligence. How can I help you write code, solve problems, or create today?
+                    Hello! I'm <strong>Kuadu AI</strong>, powered by advanced Gemini intelligence. How can I help you write code, solve problems, or create today?
                 </div>
             </div>
             <div class="chat-input-zone">
                 <div class="input-row">
-                    <input type="text" class="chat-text-input" id="user-query" placeholder="Enter a prompt here...">
+                    <input type="text" class="chat-text-input" id="user-query" placeholder="Ask Kuadu AI...">
                     <button class="send-btn" id="send-query-btn">↑</button>
                 </div>
             </div>
@@ -663,7 +664,7 @@ echo "<!-- PHP Active: " . $appName . " -->";
 
         document.getElementById("sparkle-trigger").addEventListener("click", () => {
             aiDrawer.classList.add("open");
-            addChatBubble(`✨ **Kuaducode AI Core:** Systems operational and ready to assist!`, "assistant");
+            addChatBubble(`✨ **Kuadu AI Core:** Systems operational and ready to assist!`, "assistant");
         });
 
         function renderLivePreview() {
@@ -718,13 +719,13 @@ echo "<!-- PHP Active: " . $appName . " -->";
             queryInput.value = "";
 
             setTimeout(() => {
-                let response = `Kuaducode AI: I've processed your prompt about "<em>${query}</em>". Check your <code>${activeFile}</code> tab or click <strong>▶ Run Web Preview</strong> to view updates live!`;
+                let response = `Kuadu AI: I've processed your prompt about "<em>${query}</em>" using Gemini intelligence. Check your <code>${activeFile}</code> tab or click <strong>▶ Run Web Preview</strong> to view updates live!`;
                 
                 const q = query.toLowerCase();
                 if(q.includes('php')) {
-                    response = `Kuaducode AI: You can manage your backend logic inside the <code>index.php</code> tab.`;
+                    response = `Kuadu AI: You can manage your backend logic inside the <code>index.php</code> tab.`;
                 } else if(q.includes('css') || q.includes('style')) {
-                    response = `Kuaducode AI: Edit your styles in <code>style.css</code> to update colors, padding, and layout designs instantly.`;
+                    response = `Kuadu AI: Edit your styles in <code>style.css</code> to update colors, padding, and layout designs instantly.`;
                 }
 
                 addChatBubble(response, "assistant");
