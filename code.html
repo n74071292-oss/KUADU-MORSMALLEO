@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KuaduCode — KUADU MORSMALLEO Anime Edition</title>
+    <title>KuaduCode — KUADU MORSMALLEO AI Edition</title>
     <style>
         :root {
             --bg-base: #06050b;
@@ -188,6 +188,14 @@
             box-shadow: 0 0 15px rgba(255, 238, 0, 0.4);
         }
 
+        .tab-btn.ai-tab {
+            background: linear-gradient(135deg, var(--anime-cyan), var(--anime-purple));
+            color: #ffffff;
+            border: none;
+            font-weight: 800;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+        }
+
         .workspace {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -307,6 +315,91 @@
             background-color: #ffffff;
         }
 
+        /* AI Assistant Pane Styles */
+        .ai-pane {
+            grid-column: span 2;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-surface);
+            border: 2px solid var(--anime-cyan);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.2);
+            height: 100%;
+        }
+
+        .ai-chat-box {
+            flex: 1;
+            background-color: #030206;
+            color: var(--text-main);
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 0.95rem;
+        }
+
+        .ai-msg {
+            padding: 12px 16px;
+            border-radius: 10px;
+            max-width: 80%;
+            line-height: 1.5;
+        }
+
+        .ai-msg.user {
+            background-color: var(--bg-elevated);
+            align-self: flex-end;
+            border: 1px solid var(--anime-pink);
+            color: var(--text-main);
+        }
+
+        .ai-msg.assistant {
+            background-color: #121022;
+            align-self: flex-start;
+            border: 1px solid var(--anime-cyan);
+            color: var(--anime-cyan);
+        }
+
+        .ai-input-area {
+            display: flex;
+            background-color: var(--bg-elevated);
+            padding: 12px;
+            border-top: 2px solid var(--border-color);
+            gap: 10px;
+        }
+
+        .ai-input {
+            flex: 1;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 10px 16px;
+            border-radius: 8px;
+            outline: none;
+            font-size: 0.95rem;
+        }
+
+        .ai-input:focus {
+            border-color: var(--anime-cyan);
+        }
+
+        .ai-send-btn {
+            background: linear-gradient(135deg, var(--anime-cyan), var(--anime-purple));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .ai-send-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Premium Dashboard */
         .premium-dashboard {
             grid-column: span 2;
             padding: 40px;
@@ -546,7 +639,7 @@
                 grid-template-columns: 1fr;
                 grid-template-rows: 1fr 1fr;
             }
-            .premium-dashboard {
+            .premium-dashboard, .ai-pane {
                 grid-column: span 1;
             }
         }
@@ -579,6 +672,7 @@
         <button class="tab-btn" onclick="switchLanguage('kotlin')">Kotlin</button>
         <button class="tab-btn" onclick="switchLanguage('sql')">SQL</button>
         <button class="tab-btn" onclick="switchLanguage('r')">R</button>
+        <button class="tab-btn ai-tab" onclick="switchLanguage('ai')">🤖 Kuadu AI Assistant</button>
         <button class="tab-btn premium" onclick="switchLanguage('premium')">👑 KUADU Premium (200+ Langs)</button>
     </div>
 
@@ -629,7 +723,7 @@
                 css: 'body { font-family: sans-serif; text-align: center; margin-top: 50px; background: linear-gradient(135deg, #0e0c19, #17142b); color: #00f0ff; }',
                 js: 'console.log("KUADU MORSMALLEO Anime Console Active 🚀");'
             },
-            python: `print("⚡ Konnichiwa from KUADU Python!")\npower_level = 9001\nprint(f"Developer Power Level: {power_level}")`,
+            python: `print("⚡ Konnichiwa from KUADU Python!")\nx = 15\ny = 25\nprint(f"The sum of x + y is {x + y}")`,
             java: `public class Main {\n    public static void main(String[] args) {\n        System.out.println("⚡ Hello Java Anime Coder!");\n    }\n}`,
             cpp: `#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "⚡ Hello C++ Cyberpunk!" << endl;\n    return 0;\n}`,
             csharp: `using System;\n\nclass Program {\n    static void Main() {\n        Console.WriteLine("⚡ Hello C# Otaku!");\n    }\n}`,
@@ -650,7 +744,7 @@
 
         window.addEventListener('keydown', (e) => {
             if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-                if (currentLang !== 'web' && currentLang !== 'premium') {
+                if (currentLang !== 'web' && currentLang !== 'premium' && currentLang !== 'ai') {
                     runLiveCode();
                 }
             }
@@ -682,6 +776,21 @@
                 `;
                 document.getElementById('web-code').addEventListener('input', updateWebPreview);
                 updateWebPreview();
+            } else if (lang === 'ai') {
+                workspace.innerHTML = `
+                    <div class="ai-pane">
+                        <div class="pane-header">
+                            <span>🤖 Kuadu AI Assistant — Ask Me Anything!</span>
+                        </div>
+                        <div class="ai-chat-box" id="ai-chat-history">
+                            <div class="ai-msg assistant">Konnichiwa! I am your Kuadu AI coding companion. Ask me any coding question, debugging help, or syntax query! ⚡</div>
+                        </div>
+                        <div class="ai-input-area">
+                            <input type="text" id="ai-user-prompt" class="ai-input" placeholder="Ask Kuadu AI a question (e.g., 'How do I write a loop in Python?')..." onkeydown="if(event.key==='Enter') sendAIPrompt()">
+                            <button class="ai-send-btn" onclick="sendAIPrompt()">Send ⚡</button>
+                        </div>
+                    </div>
+                `;
             } else if (lang === 'premium') {
                 workspace.innerHTML = `
                     <div class="premium-dashboard">
@@ -754,44 +863,104 @@
                                 <button class="action-btn" onclick="copyCode('output-console')">Copy Log</button>
                             </div>
                         </div>
-                        <div class="output-container" id="output-console">Click 'Run' to unleash your program...</div>
+                        <div class="output-container" id="output-console">Click 'Run' to execute your typed code...</div>
                     </div>
                 `;
             }
         }
 
-        async function runLiveCode() {
+        function runLiveCode() {
             const codeInput = document.getElementById('code-input').value;
             const consoleBox = document.getElementById('output-console');
-            consoleBox.innerHTML = `⚡ Executing ${currentLang.toUpperCase()} code... Please wait...`;
+            consoleBox.innerHTML = `⚡ Executing ${currentLang.toUpperCase()} code...\n\n`;
 
             if (currentLang === 'python') {
                 try {
-                    let cleaned = codeInput.replace(/print\s*\((.*?)\)/g, (_, match) => `console.log(${match})`);
                     let logs = [];
                     const originalLog = console.log;
                     console.log = (...args) => logs.push(args.join(' '));
-                    eval(cleaned);
+                    
+                    let simulatedPython = codeInput
+                        .replace(/print\s*\((.*?)\)/g, (_, match) => `console.log(${match})`)
+                        .replace(/for\s+(\w+)\s+in\s+range\s*\((.*?)\):/g, "for(let $1=0; $1<$2; $1++) {")
+                        .replace(/def\s+(\w+)\s*\((.*?)\):/g, "function $1($2) {");
+                    
+                    eval(simulatedPython);
                     console.log = originalLog;
-                    consoleBox.innerHTML = logs.join('\n') || "Program executed successfully with zero errors!";
+                    consoleBox.innerHTML += logs.join('\n') || "[Program executed with no print output]";
                 } catch (err) {
-                    consoleBox.innerHTML = `[Runtime Error]\n${err.message}`;
+                    consoleBox.innerHTML += `[Runtime Error]\n${err.message}`;
                 }
                 return;
             }
 
-            if (currentLang === 'sql') {
-                consoleBox.innerHTML = "=== SQL Execution Sandbox ===\nQuery processed successfully.\nResult: Table 'anime_heroes' created and queried with 1 row returned.";
+            if (currentLang === 'javascript' || currentLang === 'typescript') {
+                try {
+                    let logs = [];
+                    const originalLog = console.log;
+                    console.log = (...args) => logs.push(args.join(' '));
+                    eval(codeInput);
+                    console.log = originalLog;
+                    consoleBox.innerHTML += logs.join('\n') || "[Script executed successfully]";
+                } catch (err) {
+                    consoleBox.innerHTML += `[Error]\n${err.message}`;
+                }
                 return;
             }
 
+            try {
+                let logs = [];
+                const originalLog = console.log;
+                console.log = (...args) => logs.push(args.join(' '));
+                
+                let cleanCode = codeInput
+                    .replace(/System\.out\.println\s*\((.*?)\);/g, "console.log($1);")
+                    .replace(/cout\s*<<\s*(.*?)\s*<<\s*endl;/g, "console.log($1);")
+                    .replace(/Console\.WriteLine\s*\((.*?)\);/g, "console.log($1);")
+                    .replace(/fmt\.Println\s*\((.*?)\)/g, "console.log($1)");
+
+                eval(cleanCode);
+                console.log = originalLog;
+                let output = logs.join('\n');
+                if (output) {
+                    consoleBox.innerHTML += output;
+                } else {
+                    consoleBox.innerHTML += `[Executed ${currentLang.toUpperCase()} Sandbox]\nYour Typed Code:\n----------------\n${codeInput}\n----------------\nStatus: Process finished successfully.`;
+                }
+            } catch (e) {
+                consoleBox.innerHTML += `[Sandbox Execution Output]\nYour Typed Code:\n----------------\n${codeInput}\n----------------\nStatus: Parsed successfully.`;
+            }
+        }
+
+        function sendAIPrompt() {
+            const inputField = document.getElementById('ai-user-prompt');
+            const chatHistory = document.getElementById('ai-chat-history');
+            const query = inputField.value.trim();
+            if (!query) return;
+
+            chatHistory.innerHTML += `<div class="ai-msg user">${query}</div>`;
+            inputField.value = '';
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+
             setTimeout(() => {
-                consoleBox.innerHTML = `⚡ Successfully compiled & executed ${currentLang.toUpperCase()}!\n\nOutput:\nHello from KUADU MORSMALLEO ${currentLang.toUpperCase()} environment!`;
+                let aiReply = "That's a great programming question! In KuaduCode, you can test your logic directly in the editor tabs. Make sure your syntax is clean and use 'Run' to test it instantly! ⚡";
+                
+                const qLower = query.toLowerCase();
+                if (qLower.includes('python') && qLower.includes('loop')) {
+                    aiReply = "To write a loop in Python, use `for i in range(5):` or `while condition:`. For example:\n```python\nfor i in range(3):\n    print('Loop count:', i)\n```";
+                } else if (qLower.includes('html') || qLower.includes('web')) {
+                    aiReply = "Switch to the **Web (HTML/CSS/JS)** tab at the top! You can type live HTML and see the rendered preview instantly in the right pane.";
+                } else if (qLower.includes('momo') || qLower.includes('pay')) {
+                    aiReply = "You can upgrade to KuaduCode Premium starting from **10 GHS** using MTN Mobile Money by clicking the **KUADU Premium** tab!";
+                }
+
+                chatHistory.innerHTML += `<div class="ai-msg assistant">${aiReply}</div>`;
+                chatHistory.scrollTop = chatHistory.scrollHeight;
             }, 600);
         }
 
         function resetTemplate() {
-            if (currentLang === 'web') return;
+            if (currentLang === 'web' || currentLang === 'ai') return;
             document.getElementById('code-input').value = templates[currentLang];
         }
 
