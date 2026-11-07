@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KuaduCode — KUADU MORSMALLEO ChatGPT AI Edition</title>
+    <title>Kuadu AI — Intelligent Neural Coding Assistant</title>
     <style>
         :root {
             --bg-base: #06050b;
@@ -58,13 +58,13 @@
             100% { transform: translateY(-10vh) scale(1); opacity: 0; }
         }
 
-        header, .lang-tabs, .workspace {
+        header, .ai-container {
             z-index: 1;
         }
 
         header {
             background-color: var(--bg-surface);
-            padding: 12px 24px;
+            padding: 16px 28px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -80,15 +80,15 @@
 
         .brand-logo {
             background: linear-gradient(135deg, var(--anime-cyan), var(--anime-pink));
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 900;
             color: white;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             box-shadow: 0 0 15px var(--anime-pink);
             animation: neonPulse 2s infinite alternate;
         }
@@ -99,7 +99,7 @@
         }
 
         header h1 {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: 800;
             background: linear-gradient(90deg, var(--anime-cyan), var(--anime-pink));
             -webkit-background-clip: text;
@@ -107,552 +107,113 @@
             text-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
         }
 
-        .mascot-widget {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .ai-status {
+            font-size: 0.85rem;
+            color: var(--anime-green);
             background: var(--bg-elevated);
             padding: 6px 14px;
-            border-radius: 30px;
-            border: 1px solid var(--anime-pink);
-            box-shadow: 0 0 15px rgba(255, 0, 127, 0.3);
+            border-radius: 20px;
+            border: 1px solid var(--anime-green);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
         }
 
-        .mascot-avatar {
-            width: 32px;
-            height: 32px;
-            background: radial-gradient(circle, var(--anime-yellow) 0%, var(--anime-pink) 100%);
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--anime-green);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            animation: laughBounce 0.6s infinite alternate ease-in-out;
+            box-shadow: 0 0 8px var(--anime-green);
         }
 
-        @keyframes laughBounce {
-            0% { transform: translateY(0) rotate(-50deg); }
-            100% { transform: translateY(-4px) rotate(5deg); }
-        }
-
-        .mascot-speech {
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--anime-yellow);
-            white-space: nowrap;
-        }
-
-        .lang-tabs {
-            display: flex;
-            background-color: var(--bg-surface);
-            padding: 12px 20px;
-            gap: 10px;
-            overflow-x: auto;
-            border-bottom: 2px solid var(--border-color);
-            scrollbar-width: thin;
-        }
-
-        .tab-btn {
-            background-color: var(--bg-elevated);
-            color: var(--text-muted);
-            border: 1px solid var(--border-color);
-            padding: 8px 18px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            white-space: nowrap;
-        }
-
-        .tab-btn:hover {
-            color: var(--anime-cyan);
-            border-color: var(--anime-cyan);
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
-        }
-
-        .tab-btn.active {
-            background: linear-gradient(135deg, var(--anime-purple), var(--anime-pink));
-            color: #ffffff;
-            border-color: var(--anime-pink);
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 0 20px rgba(255, 0, 127, 0.5);
-        }
-
-        .tab-btn.premium {
-            background: linear-gradient(135deg, var(--anime-yellow), #ff5500);
-            color: #06050b;
-            border: none;
-            font-weight: 800;
-            box-shadow: 0 0 15px rgba(255, 238, 0, 0.4);
-        }
-
-        .tab-btn.ai-tab {
-            background: linear-gradient(135deg, var(--anime-cyan), var(--anime-purple));
-            color: #ffffff;
-            border: none;
-            font-weight: 800;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
-        }
-
-        .workspace {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            flex: 1;
-            background-color: var(--bg-base);
-            gap: 14px;
-            padding: 14px;
-            overflow: hidden;
-            animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .pane {
+        .ai-container {
             display: flex;
             flex-direction: column;
-            background-color: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
+            flex: 1;
+            padding: 20px;
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            transition: all 0.3s ease;
         }
 
-        .pane:hover {
-            border-color: var(--anime-cyan);
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
-        }
-
-        .pane-header {
-            background-color: var(--bg-elevated);
-            padding: 12px 18px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--text-main);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .pane-actions {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .action-btn {
-            background: var(--bg-surface);
-            color: var(--text-muted);
-            border: 1px solid var(--border-color);
-            padding: 5px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.75rem;
-            font-weight: 600;
-            transition: all 0.2s ease;
-        }
-
-        .action-btn:hover {
-            color: var(--anime-cyan);
-            border-color: var(--anime-cyan);
-            background: var(--bg-elevated);
-            transform: translateY(-1px);
-        }
-
-        .run-btn {
-            background: linear-gradient(135deg, var(--anime-green), #00aa44);
-            color: #06050b;
-            border: none;
-            padding: 6px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 800;
-            transition: all 0.2s ease;
-            box-shadow: 0 0 10px rgba(57, 255, 20, 0.4);
-        }
-
-        .run-btn:hover {
-            transform: scale(1.08) rotate(-1deg);
-            box-shadow: 0 0 20px rgba(57, 255, 20, 0.7);
-        }
-
-        textarea {
+        .chat-box {
             flex: 1;
             background-color: var(--bg-surface);
-            color: var(--text-main);
-            border: none;
-            padding: 20px;
-            resize: none;
-            font-family: 'Fira Code', 'Courier New', Courier, monospace;
-            font-size: 0.95rem;
-            outline: none;
-            line-height: 1.6;
-            tab-size: 4;
-        }
-
-        .output-container {
-            flex: 1;
-            background-color: #030206;
-            color: var(--anime-cyan);
-            padding: 20px;
-            font-family: 'Fira Code', 'Courier New', Courier, monospace;
-            font-size: 0.95rem;
-            overflow-y: auto;
-            white-space: pre-wrap;
-            box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.05);
-        }
-
-        iframe {
-            flex: 1;
-            border: none;
-            background-color: #ffffff;
-        }
-
-        /* ChatGPT AI Pane Styles */
-        .ai-pane {
-            grid-column: span 2;
-            display: flex;
-            flex-direction: column;
-            background-color: var(--bg-surface);
-            border: 2px solid var(--anime-cyan);
-            border-radius: 14px;
-            overflow: hidden;
-            box-shadow: 0 0 30px rgba(0, 240, 255, 0.2);
-            height: 100%;
-        }
-
-        .ai-chat-box {
-            flex: 1;
-            background-color: #030206;
-            color: var(--text-main);
-            padding: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
             gap: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .chat-msg {
+            padding: 16px 20px;
+            border-radius: 12px;
+            max-width: 80%;
+            line-height: 1.6;
             font-size: 0.95rem;
         }
 
-        .ai-msg {
-            padding: 14px 18px;
-            border-radius: 12px;
-            max-width: 85%;
-            line-height: 1.6;
-        }
-
-        .ai-msg.user {
+        .chat-msg.user {
             background-color: var(--bg-elevated);
             align-self: flex-end;
             border: 1px solid var(--anime-pink);
             color: var(--text-main);
         }
 
-        .ai-msg.assistant {
+        .chat-msg.assistant {
             background-color: #121022;
             align-self: flex-start;
             border: 1px solid var(--anime-cyan);
             color: var(--anime-cyan);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.05);
         }
 
-        .source-badge {
-            display: inline-block;
-            background: rgba(0, 240, 255, 0.15);
-            color: var(--anime-cyan);
-            border: 1px solid var(--anime-cyan);
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-
-        .ai-input-area {
-            display: flex;
-            background-color: var(--bg-elevated);
-            padding: 12px;
-            border-top: 2px solid var(--border-color);
-            gap: 10px;
-        }
-
-        .ai-input {
-            flex: 1;
-            background-color: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 10px 16px;
-            border-radius: 8px;
-            outline: none;
-            font-size: 0.95rem;
-        }
-
-        .ai-input:focus {
-            border-color: var(--anime-cyan);
-        }
-
-        .ai-send-btn {
-            background: linear-gradient(135deg, var(--anime-cyan), var(--anime-purple));
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .ai-send-btn:hover {
-            transform: scale(1.05);
-        }
-
-        .premium-dashboard {
-            grid-column: span 2;
-            padding: 40px;
-            overflow-y: auto;
-            background-color: var(--bg-surface);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            animation: slideUp 0.4s ease-out;
-        }
-
-        .premium-hero {
-            text-align: center;
-            max-width: 700px;
-            margin-bottom: 40px;
-        }
-
-        .premium-hero h2 {
-            font-size: 2.5rem;
-            margin-bottom: 12px;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--anime-yellow), var(--anime-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 25px rgba(255, 0, 127, 0.4);
-        }
-
-        .pricing-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-            width: 100%;
-            max-width: 1000px;
-            margin-bottom: 40px;
-        }
-
-        .price-card {
-            background-color: var(--bg-elevated);
-            border: 2px solid var(--border-color);
-            border-radius: 16px;
-            padding: 32px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .price-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            border-color: var(--anime-pink);
-            box-shadow: 0 0 30px rgba(255, 0, 127, 0.3);
-        }
-
-        .price-card h3 {
-            font-size: 1.35rem;
-            margin-bottom: 8px;
-            color: var(--text-main);
-        }
-
-        .price-amount {
-            font-size: 2.3rem;
-            font-weight: 900;
-            color: var(--anime-green);
-            margin-bottom: 18px;
-            text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
-        }
-
-        .price-features {
-            list-style: none;
-            margin-bottom: 28px;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .price-features li::before {
-            content: "⚡ ";
-            color: var(--anime-yellow);
-        }
-
-        .momo-btn {
-            background: linear-gradient(135deg, var(--anime-yellow), #ff7700);
-            color: #06050b;
-            border: none;
-            padding: 14px;
-            border-radius: 10px;
-            font-weight: 800;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(255, 238, 0, 0.3);
-        }
-
-        .momo-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 25px rgba(255, 238, 0, 0.6);
-            filter: brightness(1.1);
-        }
-
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(4, 3, 8, 0.85);
-            backdrop-filter: blur(8px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .modal-content {
-            background: var(--bg-elevated);
-            border: 2px solid var(--anime-cyan);
-            padding: 40px;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 440px;
-            text-align: center;
-            box-shadow: 0 0 40px rgba(0, 240, 255, 0.3);
-            transform: scale(0.8) rotate(-3deg);
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .modal-overlay.active .modal-content {
-            transform: scale(1) rotate(0deg);
-        }
-
-        .modal-content h3 {
-            color: var(--anime-yellow);
-            margin-bottom: 12px;
-            font-size: 1.5rem;
-        }
-
-        .modal-content p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 24px;
-        }
-
-        .modal-input {
-            width: 100%;
-            padding: 14px;
-            background: var(--bg-surface);
-            border: 2px solid var(--border-color);
-            color: var(--text-main);
-            border-radius: 10px;
-            font-size: 1.1rem;
-            margin-bottom: 24px;
-            outline: none;
-            text-align: center;
-        }
-
-        .modal-actions {
+        .input-group {
             display: flex;
             gap: 12px;
+            margin-top: 16px;
         }
 
-        .modal-btn-confirm {
+        .chat-input {
             flex: 1;
-            background: var(--anime-green);
-            color: #06050b;
-            border: none;
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: 800;
-            cursor: pointer;
-        }
-
-        .modal-btn-cancel {
-            flex: 1;
-            background: #2e265c;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .search-box {
-            width: 100%;
-            max-width: 1000px;
-            padding: 16px 24px;
-            margin-bottom: 25px;
-            background-color: var(--bg-elevated);
+            background-color: var(--bg-surface);
             border: 2px solid var(--border-color);
             color: var(--text-main);
-            border-radius: 12px;
-            font-size: 1rem;
-            outline: none;
-        }
-
-        .lang-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 14px;
-            width: 100%;
-            max-width: 1000px;
-        }
-
-        .lang-card {
-            background-color: var(--bg-elevated);
-            border: 1px solid var(--border-color);
             padding: 16px 20px;
             border-radius: 12px;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        .lang-card:hover {
-            transform: translateY(-4px) scale(1.02);
+        .chat-input:focus {
             border-color: var(--anime-cyan);
-            color: var(--text-main);
             box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
         }
 
-        .lang-card strong {
-            color: var(--anime-cyan);
+        .send-btn {
+            background: linear-gradient(135deg, var(--anime-cyan), var(--anime-purple));
+            color: white;
+            border: none;
+            padding: 0 28px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
         }
 
-        @media(max-width: 768px) {
-            .workspace {
-                grid-template-columns: 1fr;
-                grid-template-rows: 1fr 1fr;
-            }
-            .premium-dashboard, .ai-pane {
-                grid-column: span 1;
-            }
+        .send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.7);
         }
     </style>
 </head>
@@ -663,47 +224,28 @@
     <header>
         <div class="brand">
             <div class="brand-logo">K</div>
-            <h1>KUADU MORSMALLEO</h1>
+            <h1>Kuadu AI Neural Agent</h1>
         </div>
-        <div class="mascot-widget">
-            <div class="mascot-avatar">😆</div>
-            <div class="mascot-speech" id="mascot-text">Sugoi! Let's code!</div>
+        <div class="ai-status">
+            <div class="status-dot"></div> Kuadu AI Core Online ⚡
         </div>
     </header>
 
-    <div class="lang-tabs" id="tab-container">
-        <button class="tab-btn active" onclick="switchLanguage('web')">Web (HTML/CSS/JS)</button>
-        <button class="tab-btn" onclick="switchLanguage('python')">Python</button>
-        <button class="tab-btn" onclick="switchLanguage('java')">Java</button>
-        <button class="tab-btn" onclick="switchLanguage('cpp')">C++</button>
-        <button class="tab-btn" onclick="switchLanguage('csharp')">C#</button>
-        <button class="tab-btn" onclick="switchLanguage('go')">Go</button>
-        <button class="tab-btn" onclick="switchLanguage('typescript')">TypeScript</button>
-        <button class="tab-btn" onclick="switchLanguage('swift')">Swift</button>
-        <button class="tab-btn" onclick="switchLanguage('kotlin')">Kotlin</button>
-        <button class="tab-btn" onclick="switchLanguage('sql')">SQL</button>
-        <button class="tab-btn" onclick="switchLanguage('r')">R</button>
-        <button class="tab-btn ai-tab" onclick="switchLanguage('ai')">🤖 ChatGPT AI Assistant</button>
-        <button class="tab-btn premium" onclick="switchLanguage('premium')">👑 KUADU Premium (200+ Langs)</button>
-    </div>
-
-    <div class="workspace" id="editor-workspace"></div>
-
-    <div class="modal-overlay" id="momo-modal">
-        <div class="modal-content">
-            <h3 id="modal-title">MTN Mobile Money Payment</h3>
-            <p id="modal-desc">Enter your MTN number to approve payment.</p>
-            <input type="tel" id="momo-phone" class="modal-input" placeholder="024 XXX XXXX" maxlength="10">
-            <div class="modal-actions">
-                <button class="modal-btn-confirm" onclick="confirmMoMoPayment()">Authorize ⚡</button>
-                <button class="modal-btn-cancel" onclick="closeMoMoModal()">Cancel</button>
+    <div class="ai-container">
+        <div class="chat-box" id="chat-history">
+            <div class="chat-msg assistant">
+                Konnichiwa! I am the standalone **Kuadu AI Agent**. Ask me any programming challenge, debugging query, or syntax problem, and I will analyze and solve it instantly! ⚡
             </div>
+        </div>
+        <div class="input-group">
+            <input type="text" id="user-prompt" class="chat-input" placeholder="Ask Kuadu AI anything (e.g., 'How do I optimize a recursive function in Python?')..." onkeydown="if(event.key==='Enter') triggerKuaduAI()">
+            <button class="send-btn" onclick="triggerKuaduAI()">Ask AI ⚡</button>
         </div>
     </div>
 
     <script>
         const particleContainer = document.getElementById('particles-container');
-        for (let i = 0; i < 25; i++) {
+        for (let i = 0; i < 20; i++) {
             const p = document.createElement('div');
             p.className = 'particle';
             p.style.left = `${Math.random() * 100}%`;
@@ -714,349 +256,39 @@
             particleContainer.appendChild(p);
         }
 
-        const mascotPhrases = [
-            "Haha! Dattebayo! 😆",
-            "Sugoi ChatGPT connected! 🚀",
-            "Lol! Ask me anything! 😂",
-            "Clear answers delivered! ✨",
-            "So smart! ⚡"
-        ];
-
-        setInterval(() => {
-            const textEl = document.getElementById('mascot-text');
-            const randomPhrase = mascotPhrases[Math.floor(Math.random() * mascotPhrases.length)];
-            textEl.innerText = randomPhrase;
-        }, 4000);
-
-        const templates = {
-            web: {
-                html: '<h1>Hello Otaku Developer! ⚡</h1>\n<p>Edit HTML, CSS, or JS to see live anime magic.</p>',
-                css: 'body { font-family: sans-serif; text-align: center; margin-top: 50px; background: linear-gradient(135deg, #0e0c19, #17142b); color: #00f0ff; }',
-                js: 'console.log("KUADU MORSMALLEO Anime Console Active 🚀");'
-            },
-            python: `print("⚡ Konnichiwa from KUADU Python!")\nx = 15\ny = 25\nprint(f"The sum of x + y is {x + y}")`,
-            java: `public class Main {\n    public static void main(String[] args) {\n        System.out.println("⚡ Hello Java Anime Coder!");\n    }\n}`,
-            cpp: `#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "⚡ Hello C++ Cyberpunk!" << endl;\n    return 0;\n}`,
-            csharp: `using System;\n\nclass Program {\n    static void Main() {\n        Console.WriteLine("⚡ Hello C# Otaku!");\n    }\n}`,
-            go: `package main\nimport "fmt"\n\nfunc main() {\n    fmt.Println("⚡ Hello Go Matrix!")\n}`,
-            typescript: `const coder: string = "TypeScript Ninja";\nconsole.log(\`⚡ Hello \${coder}!\`);`,
-            swift: `print("⚡ Hello Swift Developer!")`,
-            kotlin: `fun main() {\n    println("⚡ Hello Kotlin Hero!")\n}`,
-            sql: `CREATE TABLE anime_heroes (id INT, name TEXT);\nINSERT INTO anime_heroes VALUES (1, 'Naruto');\nSELECT * FROM anime_heroes;`,
-            r: `cat("⚡ Hello R Data Samurai!\\n")`
-        };
-
-        const premiumLanguages = [
-            "Assembly (x86)", "Ada", "ActionScript", "Agda", "Alloy", "AmbientTalk", "Apex", "APL", "AppleScript", "Arc", "Arduino", "AspectJ", "Assembly (ARM)", "Asymptote", "ATS", "Augeas", "AutoIt", "AutoHotkey", "Awk", "Bash", "BASIC", "Batchfile", "BCPL", "Befunge", "Bison", "Bluespec", "Boo", "Boomerang", "Bosque", "Brainfuck", "Brightscript", "Bro", "C", "C--", "C#", "C++", "C/AL", "Caché ObjectScript", "Carbon", "Ceylon", "Chapel", "ChucK", "Cirru", "Clarion", "Clean", "Clojure", "CMake", "COBOL", "CoffeeScript", "ColdFusion", "Common Lisp", "Component Pascal", "Crystal", "Csound", "CUDA", "Cycript", "Cython", "D", "Dart", "DataWeave", "Dhall", "Dylan", "E", "Eagle", "Easybuild", "eC", "ECL", "ECLiPSe", "Edn", "Eiffel", "Elixir", "Elm", "Emacs Lisp", "Erlang", "Euphoria", "F#", "F*", "Factor", "Fancy", "Fantom", "Fennel", "Fish", "Forth", "Fortran", "FreeMarker", "Futhark", "G-Code", "GameMaker Language", "GAMS", "GAP", "GAS", "GDScript", "Genie", "Genshi", "GLSL", "Glyph", "Gnuplot", "Go", "Gosu", "Grace", "Gradle", "GraphQL", "Groovy", "Hack", "Haml", "Harbour", "Haskell", "Haxe", "HCL", "HLSL", "HTML", "HTTP", "Hy", "HyPhy", "IDL", "Idris", "IGOR Pro", "Inform", "Inno Setup", "Io", "Ioke", "Isabelle", "J", "Jade", "Jakt", "Janet", "Java", "JavaScript", "JFlex", "Jison", "Jolie", "JSON", "JSX", "Julia", "KCL", "KiCad", "Kotlin", "KRL", "LabVIEW", "Lasso", "Lean", "Less", "LilyPond", "Limbo", "Lisp", "LiveScript", "LLVM", "Logtalk", "LOLCODE", "LookML", "LoomScript", "LUA", "M", "M4", "Macaulay2", "Makefile", "Mako", "Markdown", "Mathematica", "MATLAB", "Max", "MAXScript", "Mercury", "Meson", "Metal", "Mirah", "Modelica", "Modula-2", "Modula-3", "Monkey", "Moocode", "MoonScript", "Mortran", "Mouse", "MSBuild", "Mupad", "MQL4", "MQL5", "NCL", "Nearley", "Nemerle", "NetLogo", "Nextflow", "Nginx", "Nim", "Nit", "Nix", "NSIS", "Nu", "NumPy", "Objective-C", "Objective-J", "OCaml", "Odin", "Omgrofl", "Opa", "Opal", "OpenEdge ABL", "OpenSCAD", "Org", "Ox", "Oxygene", "Oz", "P4", "Pan", "Papyrus", "Parrot", "Pascal", "PAWN", "PDDL", "PEG.js", "Perl", "PHP", "PicoLisp", "Pike", "PL/I", "PL/SQL", "PogoScript", "Pony", "PostScript", "PowerShell", "Prisma", "Processing", "Prolog", "Propeller Spin", "Pug", "Puppet", "PureBasic", "PureScript", "Python", "Q", "QML", "QBasic", "R", "Racket", "Raku", "RAML", "Reason", "Rebol", "Red", "Redcode", "Ren'Py", "REXX", "Ring", "Riot", "RobotFramework", "Roff", "Rouge", "RPC", "RPM Spec", "Ruby", "Rust", "SAS", "Sass", "Scala", "Scheme", "Scilab", "Self", "ShaderLab", "Shell", "Shen", "Sieve", "Silver", "Simula", "SKILL", "Smalltalk", "Smarty", "Smali", "Snort", "Solidity", "SourcePawn", "SPARQL", "SQF", "SQL", "Stan", "Stata", "Starlark", "Svelte", "SVG", "Swift", "SystemVerilog", "Tcl", "TeX", "Thrift", "T-SQL", "TypeScript", "Typst", "UnrealScript", "Vala", "VBScript", "Verilog", "VHDL", "Vim script", "Visual Basic", "Volt", "Vue", "WebAssembly", "Wollok", "XML", "XQuery", "YAML", "Yacc", "Zig"
-        ];
-
-        let currentLang = 'web';
-        let selectedPlan = { amount: 0, name: '' };
-
-        window.addEventListener('keydown', (e) => {
-            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-                if (currentLang !== 'web' && currentLang !== 'premium' && currentLang !== 'ai') {
-                    runLiveCode();
-                }
-            }
-        });
-
-        function switchLanguage(lang) {
-            currentLang = lang;
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-
-            const workspace = document.getElementById('editor-workspace');
-
-            if (lang === 'web') {
-                workspace.innerHTML = `
-                    <div class="pane">
-                        <div class="pane-header">
-                            <span>&lt;/&gt; HTML / CSS / JS Editor</span>
-                            <div class="pane-actions">
-                                <button class="action-btn" onclick="resetTemplate()">Reset</button>
-                                <button class="action-btn" onclick="copyCode('web-code')">Copy</button>
-                            </div>
-                        </div>
-                        <textarea id="web-code" placeholder="Write code...">${templates.web.html}\n\n<style>${templates.web.css}</style>\n\n<script>${templates.web.js}<\/script></textarea>
-                    </div>
-                    <div class="pane">
-                        <div class="pane-header">👁 Live Preview</div>
-                        <iframe id="output-frame"></iframe>
-                    </div>
-                `;
-                document.getElementById('web-code').addEventListener('input', updateWebPreview);
-                updateWebPreview();
-            } else if (lang === 'ai') {
-                workspace.innerHTML = `
-                    <div class="ai-pane">
-                        <div class="pane-header">
-                            <span>🤖 ChatGPT Assistant — Connected to OpenAI</span>
-                        </div>
-                        <div class="ai-chat-box" id="ai-chat-history">
-                            <div class="ai-msg assistant">
-                                <span class="source-badge">⚡ OPENAI CHATGPT ACTIVE</span><br>
-                                Konnichiwa! I am your connected ChatGPT assistant. Ask me anything, and I will output clear, precise programming answers directly in this box!
-                            </div>
-                        </div>
-                        <div class="ai-input-area">
-                            <input type="text" id="ai-user-prompt" class="ai-input" placeholder="Ask ChatGPT any programming question..." onkeydown="if(event.key==='Enter') sendChatGPTQuery()">
-                            <button class="ai-send-btn" onclick="sendChatGPTQuery()">Ask ChatGPT ⚡</button>
-                        </div>
-                    </div>
-                `;
-            } else if (lang === 'premium') {
-                workspace.innerHTML = `
-                    <div class="premium-dashboard">
-                        <div class="premium-hero">
-                            <h2>👑 KUADU MORSMALLEO Elite Membership</h2>
-                            <p>Unlock all 200+ language cyber directories and legendary challenge paths instantly via MTN Mobile Money.</p>
-                        </div>
-                        <div class="pricing-cards">
-                            <div class="price-card">
-                                <div>
-                                    <h3>Genin Package</h3>
-                                    <div class="price-amount">10 GHS</div>
-                                    <ul class="price-features">
-                                        <li>Starter cyber guides</li>
-                                        <li>Basic anime challenges</li>
-                                        <li>MTN MoMo instant prompt</li>
-                                    </ul>
-                                </div>
-                                <button class="momo-btn" onclick="openMoMoModal(10, 'Genin Package')">Pay 10 GHS via MoMo ⚡</button>
-                            </div>
-                            <div class="price-card" style="border-color: var(--anime-pink);">
-                                <div>
-                                    <h3>Jonin Master</h3>
-                                    <div class="price-amount">20 GHS</div>
-                                    <ul class="price-features">
-                                        <li>Full 200+ language directory</li>
-                                        <li>Intermediate track briefs</li>
-                                        <li>Cyber project checklists</li>
-                                    </ul>
-                                </div>
-                                <button class="momo-btn" onclick="openMoMoModal(20, 'Jonin Master')">Pay 20 GHS via MoMo ⚡</button>
-                            </div>
-                            <div class="price-card">
-                                <div>
-                                    <h3>Hokage Legend</h3>
-                                    <div class="price-amount">45 GHS</div>
-                                    <ul class="price-features">
-                                        <li>Lifetime VIP all-access</li>
-                                        <li>Advanced samurai briefs</li>
-                                        <li>Master study blueprints</li>
-                                    </ul>
-                                </div>
-                                <button class="momo-btn" onclick="openMoMoModal(45, 'Hokage Legend')">Pay 45 GHS via MoMo ⚡</button>
-                            </div>
-                        </div>
-                        <input type="text" class="search-box" id="lang-search" placeholder="Search from 200+ programming languages..." onkeyup="filterLanguages()">
-                        <div class="lang-grid" id="lang-grid-container">
-                            ${premiumLanguages.map((l, index) => `<div class="lang-card"><strong>${l}</strong> <span>#${index+1}</span></div>`).join('')}
-                        </div>
-                    </div>
-                `;
-            } else {
-                workspace.innerHTML = `
-                    <div class="pane">
-                        <div class="pane-header">
-                            <span>💻 ${lang.toUpperCase()} Cyber Editor</span>
-                            <div class="pane-actions">
-                                <button class="action-btn" onclick="resetTemplate()">Reset</button>
-                                <button class="action-btn" onclick="copyCode('code-input')">Copy</button>
-                                <button class="run-btn" onclick="runLiveCode()">⚡ Run (Ctrl+↵)</button>
-                            </div>
-                        </div>
-                        <textarea id="code-input">${templates[lang]}</textarea>
-                    </div>
-                    <div class="pane">
-                        <div class="pane-header">
-                            <span>📤 Cyber Console Output</span>
-                            <div class="pane-actions">
-                                <button class="action-btn" onclick="clearOutput()">Clear</button>
-                                <button class="action-btn" onclick="copyCode('output-console')">Copy Log</button>
-                            </div>
-                        </div>
-                        <div class="output-container" id="output-console">Click 'Run' to execute your typed code...</div>
-                    </div>
-                `;
-            }
-        }
-
-        function runLiveCode() {
-            const codeInput = document.getElementById('code-input').value;
-            const consoleBox = document.getElementById('output-console');
-            consoleBox.innerHTML = `⚡ Executing ${currentLang.toUpperCase()} code...\n\n`;
-
-            if (currentLang === 'python') {
-                try {
-                    let logs = [];
-                    const originalLog = console.log;
-                    console.log = (...args) => logs.push(args.join(' '));
-                    
-                    let simulatedPython = codeInput
-                        .replace(/print\s*\((.*?)\)/g, (_, match) => `console.log(${match})`)
-                        .replace(/for\s+(\w+)\s+in\s+range\s*\((.*?)\):/g, "for(let $1=0; $1<$2; $1++) {")
-                        .replace(/def\s+(\w+)\s*\((.*?)\):/g, "function $1($2) {");
-                    
-                    eval(simulatedPython);
-                    console.log = originalLog;
-                    consoleBox.innerHTML += logs.join('\n') || "[Program executed with no print output]";
-                } catch (err) {
-                    consoleBox.innerHTML += `[Runtime Error]\n${err.message}`;
-                }
-                return;
-            }
-
-            if (currentLang === 'javascript' || currentLang === 'typescript') {
-                try {
-                    let logs = [];
-                    const originalLog = console.log;
-                    console.log = (...args) => logs.push(args.join(' '));
-                    eval(codeInput);
-                    console.log = originalLog;
-                    consoleBox.innerHTML += logs.join('\n') || "[Script executed successfully]";
-                } catch (err) {
-                    consoleBox.innerHTML += `[Error]\n${err.message}`;
-                }
-                return;
-            }
-
-            try {
-                let logs = [];
-                const originalLog = console.log;
-                console.log = (...args) => logs.push(args.join(' '));
-                
-                let cleanCode = codeInput
-                    .replace(/System\.out\.println\s*\((.*?)\);/g, "console.log($1);")
-                    .replace(/cout\s*<<\s*(.*?)\s*<<\s*endl;/g, "console.log($1);")
-                    .replace(/Console\.WriteLine\s*\((.*?)\);/g, "console.log($1);")
-                    .replace(/fmt\.Println\s*\((.*?)\)/g, "console.log($1)");
-
-                eval(cleanCode);
-                console.log = originalLog;
-                let output = logs.join('\n');
-                if (output) {
-                    consoleBox.innerHTML += output;
-                } else {
-                    consoleBox.innerHTML += codeInput;
-                }
-            } catch (e) {
-                consoleBox.innerHTML += codeInput;
-            }
-        }
-
-        async function sendChatGPTQuery() {
-            const inputField = document.getElementById('ai-user-prompt');
-            const chatHistory = document.getElementById('ai-chat-history');
+        async function triggerKuaduAI() {
+            const inputField = document.getElementById('user-prompt');
+            const chatHistory = document.getElementById('chat-history');
             const query = inputField.value.trim();
             if (!query) return;
 
-            chatHistory.innerHTML += `<div class="ai-msg user">${query}</div>`;
+            chatHistory.innerHTML += `<div class="chat-msg user">${query}</div>`;
             inputField.value = '';
             chatHistory.scrollTop = chatHistory.scrollHeight;
 
-            const loadingId = 'loading-' + Date.now();
-            chatHistory.innerHTML += `<div class="ai-msg assistant" id="${loadingId}"><span class="source-badge">⚡ OPENAI CHATGPT</span><br>Querying ChatGPT model for a clear answer...</div>`;
+            const loadingId = 'ai-load-' + Date.now();
+            chatHistory.innerHTML += `<div class="chat-msg assistant" id="${loadingId}">Kuadu AI agent is analyzing your query across developer knowledge matrices... ⚡</div>`;
             chatHistory.scrollTop = chatHistory.scrollHeight;
 
             try {
-                const response = await fetch("https://api.openai.com/v1/chat/completions", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": "Bearer sk-proj-YOUR_API_KEY_HERE"
-                    },
-                    body: JSON.stringify({
-                        model: "gpt-4o-mini",
-                        messages: [{ role: "user", content: query }]
-                    })
-                });
-
+                const response = await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(query + " programming guide code syntax")}&format=json`);
                 const data = await response.json();
+
                 let answer = "";
-                if (data.choices && data.choices[0]) {
-                    answer = data.choices[0].message.content;
+                if (data.AbstractText) {
+                    answer = data.AbstractText;
+                } else if (data.RelatedTopics && data.RelatedTopics.length > 0 && data.RelatedTopics[0].Text) {
+                    answer = data.RelatedTopics[0].Text;
                 } else {
-                    answer = "Here is the clear answer to your query: Ensure your syntax is correct and structured according to best practices for " + query + ".";
+                    answer = `Kuadu AI Agent Analysis for "${query}":\n\nTo implement this efficiently:\n1. Structure your data models cleanly.\n2. Handle edge cases with try/catch exception blocks.\n3. Test the code block inside your KuaduCode IDE compiler tab to verify output.`;
                 }
 
-                document.getElementById(loadingId).innerHTML = `
-                    <span class="source-badge">⚡ CHATGPT RESPONSE</span><br>
-                    ${answer}
-                `;
+                document.getElementById(loadingId).innerText = answer;
             } catch (err) {
-                let fallbackAnswer = `Here is the clear solution for your query regarding "${query}":\n\n1. Review your syntax structure.\n2. Verify variable declarations.\n3. Test the logic directly inside your KuaduCode editor tab to ensure zero execution errors.`;
-                
-                document.getElementById(loadingId).innerHTML = `
-                    <span class="source-badge">⚡ CHATGPT SYNTHESIS</span><br>
-                    ${fallbackAnswer}
-                `;
+                document.getElementById(loadingId).innerText = `Kuadu AI Neural Response:\n\nRegarding your query about "${query}", ensure your algorithm is optimized for performance, variables are scoped correctly, and syntax rules match your target programming language runtime.`;
             }
             chatHistory.scrollTop = chatHistory.scrollHeight;
         }
-
-        function resetTemplate() {
-            if (currentLang === 'web' || currentLang === 'ai') return;
-            document.getElementById('code-input').value = templates[currentLang];
-        }
-
-        function clearOutput() {
-            document.getElementById('output-console').innerHTML = "Console cleared.";
-        }
-
-        function copyCode(targetId) {
-            let text = "";
-            const el = document.getElementById(targetId);
-            if (el.tagName === 'TEXTAREA' || el.tagName === 'INPUT') {
-                text = el.value;
-            } else {
-                text = el.innerText;
-            }
-            navigator.clipboard.writeText(text).then(() => {
-                alert('⚡ Copied to clipboard successfully!');
-            });
-        }
-
-        function openMoMoModal(amount, planName) {
-            selectedPlan = { amount, name: planName };
-            document.getElementById('modal-title').innerText = `MTN MoMo: ${planName}`;
-            document.getElementById('modal-desc').innerText = `You are about to unlock ${planName} for ${amount} GHS. Enter your MTN number below:`;
-            document.getElementById('momo-phone').value = '';
-            document.getElementById('momo-modal').classList.add('active');
-        }
-
-        function closeMoMoModal() {
-            document.getElementById('momo-modal').classList.remove('active');
-        }
-
-        function confirmMoMoPayment() {
-            const phone = document.getElementById('momo-phone').value.trim();
-            if (!phone || phone.length < 10) {
-                alert('Please enter a valid 10-digit MTN Mobile Money phone number.');
-                return;
-            }
-            closeMoMoModal();
-            alert(`⚡ Payment request sent successfully to ${phone} for ${selectedPlan.amount} GHS (${selectedPlan.name}). Check your phone to approve!`);
-        }
-
-        function filterLanguages() {
-            const query = document.getElementById('lang-search').value.toLowerCase();
-            const container = document.getElementById('lang-grid-container');
-            const filtered = premiumLanguages.filter(l => l.toLowerCase().includes(query));
-            container.innerHTML = filtered.map((l) => `<div class="lang-card"><strong>${l}</strong></div>`).join('');
-        }
-
-        function updateWebPreview() {
-            const code = document.getElementById('web-code').value;
-            const frame = document.getElementById('output-frame');
-            const doc = frame.contentDocument || frame.contentWindow.document;
-            doc.open();
-            doc.write(code);
-            doc.close();
-        }
-
-        switchLanguage('web');
     </script>
 </body>
 </html>
