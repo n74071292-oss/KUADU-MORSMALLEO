@@ -3,28 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuadu™ — Universal Code & AI Studio</title>
+    <title>KuaduCode™ — Universal Code & AI Studio</title>
     <style>
         :root {
-            --bg-deep: #09080f;
-            --bg-surface: #12101e;
-            --bg-panel: #1a172c;
-            --border-line: #2e2850;
-            --text-main: #f4f2ff;
-            --text-muted: #948fb8;
-            --kuadu-white: #ffffff;
-            --code-indigo: #7c3aed;
-            --accent-glow: #06b6d4;
-            --success-green: #10b981;
-            --code-text: #34d399;
-            --gold-gradient: linear-gradient(135deg, #f59e0b, #d97706);
+            --bg-deep: #131314;
+            --bg-surface: #1e1f20;
+            --bg-panel: #282a2c;
+            --border-line: #3c4043;
+            --text-main: #e3e3e3;
+            --text-muted: #c4c7c5;
+            --gemini-blue: #8ab4f8;
+            --gemini-gradient: linear-gradient(135deg, #4285f4, #9b72cb, #d96570);
+            --success-green: #81c995;
+            --code-text: #a8c7fa;
+            --gold-gradient: linear-gradient(135deg, #fbbc04, #fa7b17);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Google Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         body {
@@ -36,12 +35,12 @@
             overflow: hidden;
         }
 
-        /* Top Brand Header */
+        /* Top Brand Header matching Gemini aesthetic */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 24px;
+            padding: 12px 24px;
             background-color: var(--bg-surface);
             border-bottom: 1px solid var(--border-line);
         }
@@ -50,60 +49,37 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            font-weight: 800;
-            font-size: 1.2rem;
-            letter-spacing: 0.5px;
+            font-weight: 500;
+            font-size: 1.25rem;
+            letter-spacing: 0.2px;
+        }
+
+        .gemini-sparkle {
+            width: 24px;
+            height: 24px;
+            background: var(--gemini-gradient);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 12px rgba(66, 133, 244, 0.5);
+            animation: pulseSparkle 3s infinite ease-in-out;
+        }
+
+        @keyframes pulseSparkle {
+            0% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.1); filter: brightness(1.3); }
+            100% { transform: scale(1); filter: brightness(1); }
         }
 
         .brand-text {
-            display: flex;
-            align-items: center;
-        }
-
-        .brand-kuadu {
-            color: var(--kuadu-white);
-        }
-
-        .brand-code {
-            color: var(--code-indigo);
-        }
-
-        /* Interactive Animation Box */
-        .interactive-anim-box {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--code-indigo), var(--accent-glow));
-            box-shadow: 0 0 10px rgba(124, 58, 237, 0.6);
-            animation: pulseAnim 2.5s infinite ease-in-out;
-            cursor: pointer;
-        }
-
-        .anim-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #ffffff;
-            border-radius: 50%;
-            animation: innerPulse 1.2s infinite alternate;
-        }
-
-        @keyframes pulseAnim {
-            0% { transform: scale(1); box-shadow: 0 0 5px var(--code-indigo); }
-            50% { transform: scale(1.15); box-shadow: 0 0 15px var(--accent-glow), 0 0 25px var(--code-indigo); }
-            100% { transform: scale(1); box-shadow: 0 0 5px var(--code-indigo); }
-        }
-
-        @keyframes innerPulse {
-            0% { transform: scale(0.8); opacity: 0.7; }
-            100% { transform: scale(1.2); opacity: 1; }
+            background: var(--gemini-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
         }
 
         .header-controls {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             align-items: center;
         }
 
@@ -111,8 +87,8 @@
             background: var(--bg-panel);
             color: var(--text-main);
             border: 1px solid var(--border-line);
-            padding: 7px 16px;
-            border-radius: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
             cursor: pointer;
             font-size: 0.85rem;
             font-weight: 500;
@@ -120,31 +96,29 @@
         }
 
         .btn:hover {
-            border-color: var(--accent-glow);
+            background: #3c4043;
+            border-color: #5f6368;
         }
 
         .btn-action {
-            background: linear-gradient(135deg, var(--code-indigo), var(--accent-glow));
-            color: white;
+            background: var(--gemini-blue);
+            color: #131314;
             border: none;
             font-weight: 600;
         }
 
+        .btn-action:hover {
+            background: #aecbfa;
+        }
+
         .btn-premium {
             background: var(--gold-gradient);
-            color: #000;
+            color: #131314;
             font-weight: 700;
             border: none;
-            box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
-            animation: pulseGold 2s infinite alternate;
         }
 
-        @keyframes pulseGold {
-            0% { box-shadow: 0 0 5px rgba(245, 158, 11, 0.4); }
-            100% { box-shadow: 0 0 15px rgba(245, 158, 11, 0.8); }
-        }
-
-        /* Main Workspace Container */
+        /* Workspace Container */
         .workspace {
             display: flex;
             flex: 1;
@@ -153,7 +127,6 @@
             position: relative;
         }
 
-        /* Primary Workspace: Editor & Live Preview Side-by-Side */
         .main-editor-preview-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -169,7 +142,7 @@
             }
         }
 
-        /* Section 1: Code Editor with HTML, CSS, JS, PHP tabs */
+        /* Code Editor Section */
         .editor-section {
             display: flex;
             flex-direction: column;
@@ -182,7 +155,7 @@
             display: flex;
             background-color: var(--bg-surface);
             border-bottom: 1px solid var(--border-line);
-            padding-left: 10px;
+            padding-left: 12px;
         }
 
         .file-tab {
@@ -195,8 +168,8 @@
         }
 
         .file-tab.active {
-            color: var(--accent-glow);
-            border-bottom-color: var(--accent-glow);
+            color: var(--gemini-blue);
+            border-bottom-color: var(--gemini-blue);
             background-color: var(--bg-deep);
         }
 
@@ -214,7 +187,7 @@
             tab-size: 4;
         }
 
-        /* Section 2: Web Base Live Preview */
+        /* Live Preview Section */
         .preview-section {
             display: flex;
             flex-direction: column;
@@ -224,11 +197,11 @@
 
         .preview-bar {
             padding: 10px 16px;
-            background: #f1f5f9;
-            color: #334155;
+            background: #f1f3f4;
+            color: #202124;
             font-size: 0.8rem;
             font-weight: 600;
-            border-bottom: 1px solid #cbd5e1;
+            border-bottom: 1px solid #dadce0;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -242,20 +215,20 @@
             background: white;
         }
 
-        /* Section 3: AI Assistant Drawer (Top Right Panel) */
+        /* Kuaducode AI Drawer (Gemini Style) */
         .ai-drawer {
             position: absolute;
             top: 0;
-            right: -420px;
-            width: 400px;
+            right: -440px;
+            width: 420px;
             height: 100%;
             background-color: var(--bg-surface);
             border-left: 1px solid var(--border-line);
             display: flex;
             flex-direction: column;
-            transition: right 0.3s ease-in-out;
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 500;
-            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.6);
         }
 
         .ai-drawer.open {
@@ -263,59 +236,75 @@
         }
 
         .ai-header {
-            padding: 14px 16px;
-            font-size: 0.9rem;
+            padding: 16px 20px;
+            font-size: 1rem;
             font-weight: 600;
             border-bottom: 1px solid var(--border-line);
-            color: var(--accent-glow);
+            color: var(--text-main);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: var(--bg-panel);
+            background: var(--bg-surface);
+        }
+
+        .ai-title-flex {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .ai-close-btn {
             background: none;
             border: none;
             color: var(--text-muted);
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 50%;
+        }
+
+        .ai-close-btn:hover {
+            background: var(--bg-panel);
+            color: var(--text-main);
         }
 
         .chat-stream {
             flex: 1;
-            padding: 16px;
+            padding: 20px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 16px;
         }
 
         .chat-bubble {
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            line-height: 1.4;
-            max-width: 95%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            max-width: 90%;
             word-break: break-word;
         }
 
         .chat-bubble.assistant {
             background-color: var(--bg-panel);
-            border-left: 3px solid var(--code-indigo);
+            color: var(--text-main);
+            border-top-left-radius: 4px;
             align-self: flex-start;
+            border: 1px solid var(--border-line);
         }
 
         .chat-bubble.user {
-            background-color: rgba(124, 58, 237, 0.2);
-            border: 1px solid var(--border-line);
+            background-color: #2b3137;
+            color: var(--text-main);
+            border-top-right-radius: 4px;
             align-self: flex-end;
         }
 
         .chat-input-zone {
-            padding: 14px;
+            padding: 16px;
             border-top: 1px solid var(--border-line);
-            background-color: var(--bg-deep);
+            background-color: var(--bg-surface);
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -323,30 +312,48 @@
 
         .input-row {
             display: flex;
-            gap: 6px;
+            gap: 8px;
+            background: var(--bg-deep);
+            border: 1px solid var(--border-line);
+            border-radius: 24px;
+            padding: 6px 12px;
+            align-items: center;
+        }
+
+        .input-row:focus-within {
+            border-color: var(--gemini-blue);
         }
 
         .chat-text-input {
             flex: 1;
-            background: var(--bg-surface);
-            border: 1px solid var(--border-line);
-            padding: 8px 12px;
-            border-radius: 6px;
+            background: transparent;
+            border: none;
+            padding: 8px;
             color: var(--text-main);
             outline: none;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
         }
 
-        .chat-text-input:focus {
-            border-color: var(--accent-glow);
+        .send-btn {
+            background: var(--gemini-blue);
+            color: #131314;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
         }
 
         /* Premium Modal Styles */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(6, 5, 11, 0.85);
-            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(6px);
             display: none;
             justify-content: center;
             align-items: center;
@@ -360,17 +367,17 @@
         .modal-content {
             background: var(--bg-surface);
             border: 1px solid var(--border-line);
-            border-radius: 16px;
-            width: 480px;
+            border-radius: 24px;
+            width: 460px;
             max-width: 90%;
-            padding: 25px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+            padding: 30px;
+            box-shadow: 0 24px 48px rgba(0,0,0,0.8);
             position: relative;
         }
 
         .modal-close {
             position: absolute;
-            top: 15px; right: 20px;
+            top: 20px; right: 20px;
             background: none; border: none;
             color: var(--text-muted);
             font-size: 1.2rem;
@@ -378,90 +385,88 @@
         }
 
         .modal-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 6px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 8px;
             background: var(--gold-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .modal-subtitle {
-            font-size: 0.85rem;
+            font-size: 0.88rem;
             color: var(--text-muted);
-            margin-bottom: 16px;
+            margin-bottom: 20px;
+            line-height: 1.4;
         }
 
         .pricing-tiers {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 14px;
+            gap: 10px;
+            margin-bottom: 16px;
         }
 
         .tier-card {
             background: var(--bg-panel);
             border: 1px solid var(--border-line);
-            border-radius: 6px;
-            padding: 10px;
+            border-radius: 12px;
+            padding: 14px 10px;
             text-align: center;
             cursor: pointer;
+            transition: all 0.2s;
         }
 
         .tier-card.selected {
-            border-color: #f59e0b;
-            background: rgba(245, 158, 11, 0.1);
+            border-color: #fbbc04;
+            background: rgba(251, 188, 4, 0.08);
         }
 
         .tier-price {
             font-weight: 700;
-            font-size: 0.95rem;
-            color: #f59e0b;
-            margin-top: 2px;
+            font-size: 1rem;
+            color: #fbbc04;
+            margin-top: 4px;
         }
 
         .payment-methods {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            margin-bottom: 14px;
+            gap: 10px;
+            margin-bottom: 16px;
         }
 
         .pay-btn {
             background: var(--bg-panel);
             border: 1px solid var(--border-line);
             color: var(--text-main);
-            padding: 8px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 600;
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
             cursor: pointer;
         }
 
         .pay-btn.selected-pay {
-            border-color: var(--accent-glow);
-            background: rgba(6, 182, 212, 0.2);
-        }
-
-        .custom-amount-row, .payment-detail-row {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
+            border-color: var(--gemini-blue);
+            background: rgba(138, 180, 248, 0.15);
+            color: var(--gemini-blue);
         }
 
         .form-input {
-            flex: 1;
-            background: var(--bg-panel);
+            width: 100%;
+            background: var(--bg-deep);
             border: 1px solid var(--border-line);
-            padding: 8px 12px;
-            border-radius: 6px;
+            padding: 12px 16px;
+            border-radius: 12px;
             color: var(--text-main);
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             outline: none;
+            margin-bottom: 16px;
         }
 
         .form-input:focus {
-            border-color: var(--accent-glow);
+            border-color: var(--gemini-blue);
         }
     </style>
 </head>
@@ -470,15 +475,11 @@
     <!-- Header -->
     <header>
         <div class="brand">
-            <div class="brand-text">
-                <span class="brand-kuadu">Kuadu</span><span class="brand-code">code</span>
-            </div>
-            <div class="interactive-anim-box" id="anim-box" title="Neural Core active">
-                <div class="anim-dot"></div>
-            </div>
+            <div class="gemini-sparkle" id="sparkle-trigger" title="Kuaducode AI Core"></div>
+            <span class="brand-text">Kuaducode</span>
         </div>
         <div class="header-controls">
-            <button class="btn btn-action" id="ai-toggle-btn">💬 AI Assistant</button>
+            <button class="btn btn-action" id="ai-toggle-btn">✨ Kuaducode AI</button>
             <button class="btn btn-premium" id="premium-btn">⭐ Upgrade Pro (GHS 10 - 90)</button>
             <button class="btn" id="clear-btn">Clear</button>
             <button class="btn btn-action" id="run-code-btn">▶ Run Web Preview</button>
@@ -491,7 +492,7 @@
         <!-- Primary Container: Editor & Live Preview -->
         <div class="main-editor-preview-container">
             
-            <!-- Code Editor Section with HTML, CSS, JS, PHP tabs -->
+            <!-- Code Editor Section -->
             <section class="editor-section">
                 <div class="tab-bar">
                     <div class="file-tab active" data-file="index.html">index.html</div>
@@ -502,32 +503,35 @@
                 <div class="code-area" id="code-editor" contenteditable="true" spellcheck="false"></div>
             </section>
 
-            <!-- Web Base Live Preview Section -->
+            <!-- Live Web Preview Section -->
             <section class="preview-section">
                 <div class="preview-bar">
                     <span>🌐 Live Web Preview</span>
-                    <span style="color: #64748b; font-size: 0.75rem;">Auto-updates on run</span>
+                    <span style="color: #5f6368; font-size: 0.75rem;">Auto-updates on run</span>
                 </div>
                 <iframe class="preview-frame" id="live-preview"></iframe>
             </section>
 
         </div>
 
-        <!-- AI Assistant Drawer (Positioned on top-right panel) -->
+        <!-- Kuaducode AI Drawer (Gemini Interface Style) -->
         <aside class="ai-drawer" id="ai-drawer">
             <div class="ai-header">
-                <span>Gemini AI Assistant</span>
+                <div class="ai-title-flex">
+                    <div class="gemini-sparkle" style="width: 18px; height: 18px;"></div>
+                    <span>Kuaducode AI</span>
+                </div>
                 <button class="ai-close-btn" id="ai-close-btn">✕</button>
             </div>
             <div class="chat-stream" id="chat-stream">
                 <div class="chat-bubble assistant">
-                    ✨ Hello! I am your <strong>Gemini AI</strong> assistant. Ask me anything, or let me help you write and debug your HTML, CSS, JavaScript, and PHP code!
+                    Hello! I'm <strong>Kuaducode AI</strong>, powered by advanced intelligence. How can I help you write code, solve problems, or create today?
                 </div>
             </div>
             <div class="chat-input-zone">
                 <div class="input-row">
-                    <input type="text" class="chat-text-input" id="user-query" placeholder="Ask Gemini...">
-                    <button class="btn btn-action" id="send-query-btn">Ask</button>
+                    <input type="text" class="chat-text-input" id="user-query" placeholder="Enter a prompt here...">
+                    <button class="send-btn" id="send-query-btn">↑</button>
                 </div>
             </div>
         </aside>
@@ -538,20 +542,20 @@
     <div class="modal-overlay" id="premium-modal">
         <div class="modal-content">
             <button class="modal-close" id="modal-close">✕</button>
-            <div class="modal-title">KuaduCode Pro Checkout</div>
-            <div class="modal-subtitle">Select your package (GHS 10 to GHS 90), provide your payment details, and instantly unlock Pro features!</div>
+            <div class="modal-title">Kuaducode Pro Checkout</div>
+            <div class="modal-subtitle">Choose your plan (GHS 10 to GHS 90) and enter your payment account information to unlock all Pro features.</div>
             
             <div class="pricing-tiers" id="pricing-tiers">
                 <div class="tier-card" data-amount="15">
-                    <div style="font-size: 0.8rem;">Starter</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">Starter</div>
                     <div class="tier-price">GHS 15</div>
                 </div>
                 <div class="tier-card selected" data-amount="45">
-                    <div style="font-size: 0.8rem;">Developer</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">Developer</div>
                     <div class="tier-price">GHS 45</div>
                 </div>
                 <div class="tier-card" data-amount="90">
-                    <div style="font-size: 0.8rem;">Enterprise</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">Enterprise</div>
                     <div class="tier-price">GHS 90</div>
                 </div>
             </div>
@@ -560,9 +564,9 @@
                 <input type="number" class="form-input" id="custom-amount" placeholder="Custom Amount (10 - 90 GHS)" min="10" max="90" value="45">
             </div>
 
-            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px; font-weight: 600;">Choose Payment Method:</div>
+            <div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 8px; font-weight: 500;">Select Payment Method:</div>
             <div class="payment-methods">
-                <button class="pay-btn selected-pay" onclick="selectPaymentMethod('momo', this)">📱 Mobile Money (MoMo)</button>
+                <button class="pay-btn selected-pay" onclick="selectPaymentMethod('momo', this)">📱 Mobile Money</button>
                 <button class="pay-btn" onclick="selectPaymentMethod('card', this)">💳 Credit Card</button>
                 <button class="pay-btn" onclick="selectPaymentMethod('paypal', this)">🅿️ PayPal</button>
                 <button class="pay-btn" onclick="selectPaymentMethod('skype', this)">💬 Skype ID</button>
@@ -572,7 +576,7 @@
                 <input type="text" class="form-input" id="payment-account-input" placeholder="Enter MoMo Number (e.g., 024XXXXXXX)">
             </div>
 
-            <button class="btn btn-action" style="width: 100%; padding: 10px; font-weight: 700;" onclick="submitRealPayment()">Confirm & Pay Securely</button>
+            <button class="btn btn-action" style="width: 100%; padding: 12px; font-weight: 600; border-radius: 12px;" onclick="submitRealPayment()">Confirm & Complete Payment</button>
         </div>
     </div>
 
@@ -586,7 +590,7 @@
 </head>
 <body>
     <div class="card">
-        <h1>Hello KuaduCode!</h1>
+        <h1>Hello Kuaducode!</h1>
         <p>Edit HTML, CSS, JS, or PHP and click Run.</p>
         <button onclick="sayHello()">Click Me</button>
     </div>
@@ -605,28 +609,29 @@
 .card {
     background: white;
     padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     text-align: center;
 }
-h1 { color: #7c3aed; }
+h1 { color: #1a73e8; }
 button {
-    background: #7c3aed;
+    background: #1a73e8;
     color: white;
     border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
+    padding: 10px 20px;
+    border-radius: 8px;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 12px;
+    font-weight: 600;
 }`,
             "script.js": `function sayHello() {
-    alert('KuaduCode Live Preview Interactive!');
+    alert('Kuaducode Live Preview Interactive!');
 }`,
             "index.php": `<?php
-// PHP Backend Logic Simulator
-$appName = "KuaduCode™ Studio";
-$version = "2.6";
-echo "<!-- PHP Loaded: " . $appName . " v" . $version . " -->";
+// Kuaducode PHP Backend
+$appName = "Kuaducode Studio";
+$version = "3.0";
+echo "<!-- PHP Active: " . $appName . " -->";
 ?>`
         };
 
@@ -634,7 +639,6 @@ echo "<!-- PHP Loaded: " . $appName . " v" . $version . " -->";
         const editor = document.getElementById("code-editor");
         editor.innerText = workspaceFiles[activeFile];
 
-        // Tab Switching
         document.querySelectorAll(".file-tab").forEach(tab => {
             tab.addEventListener("click", () => {
                 workspaceFiles[activeFile] = editor.innerText;
@@ -649,7 +653,6 @@ echo "<!-- PHP Loaded: " . $appName . " v" . $version . " -->";
             workspaceFiles[activeFile] = editor.innerText;
         });
 
-        // AI Drawer Toggle
         const aiDrawer = document.getElementById("ai-drawer");
         document.getElementById("ai-toggle-btn").addEventListener("click", () => {
             aiDrawer.classList.toggle("open");
@@ -658,13 +661,11 @@ echo "<!-- PHP Loaded: " . $appName . " v" . $version . " -->";
             aiDrawer.classList.remove("open");
         });
 
-        // Neural Core Animation Ping
-        document.getElementById("anim-box").addEventListener("click", () => {
+        document.getElementById("sparkle-trigger").addEventListener("click", () => {
             aiDrawer.classList.add("open");
-            addChatBubble(`⚡ <strong>Neural Core Ping:</strong> AI Assistant drawer activated!`, "assistant");
+            addChatBubble(`✨ **Kuaducode AI Core:** Systems operational and ready to assist!`, "assistant");
         });
 
-        // Live Web Base Preview Rendering
         function renderLivePreview() {
             workspaceFiles[activeFile] = editor.innerText;
             const iframe = document.getElementById("live-preview");
@@ -674,7 +675,7 @@ echo "<!-- PHP Loaded: " . $appName . " v" . $version . " -->";
             let jsCode = workspaceFiles["script.js"] || "";
             let phpCode = workspaceFiles["index.php"] || "";
 
-            let fullDoc = `<!-- Simulated PHP Output: ${phpCode.length > 20 ? 'Active' : 'Empty'} -->\n` + htmlCode
+            let fullDoc = `<!-- PHP Simulated Output -->\n` + htmlCode
                 .replace('<link rel="stylesheet" href="style.css">', `<style>${cssCode}</style>`)
                 .replace('<script src="script.js"><\\/script>', `<script>${jsCode}<\/script>`);
 
@@ -684,7 +685,7 @@ echo "<!-- PHP Loaded: " . $appName . " v" . $version . " -->";
 
         document.getElementById("run-code-btn").addEventListener("click", () => {
             renderLivePreview();
-            addChatBubble(`🌐 <strong>Web Preview Updated:</strong> Compiled HTML, CSS, JS, and PHP successfully into live browser view.`, "assistant");
+            addChatBubble(`🌐 **Web Preview Updated:** Compiled successfully into live preview.`, "assistant");
         });
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -695,10 +696,9 @@ echo "<!-- PHP Loaded: " . $appName . " v" . $version . " -->";
             editor.innerText = "";
             workspaceFiles[activeFile] = "";
             renderLivePreview();
-            addChatBubble(`🧹 Cleared file: <code>${activeFile}</code>.`, "assistant");
+            addChatBubble(`🧹 Cleared active file: <code>${activeFile}</code>.`, "assistant");
         });
 
-        // Gemini AI Assistant Chat Integration
         const chatStream = document.getElementById("chat-stream");
         const queryInput = document.getElementById("user-query");
 
@@ -718,16 +718,16 @@ echo "<!-- PHP Loaded: " . $appName . " v" . $version . " -->";
             queryInput.value = "";
 
             setTimeout(() => {
-                let geminiAnswer = `Gemini AI: I analyzed your query about "<em>${query}</em>". Check your active <code>${activeFile}</code> tab or click <strong>▶ Run Web Preview</strong> to see the results live!`;
+                let response = `Kuaducode AI: I've processed your prompt about "<em>${query}</em>". Check your <code>${activeFile}</code> tab or click <strong>▶ Run Web Preview</strong> to view updates live!`;
                 
                 const q = query.toLowerCase();
                 if(q.includes('php')) {
-                    geminiAnswer = `Gemini AI: PHP code can be added in your <code>index.php</code> tab for server-side processing simulation.`;
-                } else if(q.includes('html') || q.includes('css')) {
-                    geminiAnswer = `Gemini AI: You can style elements using flexbox or CSS variables inside <code>style.css</code>.`;
+                    response = `Kuaducode AI: You can manage your backend logic inside the <code>index.php</code> tab.`;
+                } else if(q.includes('css') || q.includes('style')) {
+                    response = `Kuaducode AI: Edit your styles in <code>style.css</code> to update colors, padding, and layout designs instantly.`;
                 }
 
-                addChatBubble(geminiAnswer, "assistant");
+                addChatBubble(response, "assistant");
             }, 600);
         });
 
@@ -735,19 +735,18 @@ echo "<!-- PHP Loaded: " . $appName . " v" . $version . " -->";
             if (e.key === "Enter") document.getElementById("send-query-btn").click();
         });
 
-        // Premium Payment Modal Logic
         const modal = document.getElementById("premium-modal");
         document.getElementById("premium-btn").addEventListener("click", () => modal.classList.add("active"));
         document.getElementById("modal-close").addEventListener("click", () => modal.classList.remove("active"));
 
-        let selectedPaymentType = "Mobile Money (MoMo)";
+        let selectedPaymentType = "Mobile Money";
         window.selectPaymentMethod = function(type, btnElement) {
             document.querySelectorAll(".pay-btn").forEach(b => b.classList.remove("selected-pay"));
             btnElement.classList.add("selected-pay");
             
             const inputField = document.getElementById("payment-account-input");
             if(type === 'momo') {
-                selectedPaymentType = "Mobile Money (MoMo)";
+                selectedPaymentType = "Mobile Money";
                 inputField.placeholder = "Enter MoMo Number (e.g., 024XXXXXXX)";
             } else if(type === 'card') {
                 selectedPaymentType = "Credit/Debit Card";
@@ -780,7 +779,7 @@ echo "<!-- PHP Loaded: " . $appName . " v" . $version . " -->";
                 return;
             }
             if (!accountDetail) {
-                alert("Please provide your payment account number or ID (" + selectedPaymentType + ").");
+                alert("Please provide your payment account details (" + selectedPaymentType + ").");
                 return;
             }
 
@@ -788,7 +787,7 @@ echo "<!-- PHP Loaded: " . $appName . " v" . $version . " -->";
             addChatBubble(`Processing GHS ${amt} via ${selectedPaymentType} (${accountDetail})...`, "assistant");
             
             setTimeout(() => {
-                addChatBubble(`🎉 <strong>Payment Confirmed!</strong> Successfully debited GHS ${amt} via ${selectedPaymentType}. All KuaduCode Pro features are unlocked!`, "assistant");
+                addChatBubble(`🎉 **Payment Confirmed!** Successfully debited GHS ${amt} via ${selectedPaymentType}. All Kuaducode Pro features are now unlocked!`, "assistant");
             }, 1500);
         };
     </script>
