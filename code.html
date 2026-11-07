@@ -12,7 +12,8 @@
             --border-line: #2e2850;
             --text-main: #f4f2ff;
             --text-muted: #948fb8;
-            --accent-primary: #7c3aed;
+            --kuadu-white: #ffffff;
+            --code-indigo: #7c3aed;
             --accent-glow: #06b6d4;
             --success-green: #10b981;
             --code-text: #34d399;
@@ -35,12 +36,12 @@
             overflow: hidden;
         }
 
-        /* Top Brand Header */
+        /* Top Brand Header matching Kuadu-Morsmalleo aesthetic */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 20px;
+            padding: 14px 24px;
             background-color: var(--bg-surface);
             border-bottom: 1px solid var(--border-line);
         }
@@ -48,26 +49,29 @@
         .brand {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            font-size: 1.1rem;
+            gap: 4px;
+            font-weight: 800;
+            font-size: 1.2rem;
             letter-spacing: 0.5px;
         }
 
-        .brand span {
-            background: linear-gradient(135deg, var(--accent-glow), var(--accent-primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .brand-kuadu {
+            color: var(--kuadu-white);
+        }
+
+        .brand-code {
+            color: var(--code-indigo);
         }
 
         .tm-badge {
             font-size: 0.65rem;
-            background: var(--accent-primary);
+            background: var(--code-indigo);
             color: white;
             padding: 2px 6px;
             border-radius: 4px;
             vertical-align: super;
             font-weight: 800;
+            margin-left: 4px;
         }
 
         .header-controls {
@@ -80,8 +84,8 @@
             background: var(--bg-panel);
             color: var(--text-main);
             border: 1px solid var(--border-line);
-            padding: 6px 14px;
-            border-radius: 6px;
+            padding: 7px 16px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 0.85rem;
             font-weight: 500;
@@ -93,7 +97,7 @@
         }
 
         .btn-action {
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-glow));
+            background: linear-gradient(135deg, var(--code-indigo), var(--accent-glow));
             color: white;
             border: none;
             font-weight: 600;
@@ -170,7 +174,7 @@
 
         .chat-bubble.assistant {
             background-color: var(--bg-panel);
-            border-left: 3px solid var(--accent-primary);
+            border-left: 3px solid var(--code-indigo);
             align-self: flex-start;
         }
 
@@ -408,10 +412,10 @@
 </head>
 <body>
 
-    <!-- Header -->
+    <!-- Header matching Kuadu-Morsmalleo brand theme -->
     <header>
         <div class="brand">
-            <span>KuaduCode</span><span class="tm-badge">TM</span> Code Lab
+            <span class="brand-kuadu">Kuadu</span><span class="brand-code">code</span><span class="tm-badge">TM</span>
         </div>
         <div class="header-controls">
             <button class="btn btn-premium" id="premium-btn">⭐ Upgrade Premium (GHS 10 - 90)</button>
@@ -431,7 +435,7 @@
             </div>
             <div class="chat-stream" id="chat-stream">
                 <div class="chat-bubble assistant">
-                    👋 Welcome! Write HTML, CSS, or JS in the editor. Click <strong>▶ Run Web Preview</strong> to render your live web output on the right!
+                    👋 Welcome to KuaduCode! Write HTML, CSS, or JS in the editor and click <strong>▶ Run Web Preview</strong> to render your live web output on the right.
                 </div>
             </div>
             <div class="chat-input-zone">
@@ -581,7 +585,6 @@ button {
             let cssCode = workspaceFiles["style.css"] || "";
             let jsCode = workspaceFiles["script.js"] || "";
 
-            // Inject CSS and JS directly into HTML for live browser rendering
             let fullDoc = htmlCode
                 .replace('<link rel="stylesheet" href="style.css">', `<style>${cssCode}</style>`)
                 .replace('<script src="script.js"><\\/script>', `<script>${jsCode}<\/script>`);
@@ -595,12 +598,10 @@ button {
             addChatBubble(`🌐 <strong>Web Preview Updated:</strong> Compiled HTML, CSS, and JS successfully into live browser view.`, "assistant");
         });
 
-        // Initial Preview Render on load
         window.addEventListener('DOMContentLoaded', () => {
             renderLivePreview();
         });
 
-        // Clear Workspace
         document.getElementById("clear-btn").addEventListener("click", () => {
             editor.innerText = "";
             workspaceFiles[activeFile] = "";
@@ -674,7 +675,7 @@ button {
                 return;
             }
             if (!accountDetail) {
-                alert("Please provide your real payment account number or ID (" + selectedPaymentType + ").");
+                alert("Please provide your payment account number or ID (" + selectedPaymentType + ").");
                 return;
             }
 
