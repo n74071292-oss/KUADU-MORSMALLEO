@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuadu AI — Intelligent Neural Coding Assistant</title>
+    <title>Kuadu AI — Funtastic Neural Coding Studio</title>
     <style>
         :root {
             --bg-base: #06050b;
             --bg-surface: #0e0c19;
             --bg-elevated: #17142b;
-            --border-color: #2e265c;
+            --border-color: #3b2e7a;
             --text-main: #f5f3ff;
             --text-muted: #9b93c9;
             --anime-cyan: #00f0ff;
@@ -34,261 +34,248 @@
             height: 100vh;
             overflow: hidden;
             position: relative;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(157, 0, 255, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 40%);
         }
 
-        .particles {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            overflow: hidden;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            background: var(--anime-cyan);
-            border-radius: 50%;
-            animation: floatUp 7s infinite linear;
-            opacity: 0.25;
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(100vh) scale(0); opacity: 0; }
-            50% { opacity: 0.6; }
-            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
-        }
-
-        header, .ai-container {
-            z-index: 1;
-        }
-
+        /* Top Navigation Header */
         header {
-            background-color: var(--bg-surface);
-            padding: 16px 28px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid var(--border-color);
-            box-shadow: 0 4px 25px rgba(157, 0, 255, 0.2);
+            padding: 12px 24px;
+            background-color: var(--bg-surface);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
 
-        .brand {
+        .logo-area {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .brand-logo {
-            background: linear-gradient(135deg, var(--anime-cyan), var(--anime-pink));
-            width: 42px;
-            height: 42px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
+        .logo-badge {
+            background: linear-gradient(135deg, var(--anime-pink), var(--anime-purple));
             color: white;
-            font-size: 1.4rem;
-            box-shadow: 0 0 15px var(--anime-pink);
-            animation: neonPulse 2s infinite alternate;
-        }
-
-        @keyframes neonPulse {
-            0% { box-shadow: 0 0 10px var(--anime-pink), inset 0 0 5px var(--anime-cyan); }
-            100% { box-shadow: 0 0 25px var(--anime-cyan), inset 0 0 10px var(--anime-pink); }
-        }
-
-        header h1 {
-            font-size: 1.4rem;
+            padding: 6px 12px;
+            border-radius: 6px;
             font-weight: 800;
-            background: linear-gradient(90deg, var(--anime-cyan), var(--anime-pink));
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255, 0, 127, 0.5);
+            animation: pulseGlow 2s infinite alternate;
+        }
+
+        .logo-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: linear-gradient(90deg, var(--text-main), var(--anime-cyan));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
         }
 
-        .ai-status {
-            font-size: 0.85rem;
-            color: var(--anime-green);
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
             background: var(--bg-elevated);
-            padding: 6px 14px;
-            border-radius: 20px;
-            border: 1px solid var(--anime-green);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-weight: 600;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
         }
 
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--anime-green);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--anime-green);
+        .btn:hover {
+            border-color: var(--anime-cyan);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
         }
 
-        .ai-container {
+        .btn-primary {
+            background: linear-gradient(135deg, var(--anime-cyan), var(--anime-purple));
+            color: #06050b;
+            font-weight: 700;
+            border: none;
+        }
+
+        /* Workspace Layout */
+        .workspace {
             display: flex;
-            flex-direction: column;
             flex: 1;
-            padding: 20px;
-            max-width: 1100px;
-            width: 100%;
-            margin: 0 auto;
             overflow: hidden;
         }
 
-        .chat-box {
-            flex: 1;
+        /* Sidebar / Chat Section */
+        sidebar {
+            width: 380px;
             background-color: var(--bg-surface);
-            border: 2px solid var(--border-color);
-            border-radius: 16px;
-            padding: 24px;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            padding: 16px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--anime-cyan);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 16px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .chat-msg {
-            padding: 16px 20px;
-            border-radius: 12px;
-            max-width: 80%;
-            line-height: 1.6;
-            font-size: 0.95rem;
-        }
-
-        .chat-msg.user {
-            background-color: var(--bg-elevated);
-            align-self: flex-end;
-            border: 1px solid var(--anime-pink);
-            color: var(--text-main);
-        }
-
-        .chat-msg.assistant {
-            background-color: #121022;
-            align-self: flex-start;
-            border: 1px solid var(--anime-cyan);
-            color: var(--anime-cyan);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.05);
-        }
-
-        .input-group {
-            display: flex;
             gap: 12px;
-            margin-top: 16px;
+        }
+
+        .message {
+            padding: 12px 16px;
+            border-radius: 12px;
+            max-width: 85%;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+
+        .message.ai {
+            background-color: var(--bg-elevated);
+            border-left: 3px solid var(--anime-pink);
+            align-self: flex-start;
+        }
+
+        .message.user {
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(157, 0, 255, 0.1));
+            border: 1px solid var(--border-color);
+            align-self: flex-end;
+        }
+
+        .chat-input-area {
+            padding: 16px;
+            border-top: 1px solid var(--border-color);
+            background-color: var(--bg-base);
+            display: flex;
+            gap: 8px;
         }
 
         .chat-input {
             flex: 1;
             background-color: var(--bg-surface);
-            border: 2px solid var(--border-color);
+            border: 1px solid var(--border-color);
+            padding: 10px 14px;
+            border-radius: 6px;
             color: var(--text-main);
-            padding: 16px 20px;
-            border-radius: 12px;
-            font-size: 1rem;
             outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
         .chat-input:focus {
-            border-color: var(--anime-cyan);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+            border-color: var(--anime-pink);
+            box-shadow: 0 0 8px rgba(255, 0, 127, 0.2);
         }
 
-        .send-btn {
-            background: linear-gradient(135deg, var(--anime-cyan), var(--anime-purple));
-            color: white;
-            border: none;
-            padding: 0 28px;
-            border-radius: 12px;
-            font-weight: 800;
-            font-size: 1rem;
+        /* Main Editor / Preview Window */
+        .editor-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-base);
+        }
+
+        .tabs-bar {
+            display: flex;
+            background-color: var(--bg-surface);
+            border-bottom: 1px solid var(--border-color);
+            padding-left: 12px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+            border-bottom: 2px solid transparent;
         }
 
-        .send-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 25px rgba(0, 240, 255, 0.7);
+        .tab.active {
+            color: var(--anime-cyan);
+            border-bottom-color: var(--anime-cyan);
+            background-color: var(--bg-base);
+        }
+
+        .code-view {
+            flex: 1;
+            padding: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95rem;
+            color: var(--anime-green);
+            overflow: auto;
+            white-space: pre-wrap;
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 5px var(--anime-pink); }
+            100% { box-shadow: 0 0 20px var(--anime-cyan); }
         }
     </style>
 </head>
 <body>
 
-    <div class="particles" id="particles-container"></div>
-
+    <!-- Header -->
     <header>
-        <div class="brand">
-            <div class="brand-logo">K</div>
-            <h1>Kuadu AI Neural Agent</h1>
+        <div class="logo-area">
+            <div class="logo-badge">KUADU</div>
+            <span class="logo-title">Neural Coding Studio v3.0</span>
         </div>
-        <div class="ai-status">
-            <div class="status-dot"></div> Kuadu AI Core Online ⚡
+        <div class="header-actions">
+            <button class="btn">Settings</button>
+            <button class="btn btn-primary">⚡ Run Code</button>
         </div>
     </header>
 
-    <div class="ai-container">
-        <div class="chat-box" id="chat-history">
-            <div class="chat-msg assistant">
-                Konnichiwa! I am the standalone **Kuadu AI Agent**. Ask me any programming challenge, debugging query, or syntax problem, and I will analyze and solve it instantly! ⚡
+    <!-- Workspace -->
+    <div class="workspace">
+        <!-- Sidebar Chat -->
+        <sidebar>
+            <div class="chat-header">
+                <span>AI Neural Copilot</span>
+                <span style="color: var(--anime-green); font-size: 0.75rem;">● Online</span>
             </div>
-        </div>
-        <div class="input-group">
-            <input type="text" id="user-prompt" class="chat-input" placeholder="Ask Kuadu AI anything (e.g., 'How do I optimize a recursive function in Python?')..." onkeydown="if(event.key==='Enter') triggerKuaduAI()">
-            <button class="send-btn" onclick="triggerKuaduAI()">Ask AI ⚡</button>
+            <div class="chat-messages">
+                <div class="message ai">
+                    ✨ Hello operator! I'm your Kuadu AI assistant. How can we make your project exceptionally funtastic today?
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" class="chat-input" placeholder="Ask Kuadu to code or refactor...">
+                <button class="btn btn-primary">Send</button>
+            </div>
+        </sidebar>
+
+        <!-- Main Editor Area -->
+        <div class="editor-container">
+            <div class="tabs-bar">
+                <div class="tab active">code.html</div>
+                <div class="tab">styles.css</div>
+                <div class="tab">neural-engine.js</div>
+            </div>
+            <div class="code-view">
+&lt;!-- Welcome to Kuadu Funtastic Code Editor --&gt;
+&lt;div class="cyber-card"&gt;
+    &lt;h1&gt;System Operational&lt;/h1&gt;
+    &lt;p&gt;Your neural pathways are synced and ready for deployment.&lt;/p&gt;
+&lt;/div&gt;
+            </div>
         </div>
     </div>
 
-    <script>
-        const particleContainer = document.getElementById('particles-container');
-        for (let i = 0; i < 20; i++) {
-            const p = document.createElement('div');
-            p.className = 'particle';
-            p.style.left = `${Math.random() * 100}%`;
-            p.style.width = `${Math.random() * 4 + 2}px`;
-            p.style.height = p.style.width;
-            p.style.animationDuration = `${Math.random() * 6 + 4}s`;
-            p.style.animationDelay = `${Math.random() * 5}s`;
-            particleContainer.appendChild(p);
-        }
-
-        async function triggerKuaduAI() {
-            const inputField = document.getElementById('user-prompt');
-            const chatHistory = document.getElementById('chat-history');
-            const query = inputField.value.trim();
-            if (!query) return;
-
-            chatHistory.innerHTML += `<div class="chat-msg user">${query}</div>`;
-            inputField.value = '';
-            chatHistory.scrollTop = chatHistory.scrollHeight;
-
-            const loadingId = 'ai-load-' + Date.now();
-            chatHistory.innerHTML += `<div class="chat-msg assistant" id="${loadingId}">Kuadu AI agent is analyzing your query across developer knowledge matrices... ⚡</div>`;
-            chatHistory.scrollTop = chatHistory.scrollHeight;
-
-            try {
-                const response = await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(query + " programming guide code syntax")}&format=json`);
-                const data = await response.json();
-
-                let answer = "";
-                if (data.AbstractText) {
-                    answer = data.AbstractText;
-                } else if (data.RelatedTopics && data.RelatedTopics.length > 0 && data.RelatedTopics[0].Text) {
-                    answer = data.RelatedTopics[0].Text;
-                } else {
-                    answer = `Kuadu AI Agent Analysis for "${query}":\n\nTo implement this efficiently:\n1. Structure your data models cleanly.\n2. Handle edge cases with try/catch exception blocks.\n3. Test the code block inside your KuaduCode IDE compiler tab to verify output.`;
-                }
-
-                document.getElementById(loadingId).innerText = answer;
-            } catch (err) {
-                document.getElementById(loadingId).innerText = `Kuadu AI Neural Response:\n\nRegarding your query about "${query}", ensure your algorithm is optimized for performance, variables are scoped correctly, and syntax rules match your target programming language runtime.`;
-            }
-            chatHistory.scrollTop = chatHistory.scrollHeight;
-        }
-    </script>
 </body>
 </html>
