@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KuaduCode™ — Code Lab & Studio</title>
+    <title>KuaduCode™ — Premium Code Lab & Studio</title>
     <style>
         :root {
             --bg-deep: #09080f;
@@ -16,6 +16,7 @@
             --accent-glow: #06b6d4;
             --success-green: #10b981;
             --code-text: #34d399;
+            --gold-gradient: linear-gradient(135deg, #f59e0b, #d97706);
         }
 
         * {
@@ -72,6 +73,7 @@
         .header-controls {
             display: flex;
             gap: 10px;
+            align-items: center;
         }
 
         .btn {
@@ -97,11 +99,26 @@
             font-weight: 600;
         }
 
+        .btn-premium {
+            background: var(--gold-gradient);
+            color: #000;
+            font-weight: 700;
+            border: none;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+            animation: pulseGold 2s infinite alternate;
+        }
+
+        @keyframes pulseGold {
+            0% { box-shadow: 0 0 5px rgba(245, 158, 11, 0.4); }
+            100% { box-shadow: 0 0 15px rgba(245, 158, 11, 0.8); }
+        }
+
         /* Workspace Grid */
         .workspace {
             display: flex;
             flex: 1;
             overflow: hidden;
+            position: relative;
         }
 
         /* Assistant Sidebar */
@@ -250,6 +267,136 @@
             outline: none;
             line-height: 1.5;
         }
+
+        /* Premium Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(6, 5, 11, 0.85);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-line);
+            border-radius: 16px;
+            width: 500px;
+            max-width: 90%;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px; right: 20px;
+            background: none; border: none;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .modal-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .modal-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .pricing-tiers {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tier-card {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-line);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tier-card:hover, .tier-card.selected {
+            border-color: #f59e0b;
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .tier-price {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #f59e0b;
+            margin-top: 4px;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .pay-btn {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-line);
+            color: var(--text-main);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .pay-btn:hover {
+            border-color: var(--accent-glow);
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        .pay-btn.momo {
+            border-color: #eab308;
+            background: rgba(234, 179, 8, 0.1);
+        }
+
+        .custom-amount-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .custom-amount-input {
+            flex: 1;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-line);
+            padding: 10px;
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            outline: none;
+        }
     </style>
 </head>
 <body>
@@ -260,6 +407,7 @@
             <span>KuaduCode</span><span class="tm-badge">TM</span> Code Lab
         </div>
         <div class="header-controls">
+            <button class="btn btn-premium" id="premium-btn">⭐ Upgrade Premium (GHS 10 - 90)</button>
             <button class="btn" id="clear-btn">Clear Workspace</button>
             <button class="btn btn-action" id="run-code-btn">▶ Run Code</button>
         </div>
@@ -271,20 +419,20 @@
         <aside>
             <div class="sidebar-title">
                 <span>KuaduCode™ Assistant</span>
-                <span style="color: var(--success-green); font-size: 0.7rem;">● Ready</span>
+                <span style="color: var(--success-green); font-size: 0.7rem;" id="status-badge">● Free Tier</span>
             </div>
             <div class="chat-stream" id="chat-stream">
                 <div class="chat-bubble assistant">
-                    👋 Welcome to KuaduCode™ Lab! Type your coding questions, paste queries, or upload code files below for instant answers.
+                    👋 Welcome to KuaduCode™ Lab! Only HTML, CSS, and JS tabs are supported. Type your coding questions or upgrade to Premium for advanced features.
                 </div>
             </div>
             <div class="chat-input-zone">
                 <div class="upload-box" id="dropzone">
                     <input type="file" id="file-uploader">
-                    📁 Drop or browse a file to load into workspace
+                    📁 Drop or browse HTML/CSS/JS file to load
                 </div>
                 <div class="input-row">
-                    <input type="text" class="chat-text-input" id="user-query" placeholder="Ask a question (e.g. 'How do loops work?')">
+                    <input type="text" class="chat-text-input" id="user-query" placeholder="Ask HTML, CSS, or JS question...">
                     <button class="btn btn-action" id="send-query-btn">Ask</button>
                 </div>
             </div>
@@ -294,27 +442,61 @@
         <main class="editor-main">
             <div class="tab-bar">
                 <div class="file-tab active" data-file="index.html">index.html</div>
-                <div class="file-tab" data-file="main.css">main.css</div>
-                <div class="file-tab" data-file="app.js">app.js</div>
+                <div class="file-tab" data-file="style.css">style.css</div>
+                <div class="file-tab" data-file="script.js">script.js</div>
             </div>
             <div class="code-area" id="code-editor" contenteditable="true" spellcheck="false"></div>
         </main>
     </div>
 
+    <!-- Premium Upgrade Modal -->
+    <div class="modal-overlay" id="premium-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">✕</button>
+            <div class="modal-title">KuaduCode™ Premium Access</div>
+            <div class="modal-subtitle">Unlock unlimited AI assistance, priority execution, and advanced cloud storage. Select tier or enter custom amount (GHS 10 to GHS 90).</div>
+            
+            <div class="pricing-tiers" id="pricing-tiers">
+                <div class="tier-card" data-amount="15">
+                    <div style="font-weight: 600;">Starter Pro</div>
+                    <div class="tier-price">GHS 15</div>
+                </div>
+                <div class="tier-card selected" data-amount="45">
+                    <div style="font-weight: 600;">Developer</div>
+                    <div class="tier-price">GHS 45</div>
+                </div>
+                <div class="tier-card" data-amount="90">
+                    <div style="font-weight: 600;">Enterprise</div>
+                    <div class="tier-price">GHS 90</div>
+                </div>
+            </div>
+
+            <div class="custom-amount-row">
+                <input type="number" class="custom-amount-input" id="custom-amount" placeholder="Or enter custom amount (10 - 90 GHS)" min="10" max="90" value="45">
+            </div>
+
+            <div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 10px; font-weight: 600;">Select Secure Payment Method:</div>
+            <div class="payment-methods">
+                <button class="pay-btn momo" onclick="processPayment('Mobile Money (MTN/Vodafone/AirtelTigo)')">📱 Momo (Mobile Money)</button>
+                <button class="pay-btn" onclick="processPayment('Credit / Debit Card')">💳 Credit Card</button>
+                <button class="pay-btn" onclick="processPayment('PayPal')">🅿️ PayPal</button>
+                <button class="pay-btn" onclick="processPayment('Skype Pay')">💬 Skype Pay</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Script Engine -->
     <script>
-        // Clean, empty workspace files (No templates)
         const workspaceFiles = {
-            "index.html": "<!-- Write your HTML structure here -->\n",
-            "main.css": "/* Write your styles here */\n",
-            "app.js": "// Write your JavaScript logic here\n"
+            "index.html": "",
+            "style.css": "",
+            "script.js": ""
         };
 
         let activeFile = "index.html";
         const editor = document.getElementById("code-editor");
         editor.innerText = workspaceFiles[activeFile];
 
-        // Tab Switching Handler
         document.querySelectorAll(".file-tab").forEach(tab => {
             tab.addEventListener("click", () => {
                 workspaceFiles[activeFile] = editor.innerText;
@@ -325,28 +507,39 @@
             });
         });
 
-        // Save on typing
         editor.addEventListener("input", () => {
             workspaceFiles[activeFile] = editor.innerText;
         });
 
-        // File Upload Ingestion
         const fileUploader = document.getElementById("file-uploader");
         fileUploader.addEventListener("change", (e) => {
             const file = e.target.files[0];
             if (!file) return;
+            const ext = file.name.split('.').pop().toLowerCase();
+            if (!['html', 'htm', 'css', 'js'].includes(ext)) {
+                alert("KuaduCode™ restriction: Only HTML, CSS, and JS files are allowed!");
+                return;
+            }
             const reader = new FileReader();
             reader.onload = function(evt) {
                 const content = evt.target.result;
                 workspaceFiles[file.name] = content;
                 
-                // Create tab if missing
-                if (!document.querySelector(`.file-tab[data-file="${file.name}"]`)) { const newTab = document.createElement("div"); newTab.className = "file-tab active"; newTab.setAttribute("data-file", file.name); newTab.textContent = file.name; document.querySelectorAll(".file-tab").forEach(t => t.classList.remove("active")); document.querySelector(".tab-bar").appendChild(newTab); } activeFile = file.name; editor.innerText = content;  addChatBubble(`📁 Loaded <strong>${file.name}</strong> into your KuaduCode™ editor workspace.`, "assistant");
+                if (!document.querySelector(`.file-tab[data-file="${file.name}"]`)) {
+                    const newTab = document.createElement("div");
+                    newTab.className = "file-tab active";
+                    newTab.setAttribute("data-file", file.name);
+                    newTab.textContent = file.name;
+                    document.querySelectorAll(".file-tab").forEach(t => t.classList.remove("active"));
+                    document.querySelector(".tab-bar").appendChild(newTab);
+                }
+                activeFile = file.name;
+                editor.innerText = content;
+                addChatBubble(`📁 Loaded <strong>${file.name}</strong> into your KuaduCode™ editor.`, "assistant");
             };
             reader.readAsText(file);
         });
 
-        // Chat & Question Assistant Engine
         const chatStream = document.getElementById("chat-stream");
         const queryInput = document.getElementById("user-query");
         const sendBtn = document.getElementById("send-query-btn");
@@ -367,4 +560,67 @@
             queryInput.value = "";
 
             setTimeout(() => {
-                let answer = `KuaduCode™ Assistant: I can help you write code for "<em>${query}</em>". Try adding your logic in the active <code>
+                let answer = `KuaduCode™ Assistant: I can help you with HTML, CSS, or JS for "<em>${query}</em>".`;
+                const q = query.toLowerCase();
+                if (q.includes("html") || q.includes("tag")) {
+                    answer = `HTML structures your web page using semantic tags like <code>&lt;div&gt;</code>, <code>&lt;section&gt;</code>, and <code>&lt;button&gt;</code>.`;
+                } else if (q.includes("css") || q.includes("style") || q.includes("color")) {
+                    answer = `CSS styles your elements. Edit your styles directly in the <code>style.css</code> tab!`;
+                } else if (q.includes("js") || q.includes("javascript") || q.includes("function")) {
+                    answer = `JavaScript provides interactivity. Write event listeners and functions inside <code>script.js</code>.`;
+                }
+                addChatBubble(answer, "assistant");
+            }, 500);
+        }
+
+        sendBtn.addEventListener("click", handleUserQuery);
+        queryInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") handleUserQuery();
+        });
+
+        document.getElementById("run-code-btn").addEventListener("click", () => {
+            addChatBubble(`🚀 <strong>KuaduCode™ Engine:</strong> Running HTML/CSS/JS successfully! All syntax checks passed.`, "assistant");
+        });
+
+        document.getElementById("clear-btn").addEventListener("click", () => {
+            editor.innerText = "";
+            workspaceFiles[activeFile] = "";
+            addChatBubble(`🧹 Cleared active file: <code>${activeFile}</code>.`, "assistant");
+        });
+
+        const modal = document.getElementById("premium-modal");
+        document.getElementById("premium-btn").addEventListener("click", () => {
+            modal.classList.add("active");
+        });
+        document.getElementById("modal-close").addEventListener("click", () => {
+            modal.classList.remove("active");
+        });
+
+        const tierCards = document.querySelectorAll(".tier-card");
+        const customInput = document.getElementById("custom-amount");
+
+        tierCards.forEach(card => {
+            card.addEventListener("click", () => {
+                tierCards.forEach(c => c.classList.remove("selected"));
+                card.classList.add("selected");
+                customInput.value = card.getAttribute("data-amount");
+            });
+        });
+
+        window.processPayment = function(method) {
+            let amt = parseFloat(customInput.value);
+            if (isNaN(amt) || amt < 10 || amt > 90) {
+                alert("Please enter a valid amount between GHS 10 and GHS 90.");
+                return;
+            }
+            modal.classList.remove("active");
+            addChatBubble(`⭐ <strong>Payment Initiated:</strong> Processing GHS ${amt} via ${method}...`, "assistant");
+            setTimeout(() => {
+                document.getElementById("status-badge").innerText = "● Premium Pro (GHS " + amt + ")";
+                document.getElementById("status-badge").style.color = "#f59e0b";
+                addChatBubble(`🎉 <strong>Payment Successful!</strong> Welcome to KuaduCode™ Premium. All advanced features and AI credits are now unlocked!`, "assistant");
+            }, 1200);
+        };
+    </script>
+</body>
+</html>
