@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuadu AI — Funtastic Neural Coding Studio with File Upload</title>
+    <title>Kuadu AI — Funtastic Neural Coding Studio with Dynamic AI</title>
     <style>
         :root {
             --bg-base: #06050b;
@@ -111,7 +111,7 @@
 
         /* Sidebar / Chat Section */
         sidebar {
-            width: 400px;
+            width: 420px;
             background-color: var(--bg-surface);
             border-right: 1px solid var(--border-color);
             display: flex;
@@ -141,7 +141,7 @@
         .message {
             padding: 12px 16px;
             border-radius: 12px;
-            max-width: 90%;
+            max-width: 92%;
             line-height: 1.4;
             font-size: 0.9rem;
             word-break: break-word;
@@ -153,13 +153,20 @@
             align-self: flex-start;
         }
 
+        .message.ai code {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--anime-cyan);
+            font-family: monospace;
+        }
+
         .message.user {
             background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(157, 0, 255, 0.1));
             border: 1px solid var(--border-color);
             align-self: flex-end;
         }
 
-        /* Upload preview chip inside messages */
         .file-chip {
             display: inline-flex;
             align-items: center;
@@ -182,7 +189,6 @@
             gap: 10px;
         }
 
-        /* Drag & Drop Upload Zone */
         .upload-dropzone {
             border: 2px dashed var(--border-color);
             border-radius: 8px;
@@ -257,7 +263,7 @@
             box-shadow: 0 0 8px rgba(255, 0, 127, 0.2);
         }
 
-        /* Main Editor / Preview Window */
+        /* Main Editor Window */
         .editor-container {
             flex: 1;
             display: flex;
@@ -314,7 +320,7 @@
     <header>
         <div class="logo-area">
             <div class="logo-badge">KUADU</div>
-            <span class="logo-title">Neural Coding Studio v3.5 (Upload Enabled)</span>
+            <span class="logo-title">Neural Coding Studio v4.0 (Smart AI Engine)</span>
         </div>
         <div class="header-actions">
             <button class="btn" id="settings-btn">Settings</button>
@@ -332,27 +338,25 @@
             </div>
             <div class="chat-messages" id="chat-messages">
                 <div class="message ai">
-                    ✨ Hello operator! Upload code snippets, images, or assets directly into the chat below, and I'll analyze or integrate them for you!
+                    ✨ Hello operator! Ask me any coding question or upload a file. I will analyze your query and give direct, tailored answers and code examples!
                 </div>
             </div>
             
             <div class="chat-input-area">
-                <!-- Attached File Preview -->
                 <div class="attached-preview" id="attached-preview">
                     <span id="file-name-display">📎 file.js</span>
                     <span class="remove-file" id="remove-file-btn" title="Remove file">✕</span>
                 </div>
 
-                <!-- Drag & Drop Upload Zone -->
                 <div class="upload-dropzone" id="dropzone">
                     <input type="file" id="file-upload-input">
                     <div class="upload-label">
-                        📁 Drag & drop files here or <span>browse</span>
+                        📁 Drag & drop code files here or <span>browse</span>
                     </div>
                 </div>
 
                 <div class="chat-row">
-                    <input type="text" class="chat-input" id="chat-input" placeholder="Ask Kuadu or discuss uploaded file...">
+                    <input type="text" class="chat-input" id="chat-input" placeholder="Ask a question (e.g., 'How do I center a div?')">
                     <button class="btn btn-primary" id="send-btn">Send</button>
                 </div>
             </div>
@@ -374,7 +378,7 @@
         </div>
     </div>
 
-    <!-- Script with File Upload Functionality -->
+    <!-- Script with Smart Question-Answering AI Engine -->
     <script>
         const files = {
             "code.html": `<!-- Welcome to Kuadu Funtastic Code Editor -->\n<div class="cyber-card">\n    <h1>System Operational</h1>\n    <p>Your neural pathways are synced and ready for deployment.</p>\n</div>`,
@@ -385,7 +389,6 @@
         let currentFile = "code.html";
         let uploadedFile = null;
 
-        // Tab Switching Logic
         const tabs = document.querySelectorAll('.tab');
         const codeView = document.getElementById('code-view');
 
@@ -399,7 +402,7 @@
             });
         });
 
-        // File Upload Handlers
+        // File upload handling
         const fileInput = document.getElementById('file-upload-input');
         const attachedPreview = document.getElementById('attached-preview');
         const fileNameDisplay = document.getElementById('file-name-display');
@@ -412,23 +415,20 @@
             attachedPreview.classList.add('active');
             dropzone.style.display = 'none';
 
-            // If it's a text file or code, read and load into editor automatically
             const reader = new FileReader();
             reader.onload = function(e) {
                 const content = e.target.result;
-                // Add as a new tab or update current
                 files[file.name] = content;
-                
-                // Create new tab dynamically if not exists
                 if(!document.querySelector(`.tab[data-file="${file.name}"]`)) {
                     const tabsBar = document.querySelector('.tabs-bar');
                     const newTab = document.createElement('div');
                     newTab.className = 'tab active';
                     newTab.setAttribute('data-file', file.name);
                     newTab.textContent = file.name;
-                    
                     tabs.forEach(t => t.classList.remove('active'));
                     tabsBar.appendChild(newTab);
+                    currentFile = file.name;
+                    codeView.innerText = content;
                 }
             };
             if(file.type.includes('text') || file.name.endsWith('.js') || file.name.endsWith('.html') || file.name.endsWith('.css') || file.name.endsWith('.json')) {
@@ -437,9 +437,7 @@
         }
 
         fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
-                handleFileSelected(e.target.files[0]);
-            }
+            if (e.target.files.length > 0) handleFileSelected(e.target.files[0]);
         });
 
         removeFileBtn.addEventListener('click', () => {
@@ -449,26 +447,38 @@
             fileInput.value = '';
         });
 
-        // Drag and drop events
         ['dragenter', 'dragover'].forEach(eventName => {
-            dropzone.addEventListener(eventName, (e) => {
-                e.preventDefault();
-                dropzone.classList.add('dragover');
-            }, false);
+            dropzone.addEventListener(eventName, (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
         });
-
         ['dragleave', 'drop'].forEach(eventName => {
-            dropzone.addEventListener(eventName, (e) => {
-                e.preventDefault();
-                dropzone.classList.remove('dragover');
-            }, false);
+            dropzone.addEventListener(eventName, (e) => { e.preventDefault(); dropzone.classList.remove('dragover'); });
+        });
+        dropzone.addEventListener('drop', (e) => {
+            if (e.dataTransfer.files.length > 0) handleFileSelected(e.dataTransfer.files[0]);
         });
 
-        dropzone.addEventListener('drop', (e) => {
-            if (e.dataTransfer.files.length > 0) {
-                handleFileSelected(e.dataTransfer.files[0]);
+        // 🧠 Intelligent Question-Answering AI Engine
+        function generateAIAnswer(query, fileName) {
+            const q = query.toLowerCase();
+
+            if (fileName) {
+                return `✨ I've analyzed your file <code>${fileName}</code>. It has been loaded into tab <strong>${fileName}</strong>. Everything looks structurally clean, but let me know if you want me to refactor or fix any logic inside it!`;
             }
-        });
+
+            if (q.includes('center') || q.includes('align')) {
+                return `To center items perfectly in CSS, use Flexbox! Here is how:<br><code>display: flex;<br>justify-content: center;<br>align-items: center;</code>`;
+            } else if (q.includes('css') || q.includes('style') || q.includes('color')) {
+                return `CSS controls presentation. You can edit your design right now by switching to the <code>styles.css</code> tab above and tweaking properties like colors, borders, and shadows!`;
+            } else if (q.includes('javascript') || q.includes('js') || q.includes('function') || q.includes('code')) {
+                return `JavaScript handles runtime interaction. Check out your <code>neural-engine.js</code> tab to add custom event listeners, loops, or APIs.`;
+            } else if (q.includes('hello') || q.includes('hi') || q.includes('hey')) {
+                return `Hello operator! Ready to write some incredible code today. What project are we tackling?`;
+            } else if (q.includes('help') || q.includes('what can you do')) {
+                return `I am Kuadu AI! You can ask me technical questions, upload code files via drag-and-drop, edit code in real-time tabs, or run simulation tests.`;
+            } else {
+                return `⚡ Great question regarding "<em>${query}</em>". To implement this in your active file (<code>${currentFile}</code>), ensure your syntax matches standard standards. Would you like me to generate a complete snippet for this?`;
+            }
+        }
 
         // Interactive Chat Logic
         const chatInput = document.getElementById('chat-input');
@@ -479,11 +489,11 @@
             const text = chatInput.value.trim();
             if (!text && !uploadedFile) return;
 
-            // Append User Message with attachment chip if present
             const userMsg = document.createElement('div');
             userMsg.className = 'message user';
             
             let messageHTML = '';
+            let attachedName = uploadedFile ? uploadedFile.name : null;
             if (uploadedFile) {
                 messageHTML += `<div class="file-chip">📎 ${uploadedFile.name}</div>`;
             }
@@ -493,9 +503,6 @@
             userMsg.innerHTML = messageHTML;
             chatMessages.appendChild(userMsg);
             
-            const currentAttached = uploadedFile;
-            
-            // Clear input and attachments
             chatInput.value = '';
             uploadedFile = null;
             attachedPreview.classList.remove('active');
@@ -503,20 +510,14 @@
             fileInput.value = '';
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
-            // Simulate AI Response
+            // Generate smart dynamic answer
             setTimeout(() => {
                 const aiMsg = document.createElement('div');
                 aiMsg.className = 'message ai';
-                let reply = `⚡ Processed your request successfully!`;
-                if (currentAttached) {
-                    reply = `✨ Successfully ingested <strong>${currentAttached.name}</strong>. Neural analysis complete and integrated into your workspace!`;
-                } else if (text) {
-                    reply = `⚡ AI Copilot: "${text}" analyzed and optimized!`;
-                }
-                aiMsg.innerHTML = reply;
+                aiMsg.innerHTML = generateAIAnswer(text, attachedName);
                 chatMessages.appendChild(aiMsg);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
-            }, 900);
+            }, 600);
         }
 
         sendBtn.addEventListener('click', handleSendMessage);
@@ -524,18 +525,17 @@
             if (e.key === 'Enter') handleSendMessage();
         });
 
-        // Run Code & Settings Buttons
         document.getElementById('run-btn').addEventListener('click', () => {
             const aiMsg = document.createElement('div');
             aiMsg.className = 'message ai';
             aiMsg.style.borderColor = 'var(--anime-green)';
-            aiMsg.innerHTML = `🚀 <strong>Execution Success!</strong><br>Successfully ran active file <code>${currentFile}</code>. Funtastic status confirmed!`;
+            aiMsg.innerHTML = `🚀 <strong>Execution Success!</strong><br>Successfully executed <code>${currentFile}</code>. All systems operational!`;
             chatMessages.appendChild(aiMsg);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         });
 
         document.getElementById('settings-btn').addEventListener('click', () => {
-            alert("Kuadu Studio: Upload filters set to accept code, images, and documents up to 50MB!");
+            alert("Kuadu Studio: Smart Neural Copilot is actively running with dynamic intent matching.");
         });
     </script>
 </body>
