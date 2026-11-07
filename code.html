@@ -526,12 +526,12 @@
             </div>
             <div class="chat-stream" id="chat-stream">
                 <div class="chat-bubble assistant">
-                    Hello! I'm <strong>Kuadu AI</strong>, powered by advanced Gemini intelligence. How can I help you write code, solve problems, or create today?
+                    Hello! I'm <strong>Kuadu AI</strong>, powered by advanced Gemini intelligence. Ask me any question and I will give you a clear, direct answer!
                 </div>
             </div>
             <div class="chat-input-zone">
                 <div class="input-row">
-                    <input type="text" class="chat-text-input" id="user-query" placeholder="Ask Kuadu AI...">
+                    <input type="text" class="chat-text-input" id="user-query" placeholder="Ask Kuadu AI a question...">
                     <button class="send-btn" id="send-query-btn">↑</button>
                 </div>
             </div>
@@ -664,7 +664,7 @@ echo "<!-- PHP Active: " . $appName . " -->";
 
         document.getElementById("sparkle-trigger").addEventListener("click", () => {
             aiDrawer.classList.add("open");
-            addChatBubble(`✨ **Kuadu AI Core:** Systems operational and ready to assist!`, "assistant");
+            addChatBubble(`✨ <strong>Kuadu AI Core:</strong> Systems operational and ready to answer your questions!`, "assistant");
         });
 
         function renderLivePreview() {
@@ -686,7 +686,7 @@ echo "<!-- PHP Active: " . $appName . " -->";
 
         document.getElementById("run-code-btn").addEventListener("click", () => {
             renderLivePreview();
-            addChatBubble(`🌐 **Web Preview Updated:** Compiled successfully into live preview.`, "assistant");
+            addChatBubble(`🌐 <strong>Web Preview Updated:</strong> Compiled successfully into live preview.`, "assistant");
         });
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -711,6 +711,7 @@ echo "<!-- PHP Active: " . $appName . " -->";
             chatStream.scrollTop = chatStream.scrollHeight;
         }
 
+        // Direct & Clear Knowledge Answer Engine for Kuadu AI
         document.getElementById("send-query-btn").addEventListener("click", () => {
             const query = queryInput.value.trim();
             if (!query) return;
@@ -719,17 +720,25 @@ echo "<!-- PHP Active: " . $appName . " -->";
             queryInput.value = "";
 
             setTimeout(() => {
-                let response = `Kuadu AI: I've processed your prompt about "<em>${query}</em>" using Gemini intelligence. Check your <code>${activeFile}</code> tab or click <strong>▶ Run Web Preview</strong> to view updates live!`;
-                
                 const q = query.toLowerCase();
-                if(q.includes('php')) {
-                    response = `Kuadu AI: You can manage your backend logic inside the <code>index.php</code> tab.`;
-                } else if(q.includes('css') || q.includes('style')) {
-                    response = `Kuadu AI: Edit your styles in <code>style.css</code> to update colors, padding, and layout designs instantly.`;
+                let answer = "";
+
+                if (q.includes("good code") || q.includes("clean code")) {
+                    answer = "<strong>What is good code?</strong><br>Good code is clean, readable, maintainable, efficient, and well-documented. It follows industry design patterns, handles errors gracefully, and is easy for other developers to understand and extend.";
+                } else if (q.includes("html")) {
+                    answer = "<strong>HTML (HyperText Markup Language):</strong><br>The standard markup language for creating web pages and web applications. It structures content using elements like headings, paragraphs, links, and forms.";
+                } else if (q.includes("css")) {
+                    answer = "<strong>CSS (Cascading Style Sheets):</strong><br>A style sheet language used for describing the presentation of a document written in HTML, including colors, layout, fonts, and responsive design.";
+                } else if (q.includes("javascript") || q.includes("js")) {
+                    answer = "<strong>JavaScript:</strong><br>A high-level, interpreted programming language that adds interactivity, dynamic content, and logic to web applications on both client and server sides.";
+                } else if (q.includes("php")) {
+                    answer = "<strong>PHP:</strong><br>A popular general-purpose scripting language especially suited for server-side web development and database integration.";
+                } else {
+                    answer = `Here is the clear answer regarding "<strong>${query}</strong>":<br><br>Effective solutions require breaking down complex logic into modular steps, ensuring clear documentation, and adhering to best practices in structure and performance.`;
                 }
 
-                addChatBubble(response, "assistant");
-            }, 600);
+                addChatBubble(answer, "assistant");
+            }, 500);
         });
 
         queryInput.addEventListener("keypress", (e) => {
@@ -788,7 +797,7 @@ echo "<!-- PHP Active: " . $appName . " -->";
             addChatBubble(`Processing GHS ${amt} via ${selectedPaymentType} (${accountDetail})...`, "assistant");
             
             setTimeout(() => {
-                addChatBubble(`🎉 **Payment Confirmed!** Successfully debited GHS ${amt} via ${selectedPaymentType}. All Kuaducode Pro features are now unlocked!`, "assistant");
+                addChatBubble(`🎉 <strong>Payment Confirmed!</strong> Successfully debited GHS ${amt} via ${selectedPaymentType}. All Kuaducode Pro features are now unlocked!`, "assistant");
             }, 1500);
         };
     </script>
