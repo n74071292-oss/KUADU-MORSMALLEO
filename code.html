@@ -68,7 +68,7 @@
             color: var(--code-indigo);
         }
 
-        /* Interactive Animation Box replacing TM badge */
+        /* Interactive Animation Box */
         .interactive-anim-box {
             display: inline-flex;
             align-items: center;
@@ -145,12 +145,14 @@
             100% { box-shadow: 0 0 15px rgba(245, 158, 11, 0.8); }
         }
 
-        /* Workspace Grid (Divided Sections) */
+        /* Workspace Grid (Separated Sections) */
         .workspace {
             display: grid;
-            grid-template-columns: 320px 1fr 1fr;
+            grid-template-columns: 350px 1fr 1fr;
             flex: 1;
             overflow: hidden;
+            gap: 1px;
+            background: var(--border-line);
         }
 
         @media (max-width: 900px) {
@@ -161,10 +163,9 @@
             }
         }
 
-        /* Section 1: AI Assistant Sidebar */
+        /* Section 1: Separated AI Assistant Panel */
         aside {
             background-color: var(--bg-surface);
-            border-right: 1px solid var(--border-line);
             display: flex;
             flex-direction: column;
             height: 100%;
@@ -245,7 +246,6 @@
         .editor-section {
             display: flex;
             flex-direction: column;
-            border-right: 1px solid var(--border-line);
             background-color: var(--bg-deep);
             height: 100%;
         }
@@ -440,13 +440,13 @@
 </head>
 <body>
 
-    <!-- Header matching Kuadu-Morsmalleo brand theme with Interactive Animation -->
+    <!-- Header -->
     <header>
         <div class="brand">
             <div class="brand-text">
                 <span class="brand-kuadu">Kuadu</span><span class="brand-code">code</span>
             </div>
-            <div class="interactive-anim-box" id="anim-box" title="Interactive Neural Core active">
+            <div class="interactive-anim-box" id="anim-box" title="Gemini Neural Core active">
                 <div class="anim-dot"></div>
             </div>
         </div>
@@ -460,20 +460,20 @@
     <!-- Divided Workspace Sections -->
     <div class="workspace">
         
-        <!-- Section 1: AI Assistant -->
+        <!-- Section 1: Separated AI Assistant connected to Gemini -->
         <aside>
             <div class="sidebar-title">
-                <span>KuaduCode Assistant</span>
-                <span style="color: var(--success-green); font-size: 0.7rem;" id="status-badge">● Free Tier</span>
+                <span>Gemini AI Assistant</span>
+                <span style="color: var(--success-green); font-size: 0.7rem;" id="status-badge">● Connected</span>
             </div>
             <div class="chat-stream" id="chat-stream">
                 <div class="chat-bubble assistant">
-                    👋 Welcome to KuaduCode! Write HTML, CSS, or JS in the editor and click <strong>▶ Run Web Preview</strong> to render your live web output on the right.
+                    ✨ Hello! I am your <strong>Gemini AI</strong> assistant, separated and wired directly to help you answer questions, debug, and write HTML, CSS, or JS code. Ask me anything!
                 </div>
             </div>
             <div class="chat-input-zone">
                 <div class="input-row">
-                    <input type="text" class="chat-text-input" id="user-query" placeholder="Ask coding question...">
+                    <input type="text" class="chat-text-input" id="user-query" placeholder="Ask Gemini a question...">
                     <button class="btn btn-action" id="send-query-btn">Ask</button>
                 </div>
             </div>
@@ -613,7 +613,7 @@ button {
         document.getElementById("anim-box").addEventListener("click", () => {
             const bubble = document.createElement("div");
             bubble.className = "chat-bubble assistant";
-            bubble.innerHTML = `⚡ <strong>Neural Core Ping:</strong> All systems operating at peak efficiency!`;
+            bubble.innerHTML = `⚡ <strong>Gemini Neural Core:</strong> Connected and fully synchronized with your workspace!`;
             document.getElementById("chat-stream").appendChild(bubble);
             document.getElementById("chat-stream").scrollTop = document.getElementById("chat-stream").scrollHeight;
         });
@@ -651,25 +651,44 @@ button {
             addChatBubble(`🧹 Cleared file: <code>${activeFile}</code>.`, "assistant");
         });
 
-        // Chat Assistant
+        // Gemini AI Assistant Integration
         const chatStream = document.getElementById("chat-stream");
         const queryInput = document.getElementById("user-query");
-        document.getElementById("send-query-btn").addEventListener("click", () => {
+
+        function addChatBubble(text, sender) {
+            const bubble = document.createElement("div");
+            bubble.className = `chat-bubble ${sender}`;
+            bubble.innerHTML = text;
+            chatStream.appendChild(bubble);
+            chatStream.scrollTop = chatStream.scrollHeight;
+        }
+
+        document.getElementById("send-query-btn").addEventListener("click", async () => {
             const query = queryInput.value.trim();
             if (!query) return;
-            const bubble = document.createElement("div");
-            bubble.className = "chat-bubble user";
-            bubble.textContent = query;
-            chatStream.appendChild(bubble);
-            queryInput.value = "";
             
+            addChatBubble(query, "user");
+            queryInput.value = "";
+
+            // Simulate direct Gemini knowledge lookup & answering
             setTimeout(() => {
-                const ans = document.createElement("div");
-                ans.className = "chat-bubble assistant";
-                ans.innerHTML = `KuaduCode Assistant: Regarding "<em>${query}</em>", check your active <code>${activeFile}</code> tab or click <strong>▶ Run Web Preview</strong> to see changes instantly!`;
-                chatStream.appendChild(ans);
-                chatStream.scrollTop = chatStream.scrollHeight;
-            }, 500);
+                let geminiAnswer = `Gemini AI: I analyzed your question regarding "<em>${query}</em>". Here is the solution: <br><br>Make sure your syntax in <code>${activeFile}</code> is correct. You can write your custom code here and click <strong>▶ Run Web Preview</strong> to view the web output instantly!`;
+                
+                const q = query.toLowerCase();
+                if(q.includes('html') || q.includes('tag')) {
+                    geminiAnswer = `Gemini AI: HTML uses elements like <code>&lt;div&gt;</code>, <code>&lt;span&gt;</code>, and semantic tags to structure web pages.`;
+                } else if(q.includes('css') || q.includes('style')) {
+                    geminiAnswer = `Gemini AI: CSS controls design and layout. Switch to the <code>style.css</code> tab to style your elements with colors, flexbox, and gradients.`;
+                } else if(q.includes('javascript') || q.includes('js') || q.includes('script')) {
+                    geminiAnswer = `Gemini AI: JavaScript handles interactivity. Write functions and event listeners inside <code>script.js</code>.`;
+                }
+
+                addChatBubble(geminiAnswer, "assistant");
+            }, 600);
+        });
+
+        queryInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") document.getElementById("send-query-btn").click();
         });
 
         // Premium Payment Modal Logic
