@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KuaduCode — Anime Edition IDE & Code Runner</title>
+    <title>KuaduCode — KUADU MORSMALLEO Anime Edition</title>
     <style>
         :root {
-            --bg-base: #080711;
-            --bg-surface: #100f1d;
-            --bg-elevated: #1a1831;
-            --border-color: #2e2858;
-            --text-main: #f3f0ff;
+            --bg-base: #06050b;
+            --bg-surface: #0e0c19;
+            --bg-elevated: #17142b;
+            --border-color: #2e265c;
+            --text-main: #f5f3ff;
             --text-muted: #9b93c9;
             --anime-cyan: #00f0ff;
             --anime-pink: #ff007f;
@@ -36,7 +36,7 @@
             position: relative;
         }
 
-        /* Floating Anime Cyber Particles background effect */
+        /* Floating Cyber Particles */
         .particles {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -49,17 +49,17 @@
             position: absolute;
             background: var(--anime-cyan);
             border-radius: 50%;
-            animation: floatUp 8s infinite linear;
-            opacity: 0.2;
+            animation: floatUp 7s infinite linear;
+            opacity: 0.25;
         }
 
         @keyframes floatUp {
             0% { transform: translateY(100vh) scale(0); opacity: 0; }
-            50% { opacity: 0.5; }
+            50% { opacity: 0.6; }
             100% { transform: translateY(-10vh) scale(1); opacity: 0; }
         }
 
-        header, .lang-tabs, .workspace {
+        header, .lang-tabs, .workspace, .mascot-container {
             z-index: 1;
         }
 
@@ -70,7 +70,7 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 2px solid var(--border-color);
-            box-shadow: 0 4px 20px rgba(157, 0, 255, 0.15);
+            box-shadow: 0 4px 25px rgba(157, 0, 255, 0.2);
         }
 
         .brand {
@@ -108,38 +108,40 @@
             text-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
         }
 
-        .header-controls {
+        /* Animated Laughing/Cheering Anime Boy Mascot Widget */
+        .mascot-widget {
             display: flex;
-            gap: 12px;
             align-items: center;
-        }
-
-        .status-badge {
-            font-size: 0.8rem;
-            color: var(--anime-green);
+            gap: 10px;
             background: var(--bg-elevated);
             padding: 6px 14px;
-            border-radius: 20px;
-            border: 1px solid var(--anime-green);
+            border-radius: 30px;
+            border: 1px solid var(--anime-pink);
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.3);
+        }
+
+        .mascot-avatar {
+            width: 32px;
+            height: 32px;
+            background: radial-gradient(circle, var(--anime-yellow) 0%, var(--anime-pink) 100%);
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-weight: 600;
-            box-shadow: 0 0 10px rgba(57, 255, 20, 0.2);
+            justify-content: center;
+            font-size: 1.1rem;
+            animation: laughBounce 0.6s infinite alternate ease-in-out;
         }
 
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--anime-green);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--anime-green);
-            animation: blink 1.5s infinite;
+        @keyframes laughBounce {
+            0% { transform: translateY(0) rotate(-50deg); }
+            100% { transform: translateY(-4px) rotate(5deg); }
         }
 
-        @keyframes blink {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.3; transform: scale(0.8); }
+        .mascot-speech {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--anime-yellow);
+            white-space: nowrap;
         }
 
         .lang-tabs {
@@ -182,7 +184,7 @@
 
         .tab-btn.premium {
             background: linear-gradient(135deg, var(--anime-yellow), #ff5500);
-            color: #0b0711;
+            color: #06050b;
             border: none;
             font-weight: 800;
             box-shadow: 0 0 15px rgba(255, 238, 0, 0.4);
@@ -259,7 +261,7 @@
 
         .run-btn {
             background: linear-gradient(135deg, var(--anime-green), #00aa44);
-            color: #080711;
+            color: #06050b;
             border: none;
             padding: 6px 16px;
             border-radius: 6px;
@@ -291,7 +293,7 @@
 
         .output-container {
             flex: 1;
-            background-color: #040308;
+            background-color: #030206;
             color: var(--anime-cyan);
             padding: 20px;
             font-family: 'Fira Code', 'Courier New', Courier, monospace;
@@ -353,8 +355,6 @@
             flex-direction: column;
             justify-content: space-between;
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            position: relative;
-            overflow: hidden;
         }
 
         .price-card:hover {
@@ -394,7 +394,7 @@
 
         .momo-btn {
             background: linear-gradient(135deg, var(--anime-yellow), #ff7700);
-            color: #080711;
+            color: #06050b;
             border: none;
             padding: 14px;
             border-radius: 10px;
@@ -487,7 +487,7 @@
         .modal-btn-confirm {
             flex: 1;
             background: var(--anime-green);
-            color: #080711;
+            color: #06050b;
             border: none;
             padding: 12px;
             border-radius: 10px;
@@ -504,7 +504,7 @@
 
         .modal-btn-cancel {
             flex: 1;
-            background: #2e2858;
+            background: #2e265c;
             color: white;
             border: none;
             padding: 12px;
@@ -588,12 +588,13 @@
     <header>
         <div class="brand">
             <div class="brand-logo">K</div>
-            <h1>KuaduCode Anime IDE</h1>
+            <h1>KUADU MORSMALLEO</h1>
         </div>
-        <div class="header-controls">
-            <div class="status-badge">
-                <div class="status-dot"></div> MTN MoMo Active 🇬🇭
-            </div>
+        
+        <!-- Animated Laughing Anime Boy Widget -->
+        <div class="mascot-widget">
+            <div class="mascot-avatar">😆</div>
+            <div class="mascot-speech" id="mascot-text">Sugoi! Let's code!</div>
         </div>
     </header>
 
@@ -610,7 +611,7 @@
         <button class="tab-btn" onclick="switchLanguage('kotlin')">Kotlin</button>
         <button class="tab-btn" onclick="switchLanguage('sql')">SQL</button>
         <button class="tab-btn" onclick="switchLanguage('r')">R</button>
-        <button class="tab-btn premium" onclick="switchLanguage('premium')">👑 KuaduCode Premium (200+ Langs)</button>
+        <button class="tab-btn premium" onclick="switchLanguage('premium')">👑 KUADU Premium (200+ Langs)</button>
     </div>
 
     <!-- Workspace Container -->
@@ -630,7 +631,7 @@
     </div>
 
     <script>
-        // Generate ambient floating particles for anime cyber effect
+        // Ambient Floating Particles
         const particleContainer = document.getElementById('particles-container');
         for (let i = 0; i < 25; i++) {
             const p = document.createElement('div');
@@ -643,13 +644,28 @@
             particleContainer.appendChild(p);
         }
 
+        // Mascot Laughing & Cheering Phrases
+        const mascotPhrases = [
+            "Haha! Dattebayo! 😆",
+            "Sugoi code skills! 🚀",
+            "Lol! Keep typing! 😂",
+            "Genius mode activated! ✨",
+            "So cool! ⚡"
+        ];
+
+        setInterval(() => {
+            const textEl = document.getElementById('mascot-text');
+            const randomPhrase = mascotPhrases[Math.floor(Math.random() * mascotPhrases.length)];
+            textEl.innerText = randomPhrase;
+        }, 4000);
+
         const templates = {
             web: {
                 html: '<h1>Hello Otaku Developer! ⚡</h1>\n<p>Edit HTML, CSS, or JS to see live anime magic.</p>',
-                css: 'body { font-family: sans-serif; text-align: center; margin-top: 50px; background: linear-gradient(135deg, #100f1d, #1a1831); color: #00f0ff; }',
-                js: 'console.log("KuaduCode Anime Console Active 🚀");'
+                css: 'body { font-family: sans-serif; text-align: center; margin-top: 50px; background: linear-gradient(135deg, #0e0c19, #17142b); color: #00f0ff; }',
+                js: 'console.log("KUADU MORSMALLEO Anime Console Active 🚀");'
             },
-            python: `print("⚡ Konnichiwa from KuaduCode Python!")\npower_level = 9001\nprint(f"Developer Power Level: {power_level}")`,
+            python: `print("⚡ Konnichiwa from KUADU Python!")\npower_level = 9001\nprint(f"Developer Power Level: {power_level}")`,
             java: `public class Main {\n    public static void main(String[] args) {\n        System.out.println("⚡ Hello Java Anime Coder!");\n    }\n}`,
             cpp: `#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "⚡ Hello C++ Cyberpunk!" << endl;\n    return 0;\n}`,
             csharp: `using System;\n\nclass Program {\n    static void Main() {\n        Console.WriteLine("⚡ Hello C# Otaku!");\n    }\n}`,
@@ -721,7 +737,7 @@
                 workspace.innerHTML = `
                     <div class="premium-dashboard">
                         <div class="premium-hero">
-                            <h2>👑 KuaduCode Anime Elite Membership</h2>
+                            <h2>👑 KUADU MORSMALLEO Elite Membership</h2>
                             <p>Unlock all 200+ language cyber directories and legendary challenge paths instantly via MTN Mobile Money.</p>
                         </div>
 
