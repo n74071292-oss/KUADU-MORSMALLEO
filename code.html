@@ -12,7 +12,7 @@
             --border-color: #30363d;
             --text-main: #c9d1d9;
             --text-muted: #8b949e;
-            --accent-blue: #58a6ff;
+            --accent-indigo: #58a6ff;
             --accent-green: #2ea44f;
             --accent-green-hover: #2c974b;
             --accent-purple: #bc8cff;
@@ -32,12 +32,12 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            animation: fadeIn 0.4s ease-out;
+            animation: appEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.99); }
-            to { opacity: 1; transform: scale(1); }
+        @keyframes appEntrance {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .top-nav {
@@ -47,7 +47,7 @@
             background-color: var(--bg-secondary);
             padding: 12px 24px;
             border-bottom: 1px solid var(--border-color);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
             z-index: 10;
         }
 
@@ -60,25 +60,31 @@
         .logo .dot {
             width: 12px;
             height: 12px;
-            background: linear-gradient(135deg, #58a6ff, #bc8cff);
+            background: linear-gradient(135deg, var(--accent-indigo), var(--accent-purple));
             border-radius: 50%;
             box-shadow: 0 0 10px rgba(88, 166, 255, 0.6);
-            animation: pulseGlow 2s infinite;
+            animation: pulseGlow 2.5s infinite ease-in-out;
         }
 
         @keyframes pulseGlow {
-            0% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 15px rgba(188, 140, 255, 0.8); }
-            100% { transform: scale(1); opacity: 0.8; }
+            0%, 100% { transform: scale(1); opacity: 0.8; box-shadow: 0 0 10px rgba(88, 166, 255, 0.6); }
+            50% { transform: scale(1.25); opacity: 1; box-shadow: 0 0 20px rgba(188, 140, 255, 0.9); }
         }
 
         .logo h1 {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             font-weight: 700;
+            letter-spacing: -0.5px;
             color: #ffffff;
-            background: linear-gradient(90deg, #ffffff, #8b949e);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        }
+
+        .logo h1 .brand-code {
+            color: var(--accent-indigo);
+            transition: color 0.3s ease;
+        }
+
+        .logo h1:hover .brand-code {
+            color: var(--accent-purple);
         }
 
         .nav-actions {
@@ -91,29 +97,39 @@
             background-color: var(--accent-green);
             color: white;
             border: none;
-            padding: 7px 16px;
+            padding: 8px 18px;
             border-radius: 6px;
             font-weight: 600;
             font-size: 0.85rem;
             cursor: pointer;
-            box-shadow: 0 2px 6px rgba(46, 164, 79, 0.3);
+            box-shadow: 0 2px 8px rgba(46, 164, 79, 0.3);
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
-        .btn-primary:hover { background-color: var(--accent-green-hover); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(46, 164, 79, 0.4); }
+        .btn-primary:hover { 
+            background-color: var(--accent-green-hover); 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 15px rgba(46, 164, 79, 0.45); 
+        }
         .btn-primary:active { transform: translateY(0); }
 
         .btn-secondary {
             background-color: var(--bg-tertiary);
             color: var(--text-main);
             border: 1px solid var(--border-color);
-            padding: 7px 14px;
+            padding: 8px 14px;
             border-radius: 6px;
             font-size: 0.85rem;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s ease;
         }
-        .btn-secondary:hover { background-color: #30363d; border-color: #8b949e; transform: translateY(-1px); }
+        .btn-secondary:hover { 
+            background-color: #30363d; 
+            border-color: #8b949e; 
+            transform: translateY(-1px); 
+        }
 
         .btn-text {
             background: none;
@@ -123,7 +139,7 @@
             cursor: pointer;
             transition: color 0.15s ease;
         }
-        .btn-text:hover { color: var(--text-main); }
+        .btn-text:hover { color: #fff; }
 
         .workspace {
             display: grid;
@@ -168,18 +184,19 @@
             font-size: 0.85rem;
             font-weight: 500;
             border-bottom: 2px solid transparent;
-            transition: all 0.2s ease;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
         }
 
         .tab-btn:hover {
             color: var(--text-main);
-            background-color: rgba(255, 255, 255, 0.02);
+            background-color: rgba(255, 255, 255, 0.03);
         }
 
         .tab-btn.active {
             color: #ffffff;
             background-color: var(--bg-primary);
-            border-bottom: 2px solid var(--accent-blue);
+            border-bottom: 2px solid var(--accent-indigo);
         }
 
         .python-tab-btn.active { border-bottom-color: #79c0ff; }
@@ -201,11 +218,11 @@
             resize: none;
             outline: none;
             tab-size: 4;
-            animation: fadeInEditor 0.25s ease-out;
+            animation: fadeInEditor 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         @keyframes fadeInEditor {
-            from { opacity: 0; transform: translateY(4px); }
+            from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -219,7 +236,7 @@
             top: 0; left: 0; right: 0; bottom: 0;
             flex-direction: column;
             background-color: #010409;
-            animation: fadeInEditor 0.25s ease-out;
+            animation: fadeInEditor 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         .output-view.active {
@@ -232,6 +249,12 @@
             height: 100%;
             border: none;
             background-color: #ffffff;
+            animation: iframeFade 0.4s ease;
+        }
+
+        @keyframes iframeFade {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .console-toolbar {
@@ -249,13 +272,19 @@
         .console-box {
             flex: 1;
             background-color: #0d1117;
-            color: #58a6ff;
+            color: var(--accent-indigo);
             padding: 16px;
             font-family: 'JetBrains Mono', 'Fira Code', Consolas, 'Courier New', monospace;
             font-size: 0.88rem;
             line-height: 1.5;
             overflow-y: auto;
             white-space: pre-wrap;
+            animation: consolePulse 0.2s ease;
+        }
+
+        @keyframes consolePulse {
+            0% { opacity: 0.7; }
+            100% { opacity: 1; }
         }
 
         .cpp-console {
@@ -273,7 +302,7 @@
     <header class="top-nav">
         <div class="logo">
             <span class="dot"></span>
-            <h1>Kuaducode</h1>
+            <h1>Kuadu<span class="brand-code">code</span></h1>
         </div>
         <div class="nav-actions">
             <button id="clear-btn" class="btn-secondary">Clear Active</button>
@@ -282,7 +311,6 @@
     </header>
 
     <main class="workspace">
-        <!-- Editors Pane -->
         <section class="pane editor-pane">
             <nav class="pane-tabs file-tabs">
                 <button class="tab-btn active" data-target="editor-web" data-group="editor">Web App (HTML/CSS/JS)</button>
@@ -297,7 +325,6 @@
             </div>
         </section>
 
-        <!-- Outputs Pane -->
         <section class="pane output-pane">
             <nav class="pane-tabs output-tabs">
                 <button class="tab-btn active" data-target="panel-preview" data-group="output">🌐 Web Preview</button>
@@ -344,27 +371,28 @@
         background: white;
         padding: 40px;
         border-radius: 16px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.12);
         text-align: center;
         animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     @keyframes popUp {
-        0% { transform: scale(0.8); opacity: 0; }
+        0% { transform: scale(0.85); opacity: 0; }
         100% { transform: scale(1); opacity: 1; }
     }
-    h1 { color: #222; margin-bottom: 10px; }
-    p { color: #666; margin-bottom: 20px; }
+    h1 { color: #1f2328; margin-bottom: 10px; font-size: 1.8rem; }
+    p { color: #656d76; margin-bottom: 24px; }
     button {
         background: #2ea44f;
         color: white;
         border: none;
-        padding: 10px 20px;
+        padding: 10px 22px;
         border-radius: 8px;
         cursor: pointer;
         font-weight: bold;
-        transition: transform 0.2s ease, background 0.2s ease;
+        transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: 0 4px 12px rgba(46, 164, 79, 0.3);
     }
-    button:hover { background: #2c974b; transform: scale(1.05); }
+    button:hover { background: #2c974b; transform: scale(1.06); box-shadow: 0 6px 16px rgba(46, 164, 79, 0.4); }
 </style>
 
 <div class="card">
@@ -405,7 +433,6 @@ int main() {
         document.getElementById('editor-python').value = defaultPythonCode;
         document.getElementById('editor-cpp').value = defaultCppCode;
 
-        // Universal Tab Switcher Controller
         document.querySelectorAll('.pane-tabs').forEach(tabGroup => {
             const buttons = tabGroup.querySelectorAll('.tab-btn');
             
@@ -503,7 +530,6 @@ int main() {
                     lines.forEach(line => {
                         let trimmed = line.trim();
                         if (trimmed.includes('cout <<')) {
-                            // Extract string tokens between << and << or semicolon
                             let parts = trimmed.split('<<');
                             for (let i = 1; i < parts.length - 1; i++) {
                                 let chunk = parts[i].trim();
