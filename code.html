@@ -1,280 +1,68 @@
-:root {
-    --bg-primary: #0d1117;
-    --bg-secondary: #161b22;
-    --bg-tertiary: #21262d;
-    --border-color: #30363d;
-    --text-main: #c9d1d9;
-    --text-muted: #8b949e;
-    --accent-blue: #58a6ff;
-    --accent-green: #2ea44f;
-    --accent-green-hover: #2c974b;
-    --accent-orange: #f0883e;
-    --gradient-pro: linear-gradient(135deg, #f5af19, #f12711);
-    --shadow-subtle: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KuaduCode™ — Universal Code Studio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-}
+    <!-- Top Navigation Bar -->
+    <header class="top-nav">
+        <div class="logo">
+            <span class="dot"></span>
+            <h1>Kuaducode</h1>
+        </div>
+        <div class="nav-actions">
+            <a href="#" class="btn-pro">⭐ Upgrade Pro (GHS 10 - 90)</a>
+            <button id="clear-btn" class="btn-secondary">Clear</button>
+            <button id="run-btn" class="btn-primary">▶ Run Code</button>
+        </div>
+    </header>
 
-body {
-    background-color: var(--bg-primary);
-    color: var(--text-main);
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
+    <!-- File Tabs Bar -->
+    <nav class="file-tabs">
+        <button class="tab-btn active" data-file="html">index.html</button>
+        <button class="tab-btn" data-file="css">style.css</button>
+        <button class="tab-btn" data-file="js">script.js</button>
+        <button class="tab-btn" data-file="php">index.php</button>
+        <button class="tab-btn python-tab" data-file="python">script.py</button>
+    </nav>
 
-/* Top Navigation */
-.top-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--bg-secondary);
-    padding: 12px 24px;
-    border-bottom: 1px solid var(--border-color);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    z-index: 10;
-}
+    <!-- Main Workspace -->
+    <main class="workspace">
+        <!-- Code Editors Container -->
+        <div class="editor-container">
+            <textarea id="editor-html" class="code-editor active" placeholder="Write HTML here..."></textarea>
+            <textarea id="editor-css" class="code-editor" placeholder="Write CSS here..."></textarea>
+            <textarea id="editor-js" class="code-editor" placeholder="Write JavaScript here..."></textarea>
+            <textarea id="editor-php" class="code-editor" placeholder="Write PHP here..."></textarea>
+            <textarea id="editor-python" class="code-editor" placeholder="Write Python here...&#10;print('Hello from Python!')"></textarea>
+        </div>
 
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
+        <!-- Split Output Panels -->
+        <div class="output-container">
+            <!-- Web Preview Panel (HTML/CSS/JS/PHP) -->
+            <div class="output-panel web-preview-panel">
+                <div class="panel-header">
+                    <span>🌐 Live Web Preview</span>
+                    <span class="status-indicator">Auto-updates on run</span>
+                </div>
+                <iframe id="preview-frame" title="Live Web Preview"></iframe>
+            </div>
 
-.logo .dot {
-    width: 12px;
-    height: 12px;
-    background: linear-gradient(135deg, #ff5f56, #ffbd2e);
-    border-radius: 50%;
-    box-shadow: 0 0 8px rgba(255, 95, 86, 0.6);
-}
+            <!-- Python Console Output Panel -->
+            <div class="output-panel python-output-panel">
+                <div class="panel-header">
+                    <span>🐍 Python Output Console</span>
+                    <button id="clear-python-out" class="btn-text">Clear Console</button>
+                </div>
+                <pre id="python-console" class="console-box">Ready to run Python code...</pre>
+            </div>
+        </div>
+    </main>
 
-.logo h1 {
-    font-size: 1.2rem;
-    font-weight: 700;
-    letter-spacing: -0.3px;
-    color: #ffffff;
-    background: linear-gradient(90deg, #ffffff, #8b949e);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.nav-actions {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-}
-
-/* Buttons */
-.btn-pro {
-    background: var(--gradient-pro);
-    color: white;
-    padding: 7px 16px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 0.85rem;
-    font-weight: 600;
-    box-shadow: 0 2px 6px rgba(241, 39, 17, 0.3);
-    transition: transform 0.15s ease, opacity 0.15s ease;
-}
-
-.btn-pro:hover {
-    opacity: 0.92;
-    transform: translateY(-1px);
-}
-
-.btn-primary {
-    background-color: var(--accent-green);
-    color: white;
-    border: none;
-    padding: 7px 16px;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 0.85rem;
-    cursor: pointer;
-    box-shadow: 0 2px 6px rgba(46, 164, 79, 0.3);
-    transition: background-color 0.15s ease, transform 0.15s ease;
-}
-
-.btn-primary:hover {
-    background-color: var(--accent-green-hover);
-    transform: translateY(-1px);
-}
-
-.btn-secondary {
-    background-color: var(--bg-tertiary);
-    color: var(--text-main);
-    border: 1px solid var(--border-color);
-    padding: 7px 14px;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.15s ease, border-color 0.15s ease;
-}
-
-.btn-secondary:hover {
-    background-color: #30363d;
-    border-color: #8b949e;
-}
-
-.btn-text {
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    font-size: 0.75rem;
-    cursor: pointer;
-    transition: color 0.15s ease;
-}
-.btn-text:hover { 
-    color: var(--text-main); 
-}
-
-/* File Tabs */
-.file-tabs {
-    display: flex;
-    background-color: var(--bg-secondary);
-    border-bottom: 1px solid var(--border-color);
-    padding: 0 16px;
-    overflow-x: auto;
-}
-
-.tab-btn {
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    font-weight: 500;
-    border-bottom: 2px solid transparent;
-    transition: color 0.15s ease, background-color 0.15s ease;
-}
-
-.tab-btn:hover {
-    color: var(--text-main);
-    background-color: rgba(255, 255, 255, 0.02);
-}
-
-.tab-btn.active {
-    color: #ffffff;
-    background-color: var(--bg-primary);
-    border-bottom: 2px solid var(--accent-blue);
-}
-
-.python-tab {
-    color: #79c0ff;
-}
-.python-tab.active {
-    border-bottom-color: #79c0ff;
-}
-
-/* Workspace Grid */
-.workspace {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    flex: 1;
-    overflow: hidden;
-    background-color: var(--bg-primary);
-}
-
-/* Editors */
-.editor-container {
-    background-color: var(--bg-primary);
-    border-right: 1px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
-}
-
-.code-editor {
-    display: none;
-    flex: 1;
-    width: 100%;
-    background-color: var(--bg-primary);
-    color: #e6edf3;
-    border: none;
-    padding: 20px;
-    font-family: 'JetBrains Mono', 'Fira Code', Consolas, 'Courier New', monospace;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    resize: none;
-    outline: none;
-    tab-size: 4;
-}
-
-.code-editor.active {
-    display: block;
-}
-
-/* Output Panels */
-.output-container {
-    display: flex;
-    flex-direction: column;
-    background-color: #010409;
-}
-
-.output-panel {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.panel-header {
-    background-color: var(--bg-secondary);
-    padding: 8px 16px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--text-muted);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--border-color);
-    letter-spacing: 0.3px;
-}
-
-.status-indicator {
-    color: var(--accent-green);
-    font-weight: 500;
-}
-
-#preview-frame {
-    flex: 1;
-    width: 100%;
-    border: none;
-    background-color: #ffffff;
-}
-
-.console-box {
-    flex: 1;
-    background-color: #0d1117;
-    color: #79c0ff;
-    padding: 16px;
-    font-family: 'JetBrains Mono', 'Fira Code', Consolas, 'Courier New', monospace;
-    font-size: 0.88rem;
-    line-height: 1.5;
-    overflow-y: auto;
-    white-space: pre-wrap;
-}
-
-/* Custom Scrollbars */
-::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-::-webkit-scrollbar-thumb {
-    background: #30363d;
-    border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: #484f58;
-}
+    <script src="script.js"></script>
+</body>
+</html>
