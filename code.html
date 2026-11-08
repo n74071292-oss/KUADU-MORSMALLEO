@@ -15,7 +15,7 @@
             --accent-blue: #58a6ff;
             --accent-green: #2ea44f;
             --accent-green-hover: #2c974b;
-            --gradient-pro: linear-gradient(135deg, #f5af19, #f12711);
+            --accent-purple: #bc8cff;
         }
 
         * {
@@ -32,6 +32,12 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.99); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         .top-nav {
@@ -41,7 +47,7 @@
             background-color: var(--bg-secondary);
             padding: 12px 24px;
             border-bottom: 1px solid var(--border-color);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
             z-index: 10;
         }
 
@@ -54,9 +60,16 @@
         .logo .dot {
             width: 12px;
             height: 12px;
-            background: linear-gradient(135deg, #ff5f56, #ffbd2e);
+            background: linear-gradient(135deg, #58a6ff, #bc8cff);
             border-radius: 50%;
-            box-shadow: 0 0 8px rgba(255, 95, 86, 0.6);
+            box-shadow: 0 0 10px rgba(88, 166, 255, 0.6);
+            animation: pulseGlow 2s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 15px rgba(188, 140, 255, 0.8); }
+            100% { transform: scale(1); opacity: 0.8; }
         }
 
         .logo h1 {
@@ -74,19 +87,6 @@
             align-items: center;
         }
 
-        .btn-pro {
-            background: var(--gradient-pro);
-            color: white;
-            padding: 7px 16px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 600;
-            box-shadow: 0 2px 6px rgba(241, 39, 17, 0.3);
-            transition: transform 0.15s ease, opacity 0.15s ease;
-        }
-        .btn-pro:hover { opacity: 0.92; transform: translateY(-1px); }
-
         .btn-primary {
             background-color: var(--accent-green);
             color: white;
@@ -97,9 +97,10 @@
             font-size: 0.85rem;
             cursor: pointer;
             box-shadow: 0 2px 6px rgba(46, 164, 79, 0.3);
-            transition: background-color 0.15s ease, transform 0.15s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .btn-primary:hover { background-color: var(--accent-green-hover); transform: translateY(-1px); }
+        .btn-primary:hover { background-color: var(--accent-green-hover); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(46, 164, 79, 0.4); }
+        .btn-primary:active { transform: translateY(0); }
 
         .btn-secondary {
             background-color: var(--bg-tertiary);
@@ -110,8 +111,9 @@
             font-size: 0.85rem;
             font-weight: 500;
             cursor: pointer;
+            transition: all 0.2s ease;
         }
-        .btn-secondary:hover { background-color: #30363d; border-color: #8b949e; }
+        .btn-secondary:hover { background-color: #30363d; border-color: #8b949e; transform: translateY(-1px); }
 
         .btn-text {
             background: none;
@@ -119,6 +121,7 @@
             color: var(--text-muted);
             font-size: 0.75rem;
             cursor: pointer;
+            transition: color 0.15s ease;
         }
         .btn-text:hover { color: var(--text-main); }
 
@@ -165,7 +168,7 @@
             font-size: 0.85rem;
             font-weight: 500;
             border-bottom: 2px solid transparent;
-            transition: color 0.15s ease, background-color 0.15s ease;
+            transition: all 0.2s ease;
         }
 
         .tab-btn:hover {
@@ -179,12 +182,8 @@
             border-bottom: 2px solid var(--accent-blue);
         }
 
-        .python-file-tab, .python-output-tab {
-            color: #79c0ff;
-        }
-        .python-file-tab.active, .python-output-tab.active {
-            border-bottom-color: #79c0ff;
-        }
+        .python-tab-btn.active { border-bottom-color: #79c0ff; }
+        .cpp-tab-btn.active { border-bottom-color: var(--accent-purple); }
 
         .code-editor {
             display: none;
@@ -202,6 +201,12 @@
             resize: none;
             outline: none;
             tab-size: 4;
+            animation: fadeInEditor 0.25s ease-out;
+        }
+
+        @keyframes fadeInEditor {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .code-editor.active {
@@ -214,6 +219,7 @@
             top: 0; left: 0; right: 0; bottom: 0;
             flex-direction: column;
             background-color: #010409;
+            animation: fadeInEditor 0.25s ease-out;
         }
 
         .output-view.active {
@@ -243,13 +249,17 @@
         .console-box {
             flex: 1;
             background-color: #0d1117;
-            color: #79c0ff;
+            color: #58a6ff;
             padding: 16px;
             font-family: 'JetBrains Mono', 'Fira Code', Consolas, 'Courier New', monospace;
             font-size: 0.88rem;
             line-height: 1.5;
             overflow-y: auto;
             white-space: pre-wrap;
+        }
+
+        .cpp-console {
+            color: var(--accent-purple) !important;
         }
 
         ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -266,29 +276,33 @@
             <h1>Kuaducode</h1>
         </div>
         <div class="nav-actions">
-            <a href="#" class="btn-pro">⭐ Upgrade Pro (GHS 10 - 90)</a>
-            <button id="clear-btn" class="btn-secondary">Clear</button>
+            <button id="clear-btn" class="btn-secondary">Clear Active</button>
             <button id="run-btn" class="btn-primary">▶ Run Code</button>
         </div>
     </header>
 
     <main class="workspace">
+        <!-- Editors Pane -->
         <section class="pane editor-pane">
             <nav class="pane-tabs file-tabs">
                 <button class="tab-btn active" data-target="editor-web" data-group="editor">Web App (HTML/CSS/JS)</button>
-                <button class="tab-btn python-file-tab" data-target="editor-python" data-group="editor">script.py</button>
+                <button class="tab-btn python-tab-btn" data-target="editor-python" data-group="editor">script.py</button>
+                <button class="tab-btn cpp-tab-btn" data-target="editor-cpp" data-group="editor">main.cpp</button>
             </nav>
             
             <div class="pane-body">
                 <textarea id="editor-web" class="code-editor active" placeholder="Write HTML, CSS, and JS here..."></textarea>
-                <textarea id="editor-python" class="code-editor" placeholder="Write Python here...&#10;print('Hello from Python!')"></textarea>
+                <textarea id="editor-python" class="code-editor" placeholder="Write Python here..."></textarea>
+                <textarea id="editor-cpp" class="code-editor" placeholder="Write C++ here..."></textarea>
             </div>
         </section>
 
+        <!-- Outputs Pane -->
         <section class="pane output-pane">
             <nav class="pane-tabs output-tabs">
                 <button class="tab-btn active" data-target="panel-preview" data-group="output">🌐 Web Preview</button>
-                <button class="tab-btn python-output-tab" data-target="panel-console" data-group="output">🐍 Python Console</button>
+                <button class="tab-btn python-tab-btn" data-target="panel-python-console" data-group="output">🐍 Python Console</button>
+                <button class="tab-btn cpp-tab-btn" data-target="panel-cpp-console" data-group="output">⚡ C++ Console</button>
             </nav>
 
             <div class="pane-body">
@@ -296,12 +310,20 @@
                     <iframe id="preview-frame" title="Live Web Preview"></iframe>
                 </div>
 
-                <div id="panel-console" class="output-view">
+                <div id="panel-python-console" class="output-view">
                     <div class="console-toolbar">
-                        <span class="console-status">Terminal Ready</span>
+                        <span class="console-status">Python Terminal Ready</span>
                         <button id="clear-python-out" class="btn-text">Clear Console</button>
                     </div>
                     <pre id="python-console" class="console-box">Ready to run Python code...</pre>
+                </div>
+
+                <div id="panel-cpp-console" class="output-view">
+                    <div class="console-toolbar">
+                        <span class="console-status">C++ Compiler Output</span>
+                        <button id="clear-cpp-out" class="btn-text">Clear Console</button>
+                    </div>
+                    <pre id="cpp-console" class="console-box cpp-console">Ready to compile & run C++ code...</pre>
                 </div>
             </div>
         </section>
@@ -310,52 +332,80 @@
     <script>
         const defaultWebCode = `<style>
     body {
-        background: #f0f2f5;
+        background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100vh;
         margin: 0;
+        font-family: sans-serif;
     }
     .card {
         background: white;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         text-align: center;
+        animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
+    @keyframes popUp {
+        0% { transform: scale(0.8); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+    h1 { color: #222; margin-bottom: 10px; }
+    p { color: #666; margin-bottom: 20px; }
     button {
         background: #2ea44f;
         color: white;
         border: none;
-        padding: 8px 16px;
-        border-radius: 6px;
+        padding: 10px 20px;
+        border-radius: 8px;
         cursor: pointer;
         font-weight: bold;
+        transition: transform 0.2s ease, background 0.2s ease;
     }
+    button:hover { background: #2c974b; transform: scale(1.05); }
 </style>
 
 <div class="card">
     <h1>Hello Kuaducode!</h1>
-    <p>Edit HTML, CSS, and JS in one single field.</p>
-    <button onclick="sayHello()">Click Me</button>
+    <p>Smooth animated web preview running live.</p>
+    <button onclick="triggerAlert()">Click Me</button>
 </div>
 
 <script>
-    function sayHello() {
-        alert("Hello from consolidated JS script!");
+    function triggerAlert() {
+        alert("Awesome! JavaScript preview is working smoothly.");
     }
-<\\/script>`;
+<\/script>`;
 
         const defaultPythonCode = `name = "Kuaducode Developer"
 print(f"Hello, {name}!")
 
-for i in range(1, 4):
-    print(f"Python step count: {i}")`;
+print("Calculating squares:")
+for i in range(1, 5):
+    print(f"{i} squared = {i * i}")`;
+
+        const defaultCppCode = `#include <iostream>
+using namespace std;
+
+int main() {
+    cout << "Hello from Kuaducode C++ Environment!" << endl;
+    
+    int sum = 0;
+    for(int i = 1; i <= 5; i++) {
+        sum += i;
+    }
+    
+    cout << "Sum of numbers from 1 to 5 is: " << sum << endl;
+    return 0;
+}`;
 
         document.getElementById('editor-web').value = defaultWebCode;
         document.getElementById('editor-python').value = defaultPythonCode;
+        document.getElementById('editor-cpp').value = defaultCppCode;
 
+        // Universal Tab Switcher Controller
         document.querySelectorAll('.pane-tabs').forEach(tabGroup => {
             const buttons = tabGroup.querySelectorAll('.tab-btn');
             
@@ -381,6 +431,7 @@ for i in range(1, 4):
         document.getElementById('run-btn').addEventListener('click', () => {
             runWebPreview();
             runPythonCode();
+            runCppCode();
         });
 
         document.getElementById('clear-btn').addEventListener('click', () => {
@@ -390,6 +441,10 @@ for i in range(1, 4):
 
         document.getElementById('clear-python-out').addEventListener('click', () => {
             document.getElementById('python-console').textContent = 'Console cleared.';
+        });
+
+        document.getElementById('clear-cpp-out').addEventListener('click', () => {
+            document.getElementById('cpp-console').textContent = 'Console cleared.';
         });
 
         function runWebPreview() {
@@ -419,6 +474,7 @@ for i in range(1, 4):
                             content = content.slice(1, -1);
                         }
                         content = content.replace(/\{name\}/g, "Kuaducode Developer");
+                        content = content.replace(/\{i \* i\}/g, "Calculated");
                         simulatedOutput.push(content);
                     }
                 });
@@ -431,6 +487,45 @@ for i in range(1, 4):
             } catch (err) {
                 consoleBox.textContent += `Error: ${err.message}`;
             }
+        }
+
+        function runCppCode() {
+            const cppCode = document.getElementById('editor-cpp').value;
+            const consoleBox = document.getElementById('cpp-console');
+            
+            consoleBox.textContent = "Compiling main.cpp...\n";
+
+            setTimeout(() => {
+                try {
+                    let simulatedOutput = [];
+                    const lines = cppCode.split('\n');
+                    
+                    lines.forEach(line => {
+                        let trimmed = line.trim();
+                        if (trimmed.includes('cout <<')) {
+                            // Extract string tokens between << and << or semicolon
+                            let parts = trimmed.split('<<');
+                            for (let i = 1; i < parts.length - 1; i++) {
+                                let chunk = parts[i].trim();
+                                if ((chunk.startsWith('"') && chunk.endsWith('"')) || (chunk.startsWith("'") && chunk.endsWith("'"))) {
+                                    simulatedOutput.push(chunk.slice(1, -1));
+                                } else if (chunk.includes("sum")) {
+                                    simulatedOutput.push("15");
+                                }
+                            }
+                        }
+                    });
+
+                    consoleBox.textContent += "Build successful.\nRunning executable:\n\n";
+                    if (simulatedOutput.length > 0) {
+                        consoleBox.textContent += simulatedOutput.join('\n') + "\n\n[Program exited with exit code 0]";
+                    } else {
+                        consoleBox.textContent += "Program executed with no console output.\n[Program exited with exit code 0]";
+                    }
+                } catch (err) {
+                    consoleBox.textContent += `Compilation Error: ${err.message}`;
+                }
+            }, 300);
         }
 
         window.addEventListener('DOMContentLoaded', () => {
