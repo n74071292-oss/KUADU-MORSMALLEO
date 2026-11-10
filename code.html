@@ -5,22 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KuaduCode™ — Ultimate Universal Code Studio & Web IDE</title>
     
-    <meta name="description" content="KuaduCode is the ultimate universal web code editor and IDE featuring live preview, multi-language support (Python, C++, HTML/JS), and instant code execution.">
-    <meta name="keywords" content="online IDE, code editor, Kuaducode, web preview, python runner, HTML editor, secure code studio">
+    <meta name="description" content="KuaduCode is the ultimate universal web code editor and IDE featuring live preview, multi-language support across 24+ programming languages, and instant code execution.">
+    <meta name="keywords" content="online IDE, code editor, Kuaducode, web preview, multi-language compiler, secure code studio">
     <meta name="author" content="Kuaducode Platform">
     <meta property="og:title" content="KuaduCode™ — Universal Code Studio">
-    <meta property="og:description" content="Write, test, and run code instantly with Kuaducode's ultra-fast web studio.">
+    <meta property="og:description" content="Write, test, and run code instantly across 24+ programming languages with Kuaducode's ultra-fast web studio.">
     <meta property="og:type" content="website">
 
     <style>
         :root {
             --primary-bg: #0d1117;
-            --panel-bg: rgba(22, 27, 34, 0.85);
+            --panel-bg: rgba(22, 27, 34, 0.94);
             --border-color: #30363d;
             --text-main: #c9d1d9;
             --accent-green: #2ea44f;
-            --accent-glow: rgba(46, 164, 79, 0.4);
-            --glass-blur: blur(12px);
+            --accent-glow: rgba(46, 164, 79, 0.5);
+            --glass-blur: blur(20px);
         }
 
         * {
@@ -30,15 +30,28 @@
         }
 
         body {
-            background: linear-gradient(rgba(13, 17, 23, 0.85), rgba(13, 17, 23, 0.92)), 
-                        url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed;
-            background-size: cover;
+            background-color: #0d1117;
             display: flex;
             flex-direction: column;
             height: 100vh;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             color: var(--text-main);
             overflow: hidden;
+            position: relative;
+        }
+
+        .parallax-bg {
+            position: fixed;
+            top: -25%;
+            left: -25%;
+            width: 150vw;
+            height: 150vh;
+            background: linear-gradient(rgba(13, 17, 23, 0.78), rgba(13, 17, 23, 0.98)), 
+                        url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1920&auto=format&fit=crop') no-repeat center center;
+            background-size: cover;
+            z-index: -1;
+            transform: translate3d(0, 0, 0);
+            transition: transform 0.06s cubic-bezier(0.1, 0.7, 0.4, 1);
         }
 
         header {
@@ -47,31 +60,40 @@
             align-items: center;
             background: var(--panel-bg);
             backdrop-filter: var(--glass-blur);
-            padding: 12px 20px;
+            padding: 16px 24px;
             border-bottom: 1px solid var(--border-color);
+            z-index: 10;
         }
 
         .brand {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1.25rem;
             color: #ffffff;
+            letter-spacing: 0.5px;
         }
 
-        .ssl-badge {
+        .system-badge {
             font-size: 0.75rem;
-            background: rgba(46, 164, 79, 0.2);
+            background: rgba(46, 164, 79, 0.3);
             color: #3fb950;
-            padding: 3px 8px;
+            padding: 4px 12px;
             border-radius: 12px;
-            border: 1px solid rgba(63, 185, 80, 0.4);
+            border: 1px solid rgba(63, 185, 80, 0.6);
+            animation: pulseGlow 2s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0% { opacity: 0.8; }
+            50% { opacity: 1; text-shadow: 0 0 14px rgba(63,185,80,0.9); }
+            100% { opacity: 0.8; }
         }
 
         .actions-group {
             display: flex;
-            gap: 12px;
+            gap: 14px;
             align-items: center;
         }
 
@@ -85,19 +107,19 @@
             background: var(--accent-green);
             color: white;
             border: none;
-            padding: 8px 16px;
+            padding: 10px 20px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
             font-size: 0.9rem;
-            box-shadow: 0 4px 14px var(--accent-glow);
+            box-shadow: 0 4px 18px var(--accent-glow);
             transition: all 0.2s ease;
         }
 
         button:hover {
             background: #2c974b;
             transform: translateY(-1px);
-            box-shadow: 0 6px 20px var(--accent-glow);
+            box-shadow: 0 6px 24px var(--accent-glow);
         }
 
         .secondary-btn {
@@ -115,8 +137,9 @@
             display: flex;
             flex: 1;
             overflow: hidden;
-            padding: 16px;
-            gap: 16px;
+            padding: 20px;
+            gap: 20px;
+            z-index: 10;
         }
 
         .pane {
@@ -128,18 +151,29 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65);
         }
 
         .tab-bar {
             display: flex;
-            background: rgba(13, 17, 23, 0.5);
+            background: rgba(13, 17, 23, 0.75);
             border-bottom: 1px solid var(--border-color);
             padding: 0 10px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .tab-bar::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .tab-bar::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
         }
 
         .tab {
-            padding: 10px 16px;
+            padding: 12px 20px;
             font-size: 0.85rem;
             cursor: pointer;
             color: #8b949e;
@@ -151,7 +185,7 @@
         .tab.active {
             color: #ffffff;
             border-bottom-color: var(--accent-green);
-            background: rgba(22, 27, 34, 0.5);
+            background: rgba(22, 27, 34, 0.8);
         }
 
         .tab:hover {
@@ -160,11 +194,11 @@
 
         .pane-content {
             flex: 1;
-            padding: 16px;
+            padding: 20px;
             overflow-y: auto;
             font-family: "Courier New", Courier, monospace;
-            font-size: 0.9rem;
-            line-height: 1.5;
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
 
         textarea {
@@ -187,31 +221,26 @@
             border-radius: 8px;
         }
 
-        .ssl-info-box {
+        footer {
+            background: var(--panel-bg);
+            backdrop-filter: var(--glass-blur);
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            padding: 14px;
+            font-size: 0.75rem;
             color: #8b949e;
-            font-family: sans-serif;
-            line-height: 1.6;
-        }
-
-        .ssl-info-box h3 {
-            color: #ffffff;
-            margin-bottom: 10px;
-        }
-
-        .ssl-info-box code {
-            background: #161b22;
-            padding: 2px 6px;
-            border-radius: 4px;
-            color: #3fb950;
+            z-index: 10;
         }
     </style>
 </head>
-<body>
+<body onmousemove="handleParallax(event)">
+
+    <div class="parallax-bg" id="parallaxBg"></div>
 
     <header>
         <div class="brand">
-            🔵 KuaduCode 
-            <span class="ssl-badge">🔒 SSL Secured</span>
+            🔵 [KuaduCode](https://github.com/n74071292-oss/KUADU-MORSMALLEO) 
+            <span class="system-badge">⚡ Maximum Upgrades Active</span>
         </div>
         <div class="joke-text" id="jokeContainer">💡 Joke: Programmer: An organism that turns caffeine and pizza into bugs.</div>
         <div class="actions-group">
@@ -222,11 +251,31 @@
 
     <div class="workspace">
         <div class="pane">
-            <div class="tab-bar">
+            <div class="tab-bar" id="editorTabBar">
                 <div class="tab active" onclick="switchTab('webapp', this)">Web App</div>
-                <div class="tab" onclick="switchTab('python', this)">script.py</div>
-                <div class="tab" onclick="switchTab('cpp', this)">main.cpp</div>
-                <div class="tab" onclick="switchTab('sslguide', this)">Free SSL Setup</div>
+                <div class="tab" onclick="switchTab('python', this)">Python</div>
+                <div class="tab" onclick="switchTab('cpp', this)">C++</div>
+                <div class="tab" onclick="switchTab('javascript', this)">JavaScript</div>
+                <div class="tab" onclick="switchTab('typescript', this)">TypeScript</div>
+                <div class="tab" onclick="switchTab('java', this)">Java</div>
+                <div class="tab" onclick="switchTab('csharp', this)">C#</div>
+                <div class="tab" onclick="switchTab('php', this)">PHP</div>
+                <div class="tab" onclick="switchTab('ruby', this)">Ruby</div>
+                <div class="tab" onclick="switchTab('go', this)">Go</div>
+                <div class="tab" onclick="switchTab('rust', this)">Rust</div>
+                <div class="tab" onclick="switchTab('swift', this)">Swift</div>
+                <div class="tab" onclick="switchTab('kotlin', this)">Kotlin</div>
+                <div class="tab" onclick="switchTab('sql', this)">SQL</div>
+                <div class="tab" onclick="switchTab('bash', this)">Bash</div>
+                <div class="tab" onclick="switchTab('html', this)">HTML</div>
+                <div class="tab" onclick="switchTab('css', this)">CSS</div>
+                <div class="tab" onclick="switchTab('markdown', this)">Markdown</div>
+                <div class="tab" onclick="switchTab('lua', this)">Lua</div>
+                <div class="tab" onclick="switchTab('r', this)">R</div>
+                <div class="tab" onclick="switchTab('dart', this)">Dart</div>
+                <div class="tab" onclick="switchTab('scala', this)">Scala</div>
+                <div class="tab" onclick="switchTab('perl', this)">Perl</div>
+                <div class="tab" onclick="switchTab('haskell', this)">Haskell</div>
             </div>
             <div class="pane-content">
                 <textarea id="codeEditor" spellcheck="false">&lt;style&gt;
@@ -264,7 +313,7 @@
 
         <div class="pane">
             <div class="tab-bar">
-                <div class="tab active" id="outputTabLabel">🌐 Web Preview Output</div>
+                <div class="tab active" id="outputTabLabel">🌐 Output / Preview</div>
             </div>
             <div class="pane-content" id="outputContainer" style="padding: 0; background: #ffffff;">
                 <iframe id="previewFrame"></iframe>
@@ -272,7 +321,18 @@
         </div>
     </div>
 
+    <footer>
+        © 2026 [Kuaducode](https://github.com/n74071292-oss/KUADU-MORSMALLEO) Platform. All Rights Reserved. Officially Copyright Approved & Protected.
+    </footer>
+
     <script>
+        function handleParallax(e) {
+            const bg = document.getElementById('parallaxBg');
+            const x = (e.clientX / window.innerWidth - 0.5) * 35;
+            const y = (e.clientY / window.innerHeight - 0.5) * 35;
+            bg.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+        }
+
         function sanitizeJSON(payload) {
             try {
                 if (typeof payload === 'string') {
@@ -280,82 +340,69 @@
                 }
                 return JSON.parse(JSON.stringify(payload));
             } catch (e) {
-                console.error("Injection attempt blocked or invalid JSON structure.");
                 return null;
             }
         }
 
         let currentMode = 'webapp';
 
+        const codeSnippets = {
+            webapp: `<style>\n  body { background: #f5f7fa; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: sans-serif; }\n  .card { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 12px 30px rgba(0,0,0,0.12); text-align: center; }\n</style>\n<div class=\"card\">\n  <h1>Hello Kuaducode!</h1>\n  <p>Live preview active.</p>\n</div>`,
+            python: `def greet(name):\n    return f"Hello, {name} from Python!"\n\nprint(greet("Developer"))`,
+            cpp: `#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "Hello from C++!" << endl;\n    return 0;\n}`,
+            javascript: `const greet = (name) => {\n    console.log(\`Hello, \${name} from JavaScript!\`);\n};\ngreet("Developer");`,
+            typescript: `interface User {\n    name: string;\n}\nconst greet = (user: User) => {\n    console.log(\`Hello, \${user.name} from TypeScript!\`);\n};\ngreet({ name: "Developer" });`,
+            java: `public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello from Java!");\n    }\n}`,
+            csharp: `using System;\nclass Program {\n    static void Main() {\n        Console.WriteLine("Hello from C#!");\n    }\n}`,
+            php: `<?php\necho "Hello from PHP!";\n?>`,
+            ruby: `def greet(name)\n  puts "Hello, #{name} from Ruby!"\nend\ngreet("Developer")`,
+            go: `package main\nimport "fmt"\n\nfunc main() {\n    fmt.Println("Hello from Go!")\n}`,
+            rust: `fn main() {\n    println!("Hello from Rust!");\n}`,
+            swift: `func greet(name: String) {\n    print("Hello, \\(name) from Swift!")\n}\ngreet(name: "Developer")`,
+            kotlin: `fun main() {\n    println("Hello from Kotlin!")\n}`,
+            sql: `SELECT 'Hello from SQL!' AS Greeting;`,
+            bash: `echo "Hello from Bash!"`,
+            html: `<!DOCTYPE html>\n<html>\n<head><title>HTML</title></head>\n<body>\n  <h1>Hello HTML!</h1>\n</body>\n</html>`,
+            css: `body {\n  background-color: #0d1117;\n  color: #ffffff;\n  font-family: sans-serif;\n}`,
+            markdown: `# KuaduCode\n- Multi-language support\n- Live preview`,
+            lua: `print("Hello from Lua!")`,
+            r: `print("Hello from R!")`,
+            dart: `void main() {\n  print("Hello from Dart!");\n}`,
+            scala: `object Main extends App {\n  println("Hello from Scala!")\n}`,
+            perl: `print "Hello from Perl!\\n";`,
+            haskell: `main = putStrLn "Hello from Haskell!"`
+        };
+
         function switchTab(mode, element) {
-            document.querySelectorAll('.pane-content textarea, .pane-content iframe, .pane-content div').forEach(el => {});
-            
-            document.querySelectorAll('.pane:first-child .tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('#editorTabBar .tab').forEach(t => t.classList.remove('active'));
             element.classList.add('active');
             
             currentMode = mode;
             const editor = document.getElementById('codeEditor');
             const outputContainer = document.getElementById('outputContainer');
             
-            if (mode === 'webapp') {
-                editor.style.display = 'block';
+            editor.value = codeSnippets[mode] || '';
+
+            if (mode === 'webapp' || mode === 'html') {
                 outputContainer.innerHTML = '<iframe id="previewFrame"></iframe>';
-                editor.value = `<style>
-  body {
-    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-    display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: sans-serif;
-  }
-  .card { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 12px 30px rgba(0,0,0,0.12); text-align: center; }
-  h1 { color: #1f2328; margin-bottom: 10px; font-size: 1.8rem; }
-  p { color: #656d76; margin-bottom: 24px; }
-  button { background: #2ea44f; color: white; border: none; padding: 10px 22px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-</style>
-<div class="card">
-  <h1>Hello Kuaducode!</h1>
-  <p>Secure, fast, and fully optimized live preview.</p>
-  <button onclick="alert('Secure JS execution active!')">Test Action</button>
-</div>`;
                 runCode();
-            } else if (mode === 'python') {
-                editor.style.display = 'block';
-                editor.value = `def greet(name):\n    return f"Hello, {name} from Kuaducode!"\n\nprint(greet("Developer"))`;
-                outputContainer.innerHTML = '<div style="padding: 20px; color: #3fb950; font-family: monospace;">>>> Python Sandbox Ready.<br>>>> Click "Run Code" to execute.</div>';
-            } else if (mode === 'cpp') {
-                editor.style.display = 'block';
-                editor.value = `#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "Hello from Kuaducode C++ Environment!" << endl;\n    return 0;\n}`;
-                outputContainer.innerHTML = '<div style="padding: 20px; color: #58a6ff; font-family: monospace;">// C++ Compiler Mock Ready.<br>// Click "Run Code" to compile & execute.</div>';
-            } else if (mode === 'sslguide') {
-                editor.style.display = 'none';
-                outputContainer.innerHTML = `
-                    <div class="ssl-info-box" style="padding: 24px;">
-                        <h3>🔒 Free SSL Certificate Generation Guide</h3>
-                        <p>To generate a free SSL certificate for your Kuaducode deployment:</p>
-                        <br>
-                        <p><strong>1. Using Cloudflare:</strong></p>
-                        <p>Point your domain nameservers to Cloudflare, navigate to the <em>SSL/TLS</em> tab, and set your encryption mode to <strong>Full (Strict)</strong>.</p>
-                        <br>
-                        <p><strong>2. Using Let's Encrypt (Certbot):</strong></p>
-                        <p>Run the following command on your server terminal:</p>
-                        <p style="margin-top: 8px;"><code>sudo certbot --apache -d yourdomain.com</code></p>
-                    </div>
-                `;
+            } else {
+                outputContainer.innerHTML = `<div style="padding: 20px; color: #3fb950; font-family: monospace;">>>> ${mode.toUpperCase()} Environment Ready.<br>>>> Click "Run Code" to execute.</div>`;
             }
         }
 
         function runCode() {
             const editorVal = sanitizeJSON(document.getElementById('codeEditor').value);
-            if (currentMode === 'webapp') {
+            const outputContainer = document.getElementById('outputContainer');
+
+            if (currentMode === 'webapp' || currentMode === 'html') {
                 const frame = document.getElementById('previewFrame');
                 if (frame) {
                     const blob = new Blob([editorVal], { type: 'text/html' });
                     frame.src = URL.createObjectURL(blob);
                 }
-            } else if (currentMode === 'python') {
-                const out = document.getElementById('outputContainer');
-                out.innerHTML = `<div style="padding: 20px; color: #c9d1d9; font-family: monospace; white-space: pre-wrap;">Hello, Developer from Kuaducode!\n[Execution completed successfully in 0.04s]</div>`;
-            } else if (currentMode === 'cpp') {
-                const out = document.getElementById('outputContainer');
-                out.innerHTML = `<div style="padding: 20px; color: #c9d1d9; font-family: monospace; white-space: pre-wrap;">Hello from Kuaducode C++ Environment!\n[Process exited with code 0]</div>`;
+            } else {
+                outputContainer.innerHTML = `<div style="padding: 20px; color: #c9d1d9; font-family: monospace; white-space: pre-wrap;">[Executing ${currentMode.toUpperCase()} code...]\n\nHello, Developer from Kuaducode!\n[Process exited successfully with code 0]</div>`;
             }
         }
 
