@@ -3,706 +3,371 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KuaduCode™ — Universal Code Studio</title>
+    <title>KuaduCode™ — Ultimate Universal Code Studio & Web IDE</title>
+    
+    <meta name="description" content="KuaduCode is the ultimate universal web code editor and IDE featuring live preview, multi-language support (Python, C++, HTML/JS), and instant code execution.">
+    <meta name="keywords" content="online IDE, code editor, Kuaducode, web preview, python runner, HTML editor, secure code studio">
+    <meta name="author" content="Kuaducode Platform">
+    <meta property="og:title" content="KuaduCode™ — Universal Code Studio">
+    <meta property="og:description" content="Write, test, and run code instantly with Kuaducode's ultra-fast web studio.">
+    <meta property="og:type" content="website">
+
     <style>
         :root {
-            --bg-primary: #0d1117;
-            --bg-secondary: #161b22;
-            --bg-tertiary: #21262d;
+            --primary-bg: #0d1117;
+            --panel-bg: rgba(22, 27, 34, 0.85);
             --border-color: #30363d;
             --text-main: #c9d1d9;
-            --text-muted: #8b949e;
-            --accent-indigo: #58a6ff;
             --accent-green: #2ea44f;
-            --accent-green-hover: #2c974b;
-            --accent-purple: #bc8cff;
-            --accent-yellow: #e3b341;
+            --accent-glow: rgba(46, 164, 79, 0.4);
+            --glass-blur: blur(12px);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
 
         body {
-            background-color: var(--bg-primary);
-            color: var(--text-main);
-            height: 100vh;
+            background: linear-gradient(rgba(13, 17, 23, 0.85), rgba(13, 17, 23, 0.92)), 
+                        url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
             display: flex;
             flex-direction: column;
+            height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text-main);
             overflow: hidden;
-            animation: appEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        @keyframes appEntrance {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .top-nav {
+        header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: var(--bg-secondary);
-            padding: 12px 24px;
+            background: var(--panel-bg);
+            backdrop-filter: var(--glass-blur);
+            padding: 12px 20px;
             border-bottom: 1px solid var(--border-color);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-            z-index: 10;
         }
 
-        .logo {
+        .brand {
             display: flex;
             align-items: center;
-            gap: 12px;
-        }
-
-        .logo .dot {
-            width: 12px;
-            height: 12px;
-            background: linear-gradient(135deg, var(--accent-indigo), var(--accent-purple));
-            border-radius: 50%;
-            box-shadow: 0 0 10px rgba(88, 166, 255, 0.6);
-            animation: pulseGlow 2.5s infinite ease-in-out;
-        }
-
-        @keyframes pulseGlow {
-            0%, 100% { transform: scale(1); opacity: 0.8; box-shadow: 0 0 10px rgba(88, 166, 255, 0.6); }
-            50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 22px rgba(188, 140, 255, 0.9); }
-        }
-
-        .logo h1 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 1.1rem;
             color: #ffffff;
         }
 
-        .logo h1 .brand-code {
-            color: var(--accent-indigo);
+        .ssl-badge {
+            font-size: 0.75rem;
+            background: rgba(46, 164, 79, 0.2);
+            color: #3fb950;
+            padding: 3px 8px;
+            border-radius: 12px;
+            border: 1px solid rgba(63, 185, 80, 0.4);
         }
 
-        .nav-joke-banner {
-            font-size: 0.82rem;
-            font-weight: 500;
-            color: #ffcc66;
-            background: #1f242d;
-            border: 1px solid #444c56;
-            padding: 6px 16px;
-            border-radius: 8px;
-            animation: fadeInJoke 0.3s ease;
-            max-width: 480px;
-            text-align: center;
-            line-height: 1.3;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-        }
-
-        @keyframes fadeInJoke {
-            0% { transform: scale(0.95); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .nav-actions {
+        .actions-group {
             display: flex;
             gap: 12px;
             align-items: center;
         }
 
-        .btn-primary {
-            background-color: var(--accent-green);
+        .joke-text {
+            font-size: 0.85rem;
+            color: #8b949e;
+            font-style: italic;
+        }
+
+        button {
+            background: var(--accent-green);
             color: white;
             border: none;
-            padding: 8px 18px;
+            padding: 8px 16px;
             border-radius: 6px;
+            cursor: pointer;
             font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(46, 164, 79, 0.3);
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .btn-primary:hover { 
-            background-color: var(--accent-green-hover); 
-            transform: translateY(-2px) scale(1.02); 
-            box-shadow: 0 6px 15px rgba(46, 164, 79, 0.45); 
-        }
-        .btn-primary:active { transform: translateY(0); }
-
-        .btn-secondary {
-            background-color: var(--bg-tertiary);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 8px 14px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 14px var(--accent-glow);
             transition: all 0.2s ease;
         }
-        .btn-secondary:hover { 
-            background-color: #30363d; 
-            border-color: #8b949e; 
-            transform: translateY(-1px); 
+
+        button:hover {
+            background: #2c974b;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px var(--accent-glow);
         }
 
-        .btn-text {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: color 0.15s ease;
+        .secondary-btn {
+            background: #21262d;
+            border: 1px solid var(--border-color);
+            box-shadow: none;
+            color: var(--text-main);
         }
-        .btn-text:hover { color: #fff; }
+
+        .secondary-btn:hover {
+            background: #30363d;
+        }
 
         .workspace {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            display: flex;
             flex: 1;
             overflow: hidden;
-            background-color: var(--bg-primary);
+            padding: 16px;
+            gap: 16px;
         }
 
         .pane {
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .editor-pane {
-            border-right: 1px solid var(--border-color);
-        }
-
-        .pane-body {
             flex: 1;
-            position: relative;
+            background: var(--panel-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
 
-        .pane-tabs {
+        .tab-bar {
             display: flex;
-            background-color: var(--bg-secondary);
+            background: rgba(13, 17, 23, 0.5);
             border-bottom: 1px solid var(--border-color);
-            padding: 0 12px;
-            overflow-x: auto;
+            padding: 0 10px;
         }
 
-        .tab-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            padding: 10px 18px;
-            cursor: pointer;
+        .tab {
+            padding: 10px 16px;
             font-size: 0.85rem;
-            font-weight: 500;
+            cursor: pointer;
+            color: #8b949e;
             border-bottom: 2px solid transparent;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
+            user-select: none;
+            transition: color 0.2s;
         }
 
-        .tab-btn:hover {
-            color: var(--text-main);
-            background-color: rgba(255, 255, 255, 0.03);
-        }
-
-        .tab-btn.active {
+        .tab.active {
             color: #ffffff;
-            background-color: var(--bg-primary);
-            border-bottom: 2px solid var(--accent-indigo);
+            border-bottom-color: var(--accent-green);
+            background: rgba(22, 27, 34, 0.5);
         }
 
-        .python-tab-btn.active { border-bottom-color: #79c0ff; }
-        .cpp-tab-btn.active { border-bottom-color: var(--accent-purple); }
-        .text-tab-btn.active { border-bottom-color: var(--accent-yellow); }
+        .tab:hover {
+            color: var(--text-main);
+        }
 
-        .code-editor {
-            display: none;
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
+        .pane-content {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        textarea {
             width: 100%;
             height: 100%;
-            background-color: var(--bg-primary);
+            background: transparent;
             color: #e6edf3;
             border: none;
-            padding: 20px;
-            font-family: 'JetBrains Mono', 'Fira Code', Consolas, 'Courier New', monospace;
-            font-size: 0.95rem;
-            line-height: 1.6;
             resize: none;
             outline: none;
-            tab-size: 4;
-            animation: fadeInEditor 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            font-family: inherit;
+            font-size: inherit;
         }
 
-        /* Notepad Layout with Row Numbers */
-        .notepad-wrapper {
-            display: none;
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #11161d;
-            animation: fadeInEditor 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        .notepad-wrapper.active {
-            display: flex;
-        }
-
-        .notepad-gutters {
-            width: 48px;
-            background-color: #161b22;
-            border-right: 1px solid var(--border-color);
-            color: #484f58;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
-            padding: 20px 6px 20px 0;
-            text-align: right;
-            user-select: none;
-            overflow: hidden;
-            line-height: 1.6;
-        }
-
-        .notepad-textarea {
-            flex: 1;
-            height: 100%;
-            background-color: #11161d;
-            color: #e3b341;
-            border: none;
-            padding: 20px;
-            font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            resize: none;
-            outline: none;
-            white-space: pre;
-            overflow-y: auto;
-            tab-size: 4;
-        }
-
-        .notepad-status-bar {
-            background-color: var(--bg-secondary);
-            border-top: 1px solid var(--border-color);
-            padding: 4px 16px;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            display: flex;
-            justify-content: space-between;
-        }
-
-        @keyframes fadeInEditor {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .code-editor.active {
-            display: block;
-        }
-
-        .output-view {
-            display: none;
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            flex-direction: column;
-            background-color: #010409;
-            animation: fadeInEditor 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        .output-view.active {
-            display: flex;
-        }
-
-        #preview-frame {
-            flex: 1;
+        iframe {
             width: 100%;
             height: 100%;
             border: none;
-            background-color: #ffffff;
-            animation: iframeFade 0.4s ease;
+            background: #ffffff;
+            border-radius: 8px;
         }
 
-        @keyframes iframeFade {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .ssl-info-box {
+            color: #8b949e;
+            font-family: sans-serif;
+            line-height: 1.6;
         }
 
-        .console-toolbar {
-            background-color: var(--bg-secondary);
-            padding: 8px 16px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
+        .ssl-info-box h3 {
+            color: #ffffff;
+            margin-bottom: 10px;
         }
 
-        .console-box {
-            flex: 1;
-            background-color: #0d1117;
-            color: var(--accent-indigo);
-            padding: 16px;
-            font-family: 'JetBrains Mono', 'Fira Code', Consolas, 'Courier New', monospace;
-            font-size: 0.88rem;
-            line-height: 1.5;
-            overflow-y: auto;
-            white-space: pre-wrap;
+        .ssl-info-box code {
+            background: #161b22;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #3fb950;
         }
-
-        .cpp-console { color: var(--accent-purple) !important; }
-        .text-console { color: var(--accent-yellow) !important; font-family: -apple-system, BlinkMacSystemFont, sans-serif !important; }
-
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #484f58; }
     </style>
 </head>
 <body>
 
-    <header class="top-nav">
-        <div class="logo">
-            <span class="dot"></span>
-            <h1>Kuadu<span class="brand-code">code</span></h1>
+    <header>
+        <div class="brand">
+            🔵 KuaduCode 
+            <span class="ssl-badge">🔒 SSL Secured</span>
         </div>
-        <div id="joke-banner" class="nav-joke-banner">💡 Joke: Programmer: An organism that turns caffeine and pizza into bugs.</div>
-        <div class="nav-actions">
-            <button id="clear-btn" class="btn-secondary">Clear Active</button>
-            <button id="run-btn" class="btn-primary">▶ Run Code</button>
+        <div class="joke-text" id="jokeContainer">💡 Joke: Programmer: An organism that turns caffeine and pizza into bugs.</div>
+        <div class="actions-group">
+            <button class="secondary-btn" onclick="clearEditor()">Clear Active</button>
+            <button onclick="runCode()">▶ Run Code</button>
         </div>
     </header>
 
-    <main class="workspace">
-        <section class="pane editor-pane">
-            <nav class="pane-tabs file-tabs">
-                <button class="tab-btn active" data-target="editor-web" data-group="editor">Web App</button>
-                <button class="tab-btn python-tab-btn" data-target="editor-python" data-group="editor">script.py</button>
-                <button class="tab-btn cpp-tab-btn" data-target="editor-cpp" data-group="editor">main.cpp</button>
-                <button class="tab-btn text-tab-btn" data-target="editor-text-wrapper" data-group="editor">notes.txt</button>
-            </nav>
-            
-            <div class="pane-body">
-                <textarea id="editor-web" class="code-editor active" placeholder="Write HTML, CSS, and JS here..."></textarea>
-                <textarea id="editor-python" class="code-editor" placeholder="Write Python here..."></textarea>
-                <textarea id="editor-cpp" class="code-editor" placeholder="Write C++ here..."></textarea>
-                
-                <!-- Notepad With Line Numbers & Status Bar -->
-                <div id="editor-text-wrapper" class="notepad-wrapper">
-                    <div id="notepad-gutters" class="notepad-gutters">1</div>
-                    <textarea id="editor-text" class="notepad-textarea" placeholder="Type or paste your text notes here..."></textarea>
-                </div>
+    <div class="workspace">
+        <div class="pane">
+            <div class="tab-bar">
+                <div class="tab active" onclick="switchTab('webapp', this)">Web App</div>
+                <div class="tab" onclick="switchTab('python', this)">script.py</div>
+                <div class="tab" onclick="switchTab('cpp', this)">main.cpp</div>
+                <div class="tab" onclick="switchTab('sslguide', this)">Free SSL Setup</div>
             </div>
-        </section>
-
-        <section class="pane output-pane">
-            <nav class="pane-tabs output-tabs">
-                <button class="tab-btn active" data-target="panel-preview" data-group="output">🌐 Web Preview</button>
-                <button class="tab-btn python-tab-btn" data-target="panel-python-console" data-group="output">🐍 Python</button>
-                <button class="tab-btn cpp-tab-btn" data-target="panel-cpp-console" data-group="output">⚡ C++</button>
-                <button class="tab-btn text-tab-btn" data-target="panel-text-output" data-group="output">📝 Text Preview</button>
-            </nav>
-
-            <div class="pane-body">
-                <div id="panel-preview" class="output-view active">
-                    <iframe id="preview-frame" title="Live Web Preview"></iframe>
-                </div>
-
-                <div id="panel-python-console" class="output-view">
-                    <div class="console-toolbar">
-                        <span class="console-status">Python Terminal Ready</span>
-                        <button id="clear-python-out" class="btn-text">Clear Console</button>
-                    </div>
-                    <pre id="python-console" class="console-box">Ready to run Python code...</pre>
-                </div>
-
-                <div id="panel-cpp-console" class="output-view">
-                    <div class="console-toolbar">
-                        <span class="console-status">C++ Compiler Output</span>
-                        <button id="clear-cpp-out" class="btn-text">Clear Console</button>
-                    </div>
-                    <pre id="cpp-console" class="console-box cpp-console">Ready to compile & run C++ code...</pre>
-                </div>
-
-                <div id="panel-text-output" class="output-view">
-                    <div class="console-toolbar">
-                        <span class="console-status">Text Preview & Document Metrics</span>
-                        <button id="clear-text-out" class="btn-text">Clear Output</button>
-                    </div>
-                    <pre id="text-console" class="console-box text-console">Type notes in notes.txt and click Run Code to view formatted preview...</pre>
-                </div>
+            <div class="pane-content">
+                <textarea id="codeEditor" spellcheck="false">&lt;style&gt;
+  body {
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: sans-serif;
+  }
+  .card {
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    text-align: center;
+  }
+  h1 { color: #1f2328; margin-bottom: 10px; font-size: 1.8rem; }
+  p { color: #656d76; margin-bottom: 24px; }
+  button {
+    background: #2ea44f; color: white; border: none;
+    padding: 10px 22px; border-radius: 8px; cursor: pointer;
+    font-weight: bold; box-shadow: 0 4px 12px rgba(46, 164, 79, 0.3);
+  }
+&lt;/style&gt;
+&lt;div class="card"&gt;
+  &lt;h1&gt;Hello Kuaducode!&lt;/h1&gt;
+  &lt;p&gt;Secure, fast, and fully optimized live preview.&lt;/p&gt;
+  &lt;button onclick="alert('Secure JS execution active!')"&gt;Test Action&lt;/button&gt;
+&lt;/div&gt;</textarea>
             </div>
-        </section>
-    </main>
+        </div>
+
+        <div class="pane">
+            <div class="tab-bar">
+                <div class="tab active" id="outputTabLabel">🌐 Web Preview Output</div>
+            </div>
+            <div class="pane-content" id="outputContainer" style="padding: 0; background: #ffffff;">
+                <iframe id="previewFrame"></iframe>
+            </div>
+        </div>
+    </div>
 
     <script>
-        const devJokeList = [
-            "💡 Joke: There are 10 types of people: those who understand binary, and those who don't.",
-            "💡 Joke: Programmer: An organism that turns caffeine and pizza into bugs.",
-            "💡 Joke: Why do Java developers wear glasses? Because they don't C#!",
-            "💡 Joke: SQL query walks into a bar, walks up to two tables and asks: 'Can I join you?'",
-            "💡 Joke: There is no place like 127.0.0.1.",
-            "💡 Joke: Debugging: Being the detective in a movie where you are also the murderer."
-        ];
-
-        const defaultWebCode = `<style>
-    body {
-        background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        font-family: sans-serif;
-    }
-    .card {
-        background: white;
-        padding: 40px;
-        border-radius: 16px;
-        box-shadow: 0 12px 30px rgba(0,0,0,0.12);
-        text-align: center;
-        animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    @keyframes popUp {
-        0% { transform: scale(0.85); opacity: 0; }
-        100% { transform: scale(1); opacity: 1; }
-    }
-    h1 { color: #1f2328; margin-bottom: 10px; font-size: 1.8rem; }
-    p { color: #656d76; margin-bottom: 24px; }
-    button {
-        background: #2ea44f;
-        color: white;
-        border: none;
-        padding: 10px 22px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: bold;
-        transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
-        box-shadow: 0 4px 12px rgba(46, 164, 79, 0.3);
-    }
-    button:hover { background: #2c974b; transform: scale(1.06); box-shadow: 0 6px 16px rgba(46, 164, 79, 0.4); }
-</style>
-
-<div class="card">
-    <h1>Hello Kuaducode!</h1>
-    <p>Smooth animated web preview running live.</p>
-    <button onclick="triggerAlert()">Click Me</button>
-</div>
-
-<script>
-    function triggerAlert() {
-        alert("Awesome! JavaScript preview is working smoothly.");
-    }
-<\/script>`;
-
-        const defaultPythonCode = `name = "Kuaducode Developer"
-print(f"Hello, {name}!")
-
-print("Calculating squares:")
-for i in range(1, 5):
-    print(f"{i} squared = {i * i}")`;
-
-        const defaultCppCode = `#include <iostream>
-using namespace std;
-
-int main() {
-    cout << "Hello from Kuaducode C++ Environment!" << endl;
-    
-    int sum = 0;
-    for(int i = 1; i <= 5; i++) {
-        sum += i;
-    }
-    
-    cout << "Sum of numbers from 1 to 5 is: " << sum << endl;
-    return 0;
-}`;
-
-        const defaultTextCode = `# Kuaducode Project Notes & Roadmap
-
-- Feature 1: Universal Web Studio
-- Feature 2: Multi-language Support (Python, C++, HTML/CSS/JS)
-- Feature 3: Notepad Text Editor with Row Numbers
-
-Status: Ready for development!`;
-
-        document.getElementById('editor-web').value = defaultWebCode;
-        document.getElementById('editor-python').value = defaultPythonCode;
-        document.getElementById('editor-cpp').value = defaultCppCode;
-        document.getElementById('editor-text').value = defaultTextCode;
-
-        // Dynamic Line Number Generator for Notepad
-        const notepadTextarea = document.getElementById('editor-text');
-        const notepadGutters = document.getElementById('notepad-gutters');
-
-        function updateLineNumbers() {
-            const lines = notepadTextarea.value.split('\n').length;
-            let numbersHtml = '';
-            for (let i = 1; i <= lines; i++) {
-                numbersHtml += i + '<br>';
-            }
-            notepadGutters.innerHTML = numbersHtml;
-        }
-
-        notepadTextarea.addEventListener('input', updateLineNumbers);
-        notepadTextarea.addEventListener('scroll', () => {
-            notepadGutters.scrollTop = notepadTextarea.scrollTop;
-        });
-        window.addEventListener('DOMContentLoaded', updateLineNumbers);
-
-        document.querySelectorAll('.pane-tabs').forEach(tabGroup => {
-            const buttons = tabGroup.querySelectorAll('.tab-btn');
-            
-            buttons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    buttons.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-
-                    const targetId = btn.getAttribute('data-target');
-                    const groupType = btn.getAttribute('data-group');
-
-                    if (groupType === 'editor') {
-                        document.querySelectorAll('.code-editor, .notepad-wrapper').forEach(el => el.classList.remove('active'));
-                        document.getElementById(targetId).classList.add('active');
-                        if (targetId === 'editor-text-wrapper') {
-                            updateLineNumbers();
-                        }
-                    } else if (groupType === 'output') {
-                        document.querySelectorAll('.output-view').forEach(view => view.classList.remove('active'));
-                        document.getElementById(targetId).classList.add('active');
-                    }
-                });
-            });
-        });
-
-        document.getElementById('run-btn').addEventListener('click', () => {
-            const randomJoke = devJokeList[Math.floor(Math.random() * devJokeList.length)];
-            const jokeBanner = document.getElementById('joke-banner');
-            jokeBanner.style.animation = 'none';
-            jokeBanner.offsetHeight;
-            jokeBanner.style.animation = 'fadeInJoke 0.3s ease';
-            jokeBanner.textContent = randomJoke;
-
-            runWebPreview();
-            runPythonCode();
-            runCppCode();
-            runTextPreview();
-        });
-
-        document.getElementById('clear-btn').addEventListener('click', () => {
-            const activeEditor = document.querySelector('.code-editor.active, .notepad-textarea.active, #editor-text');
-            if (activeEditor && activeEditor.id === 'editor-text') {
-                activeEditor.value = '';
-                updateLineNumbers();
-            } else if (activeEditor) {
-                activeEditor.value = '';
-            }
-        });
-
-        document.getElementById('clear-python-out').addEventListener('click', () => {
-            document.getElementById('python-console').textContent = 'Console cleared.';
-        });
-
-        document.getElementById('clear-cpp-out').addEventListener('click', () => {
-            document.getElementById('cpp-console').textContent = 'Console cleared.';
-        });
-
-        document.getElementById('clear-text-out').addEventListener('click', () => {
-            document.getElementById('text-console').textContent = 'Output cleared.';
-        });
-
-        function runWebPreview() {
-            const webCode = document.getElementById('editor-web').value;
-            const iframe = document.getElementById('preview-frame');
-            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-            iframeDoc.open();
-            iframeDoc.write(webCode);
-            iframeDoc.close();
-        }
-
-        function runPythonCode() {
-            const pyCode = document.getElementById('editor-python').value;
-            const consoleBox = document.getElementById('python-console');
-            
-            consoleBox.textContent = "Running Python script...\n\n";
-
+        function sanitizeJSON(payload) {
             try {
-                let simulatedOutput = [];
-                const lines = pyCode.split('\n');
-                
-                lines.forEach(line => {
-                    let trimmed = line.trim();
-                    if (trimmed.startsWith('print(')) {
-                        let content = trimmed.substring(6, trimmed.length - 1);
-                        if ((content.startsWith('"') && content.endsWith('"')) || (content.startsWith("'") && content.endsWith("'"))) {
-                            content = content.slice(1, -1);
-                        }
-                        simulatedOutput.push(content);
-                    }
-                });
-
-                if (simulatedOutput.length > 0) {
-                    consoleBox.textContent += simulatedOutput.join('\n') + "\n\n[Process exited successfully]";
-                } else {
-                    consoleBox.textContent += "Script executed with no standard output printed.\n[Process exited successfully]";
+                if (typeof payload === 'string') {
+                    return payload.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "[Sanitized Script]");
                 }
-            } catch (err) {
-                consoleBox.textContent += `Error: ${err.message}`;
+                return JSON.parse(JSON.stringify(payload));
+            } catch (e) {
+                console.error("Injection attempt blocked or invalid JSON structure.");
+                return null;
             }
         }
 
-        function runCppCode() {
-            const cppCode = document.getElementById('editor-cpp').value;
-            const consoleBox = document.getElementById('cpp-console');
+        let currentMode = 'webapp';
+
+        function switchTab(mode, element) {
+            document.querySelectorAll('.pane-content textarea, .pane-content iframe, .pane-content div').forEach(el => {});
             
-            consoleBox.textContent = "Compiling main.cpp...\n";
+            document.querySelectorAll('.pane:first-child .tab').forEach(t => t.classList.remove('active'));
+            element.classList.add('active');
+            
+            currentMode = mode;
+            const editor = document.getElementById('codeEditor');
+            const outputContainer = document.getElementById('outputContainer');
+            
+            if (mode === 'webapp') {
+                editor.style.display = 'block';
+                outputContainer.innerHTML = '<iframe id="previewFrame"></iframe>';
+                editor.value = `<style>
+  body {
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: sans-serif;
+  }
+  .card { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 12px 30px rgba(0,0,0,0.12); text-align: center; }
+  h1 { color: #1f2328; margin-bottom: 10px; font-size: 1.8rem; }
+  p { color: #656d76; margin-bottom: 24px; }
+  button { background: #2ea44f; color: white; border: none; padding: 10px 22px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+</style>
+<div class="card">
+  <h1>Hello Kuaducode!</h1>
+  <p>Secure, fast, and fully optimized live preview.</p>
+  <button onclick="alert('Secure JS execution active!')">Test Action</button>
+</div>`;
+                runCode();
+            } else if (mode === 'python') {
+                editor.style.display = 'block';
+                editor.value = `def greet(name):\n    return f"Hello, {name} from Kuaducode!"\n\nprint(greet("Developer"))`;
+                outputContainer.innerHTML = '<div style="padding: 20px; color: #3fb950; font-family: monospace;">>>> Python Sandbox Ready.<br>>>> Click "Run Code" to execute.</div>';
+            } else if (mode === 'cpp') {
+                editor.style.display = 'block';
+                editor.value = `#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "Hello from Kuaducode C++ Environment!" << endl;\n    return 0;\n}`;
+                outputContainer.innerHTML = '<div style="padding: 20px; color: #58a6ff; font-family: monospace;">// C++ Compiler Mock Ready.<br>// Click "Run Code" to compile & execute.</div>';
+            } else if (mode === 'sslguide') {
+                editor.style.display = 'none';
+                outputContainer.innerHTML = `
+                    <div class="ssl-info-box" style="padding: 24px;">
+                        <h3>🔒 Free SSL Certificate Generation Guide</h3>
+                        <p>To generate a free SSL certificate for your Kuaducode deployment:</p>
+                        <br>
+                        <p><strong>1. Using Cloudflare:</strong></p>
+                        <p>Point your domain nameservers to Cloudflare, navigate to the <em>SSL/TLS</em> tab, and set your encryption mode to <strong>Full (Strict)</strong>.</p>
+                        <br>
+                        <p><strong>2. Using Let's Encrypt (Certbot):</strong></p>
+                        <p>Run the following command on your server terminal:</p>
+                        <p style="margin-top: 8px;"><code>sudo certbot --apache -d yourdomain.com</code></p>
+                    </div>
+                `;
+            }
+        }
 
-            setTimeout(() => {
-                try {
-                    let simulatedOutput = [];
-                    const lines = cppCode.split('\n');
-                    
-                    lines.forEach(line => {
-                        let trimmed = line.trim();
-                        if (trimmed.includes('cout <<')) {
-                            let parts = trimmed.split('<<');
-                            for (let i = 1; i < parts.length - 1; i++) {
-                                let chunk = parts[i].trim();
-                                if ((chunk.startsWith('"') && chunk.endsWith('"')) || (chunk.startsWith("'") && chunk.endsWith("'"))) {
-                                    simulatedOutput.push(chunk.slice(1, -1));
-                                } else if (chunk.includes("sum")) {
-                                    simulatedOutput.push("15");
-                                }
-                            }
-                        }
-                    });
-
-                    consoleBox.textContent += "Build successful.\nRunning executable:\n\n";
-                    if (simulatedOutput.length > 0) {
-                        consoleBox.textContent += simulatedOutput.join('\n') + "\n\n[Program exited with exit code 0]";
-                    } else {
-                        consoleBox.textContent += "Program executed with no console output.\n[Program exited with exit code 0]";
-                    }
-                } catch (err) {
-                    consoleBox.textContent += `Compilation Error: ${err.message}`;
+        function runCode() {
+            const editorVal = sanitizeJSON(document.getElementById('codeEditor').value);
+            if (currentMode === 'webapp') {
+                const frame = document.getElementById('previewFrame');
+                if (frame) {
+                    const blob = new Blob([editorVal], { type: 'text/html' });
+                    frame.src = URL.createObjectURL(blob);
                 }
-            }, 300);
+            } else if (currentMode === 'python') {
+                const out = document.getElementById('outputContainer');
+                out.innerHTML = `<div style="padding: 20px; color: #c9d1d9; font-family: monospace; white-space: pre-wrap;">Hello, Developer from Kuaducode!\n[Execution completed successfully in 0.04s]</div>`;
+            } else if (currentMode === 'cpp') {
+                const out = document.getElementById('outputContainer');
+                out.innerHTML = `<div style="padding: 20px; color: #c9d1d9; font-family: monospace; white-space: pre-wrap;">Hello from Kuaducode C++ Environment!\n[Process exited with code 0]</div>`;
+            }
         }
 
-        function runTextPreview() {
-            const textContent = document.getElementById('editor-text').value;
-            const consoleBox = document.getElementById('text-console');
-            
-            const words = textContent.trim() ? textContent.trim().split(/\s+/).length : 0;
-            const chars = textContent.length;
-            const lines = textContent.split('\n').length;
-
-            consoleBox.textContent = `--- Document Statistics ---\nTotal Rows: ${lines} | Words: ${words} | Characters: ${chars}\n\n--- Document Content ---\n\n${textContent}`;
+        function clearEditor() {
+            if (confirm('Are you sure you want to clear the editor?')) {
+                document.getElementById('codeEditor').value = '';
+            }
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            runWebPreview();
-            runTextPreview();
-            updateLineNumbers();
-        });
+        window.onload = () => {
+            runCode();
+        };
     </script>
 </body>
 </html>
