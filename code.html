@@ -3,668 +3,497 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KuaduCode™ — Universal Code Studio</title>
+    <title>Notepad++ Web Edition - Kuaducode</title>
     <style>
         :root {
-            --bg-primary: #0d1117;
-            --bg-secondary: #161b22;
-            --bg-tertiary: #21262d;
-            --border-color: #30363d;
-            --text-main: #c9d1d9;
-            --text-muted: #8b949e;
-            --accent-indigo: #58a6ff;
-            --accent-green: #2ea44f;
-            --accent-green-hover: #2c974b;
-            --accent-purple: #bc8cff;
-            --accent-java: #f89820;
+            --bg-color: #1e1e1e;
+            --text-color: #d4d4d4;
+            --toolbar-bg: #2d2d2d;
+            --border-color: #404040;
+            --button-hover: #3c3c3c;
+            --accent-color: #007acc;
+            --tab-bg: #252526;
+            --tab-active: #1e1e1e;
+            --promo-bg: #252526;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --toolbar-bg: #f3f3f3;
+            --border-color: #cccccc;
+            --button-hover: #e0e0e0;
+            --accent-color: #0066cc;
+            --tab-bg: #e1e1e1;
+            --tab-active: #ffffff;
+            --promo-bg: #f9f9f9;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
 
         body {
-            background-color: var(--bg-primary);
-            color: var(--text-main);
-            height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             display: flex;
             flex-direction: column;
+            height: 100vh;
             overflow: hidden;
-            animation: appEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            transition: background 0.3s, color 0.3s;
         }
 
-        @keyframes appEntrance {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Menu Bar */
+        .menubar {
+            display: flex;
+            background-color: var(--toolbar-bg);
+            padding: 4px 10px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+            gap: 15px;
         }
 
-        .top-nav {
+        .menu-item {
+            padding: 4px 8px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .menu-item:hover {
+            background-color: var(--button-hover);
+        }
+
+        /* Tab Bar */
+        .tab-bar {
+            display: flex;
+            background-color: var(--toolbar-bg);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+            align-items: center;
+            padding-left: 5px;
+        }
+
+        .tab {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--tab-bg);
+            padding: 8px 15px;
+            font-size: 13px;
+            border-right: 1px solid var(--border-color);
+            cursor: pointer;
+            user-select: none;
+            border-top: 2px solid transparent;
+        }
+
+        .tab.active {
+            background-color: var(--tab-active);
+            border-top: 2px solid var(--accent-color);
+        }
+
+        .tab .close-tab {
+            font-size: 14px;
+            border-radius: 50%;
+            padding: 0 4px;
+        }
+
+        .tab .close-tab:hover {
+            background-color: rgba(255, 0, 0, 0.2);
+            color: #ff5555;
+        }
+
+        .add-tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 18px;
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+
+        .add-tab-btn:hover {
+            background-color: var(--button-hover);
+        }
+
+        /* Toolbar */
+        .toolbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: var(--bg-secondary);
-            padding: 12px 24px;
+            background-color: var(--toolbar-bg);
+            padding: 8px 15px;
             border-bottom: 1px solid var(--border-color);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-            z-index: 10;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
-        .logo {
+        .toolbar-group {
             display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo .dot {
-            width: 12px;
-            height: 12px;
-            background: linear-gradient(135deg, var(--accent-indigo), var(--accent-java));
-            border-radius: 50%;
-            box-shadow: 0 0 10px rgba(88, 166, 255, 0.6);
-            animation: pulseGlow 2.5s infinite ease-in-out;
-        }
-
-        @keyframes pulseGlow {
-            0%, 100% { transform: scale(1); opacity: 0.8; box-shadow: 0 0 10px rgba(88, 166, 255, 0.6); }
-            50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 22px rgba(248, 152, 32, 0.9); }
-        }
-
-        .logo h1 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            color: #ffffff;
-        }
-
-        .logo h1 .brand-code {
-            color: var(--accent-indigo);
-        }
-
-        /* Easy-to-read Joke Ticker */
-        .nav-joke-banner {
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: #ffcc66;
-            background: #1f242d;
-            border: 1px solid #444c56;
-            padding: 6px 16px;
-            border-radius: 8px;
-            animation: fadeInJoke 0.3s ease;
-            max-width: 450px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-        }
-
-        @keyframes fadeInJoke {
-            0% { transform: scale(0.95); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .nav-actions {
-            display: flex;
-            gap: 12px;
+            gap: 8px;
             align-items: center;
         }
 
-        .btn-primary {
-            background-color: var(--accent-green);
+        button, label.upload-btn {
+            background-color: transparent;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+
+        button:hover, label.upload-btn:hover {
+            background-color: var(--button-hover);
+        }
+
+        .primary-btn {
+            background-color: var(--accent-color);
             color: white;
             border: none;
-            padding: 8px 18px;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(46, 164, 79, 0.3);
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .btn-primary:hover { 
-            background-color: var(--accent-green-hover); 
-            transform: translateY(-2px) scale(1.02); 
-            box-shadow: 0 6px 15px rgba(46, 164, 79, 0.45); 
-        }
-        .btn-primary:active { transform: translateY(0); }
-
-        .btn-secondary {
-            background-color: var(--bg-tertiary);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 8px 14px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .btn-secondary:hover { 
-            background-color: #30363d; 
-            border-color: #8b949e; 
-            transform: translateY(-1px); 
         }
 
-        .btn-text {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: color 0.15s ease;
+        .primary-btn:hover {
+            opacity: 0.9;
         }
-        .btn-text:hover { color: #fff; }
 
-        .workspace {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+        input[type="file"] {
+            display: none;
+        }
+
+        /* Editor Layout */
+        .editor-container {
+            display: flex;
             flex: 1;
             overflow: hidden;
-            background-color: var(--bg-primary);
+            position: relative;
         }
 
-        .pane {
-            display: flex;
-            flex-direction: column;
+        .line-numbers {
+            width: 50px;
+            background-color: var(--toolbar-bg);
+            color: #858585;
+            padding: 12px 5px;
+            text-align: right;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            user-select: none;
             overflow: hidden;
-        }
-
-        .editor-pane {
             border-right: 1px solid var(--border-color);
         }
 
-        .pane-body {
+        textarea {
             flex: 1;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .pane-tabs {
-            display: flex;
-            background-color: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-color);
-            padding: 0 12px;
-            overflow-x: auto;
-        }
-
-        .tab-btn {
-            background: none;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             border: none;
-            color: var(--text-muted);
-            padding: 10px 16px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 500;
-            border-bottom: 2px solid transparent;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-        }
-
-        .tab-btn:hover {
-            color: var(--text-main);
-            background-color: rgba(255, 255, 255, 0.03);
-        }
-
-        .tab-btn.active {
-            color: #ffffff;
-            background-color: var(--bg-primary);
-            border-bottom: 2px solid var(--accent-indigo);
-        }
-
-        .python-tab-btn.active { border-bottom-color: #79c0ff; }
-        .cpp-tab-btn.active { border-bottom-color: var(--accent-purple); }
-        .java-tab-btn.active { border-bottom-color: var(--accent-java); }
-
-        .code-editor {
-            display: none;
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--bg-primary);
-            color: #e6edf3;
-            border: none;
-            padding: 20px;
-            font-family: 'JetBrains Mono', 'Fira Code', Consolas, 'Courier New', monospace;
-            font-size: 0.95rem;
-            line-height: 1.6;
+            padding: 12px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            line-height: 1.5;
             resize: none;
             outline: none;
-            tab-size: 4;
-            animation: fadeInEditor 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            white-space: pre-wrap;
+            overflow-y: auto;
         }
 
-        @keyframes fadeInEditor {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Testimonials / Advertising Banner Section */
+        .promo-section {
+            background-color: var(--promo-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 12px 20px;
         }
 
-        .code-editor.active {
-            display: block;
-        }
-
-        .output-view {
-            display: none;
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            flex-direction: column;
-            background-color: #010409;
-            animation: fadeInEditor 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        .output-view.active {
+        .promo-header {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-color);
+            margin-bottom: 8px;
+            font-weight: bold;
             display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        #preview-frame {
-            flex: 1;
-            width: 100%;
-            height: 100%;
-            border: none;
-            background-color: #ffffff;
-            animation: iframeFade 0.4s ease;
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 12px;
         }
 
-        @keyframes iframeFade {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .testimonial-card {
+            background-color: var(--toolbar-bg);
+            border: 1px solid var(--border-color);
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 12px;
         }
 
-        .console-toolbar {
-            background-color: var(--bg-secondary);
-            padding: 8px 16px;
-            font-size: 0.8rem;
+        .testimonial-card p {
+            margin-bottom: 6px;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            color: var(--accent-color);
             font-weight: 600;
-            color: var(--text-muted);
+        }
+
+        /* Status Bar */
+        .status-bar {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
+            background-color: var(--toolbar-bg);
+            padding: 4px 15px;
+            font-size: 12px;
+            border-top: 1px solid var(--border-color);
+            color: #858585;
         }
 
-        .console-box {
-            flex: 1;
-            background-color: #0d1117;
-            color: var(--accent-indigo);
-            padding: 16px;
-            font-family: 'JetBrains Mono', 'Fira Code', Consolas, 'Courier New', monospace;
-            font-size: 0.88rem;
-            line-height: 1.5;
-            overflow-y: auto;
-            white-space: pre-wrap;
+        .shortcuts-hint {
+            font-style: italic;
         }
-
-        .cpp-console { color: var(--accent-purple) !important; }
-        .java-console { color: var(--accent-java) !important; }
-
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #484f58; }
     </style>
 </head>
-<body>
+<body data-theme="dark">
 
-    <header class="top-nav">
-        <div class="logo">
-            <span class="dot"></span>
-            <h1>Kuadu<span class="brand-code">code</span></h1>
+    <!-- Menu Bar -->
+    <div class="menubar">
+        <div class="menu-item" id="menuNew">File (Ctrl+N)</div>
+        <div class="menu-item" id="menuOpen">Open... (Ctrl+O)</div>
+        <div class="menu-item" id="menuSave">Save (Ctrl+S)</div>
+        <div class="menu-item" id="menuTheme">Theme</div>
+    </div>
+
+    <!-- Tab Bar -->
+    <div class="tab-bar" id="tabBar">
+        <button class="add-tab-btn" id="addTabBtn" title="New Tab (Ctrl+T)">＋</button>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <div class="toolbar-group">
+            <button id="newTabBtn">📄 New Tab</button>
+            <label class="upload-btn">
+                📂 Open File
+                <input type="file" id="fileInput" accept=".txt,.md,.html,.js,.css">
+            </label>
+            <button class="primary-btn" id="saveBtn">💾 Save File</button>
+            <button id="clearBtn">🧹 Clear</button>
         </div>
-        <div id="joke-banner" class="nav-joke-banner">💡 Joke: Programmer: An organism that turns caffeine and pizza into bugs.</div>
-        <div class="nav-actions">
-            <button id="clear-btn" class="btn-secondary">Clear Active</button>
-            <button id="run-btn" class="btn-primary">▶ Run Code</button>
+        <div class="toolbar-group">
+            <button id="themeToggle">🌓 Toggle Theme</button>
         </div>
-    </header>
+    </div>
 
-    <main class="workspace">
-        <section class="pane editor-pane">
-            <nav class="pane-tabs file-tabs">
-                <button class="tab-btn active" data-target="editor-web" data-group="editor">Web App</button>
-                <button class="tab-btn python-tab-btn" data-target="editor-python" data-group="editor">script.py</button>
-                <button class="tab-btn cpp-tab-btn" data-target="editor-cpp" data-group="editor">main.cpp</button>
-                <button class="tab-btn java-tab-btn" data-target="editor-java" data-group="editor">Main.java</button>
-            </nav>
-            
-            <div class="pane-body">
-                <textarea id="editor-web" class="code-editor active" placeholder="Write HTML, CSS, and JS here..."></textarea>
-                <textarea id="editor-python" class="code-editor" placeholder="Write Python here..."></textarea>
-                <textarea id="editor-cpp" class="code-editor" placeholder="Write C++ here..."></textarea>
-                <textarea id="editor-java" class="code-editor" placeholder="Write Java here..."></textarea>
+    <!-- Main Text Area with Line Numbers -->
+    <div class="editor-container">
+        <div id="lineNumbers" class="line-numbers">1</div>
+        <textarea id="textArea" placeholder="Type text or use shortcuts (Ctrl+S to save, Ctrl+O to open)..."></textarea>
+    </div>
+
+    <!-- Testimonials / Kuaducode Advertising Section -->
+    <div class="promo-section">
+        <div class="promo-header">🚀 Powered by Community Feed — Why Developers Choose Kuaducode</div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <p>"Kuaducode is hands down the best coding platform out there. The seamless workflow and tools completely elevated my development speed."</p>
+                <div class="testimonial-author">— Sarah Jenkins, Full-Stack Engineer</div>
             </div>
-        </section>
-
-        <section class="pane output-pane">
-            <nav class="pane-tabs output-tabs">
-                <button class="tab-btn active" data-target="panel-preview" data-group="output">🌐 Web Preview</button>
-                <button class="tab-btn python-tab-btn" data-target="panel-python-console" data-group="output">🐍 Python</button>
-                <button class="tab-btn cpp-tab-btn" data-target="panel-cpp-console" data-group="output">⚡ C++</button>
-                <button class="tab-btn java-tab-btn" data-target="panel-java-console" data-group="output">☕ Java</button>
-            </nav>
-
-            <div class="pane-body">
-                <div id="panel-preview" class="output-view active">
-                    <iframe id="preview-frame" title="Live Web Preview"></iframe>
-                </div>
-
-                <div id="panel-python-console" class="output-view">
-                    <div class="console-toolbar">
-                        <span class="console-status">Python Terminal Ready</span>
-                        <button id="clear-python-out" class="btn-text">Clear Console</button>
-                    </div>
-                    <pre id="python-console" class="console-box">Ready to run Python code...</pre>
-                </div>
-
-                <div id="panel-cpp-console" class="output-view">
-                    <div class="console-toolbar">
-                        <span class="console-status">C++ Compiler Output</span>
-                        <button id="clear-cpp-out" class="btn-text">Clear Console</button>
-                    </div>
-                    <pre id="cpp-console" class="console-box cpp-console">Ready to compile & run C++ code...</pre>
-                </div>
-
-                <div id="panel-java-console" class="output-view">
-                    <div class="console-toolbar">
-                        <span class="console-status">JVM Terminal Output</span>
-                        <button id="clear-java-out" class="btn-text">Clear Console</button>
-                    </div>
-                    <pre id="java-console" class="console-box java-console">Ready to run JVM bytecode...</pre>
-                </div>
+            <div class="testimonial-card">
+                <p>"If you want a lightning-fast, intuitive ecosystem to build and scale projects, Kuaducode is the absolute gold standard."</p>
+                <div class="testimonial-author">— Marcus Vance, Lead Architect</div>
             </div>
-        </section>
-    </main>
+        </div>
+    </div>
+
+    <!-- Bottom Status Bar -->
+    <div class="status-bar">
+        <span class="shortcuts-hint">Shortcuts: Ctrl+N (New), Ctrl+O (Open), Ctrl+S (Save), Ctrl+T (New Tab)</span>
+        <div>
+            <span id="wordCount">Words: 0</span> | 
+            <span id="charCount">Characters: 0</span>
+        </div>
+    </div>
 
     <script>
-        const devJokeList = [
-            "💡 Joke: There are 10 types of people: those who understand binary, and those who don't.",
-            "💡 Joke: Programmer: An organism that turns caffeine and pizza into bugs.",
-            "💡 Joke: Why do Java developers wear glasses? Because they don't C#!",
-            "💡 Joke: SQL query walks into a bar, walks up to two tables and asks: 'Can I join you?'",
-            "💡 Joke: There is no place like 127.0.0.1.",
-            "💡 Joke: Debugging: Being the detective in a movie where you are also the murderer."
-        ];
+        const textArea = document.getElementById('textArea');
+        const lineNumbers = document.getElementById('lineNumbers');
+        const wordCount = document.getElementById('wordCount');
+        const charCount = document.getElementById('charCount');
+        const saveBtn = document.getElementById('saveBtn');
+        const fileInput = document.getElementById('fileInput');
+        const clearBtn = document.getElementById('clearBtn');
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        const tabBar = document.getElementById('tabBar');
+        const addTabBtn = document.getElementById('addTabBtn');
+        const newTabBtn = document.getElementById('newTabBtn');
 
-        const defaultWebCode = `<style>
-    body {
-        background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        font-family: sans-serif;
-    }
-    .card {
-        background: white;
-        padding: 40px;
-        border-radius: 16px;
-        box-shadow: 0 12px 30px rgba(0,0,0,0.12);
-        text-align: center;
-        animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    @keyframes popUp {
-        0% { transform: scale(0.85); opacity: 0; }
-        100% { transform: scale(1); opacity: 1; }
-    }
-    h1 { color: #1f2328; margin-bottom: 10px; font-size: 1.8rem; }
-    p { color: #656d76; margin-bottom: 24px; }
-    button {
-        background: #2ea44f;
-        color: white;
-        border: none;
-        padding: 10px 22px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: bold;
-        transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
-        box-shadow: 0 4px 12px rgba(46, 164, 79, 0.3);
-    }
-    button:hover { background: #2c974b; transform: scale(1.06); box-shadow: 0 6px 16px rgba(46, 164, 79, 0.4); }
-</style>
+        let tabs = [];
+        let activeTabId = null;
+        let tabCounter = 1;
 
-<div class="card">
-    <h1>Hello Kuaducode!</h1>
-    <p>Smooth animated web preview running live.</p>
-    <button onclick="triggerAlert()">Click Me</button>
-</div>
-
-<script>
-    function triggerAlert() {
-        alert("Awesome! JavaScript preview is working smoothly.");
-    }
-<\/script>`;
-
-        const defaultPythonCode = `name = "Kuaducode Developer"
-print(f"Hello, {name}!")
-
-print("Calculating squares:")
-for i in range(1, 5):
-    print(f"{i} squared = {i * i}")`;
-
-        const defaultCppCode = `#include <iostream>
-using namespace std;
-
-int main() {
-    cout << "Hello from Kuaducode C++ Environment!" << endl;
-    
-    int sum = 0;
-    for(int i = 1; i <= 5; i++) {
-        sum += i;
-    }
-    
-    cout << "Sum of numbers from 1 to 5 is: " << sum << endl;
-    return 0;
-}`;
-
-        const defaultJavaCode = `public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello from Kuaducode Java Virtual Machine!");
-        
-        String coder = "Kuaducode Pro";
-        int level = 99;
-        
-        System.out.println("Coder: " + coder + " | Level: " + level);
-    }
-}`;
-
-        document.getElementById('editor-web').value = defaultWebCode;
-        document.getElementById('editor-python').value = defaultPythonCode;
-        document.getElementById('editor-cpp').value = defaultCppCode;
-        document.getElementById('editor-java').value = defaultJavaCode;
-
-        document.querySelectorAll('.pane-tabs').forEach(tabGroup => {
-            const buttons = tabGroup.querySelectorAll('.tab-btn');
-            
-            buttons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    buttons.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-
-                    const targetId = btn.getAttribute('data-target');
-                    const groupType = btn.getAttribute('data-group');
-
-                    if (groupType === 'editor') {
-                        document.querySelectorAll('.code-editor').forEach(ed => ed.classList.remove('active'));
-                        document.getElementById(targetId).classList.add('active');
-                    } else if (groupType === 'output') {
-                        document.querySelectorAll('.output-view').forEach(view => view.classList.remove('active'));
-                        document.getElementById(targetId).classList.add('active');
-                    }
-                });
-            });
-        });
-
-        document.getElementById('run-btn').addEventListener('click', () => {
-            const randomJoke = devJokeList[Math.floor(Math.random() * devJokeList.length)];
-            const jokeBanner = document.getElementById('joke-banner');
-            jokeBanner.style.animation = 'none';
-            jokeBanner.offsetHeight;
-            jokeBanner.style.animation = 'fadeInJoke 0.3s ease';
-            jokeBanner.textContent = randomJoke;
-
-            runWebPreview();
-            runPythonCode();
-            runCppCode();
-            runJavaCode();
-        });
-
-        document.getElementById('clear-btn').addEventListener('click', () => {
-            const activeEditor = document.querySelector('.code-editor.active');
-            if (activeEditor) activeEditor.value = '';
-        });
-
-        document.getElementById('clear-python-out').addEventListener('click', () => {
-            document.getElementById('python-console').textContent = 'Console cleared.';
-        });
-
-        document.getElementById('clear-cpp-out').addEventListener('click', () => {
-            document.getElementById('cpp-console').textContent = 'Console cleared.';
-        });
-
-        document.getElementById('clear-java-out').addEventListener('click', () => {
-            document.getElementById('java-console').textContent = 'Console cleared.';
-        });
-
-        function runWebPreview() {
-            const webCode = document.getElementById('editor-web').value;
-            const iframe = document.getElementById('preview-frame');
-            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-            iframeDoc.open();
-            iframeDoc.write(webCode);
-            iframeDoc.close();
+        function createTab(name = `Untitled-${tabCounter++}`, content = '') {
+            const id = 'tab_' + Date.now() + Math.random();
+            tabs.push({ id, name, content });
+            switchTab(id);
         }
 
-        function runPythonCode() {
-            const pyCode = document.getElementById('editor-python').value;
-            const consoleBox = document.getElementById('python-console');
-            
-            consoleBox.textContent = "Running Python script...\n\n";
+        function switchTab(id) {
+            if (activeTabId) {
+                const currentTab = tabs.find(t => t.id === activeTabId);
+                if (currentTab) currentTab.content = textArea.value;
+            }
 
-            try {
-                let simulatedOutput = [];
-                const lines = pyCode.split('\n');
-                
-                lines.forEach(line => {
-                    let trimmed = line.trim();
-                    if (trimmed.startsWith('print(')) {
-                        let content = trimmed.substring(6, trimmed.length - 1);
-                        if ((content.startsWith('"') && content.endsWith('"')) || (content.startsWith("'") && content.endsWith("'"))) {
-                            content = content.slice(1, -1);
-                        }
-                        simulatedOutput.push(content);
-                    }
-                });
+            activeTabId = id;
+            const targetTab = tabs.find(t => t.id === id);
+            textArea.value = targetTab ? targetTab.content : '';
+            renderTabs();
+            updateLineNumbers();
+            updateStats();
+        }
 
-                if (simulatedOutput.length > 0) {
-                    consoleBox.textContent += simulatedOutput.join('\n') + "\n\n[Process exited successfully]";
-                } else {
-                    consoleBox.textContent += "Script executed with no standard output printed.\n[Process exited successfully]";
-                }
-            } catch (err) {
-                consoleBox.textContent += `Error: ${err.message}`;
+        function closeTab(id, event) {
+            event.stopPropagation();
+            if (tabs.length === 1) {
+                tabs[0].content = '';
+                tabs[0].name = 'Untitled-1';
+                textArea.value = '';
+                renderTabs();
+                updateLineNumbers();
+                updateStats();
+                return;
+            }
+
+            const index = tabs.findIndex(t => t.id === id);
+            tabs.splice(index, 1);
+
+            if (activeTabId === id) {
+                switchTab(tabs[Math.max(0, index - 1)].id);
+            } else {
+                renderTabs();
             }
         }
 
-        function runCppCode() {
-            const cppCode = document.getElementById('editor-cpp').value;
-            const consoleBox = document.getElementById('cpp-console');
-            
-            consoleBox.textContent = "Compiling main.cpp...\n";
+        function renderTabs() {
+            document.querySelectorAll('.tab').forEach(el => el.remove());
 
-            setTimeout(() => {
-                try {
-                    let simulatedOutput = [];
-                    const lines = cppCode.split('\n');
-                    
-                    lines.forEach(line => {
-                        let trimmed = line.trim();
-                        if (trimmed.includes('cout <<')) {
-                            let parts = trimmed.split('<<');
-                            for (let i = 1; i < parts.length - 1; i++) {
-                                let chunk = parts[i].trim();
-                                if ((chunk.startsWith('"') && chunk.endsWith('"')) || (chunk.startsWith("'") && chunk.endsWith("'"))) {
-                                    simulatedOutput.push(chunk.slice(1, -1));
-                                } else if (chunk.includes("sum")) {
-                                    simulatedOutput.push("15");
-                                }
-                            }
-                        }
-                    });
-
-                    consoleBox.textContent += "Build successful.\nRunning executable:\n\n";
-                    if (simulatedOutput.length > 0) {
-                        consoleBox.textContent += simulatedOutput.join('\n') + "\n\n[Program exited with exit code 0]";
-                    } else {
-                        consoleBox.textContent += "Program executed with no console output.\n[Program exited with exit code 0]";
-                    }
-                } catch (err) {
-                    consoleBox.textContent += `Compilation Error: ${err.message}`;
-                }
-            }, 300);
+            tabs.forEach(tab => {
+                const tabEl = document.createElement('div');
+                tabEl.className = `tab ${tab.id === activeTabId ? 'active' : ''}`;
+                tabEl.innerHTML = `
+                    <span>${tab.name}</span>
+                    <span class="close-tab" title="Close tab">&times;</span>
+                `;
+                tabEl.addEventListener('click', () => switchTab(tab.id));
+                tabEl.querySelector('.close-tab').addEventListener('click', (e) => closeTab(tab.id, e));
+                
+                tabBar.insertBefore(tabEl, addTabBtn);
+            });
         }
 
-        /* Dynamically parses and executes whatever is inside the Java editor */
-        function runJavaCode() {
-            const javaCode = document.getElementById('editor-java').value;
-            const consoleBox = document.getElementById('java-console');
-            
-            consoleBox.textContent = "Compiling Main.java with javac...\n";
-
-            setTimeout(() => {
-                try {
-                    let simulatedOutput = [];
-                    const lines = javaCode.split('\n');
-                    
-                    lines.forEach(line => {
-                        let trimmed = line.trim();
-                        if (trimmed.startsWith('System.out.println(')) {
-                            // Extract content inside parenthesis
-                            let content = trimmed.substring(19, trimmed.length - 2).trim();
-                            
-                            // Check if it's a direct string literal
-                            if ((content.startsWith('"') && content.endsWith('"')) || (content.startsWith("'") && content.endsWith("'"))) {
-                                simulatedOutput.push(content.slice(1, -1));
-                            } else {
-                                // Simple evaluation of string concatenations (e.g. "Coder: " + coder)
-                                try {
-                                    // Evaluate expression safely in local scope simulation
-                                    let evaluated = eval(content.replace(/([a-zA-Z0-9_]+)/g, (match) => {
-                                        // Look back in lines for variable declaration
-                                        for (let l of lines) {
-                                            if (l.includes(match) && l.includes('=')) {
-                                                let valPart = l.split('=')[1].replace(';', '').trim();
-                                                return valPart;
-                                            }
-                                        }
-                                        return `"${match}"`;
-                                    }));
-                                    simulatedOutput.push(evaluated);
-                                } catch (e) {
-                                    simulatedOutput.push(content);
-                                }
-                            }
-                        }
-                    });
-
-                    consoleBox.textContent += "Bytecode generated successfully.\nExecuting via JVM:\n\n";
-                    if (simulatedOutput.length > 0) {
-                        consoleBox.textContent += simulatedOutput.join('\n') + "\n\n[JVM exited normally]";
-                    } else {
-                        consoleBox.textContent += "Main method executed with no print output.\n[JVM exited normally]";
-                    }
-                } catch (err) {
-                    consoleBox.textContent += `JVM Runtime Error: ${err.message}`;
-                }
-            }, 350);
+        function updateLineNumbers() {
+            const lines = textArea.value.split('\n').length;
+            let numbersString = '';
+            for (let i = 1; i <= lines; i++) {
+                numbersString += i + '<br>';
+            }
+            lineNumbers.innerHTML = numbersString;
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            runWebPreview();
+        function updateStats() {
+            const text = textArea.value;
+            const characters = text.length;
+            const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+            
+            wordCount.textContent = `Words: ${words}`;
+            charCount.textContent = `Characters: ${characters}`;
+            
+            const currentTab = tabs.find(t => t.id === activeTabId);
+            if (currentTab) currentTab.content = text;
+        }
+
+        textArea.addEventListener('scroll', () => {
+            lineNumbers.scrollTop = textArea.scrollTop;
         });
+
+        textArea.addEventListener('input', () => {
+            updateLineNumbers();
+            updateStats();
+        });
+
+        function saveFile() {
+            const currentTab = tabs.find(t => t.id === activeTabId);
+            const text = textArea.value;
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = currentTab ? `${currentTab.name}.txt` : 'document.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        saveBtn.addEventListener('click', saveFile);
+        document.getElementById('menuSave').addEventListener('click', saveFile);
+
+        function handleFileOpen(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                createTab(file.name, e.target.result);
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        fileInput.addEventListener('change', handleFileOpen);
+        document.getElementById('menuOpen').addEventListener('click', () => fileInput.click());
+
+        clearBtn.addEventListener('click', () => {
+            if (confirm('Clear current tab content?')) {
+                textArea.value = '';
+                updateLineNumbers();
+                updateStats();
+            }
+        });
+
+        function toggleTheme() {
+            const currentTheme = body.getAttribute('data-theme');
+            body.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
+        }
+        themeToggle.addEventListener('click', toggleTheme);
+        document.getElementById('menuTheme').addEventListener('click', toggleTheme);
+
+        newTabBtn.addEventListener('click', () => createTab());
+        addTabBtn.addEventListener('click', () => createTab());
+        document.getElementById('menuNew').addEventListener('click', () => createTab());
+
+        window.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                if (e.key === 's') {
+                    e.preventDefault();
+                    saveFile();
+                } else if (e.key === 'o') {
+                    e.preventDefault();
+                    fileInput.click();
+                } else if (e.key === 't' || e.key === 'n') {
+                    e.preventDefault();
+                    createTab();
+                }
+            }
+        });
+
+        createTab('Untitled-1');
     </script>
 </body>
 </html>
