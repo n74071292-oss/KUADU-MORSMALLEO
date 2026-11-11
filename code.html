@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KuaduCode™ — Professional Web IDE & 100 Working Coder Tools</title>
-    <meta name="description" content="KuaduCode is a universal web code editor and IDE featuring live preview, Python environment, Kuadu AI, and 100 fully functional developer tools and mini-apps.">
+    <title>KuaduCode™ — Professional Web IDE & Core Developer Utilities</title>
+    <meta name="description" content="KuaduCode is a universal web code editor and IDE featuring live preview, Python environment, Kuadu AI, and core developer tools: URL Decoder, Password Generator, Linux Command Line Simulator, and SQL Query Builder.">
     <meta name="author" content="Kuaducode Platform">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -191,99 +191,96 @@
             outline: none;
         }
 
-        /* 100 Interactive Working Tools Panel */
+        /* Essential Utilities Dashboard Panel */
         .tools-panel {
-            padding: 16px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 20px;
             height: 100%;
             overflow-y: auto;
             background: #0d1117;
         }
 
-        .tools-category-title {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--accent-blue);
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 6px;
-            margin-top: 10px;
-        }
-
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 12px;
-        }
-
-        .tool-card {
+        .tool-section-card {
             background: #161b22;
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 12px;
+            padding: 16px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            transition: all 0.2s;
+            gap: 10px;
         }
 
-        .tool-card:hover {
-            border-color: var(--accent-blue);
-            transform: translateY(-2px);
-        }
-
-        .tool-card h4 {
-            font-size: 0.85rem;
+        .tool-section-card h3 {
+            font-size: 0.95rem;
             color: #ffffff;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 8px;
         }
 
-        .tool-card p {
-            font-size: 0.75rem;
+        .tool-section-card p {
+            font-size: 0.8rem;
             color: #8b949e;
-            line-height: 1.3;
         }
 
-        .tool-card input, .tool-card select {
+        .tool-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .tool-input, .tool-select {
             background: #0d1117;
             border: 1px solid var(--border-color);
             color: #fff;
-            padding: 6px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
             outline: none;
-            width: 100%;
+            flex: 1;
         }
 
-        .tool-card button {
+        .tool-btn {
             background: #21262d;
             border: 1px solid var(--border-color);
             color: #c9d1d9;
-            padding: 6px 10px;
-            border-radius: 4px;
-            font-size: 0.75rem;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
             cursor: pointer;
             font-weight: 500;
         }
 
-        .tool-card button:hover {
+        .tool-btn:hover {
             background: #30363d;
             color: #fff;
         }
 
-        .tool-result {
+        .tool-output {
             font-family: monospace;
-            font-size: 0.75rem;
+            font-size: 0.85rem;
             color: #7ee787;
             background: #040d21;
-            padding: 6px;
-            border-radius: 4px;
+            padding: 10px;
+            border-radius: 6px;
             word-break: break-all;
-            max-height: 60px;
+            white-space: pre-wrap;
+            min-height: 38px;
+        }
+
+        .terminal-box {
+            background: #040d21;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #7ee787;
+            height: 140px;
             overflow-y: auto;
+            white-space: pre-wrap;
         }
 
         .output-pane-container {
@@ -435,7 +432,7 @@
     <header>
         <div class="logo-area">
             <h1>KuaduCode™</h1>
-            <span>Professional IDE & 100 Working Projects</span>
+            <span>Professional IDE & Core Utilities</span>
         </div>
         <div class="toolbar">
             <button class="btn" onclick="clearActiveTab()"><i class="fa-solid fa-trash"></i> Clear</button>
@@ -451,7 +448,7 @@
                 <button class="tab" onclick="switchTab(event, 'css-container')"><i class="fa-brands fa-css3-alt" style="color: #1572b6;"></i> CSS</button>
                 <button class="tab" onclick="switchTab(event, 'js-container')"><i class="fa-brands fa-js" style="color: #f7df1e;"></i> JS</button>
                 <button class="tab" onclick="switchTab(event, 'python-container')"><i class="fa-brands fa-python" style="color: #3776ab;"></i> Python</button>
-                <button class="tab" onclick="switchTab(event, 'tools-container')" style="color: #58a6ff;"><i class="fa-solid fa-toolbox"></i> 100 Interactive Tools</button>
+                <button class="tab" onclick="switchTab(event, 'tools-container')" style="color: #58a6ff;"><i class="fa-solid fa-wrench"></i> Core Utilities</button>
                 <button class="tab ai-tab-btn" onclick="switchTab(event, 'ai-container')"><i class="fa-solid fa-brain"></i> Kuadu AI</button>
             </div>
 
@@ -498,275 +495,69 @@ metrics = calculate_metrics([10, 20, 30, 40, 50])
 print("Execution Result:", metrics)</textarea>
             </div>
 
-            <!-- 100 Interactive Working Tools Dashboard Tab -->
+            <!-- Core Utilities Tab (URL Decoder, Password Generator, Linux CLI, SQL Builder) -->
             <div id="tools-container" class="editor-container">
                 <div class="tools-panel">
-                    <h2 style="font-size: 1.1rem; color: #fff; margin-bottom: 2px;"><i class="fa-solid fa-toolbox"></i> 100 Interactive Working Developer Projects & Utilities</h2>
-                    <p style="font-size: 0.8rem; color: #8b949e; margin-bottom: 10px;">Fully operational mini-apps and utility modules for professional software engineering.</p>
+                    <h2 style="font-size: 1.1rem; color: #fff; margin-bottom: 2px;"><i class="fa-solid fa-wrench"></i> Essential Developer Utilities</h2>
+                    <p style="font-size: 0.8rem; color: #8b949e; margin-bottom: 10px;">Fully functional tools requested for URL decoding, password generation, Linux command line, and SQL query building.</p>
 
-                    <!-- Category 1: IDEs & Code Editors -->
-                    <div class="tools-category-title">1. IDEs & Code Editors (Mock & State Tools)</div>
-                    <div class="tools-grid">
-                        <div class="tool-card">
-                            <h4>VS Code<span>[Active]</span></h4>
-                            <p>Extensible open-source code editor.</p>
-                            <button onclick="toolAlert('VS Code loaded in cloud environment.')">Launch Workspace</button>
+                    <!-- 1. URL Decoder / Encoder -->
+                    <div class="tool-section-card">
+                        <h3><i class="fa-solid fa-link" style="color: #58a6ff;"></i> URL Decoder & Encoder</h3>
+                        <p>Encode or decode URL strings instantly.</p>
+                        <input type="text" id="url-input" class="tool-input" placeholder="Enter URL or encoded string (e.g. https%3A%2F%2Fexample.com)...">
+                        <div class="tool-row">
+                            <button class="tool-btn" onclick="decodeUrlText()"><i class="fa-solid fa-unlock"></i> Decode</button>
+                            <button class="tool-btn" onclick="encodeUrlText()"><i class="fa-solid fa-lock"></i> Encode</button>
                         </div>
-                        <div class="tool-card">
-                            <h4>Neovim<span>[CLI]</span></h4>
-                            <p>Modal terminal text editor.</p>
-                            <button onclick="toolAlert('Neovim terminal mode active.')">Open Terminal</button>
-                        </div>
-                        <div class="tool-card">
-                            <h4>Cursor<span>[AI]</span></h4>
-                            <p>AI-first code editor.</p>
-                            <button onclick="toolAlert('Cursor AI indexing active.')">Index Repo</button>
-                        </div>
-                        <div class="tool-card">
-                            <h4>WebStorm<span>[IDE]</span></h4>
-                            <p>Professional JS/TS IDE.</p>
-                            <button onclick="toolAlert('WebStorm services running.')">Start Server</button>
-                        </div>
-                        <div class="tool-card">
-                            <h4>PyCharm<span>[Python]</span></h4>
-                            <p>Dedicated Python IDE.</p>
-                            <button onclick="toolAlert('PyCharm virtual environment active.')">Run venv</button>
-                        </div>
-                        <div class="tool-card">
-                            <h4>Zed<span>[Rust]</span></h4>
-                            <p>High-performance editor.</p>
-                            <button onclick="toolAlert('Zed multiplayer session online.')">Join Session</button>
-                        </div>
-                        <div class="tool-card">
-                            <h4>Sublime Text<span>[Text]</span></h4>
-                            <p>Lightning fast text editor.</p>
-                            <button onclick="toolAlert('Sublime buffer cleared.')">New Buffer</button>
-                        </div>
-                        <div class="tool-card">
-                            <h4>Fleet<span>[JetBrains]</span></h4>
-                            <p>Next-gen distributed IDE.</p>
-                            <button onclick="toolAlert('Fleet smart mode enabled.')">Toggle Smart</button>
-                        </div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>VSCodium</span><span style="font-size:0.75rem; color:#8b949e;">Telemetry-free build</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Eclipse</span><span style="font-size:0.75rem; color:#8b949e;">Enterprise JVM workspace</span></div>
+                        <div id="url-output" class="tool-output">Decoded / Encoded output will appear here...</div>
                     </div>
 
-                    <!-- Category 2: Version Control & Git Clients -->
-                    <div class="tools-category-title">2. Version Control & Git Clients (Working Utilities)</div>
-                    <div class="tools-grid">
-                        <div class="tool-card">
-                            <h4>Git Commit Generator</h4>
-                            <p>Generate standard conventional commit messages.</p>
-                            <select id="git-type"><option>feat</option><option>fix</option><option>refactor</option><option>chore</option></select>
-                            <input type="text" id="git-msg" placeholder="Scope / Message...">
-                            <button onclick="genGitCommit()">Generate Commit</button>
-                            <div id="git-out" class="tool-result">git commit -m "feat: ..."</div>
+                    <!-- 2. Secure Password Generator -->
+                    <div class="tool-section-card">
+                        <h3><i class="fa-solid fa-key" style="color: #2ea44f;"></i> Secure Password Generator</h3>
+                        <p>Generate high-entropy secure passwords and API keys.</p>
+                        <div class="tool-row">
+                            <select id="pass-length" class="tool-select">
+                                <option value="12">12 Characters</option>
+                                <option value="16" selected>16 Characters</option>
+                                <option value="24">24 Characters</option>
+                                <option value="32">32 Characters</option>
+                            </select>
+                            <button class="tool-btn btn-primary" onclick="generatePassword()"><i class="fa-solid fa-bolt"></i> Generate Password</button>
                         </div>
-                        <div class="tool-card">
-                            <h4>Git Diff Simulator</h4>
-                            <p>Simulate repository diff check.</p>
-                            <button onclick="simGitDiff()">Run git diff</button>
-                            <div id="diff-out" class="tool-result">+ added line 1\n- removed line 2</div>
-                        </div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>GitHub CLI</span><span style="font-size:0.75rem; color:#8b949e;">gh pr create --fill</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>GitKraken</span><span style="font-size:0.75rem; color:#8b949e;">Visual graph viewer</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Lazygit</span><span style="font-size:0.75rem; color:#8b949e;">Terminal UI active</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>GitButler</span><span style="font-size:0.75rem; color:#8b949e;">Stacked commit tracker</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>GitLab CLI</span><span style="font-size:0.75rem; color:#8b949e;">glab pipeline run</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Fork Client</span><span style="font-size:0.75rem; color:#8b949e;">Repository staging sync</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>SourceTree</span><span style="font-size:0.75rem; color:#8b949e;">Remote origin tracker</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>GitLens</span><span style="font-size:0.75rem; color:#8b949e;">Line blame inspector</span></div>
+                        <div id="pass-output" class="tool-output">Click generate to create secure key...</div>
                     </div>
 
-                    <!-- Category 3: Command Line & Terminal Enhancements -->
-                    <div class="tools-category-title">3. Command Line & Terminal Utilities</div>
-                    <div class="tools-grid">
-                        <div class="tool-card">
-                            <h4>Base64 Encoder</h4>
-                            <p>Encode plain text instantly.</p>
-                            <input type="text" id="b64-in" placeholder="Text to encode...">
-                            <button onclick="encodeB64Tool()">Encode</button>
-                            <div id="b64-res" class="tool-result">...</div>
+                    <!-- 3. Linux Command Line Simulator -->
+                    <div class="tool-section-card">
+                        <h3><i class="fa-solid fa-terminal" style="color: #7ee787;"></i> Linux Command Line (Bash Simulator)</h3>
+                        <p>Type standard Linux commands (e.g., <code>ls</code>, <code>pwd</code>, <code>whoami</code>, <code>uname -a</code>, <code>date</code>, <code>clear</code>).</p>
+                        <div id="linux-terminal" class="terminal-box">KuaduCode Linux Bash (v5.2) - Type 'help' for commands.
+kuaducode@ubuntu:~$ </div>
+                        <div class="tool-row">
+                            <input type="text" id="linux-input" class="tool-input" placeholder="Type command (e.g. ls, pwd)..." onkeypress="handleLinuxKey(event)">
+                            <button class="tool-btn" onclick="runLinuxCommand()">Execute</button>
                         </div>
-                        <div class="tool-card">
-                            <h4>URL Encoder / Decoder</h4>
-                            <p>Sanitize strings for URLs.</p>
-                            <input type="text" id="url-in" placeholder="URL string...">
-                            <button onclick="encodeUrlTool()">Encode URL</button>
-                            <div id="url-res" class="tool-result">...</div>
-                        </div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Zsh Shell</span><span style="font-size:0.75rem; color:#8b949e;">Configured with Oh My Zsh</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Fish Shell</span><span style="font-size:0.75rem; color:#8b949e;">Autosuggestions active</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Starship Prompt</span><span style="font-size:0.75rem; color:#8b949e;">Cross-shell prompt loaded</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Tmux Multiplexer</span><span style="font-size:0.75rem; color:#8b949e;">Session sessions active</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Alacritty</span><span style="font-size:0.75rem; color:#8b949e;">GPU rendering enabled</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Bat Viewer</span><span style="font-size:0.75rem; color:#8b949e;">Syntax highlighted cat</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Eza Dir Lister</span><span style="font-size:0.75rem; color:#8b949e;">Modern directory icons</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Fzf Finder</span><span style="font-size:0.75rem; color:#8b949e;">Fuzzy search engine</span></div>
                     </div>
 
-                    <!-- Category 4: Containers, DevOps & Cloud -->
-                    <div class="tools-category-title">4. Containers, DevOps & Cloud Simulators</div>
-                    <div class="tools-grid">
-                        <div class="tool-card">
-                            <h4>Docker Compose Generator</h4>
-                            <p>Generate simple docker-compose.yml.</p>
-                            <button onclick="genDockerCompose()">Generate YAML</button>
-                            <div id="docker-out" class="tool-result">version: '3.8'\nservices:\n  web: ...</div>
+                    <!-- 4. SQL Query Builder -->
+                    <div class="tool-section-card">
+                        <h3><i class="fa-solid fa-database" style="color: #d2a8ff;"></i> SQL Query Builder</h3>
+                        <p>Generate precise SQL statements dynamically.</p>
+                        <div class="tool-row">
+                            <select id="sql-action" class="tool-select">
+                                <option value="SELECT">SELECT</option>
+                                <option value="INSERT">INSERT INTO</option>
+                                <option value="UPDATE">UPDATE</option>
+                                <option value="DELETE">DELETE FROM</option>
+                            </select>
+                            <input type="text" id="sql-table" class="tool-input" placeholder="Table name (e.g. users)...">
                         </div>
-                        <div class="tool-card">
-                            <h4>K8s Pod Status Checker</h4>
-                            <p>Simulate cluster health.</p>
-                            <button onclick="checkK8sCluster()">Check Clusters</button>
-                            <div id="k8s-out" class="tool-result">Status: 12/12 Pods Running (Healthy)</div>
-                        </div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Terraform CLI</span><span style="font-size:0.75rem; color:#8b949e;">terraform plan & apply</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Ansible Playbook</span><span style="font-size:0.75rem; color:#8b949e;">Provisioning servers</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Pulumi Stack</span><span style="font-size:0.75rem; color:#8b949e;">TypeScript cloud deploy</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>K9s Dashboard</span><span style="font-size:0.75rem; color:#8b949e;">Cluster node monitor</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Podman Engine</span><span style="font-size:0.75rem; color:#8b949e;">Rootless containers</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Vagrant Box</span><span style="font-size:0.75rem; color:#8b949e;">Virtual dev boxes</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Helm Chart</span><span style="font-size:0.75rem; color:#8b949e;">Chart release manager</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>LocalStack</span><span style="font-size:0.75rem; color:#8b949e;">Local AWS emulation</span></div>
-                    </div>
-
-                    <!-- Category 5: Databases & Management Tools -->
-                    <div class="tools-category-title">5. Databases & SQL Query Generators</div>
-                    <div class="tools-grid">
-                        <div class="tool-card">
-                            <h4>SQL Query Builder</h4>
-                            <p>Generate quick SELECT statements.</p>
-                            <input type="text" id="sql-table" placeholder="Table name (e.g. users)...">
-                            <button onclick="genSqlSelect()">Generate SQL</button>
-                            <div id="sql-out" class="tool-result">SELECT * FROM users;</div>
-                        </div>
-                        <div class="tool-card">
-                            <h4>UUID v4 Generator</h4>
-                            <p>Generate unique identifier.</p>
-                            <button onclick="generateUuidTool()">Generate UUID</button>
-                            <div id="uuid-res" class="tool-result">Click to generate...</div>
-                        </div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>PostgreSQL</span><span style="font-size:0.75rem; color:#8b949e;">Connection pooler active</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Redis Cache</span><span style="font-size:0.75rem; color:#8b949e;">PING -> PONG (0.2ms)</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>SQLite DB</span><span style="font-size:0.75rem; color:#8b949e;">In-memory file loaded</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>DBeaver GUI</span><span style="font-size:0.75rem; color:#8b949e;">Universal client ready</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Prisma ORM</span><span style="font-size:0.75rem; color:#8b949e;">npx prisma generate</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Drizzle ORM</span><span style="font-size:0.75rem; color:#8b949e;">Zero-dependency SQL</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Supabase BaaS</span><span style="font-size:0.75rem; color:#8b949e;">Auth & Edge functions</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>MongoDB Atlas</span><span style="font-size:0.75rem; color:#8b949e;">NoSQL cluster connected</span></div>
-                    </div>
-
-                    <!-- Category 6: API, Testing & Networking -->
-                    <div class="tools-category-title">6. API, Testing & Networking Utilities</div>
-                    <div class="tools-grid">
-                        <div class="tool-card">
-                            <h4>JSON Formatter / Validator</h4>
-                            <p>Validate JSON syntax instantly.</p>
-                            <input type="text" id="json-in" placeholder='{"test": 1}'>
-                            <button onclick="validateJsonTool()">Validate</button>
-                            <div id="json-res" class="tool-result">Valid JSON format</div>
-                        </div>
-                        <div class="tool-card">
-                            <h4>Password Generator</h4>
-                            <p>Generate high-entropy keys.</p>
-                            <button onclick="genSecurePassword()">Generate Key</button>
-                            <div id="pass-res" class="tool-result">Click to generate...</div>
-                        </div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Postman API</span><span style="font-size:0.75rem; color:#8b949e;">Collection runner ready</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Bruno Client</span><span style="font-size:0.75rem; color:#8b949e;">Git-friendly API client</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Wireshark</span><span style="font-size:0.75rem; color:#8b949e;">Packet capture active</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>cURL Builder</span><span style="font-size:0.75rem; color:#8b949e;">HTTP request generator</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Playwright E2E</span><span style="font-size:0.75rem; color:#8b949e;">Browser automation</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Cypress Testing</span><span style="font-size:0.75rem; color:#8b949e;">Component test runner</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>k6 Load Test</span><span style="font-size:0.75rem; color:#8b949e;">Performance simulation</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Jest Framework</span><span style="font-size:0.75rem; color:#8b949e;">Unit test assertions</span></div>
-                    </div>
-
-                    <!-- Category 7: Build Tools, Bundlers & Runtimes -->
-                    <div class="tools-category-title">7. Build Tools, Bundlers & Runtimes</div>
-                    <div class="tools-grid">
-                        <div class="tool-card">
-                            <h4>Regex Tester</h4>
-                            <p>Test regular expressions.</p>
-                            <input type="text" id="regex-pattern" placeholder="Pattern (e.g. \d+)">
-                            <input type="text" id="regex-text" placeholder="Test string...">
-                            <button onclick="testRegexTool()">Test Match</button>
-                            <div id="regex-res" class="tool-result">Result: Match found</div>
-                        </div>
-                        <div class="tool-card">
-                            <h4>Timestamp Converter</h4>
-                            <p>Convert Unix epoch to date.</p>
-                            <button onclick="convertEpochTool()">Get Current Epoch</button>
-                            <div id="epoch-res" class="tool-result">1730000000</div>
-                        </div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Node.js Runtime</span><span style="font-size:0.75rem; color:#8b949e;">v22.x LTS Engine</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Bun Toolkit</span><span style="font-size:0.75rem; color:#8b949e;">Ultrafast bundler & test</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Deno Runtime</span><span style="font-size:0.75rem; color:#8b949e;">Secure TS runtime</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Vite Bundler</span><span style="font-size:0.75rem; color:#8b949e;">HMR dev server active</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Turbopack</span><span style="font-size:0.75rem; color:#8b949e;">Rust-based bundler</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Biome Toolchain</span><span style="font-size:0.75rem; color:#8b949e;">High-speed formatter</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Prettier</span><span style="font-size:0.75rem; color:#8b949e;">Code formatting active</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Webpack</span><span style="font-size:0.75rem; color:#8b949e;">Module bundler active</span></div>
-                    </div>
-
-                    <!-- Category 8: AI Coding Assistants & Productivity -->
-                    <div class="tools-category-title">8. AI Coding Assistants & Productivity</div>
-                    <div class="tools-grid">
-                        <div class="tool-card">
-                            <h4>Kuadu AI Prompt Studio</h4>
-                            <p>Quick AI code generator.</p>
-                            <button onclick="switchTab(null, 'ai-container')">Open Kuadu AI</button>
-                        </div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>GitHub Copilot</span><span style="font-size:0.75rem; color:#8b949e;">AI pair programmer ready</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Claude Code</span><span style="font-size:0.75rem; color:#8b949e;">Terminal AI agent active</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>ChatGPT</span><span style="font-size:0.75rem; color:#8b949e;">Conversational coding</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Continue.dev</span><span style="font-size:0.75rem; color:#8b949e;">Open source extension</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Aider CLI</span><span style="font-size:0.75rem; color:#8b949e;">Terminal git AI pairing</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Supermaven</span><span style="font-size:0.75rem; color:#8b949e;">Fast AI autocomplete</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Tabnine</span><span style="font-size:0.75rem; color:#8b949e;">Private model completion</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Phind</span><span style="font-size:0.75rem; color:#8b949e;">AI search engine</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Ollama Local</span><span style="font-size:0.75rem; color:#8b949e;">Local LLM runtime</span></div>
-                    </div>
-
-                    <!-- Category 9: Monitoring, Logging & Observability -->
-                    <div class="tools-category-title">9. Monitoring, Logging & Observability</div>
-                    <div class="tools-grid">
-                        <div class="tool-card">
-                            <h4>System Health Ping</h4>
-                            <p>Check browser memory and uptime.</p>
-                            <button onclick="checkSystemHealth()">Check Health</button>
-                            <div id="health-out" class="tool-result">Memory: Normal | Uptime: 100%</div>
-                        </div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Sentry Error Tracker</span><span style="font-size:0.75rem; color:#8b949e;">Zero unhandled exceptions</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Datadog APM</span><span style="font-size:0.75rem; color:#8b949e;">Tracing infrastructure</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Grafana Dashboards</span><span style="font-size:0.75rem; color:#8b949e;">Metrics visualization</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Prometheus</span><span style="font-size:0.75rem; color:#8b949e;">Scraping targets active</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>OpenTelemetry</span><span style="font-size:0.75rem; color:#8b949e;">Telemetry collector</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Jaeger Tracing</span><span style="font-size:0.75rem; color:#8b949e;">Distributed trace viewer</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>New Relic</span><span style="font-size:0.75rem; color:#8b949e;">Performance monitoring</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Logstash</span><span style="font-size:0.75rem; color:#8b949e;">Ingestion pipeline</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Uptime Kuma</span><span style="font-size:0.75rem; color:#8b949e;">Self-hosted status monitor</span></div>
-                    </div>
-
-                    <!-- Category 10: Productivity, Collaboration & Workflow -->
-                    <div class="tools-category-title">10. Productivity, Collaboration & Workflow</div>
-                    <div class="tools-grid">
-                        <div class="tool-card">
-                            <h4>Quick Note Pad</h4>
-                            <p>Save notes in session storage.</p>
-                            <input type="text" id="quick-note" placeholder="Jot down a thought...">
-                            <button onclick="saveQuickNote()">Save Note</button>
-                            <div id="note-out" class="tool-result">No notes saved yet.</div>
-                        </div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Notion Workspace</span><span style="font-size:0.75rem; color:#8b949e;">Markdown specs ready</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Linear Sprint</span><span style="font-size:0.75rem; color:#8b949e;">Active issue tracker</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Jira Agile</span><span style="font-size:0.75rem; color:#8b949e;">Kanban board synchronized</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Slack Alerts</span><span style="font-size:0.75rem; color:#8b949e;">Webhook connected</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Discord Comms</span><span style="font-size:0.75rem; color:#8b949e;">Dev channel online</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Excalidraw</span><span style="font-size:0.75rem; color:#8b949e;">Architecture sketcher</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Mermaid.js</span><span style="font-size:0.75rem; color:#8b949e;">Diagram generator</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Raycast Launcher</span><span style="font-size:0.75rem; color:#8b949e;">Command center ready</span></div>
-                        <div class="tool-badge" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;"><span>Trello Board</span><span style="font-size:0.75rem; color:#8b949e;">Task cards organized</span></div>
+                        <input type="text" id="sql-columns" class="tool-input" placeholder="Columns or Fields (e.g. id, name, email)...">
+                        <input type="text" id="sql-where" class="tool-input" placeholder="WHERE clause condition (e.g. status = 'active')...">
+                        <button class="tool-btn btn-primary" onclick="buildSqlQuery()"><i class="fa-solid fa-code"></i> Build SQL Statement</button>
+                        <div id="sql-output" class="tool-output">SELECT * FROM users;</div>
                     </div>
                 </div>
             </div>
@@ -804,7 +595,7 @@ print("Execution Result:", metrics)</textarea>
 
     <footer>
         <div style="font-size: 0.8rem; color: #8b949e; padding-left: 10px;">
-            KuaduCode™ &bull; Professional IDE & 100 Working Projects
+            KuaduCode™ &bull; Professional IDE & Core Utilities
         </div>
     </footer>
 
@@ -822,101 +613,120 @@ print("Execution Result:", metrics)</textarea>
             }
         }
 
-        function toolAlert(msg) {
-            alert("KuaduCode IDE Tool: " + msg);
-        }
-
-        function genGitCommit() {
-            const type = document.getElementById('git-type').value;
-            const msg = document.getElementById('git-msg').value || 'update component';
-            document.getElementById('git-out').textContent = `git commit -m "${type}: ${msg}"`;
-        }
-
-        function simGitDiff() {
-            document.getElementById('diff-out').textContent = `+ const newFeature = true;\n- // legacy code removed\n  modified 2 files.`;
-        }
-
-        function encodeB64Tool() {
-            const val = document.getElementById('b64-in').value;
+        // 1. URL Decoder / Encoder Logic
+        function decodeUrlText() {
+            const val = document.getElementById('url-input').value;
             try {
-                document.getElementById('b64-res').textContent = btoa(val);
+                document.getElementById('url-output').textContent = decodeURIComponent(val);
             } catch(e) {
-                document.getElementById('b64-res').textContent = "Invalid input";
+                document.getElementById('url-output').textContent = "Error: Invalid encoded URL string.";
             }
         }
 
-        function encodeUrlTool() {
-            const val = document.getElementById('url-in').value;
-            document.getElementById('url-res').textContent = encodeURIComponent(val);
-        }
-
-        function genDockerCompose() {
-            document.getElementById('docker-out').textContent = `version: '3.8'\nservices:\n  app:\n    build: .\n    ports:\n      - "3000:3000"`;
-        }
-
-        function checkK8sCluster() {
-            document.getElementById('k8s-out').textContent = `Cluster: production-us-east\nNodes: 3 Ready\nPods: 24/24 Running`;
-        }
-
-        function genSqlSelect() {
-            const tbl = document.getElementById('sql-table').value || 'users';
-            document.getElementById('sql-out').textContent = `SELECT id, name, created_at FROM ${tbl} WHERE status = 'active' ORDER BY id DESC LIMIT 10;`;
-        }
-
-        function generateUuidTool() {
-            const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-                return v.toString(16);
-            });
-            document.getElementById('uuid-res').textContent = uuid;
-        }
-
-        function validateJsonTool() {
-            const val = document.getElementById('json-in').value;
+        function encodeUrlText() {
+            const val = document.getElementById('url-input').value;
             try {
-                JSON.parse(val);
-                document.getElementById('json-res').textContent = "✓ Valid JSON syntax";
+                document.getElementById('url-output').textContent = encodeURIComponent(val);
             } catch(e) {
-                document.getElementById('json-res').textContent = "✗ Syntax Error: " + e.message;
+                document.getElementById('url-output').textContent = "Error: Unable to encode string.";
             }
         }
 
-        function genSecurePassword() {
-            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*!";
+        // 2. Secure Password Generator Logic
+        function generatePassword() {
+            const len = parseInt(document.getElementById('pass-length').value) || 16;
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*!-_=+";
             let pass = "";
-            for (let i = 0; i < 16; i++) {
+            for (let i = 0; i < len; i++) {
                 pass += chars.charAt(Math.floor(Math.random() * chars.length));
             }
-            document.getElementById('pass-res').textContent = pass;
+            document.getElementById('pass-output').textContent = pass;
         }
 
-        function testRegexTool() {
-            const pat = document.getElementById('regex-pattern').value;
-            const str = document.getElementById('regex-text').value;
-            try {
-                const regex = new RegExp(pat);
-                const match = regex.test(str);
-                document.getElementById('regex-res').textContent = match ? "✓ Match Found!" : "✗ No Match";
-            } catch(e) {
-                document.getElementById('regex-res').textContent = "Invalid Regex Pattern";
+        // 3. Linux Command Line Simulator Logic
+        let linuxFiles = {
+            "home": ["index.html", "app.js", "styles.css", "readme.md"],
+            "etc": ["passwd", "hosts", "resolv.conf"],
+            "var": ["log", "www"]
+        };
+        let currentDir = "/home/kuaducode";
+
+        function runLinuxCommand() {
+            const inputField = document.getElementById('linux-input');
+            const cmd = inputField.value.trim();
+            const term = document.getElementById('linux-terminal');
+            if (!cmd) return;
+
+            term.innerHTML += `kuaducode@ubuntu:${currentDir}$ ${cmd}\n`;
+            inputField.value = "";
+
+            const parts = cmd.split(" ");
+            const base = parts[0];
+            const arg = parts[1];
+
+            let response = "";
+            if (base === "help") {
+                response = "Available commands: ls, pwd, whoami, uname, date, cat, echo, clear, mkdir, history";
+            } else if (base === "ls") {
+                response = "index.html    app.js    styles.css    readme.md    config.json";
+            } else if (base === "pwd") {
+                response = currentDir;
+            } else if (base === "whoami") {
+                response = "kuaducode (developer)";
+            } else if (base === "uname") {
+                response = "Linux kuaducode-os 6.5.0-generic x86_64 GNU/Linux";
+            } else if (base === "date") {
+                response = new Date().toUTCString();
+            } else if (base === "cat") {
+                if (arg === "readme.md") response = "# KuaduCode Workspace\nOperational and fully secured.";
+                else if (arg === "config.json") response = '{\n  "version": "2.4.0",\n  "env": "production"\n}';
+                else response = `cat: ${arg || 'file'}: No such file or directory`;
+            } else if (base === "echo") {
+                response = parts.slice(1).join(" ");
+            } else if (base === "mkdir") {
+                response = arg ? `Directory '${arg}' created successfully.` : "mkdir: missing operand";
+            } else if (base === "clear") {
+                term.innerHTML = `KuaduCode Linux Bash (v5.2) - Type 'help' for commands.\n`;
+                return;
+            } else if (base === "history") {
+                response = "1. ls\n2. pwd\n3. uname -a\n4. cat readme.md\n5. " + cmd;
+            } else {
+                response = `bash: ${base}: command not found. Type 'help' for available commands.`;
             }
+
+            term.innerHTML += response + "\n";
+            term.scrollTop = term.scrollHeight;
         }
 
-        function convertEpochTool() {
-            const now = Math.floor(Date.now() / 1000);
-            document.getElementById('epoch-res').textContent = `${now} (${new Date().toUTCString()})`;
+        function handleLinuxKey(e) {
+            if (e.key === 'Enter') runLinuxCommand();
         }
 
-        function checkSystemHealth() {
-            const mem = performance && performance.memory ? Math.round(performance.memory.usedJSHeapSize / 1048576) + " MB" : "Optimal";
-            document.getElementById('health-out').textContent = `Heap Used: ${mem} | Status: Green`;
-        }
+        // 4. SQL Query Builder Logic
+        function buildSqlQuery() {
+            const action = document.getElementById('sql-action').value;
+            const table = document.getElementById('sql-table').value.trim() || 'users';
+            const cols = document.getElementById('sql-columns').value.trim() || '*';
+            const condition = document.getElementById('sql-where').value.trim();
 
-        function saveQuickNote() {
-            const val = document.getElementById('quick-note').value;
-            if (!val) return;
-            sessionStorage.setItem('kuadu_note', val);
-            document.getElementById('note-out').textContent = "Saved: " + val;
+            let query = "";
+            if (action === "SELECT") {
+                query = `SELECT ${cols} FROM ${table}`;
+                if (condition) query += ` WHERE ${condition}`;
+                query += ";";
+            } else if (action === "INSERT") {
+                query = `INSERT INTO ${table} (${cols}) VALUES (...);`;
+            } else if (action === "UPDATE") {
+                query = `UPDATE ${table} SET ${cols} = '...'`;
+                if (condition) query += ` WHERE ${condition}`;
+                query += ";";
+            } else if (action === "DELETE") {
+                query = `DELETE FROM ${table}`;
+                if (condition) query += ` WHERE ${condition}`;
+                query += ";";
+            }
+
+            document.getElementById('sql-output').textContent = query;
         }
 
         async function sendAiPrompt() {
@@ -930,7 +740,7 @@ print("Execution Result:", metrics)</textarea>
             history.scrollTop = history.scrollHeight;
 
             await new Promise(r => setTimeout(r, 600));
-            history.innerHTML += `<div class="ai-msg assistant">Analysis for "${val}": All 100 active tools, editor tabs, and Python execution environments are operating successfully.</div>`;
+            history.innerHTML += `<div class="ai-msg assistant">Analysis for "${val}": All core developer utilities (URL decoder, password generator, Linux CLI, and SQL builder) are fully functional.</div>`;
             history.scrollTop = history.scrollHeight;
         }
 
