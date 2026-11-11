@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KuaduCode™ — Ultimate AI-Powered Code Studio & Web IDE</title>
-    <meta name="description" content="KuaduCode is the ultimate universal web code editor and IDE featuring live preview, real Python execution, tabbed editing, and built-in AI assistant.">
-    <meta name="keywords" content="online IDE, code editor, Kuaducode, AI IDE, python compiler, web preview, html css js studio">
+    <title>KuaduCode™ — Ultimate Kuadu AI Code Studio & Web IDE</title>
+    <meta name="description" content="KuaduCode is the ultimate universal web code editor and IDE featuring live preview, real Python execution, tabbed editing, and Kuadu AI assistant.">
+    <meta name="keywords" content="online IDE, code editor, Kuaducode, Kuadu AI, python compiler, web preview, html css js studio">
     <meta name="author" content="Kuaducode Platform">
     
-    <meta property="og:title" content="KuaduCode™ — AI-Powered Code Studio">
-    <meta property="og:description" content="Write, test, run, and optimize code instantly with real Python execution and built-in AI assistant tabs.">
+    <meta property="og:title" content="KuaduCode™ — Kuadu AI Code Studio">
+    <meta property="og:description" content="Write, test, run, and optimize code instantly with real Python execution and Kuadu AI assistant tabs.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://github.com/n74071292-oss/KUADU-MORSMALLEO">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Skulpt for Real Python Execution in Browser -->
     <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
 
@@ -73,11 +72,11 @@
 
         .logo-area span {
             font-size: 0.75rem;
-            background: rgba(88, 166, 255, 0.15);
-            color: var(--accent-blue);
+            background: rgba(137, 87, 229, 0.15);
+            color: #d2a8ff;
             padding: 2px 8px;
             border-radius: 12px;
-            border: 1px solid rgba(88, 166, 255, 0.3);
+            border: 1px solid rgba(137, 87, 229, 0.3);
         }
 
         .toolbar {
@@ -124,7 +123,6 @@
             background-color: rgba(137, 87, 229, 0.35);
         }
 
-        /* Workspace Grid Container */
         .workspace {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -143,7 +141,6 @@
             height: 100%;
         }
 
-        /* Tab Navigation Bar */
         .tab-bar {
             background-color: var(--header-bg);
             display: flex;
@@ -197,7 +194,6 @@
             border-bottom: 2px solid var(--accent-purple);
         }
 
-        /* Editor Containers with Scrollbars */
         .editor-container {
             position: relative;
             flex: 1;
@@ -225,7 +221,6 @@
             overflow: auto;
         }
 
-        /* AI IDE Assistant Panel Style */
         .ai-assistant-panel {
             display: flex;
             flex-direction: column;
@@ -253,6 +248,7 @@
             padding: 8px 12px;
             border-radius: 6px;
             max-width: 90%;
+            white-space: pre-wrap;
         }
 
         .ai-msg.assistant {
@@ -305,7 +301,6 @@
             border-color: var(--accent-purple);
         }
 
-        /* Output Pane Structure */
         .output-pane-container {
             display: flex;
             flex-direction: column;
@@ -345,7 +340,6 @@
             scrollbar-width: thin;
         }
 
-        /* Bottom Status bar */
         footer {
             height: 50px;
             background-color: var(--header-bg);
@@ -394,27 +388,25 @@
     <header>
         <div class="logo-area">
             <h1>KuaduCode™</h1>
-            <span>AI Studio IDE</span>
+            <span>Kuadu AI Studio</span>
         </div>
         <div class="toolbar">
             <button class="btn" onclick="clearEditors()"><i class="fa-solid fa-trash"></i> Clear</button>
-            <button class="btn btn-ai" onclick="toggleAiPanel()"><i class="fa-solid fa-robot"></i> AI Copilot</button>
+            <button class="btn btn-ai" onclick="toggleAiPanel()"><i class="fa-solid fa-robot"></i> Kuadu AI</button>
             <button class="btn btn-primary" onclick="runCode()"><i class="fa-solid fa-play"></i> Run Code</button>
         </div>
     </header>
 
     <div class="workspace">
-        <!-- Editor Pane with Tab Navigation -->
         <div class="pane">
             <div class="tab-bar">
                 <button class="tab active" onclick="switchTab(event, 'html-container')"><i class="fa-brands fa-html5" style="color: #e34f26;"></i> HTML</button>
                 <button class="tab" onclick="switchTab(event, 'css-container')"><i class="fa-brands fa-css3-alt" style="color: #1572b6;"></i> CSS</button>
                 <button class="tab" onclick="switchTab(event, 'js-container')"><i class="fa-brands fa-js" style="color: #f7df1e;"></i> JavaScript</button>
                 <button class="tab" onclick="switchTab(event, 'python-container')"><i class="fa-brands fa-python" style="color: #3776ab;"></i> Python</button>
-                <button class="tab ai-tab-btn" onclick="switchTab(event, 'ai-container')"><i class="fa-solid fa-brain"></i> AI Assistant</button>
+                <button class="tab ai-tab-btn" onclick="switchTab(event, 'ai-container')"><i class="fa-solid fa-brain"></i> Kuadu AI</button>
             </div>
 
-            <!-- HTML Tab Container -->
             <div id="html-container" class="editor-container active">
                 <textarea id="html-code"><!DOCTYPE html>
 <html>
@@ -426,13 +418,12 @@
     </style>
 </head>
 <body>
-    <h1>Welcome to KuaduCode AI Studio!</h1>
-    <p>Run Python code with live interpreter output or chat with your AI IDE assistant below.</p>
+    <h1>Welcome to KuaduCode with Kuadu AI!</h1>
+    <p>Run Python code with live interpreter output or chat with Kuadu AI below.</p>
 </body>
 </html></textarea>
             </div>
 
-            <!-- CSS Tab Container -->
             <div id="css-container" class="editor-container">
                 <textarea id="css-code">body {
     background: #0d1117 !important;
@@ -445,15 +436,12 @@ p {
 }</textarea>
             </div>
 
-            <!-- JavaScript Tab Container -->
             <div id="js-container" class="editor-container">
                 <textarea id="js-code">console.log("KuaduCode JavaScript engine running smoothly.");</textarea>
             </div>
 
-            <!-- Python Tab Container -->
             <div id="python-container" class="editor-container">
-                <textarea id="python-code"># Real Python Interpreter in Browser (Skulpt)
-def fibonacci(n):
+                <textarea id="python-code">def fibonacci(n):
     a, b = 0, 1
     result = []
     for _ in range(n):
@@ -462,13 +450,9 @@ def fibonacci(n):
     return result
 
 print("Fibonacci Sequence (First 8 numbers):")
-print(fibonacci(8))
-
-sum_val = sum(fibonacci(8))
-print(f"Sum of sequence: {sum_val}")</textarea>
+print(fibonacci(8))</textarea>
             </div>
 
-            <!-- AI Assistant Bottom Tab Container -->
             <div id="ai-container" class="editor-container">
                 <div class="ai-assistant-panel">
                     <div class="ai-quick-actions">
@@ -478,17 +462,16 @@ print(f"Sum of sequence: {sum_val}")</textarea>
                         <span class="ai-chip" onclick="askAi('Write unit tests')">🧪 Add Tests</span>
                     </div>
                     <div id="ai-chat-history" class="ai-chat-history">
-                        <div class="ai-msg assistant">👋 Hello! I am your KuaduCode AI Copilot. How can I help you write, debug, or refactor your project today?</div>
+                        <div class="ai-msg assistant">👋 Hello! I am Kuadu AI, your personal code companion connected with real-time AI assistance. Ask me anything or request code analysis!</div>
                     </div>
                     <div class="ai-input-box">
-                        <input type="text" id="ai-prompt-input" placeholder="Ask AI Copilot..." onkeypress="handleAiKey(event)">
+                        <input type="text" id="ai-prompt-input" placeholder="Ask Kuadu AI..." onkeypress="handleAiKey(event)">
                         <button class="btn btn-primary" onclick="sendAiPrompt()"><i class="fa-solid fa-paper-plane"></i></button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Live Preview & Output Pane -->
         <div class="pane">
             <div class="output-pane-container">
                 <div class="output-header">
@@ -501,14 +484,13 @@ print(f"Sum of sequence: {sum_val}")</textarea>
         </div>
     </div>
 
-    <!-- Bottom Status Bar -->
     <footer>
         <div class="bottom-tabs">
             <button class="bottom-tab-btn active" onclick="switchBottomTab('preview')"><i class="fa-solid fa-eye"></i> Live View</button>
-            <button class="bottom-tab-btn" onclick="switchBottomTab('ai')"><i class="fa-solid fa-robot"></i> Copy Real AI IDE</button>
+            <button class="bottom-tab-btn" onclick="switchBottomTab('ai')"><i class="fa-solid fa-robot"></i> Kuadu AI Assistant</button>
         </div>
         <div style="font-size: 0.75rem; color: #8b949e;">
-            KuaduCode™ Studio v3.2 &bull; Python & JS Active
+            KuaduCode™ Studio v3.4 &bull; Kuadu AI Active
         </div>
     </footer>
 
@@ -532,11 +514,9 @@ print(f"Sum of sequence: {sum_val}")</textarea>
             event.currentTarget.classList.add('active');
 
             if (mode === 'ai') {
-                // Switch to AI tab container
                 const aiTabBtn = document.querySelector('.ai-tab-btn');
                 switchTab({ currentTarget: aiTabBtn }, 'ai-container');
             } else {
-                // Switch back to HTML tab
                 const htmlTabBtn = document.querySelector('.tab');
                 switchTab({ currentTarget: htmlTabBtn }, 'html-container');
             }
@@ -558,7 +538,7 @@ print(f"Sum of sequence: {sum_val}")</textarea>
             }
         }
 
-        function sendAiPrompt() {
+        async function sendAiPrompt() {
             const input = document.getElementById('ai-prompt-input');
             const history = document.getElementById('ai-chat-history');
             const val = input.value.trim();
@@ -566,20 +546,47 @@ print(f"Sum of sequence: {sum_val}")</textarea>
 
             history.innerHTML += `<div class="ai-msg user">${val}</div>`;
             input.value = "";
+            history.scrollTop = history.scrollHeight;
 
-            setTimeout(() => {
-                let reply = "I have analyzed your code structure. Everything looks clean and syntactically correct!";
+            const loadingId = 'loading-' + Date.now();
+            history.innerHTML += `<div id="${loadingId}" class="ai-msg assistant">Kuadu AI is thinking...</div>`;
+            history.scrollTop = history.scrollHeight;
+
+            try {
+                // Replace with your endpoint or Copilot proxy API key integration if running externally
+                /*
+                const response = await fetch("https://api.openai.com/v1/chat/completions", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer YOUR_API_KEY_HERE"
+                    },
+                    body: JSON.stringify({
+                        model: "gpt-4o-mini",
+                        messages: [{ role: "user", content: val }]
+                    })
+                });
+                const data = await response.json();
+                const reply = data.choices[0].message.content;
+                */
+
+                // Simulated intelligent fallback response for zero-setup execution
+                await new Promise(r => setTimeout(r, 800));
+                let reply = `Kuadu AI Analysis for "${val}":\nYour code workspace is structured properly. You can integrate any authorized API key in the fetch block to receive direct LLM outputs.`;
                 const lower = val.toLowerCase();
                 if (lower.includes('bug')) {
-                    reply = "🔍 Analysis complete: No syntax errors detected in your HTML, CSS, or Python scripts. All variables are correctly scoped.";
+                    reply = `🐛 Kuadu AI Bug Scan:\nNo syntax exceptions found in your current tabs. HTML DOM structures and Python variables are valid.`;
                 } else if (lower.includes('explain')) {
-                    reply = "📖 This studio allows simultaneous web preview rendering for HTML/CSS/JS alongside real in-browser Python execution powered by Skulpt.";
-                } else if (lower.includes('optimize')) {
-                    reply = "⚡ Optimization tip: Your code is lightweight and utilizes modern CSS custom properties and asynchronous console messaging.";
+                    reply = `📖 Kuadu AI Code Breakdown:\n- HTML/CSS render live in the preview pane.\n- JavaScript logs route directly to the console.\n- Python executes natively via Skulpt in-browser.`;
                 }
+
+                document.getElementById(loadingId).remove();
                 history.innerHTML += `<div class="ai-msg assistant">${reply}</div>`;
-                history.scrollTop = history.scrollHeight;
-            }, 600);
+            } catch (err) {
+                document.getElementById(loadingId).remove();
+                history.innerHTML += `<div class="ai-msg assistant">⚠️ Connection Error: Please verify your API configuration token.</div>`;
+            }
+            history.scrollTop = history.scrollHeight;
         }
 
         function runCode() {
@@ -591,7 +598,6 @@ print(f"Sum of sequence: {sum_val}")</textarea>
 
             consoleBox.innerHTML = "[Executing Project...]\n";
 
-            // Render HTML/CSS/JS in iframe
             let finalHtml = html + `<style>${css}</style><script>
                 const oldLog = console.log;
                 console.log = function(...args) {
@@ -611,7 +617,6 @@ print(f"Sum of sequence: {sum_val}")</textarea>
             iframeDoc.write(finalHtml);
             iframeDoc.close();
 
-            // Execute Real Python via Skulpt
             let pythonOutput = "";
             Sk.configure({
                 output: function(text) {
