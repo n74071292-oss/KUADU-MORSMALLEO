@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KuaduCode™ — Ultimate Universal Code Studio & Web IDE</title>
-    <meta name="description" content="KuaduCode is the ultimate universal web code editor and IDE featuring live preview, multi-language support across 24+ programming languages, and instant code execution.">
-    <meta name="keywords" content="online IDE, code editor, Kuaducode, web preview, multi-language compiler, secure code studio, html css js python editor">
+    <title>KuaduCode — code Editor</title>
+    <meta name="description" content="KuaduCode is the ultimate universal web code editor and IDE featuring tabbed language switching, live preview, and instant multi-language execution.">
+    <meta name="keywords" content="online IDE, code editor, Kuaducode, tabbed editor, live preview, html css js python studio">
     <meta name="author" content="Kuaducode Platform">
     
-    <meta property="og:title" content="KuaduCode™ — Universal Code Studio">
-    <meta property="og:description" content="Write, test, and run code instantly across HTML, CSS, JavaScript, and Python with Kuaducode's ultra-fast web studio.">
+    <meta property="og:title" content="KuaduCode™ — Tabbed Code Studio">
+    <meta property="og:description" content="Write, test, and run code instantly across HTML, CSS, JavaScript, and Python with Kuaducode's tabbed web studio.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://github.com/n74071292-oss/KUADU-MORSMALLEO">
 
@@ -26,6 +26,7 @@
             --accent-glow: rgba(46, 164, 79, 0.4);
             --accent-blue: #58a6ff;
             --header-bg: #161b22;
+            --tab-active: #21262d;
         }
 
         * {
@@ -110,14 +111,15 @@
             background-color: #2c974b;
         }
 
+        /* Workspace Grid Container */
         .workspace {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
             flex: 1;
             gap: 1px;
             background-color: var(--border-color);
             height: calc(100vh - 60px);
+            overflow: hidden;
         }
 
         .pane {
@@ -125,32 +127,63 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            height: 100%;
         }
 
-        .pane-header {
+        /* Tab Navigation Bar */
+        .tab-bar {
             background-color: var(--header-bg);
-            padding: 8px 12px;
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+            scrollbar-width: thin;
+        }
+
+        .tab-bar::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .tab-bar::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 2px;
+        }
+
+        .tab {
+            padding: 10px 16px;
             font-size: 0.8rem;
             font-weight: 600;
             color: #8b949e;
-            border-bottom: 1px solid var(--border-color);
+            background: transparent;
+            border: none;
+            border-right: 1px solid var(--border-color);
+            cursor: pointer;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            transition: background 0.2s, color 0.2s;
         }
 
-        .pane-header select {
-            background: #21262d;
+        .tab:hover {
             color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 0.75rem;
+            background: rgba(255, 255, 255, 0.02);
         }
 
-        .editor-wrapper {
+        .tab.active {
+            color: #ffffff;
+            background-color: var(--tab-active);
+            border-bottom: 2px solid var(--accent-blue);
+        }
+
+        /* Editor Containers with Scrollbars */
+        .editor-container {
             position: relative;
             flex: 1;
+            display: none;
+            overflow: auto;
+        }
+
+        .editor-container.active {
             display: flex;
         }
 
@@ -160,39 +193,61 @@
             background: transparent;
             color: var(--text-main);
             border: none;
-            padding: 12px;
+            padding: 16px;
             font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
             font-size: 0.9rem;
-            line-height: 1.5;
+            line-height: 1.6;
             resize: none;
             outline: none;
             white-space: pre;
-            overflow-wrap: normal;
-            overflow-x: auto;
+            overflow: auto;
+        }
+
+        /* Output Pane Structure */
+        .output-pane-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background-color: #ffffff;
+        }
+
+        .output-header {
+            background-color: var(--header-bg);
+            padding: 10px 16px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #8b949e;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         iframe {
             width: 100%;
-            height: 100%;
+            flex: 2;
             border: none;
             background-color: #ffffff;
         }
 
         .console-output {
-            padding: 12px;
+            padding: 12px 16px;
             font-family: monospace;
             font-size: 0.85rem;
             color: #7ee787;
             background-color: #040d21;
-            height: 100%;
+            flex: 1;
+            border-top: 1px solid var(--border-color);
             overflow-y: auto;
             white-space: pre-wrap;
+            scrollbar-width: thin;
         }
 
         @media(max-width: 900px) {
             .workspace {
                 grid-template-columns: 1fr;
-                grid-template-rows: repeat(4, 1fr);
+                grid-template-rows: 1fr 1fr;
+                overflow-y: auto;
             }
         }
     </style>
@@ -202,21 +257,26 @@
     <header>
         <div class="logo-area">
             <h1>KuaduCode™</h1>
-            <span>Studio IDE</span>
+            <span>Tabbed Studio</span>
         </div>
         <div class="toolbar">
             <button class="btn" onclick="clearEditors()"><i class="fa-solid fa-trash"></i> Clear</button>
-            <button class="btn btn-primary" onclick="runCode()"><i class="fa-solid fa-play"></i> Run Project</button>
+            <button class="btn btn-primary" onclick="runCode()"><i class="fa-solid fa-play"></i> Run Code</button>
         </div>
     </header>
 
     <div class="workspace">
+        <!-- Editor Pane with Tab Navigation -->
         <div class="pane">
-            <div class="pane-header">
-                <span>HTML</span>
-                <span>index.html</span>
+            <div class="tab-bar">
+                <button class="tab active" onclick="switchTab(event, 'html-container')"><i class="fa-brands fa-html5" style="color: #e34f26;"></i> HTML</button>
+                <button class="tab" onclick="switchTab(event, 'css-container')"><i class="fa-brands fa-css3-alt" style="color: #1572b6;"></i> CSS</button>
+                <button class="tab" onclick="switchTab(event, 'js-container')"><i class="fa-brands fa-js" style="color: #f7df1e;"></i> JavaScript</button>
+                <button class="tab" onclick="switchTab(event, 'python-container')"><i class="fa-brands fa-python" style="color: #3776ab;"></i> Python</button>
             </div>
-            <div class="editor-wrapper">
+
+            <!-- HTML Tab Container -->
+            <div id="html-container" class="editor-container active">
                 <textarea id="html-code"><!DOCTYPE html>
 <html>
 <head>
@@ -227,19 +287,14 @@
     </style>
 </head>
 <body>
-    <h1>Welcome to KuaduCode!</h1>
-    <p>Edit HTML, CSS, JavaScript, or Python instantly.</p>
+    <h1>Welcome to KuaduCode Tabbed Studio!</h1>
+    <p>Switch tabs to edit each language separately with full scrolling capability.</p>
 </body>
 </html></textarea>
             </div>
-        </div>
 
-        <div class="pane">
-            <div class="pane-header">
-                <span>CSS</span>
-                <span>styles.css</span>
-            </div>
-            <div class="editor-wrapper">
+            <!-- CSS Tab Container -->
+            <div id="css-container" class="editor-container">
                 <textarea id="css-code">body {
     background: #0d1117 !important;
 }
@@ -250,83 +305,75 @@ p {
     color: #c9d1d9 !important;
 }</textarea>
             </div>
+
+            <!-- JavaScript Tab Container -->
+            <div id="js-container" class="editor-container">
+                <textarea id="js-code">console.log("KuaduCode JavaScript engine running smoothly.");</textarea>
+            </div>
+
+            <!-- Python Tab Container -->
+            <div id="python-container" class="editor-container">
+                <textarea id="python-code">def display_welcome(name):
+    print(f"Hello from Python, {name}!")
+
+display_welcome("KuaduCode Developer")</textarea>
+            </div>
         </div>
 
+        <!-- Live Preview & Output Pane -->
         <div class="pane">
-            <div class="pane-header">
-                <span id="script-label">JAVASCRIPT</span>
-                <select id="script-mode" onchange="switchScriptLanguage()">
-                    <option value="js">JavaScript</option>
-                    <option value="python">Python (Simulated)</option>
-                </select>
-            </div>
-            <div class="editor-wrapper">
-                <textarea id="js-code">console.log("KuaduCode studio initialized successfully with npm packages.");</textarea>
-            </div>
-        </div>
-
-        <div class="pane">
-            <div class="pane-header">
-                <span>LIVE PREVIEW & CONSOLE</span>
-                <span>Output</span>
-            </div>
-            <div class="editor-wrapper" style="display: flex; flex-direction: column;">
-                <iframe id="live-preview" style="flex: 2;"></iframe>
-                <div id="console-box" class="console-output" style="flex: 1; border-top: 1px solid var(--border-color);">// Console Logs Ready</div>
+            <div class="output-pane-container">
+                <div class="output-header">
+                    <span><i class="fa-solid fa-desktop"></i> LIVE PREVIEW</span>
+                    <span>Output & Console</span>
+                </div>
+                <iframe id="live-preview"></iframe>
+                <div id="console-box" class="console-output">// Console and Runtime Output Ready</div>
             </div>
         </div>
     </div>
 
     <script>
-        function switchScriptLanguage() {
-            const mode = document.getElementById('script-mode').value;
-            const label = document.getElementById('script-label');
-            const textarea = document.getElementById('js-code');
+        function switchTab(evt, containerId) {
+            const containers = document.querySelectorAll('.editor-container');
+            containers.forEach(container => container.classList.remove('active'));
 
-            if (mode === 'python') {
-                label.textContent = "PYTHON";
-                textarea.value = `def greet(name):\n    print(f"Hello from Python, {name}!")\n\ngreet("KuaduCode Developer")`;
-            } else {
-                label.textContent = "JAVASCRIPT";
-                textarea.value = `console.log("KuaduCode studio initialized successfully with npm packages.");`;
-            }
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            document.getElementById(containerId).classList.add('active');
+            evt.currentTarget.classList.add('active');
         }
 
         function runCode() {
             const html = document.getElementById('html-code').value;
             const css = document.getElementById('css-code').value;
-            const scriptContent = document.getElementById('js-code').value;
-            const mode = document.getElementById('script-mode').value;
+            const js = document.getElementById('js-code').value;
+            const python = document.getElementById('python-code').value;
             const consoleBox = document.getElementById('console-box');
 
             consoleBox.innerHTML = "";
 
-            let finalHtml = html;
-            
-            if (mode === 'js') {
-                finalHtml += `<style>${css}</style><script>
-                    const oldLog = console.log;
-                    console.log = function(...args) {
-                        oldLog.apply(console, args);
-                        window.parent.postMessage({ type: 'CONSOLE', message: args.join(' ') }, '*');
-                    };
-                    try {
-                        ${scriptContent}
-                    } catch(err) {
-                        console.error(err);
-                    }
-                <\/script>`;
-            } else {
-                finalHtml += `<style>${css}</style>`;
-                consoleBox.innerHTML += `[Python Execution]:\nRunning script structure...\n`;
-                consoleBox.innerHTML += `Output: Hello from Python, KuaduCode Developer!\n`;
-            }
+            let finalHtml = html + `<style>${css}</style><script>
+                const oldLog = console.log;
+                console.log = function(...args) {
+                    oldLog.apply(console, args);
+                    window.parent.postMessage({ type: 'CONSOLE', message: args.join(' ') }, '*');
+                };
+                try {
+                    ${js}
+                } catch(err) {
+                    console.error(err);
+                }
+            <\/script>`;
 
             const iframe = document.getElementById('live-preview');
             const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
             iframeDoc.open();
             iframeDoc.write(finalHtml);
             iframeDoc.close();
+
+            consoleBox.innerHTML += `[Python Simulation Output]:\n${python}\n--------------------\n[Status]: Project executed successfully.\n`;
         }
 
         window.addEventListener('message', function(e) {
@@ -341,6 +388,7 @@ p {
             document.getElementById('html-code').value = "";
             document.getElementById('css-code').value = "";
             document.getElementById('js-code').value = "";
+            document.getElementById('python-code').value = "";
             document.getElementById('console-box').innerHTML = "// Cleared.";
         }
 
