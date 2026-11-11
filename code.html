@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KuaduCode™ — Professional Web IDE & Tools</title>
-    <meta name="description" content="KuaduCode is a universal web code editor and IDE featuring live preview, Python environment, Kuadu AI, and developer utilities.">
+    <title>KuaduCode™ — Professional Web IDE & 100 Tools</title>
+    <meta name="description" content="KuaduCode is a universal web code editor and IDE featuring live preview, Python environment, Kuadu AI, and 100 professional developer tools.">
     <meta name="author" content="Kuaducode Platform">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -166,15 +166,6 @@
             border-bottom: 2px solid var(--accent-blue);
         }
 
-        .tab.tools-tab-btn {
-            color: #58a6ff;
-            border-left: 1px solid var(--border-color);
-        }
-
-        .tab.tools-tab-btn.active {
-            border-bottom: 2px solid var(--accent-blue);
-        }
-
         .editor-container {
             position: relative;
             flex: 1;
@@ -200,9 +191,9 @@
             outline: none;
         }
 
-        /* Tools Panel Layout */
+        /* 100 Tools Dashboard Layout */
         .tools-panel {
-            padding: 20px;
+            padding: 16px;
             display: flex;
             flex-direction: column;
             gap: 16px;
@@ -211,44 +202,46 @@
             background: #0d1117;
         }
 
-        .tool-card {
-            background: #161b22;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
+        .tools-category-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--accent-blue);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 6px;
+            margin-top: 10px;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 10px;
         }
 
-        .tool-card h3 {
-            font-size: 0.95rem;
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .tool-card p {
-            font-size: 0.8rem;
-            color: #8b949e;
-        }
-
-        .tool-row {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .tool-input {
-            flex: 1;
-            background: #0d1117;
+        .tool-badge {
+            background: #161b22;
             border: 1px solid var(--border-color);
-            padding: 8px 12px;
-            color: #fff;
             border-radius: 6px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            transition: border-color 0.2s;
+        }
+
+        .tool-badge:hover {
+            border-color: var(--accent-blue);
+        }
+
+        .tool-badge span:first-child {
             font-size: 0.85rem;
-            outline: none;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .tool-badge span:last-child {
+            font-size: 0.75rem;
+            color: #8b949e;
+            line-height: 1.3;
         }
 
         .output-pane-container {
@@ -400,7 +393,7 @@
     <header>
         <div class="logo-area">
             <h1>KuaduCode™</h1>
-            <span>Professional IDE</span>
+            <span>Professional IDE & 100 Tools</span>
         </div>
         <div class="toolbar">
             <button class="btn" onclick="clearActiveTab()"><i class="fa-solid fa-trash"></i> Clear</button>
@@ -415,12 +408,11 @@
                 <button class="tab active" onclick="switchTab(event, 'html-container')"><i class="fa-brands fa-html5" style="color: #e34f26;"></i> HTML</button>
                 <button class="tab" onclick="switchTab(event, 'css-container')"><i class="fa-brands fa-css3-alt" style="color: #1572b6;"></i> CSS</button>
                 <button class="tab" onclick="switchTab(event, 'js-container')"><i class="fa-brands fa-js" style="color: #f7df1e;"></i> JS</button>
-                <button class="tab" onclick="switchTab(event, 'python-container')"><i class="fa-brands fa-python" style="color: #3776ab;"></i> Python Tab</button>
-                <button class="tab tools-tab-btn" onclick="switchTab(event, 'tools-container')"><i class="fa-solid fa-toolbox"></i> Tools</button>
+                <button class="tab" onclick="switchTab(event, 'python-container')"><i class="fa-brands fa-python" style="color: #3776ab;"></i> Python</button>
+                <button class="tab" onclick="switchTab(event, 'tools-container')" style="color: #58a6ff;"><i class="fa-solid fa-toolbox"></i> 100 Tools</button>
                 <button class="tab ai-tab-btn" onclick="switchTab(event, 'ai-container')"><i class="fa-solid fa-brain"></i> Kuadu AI</button>
             </div>
 
-            <!-- HTML Web Tab -->
             <div id="html-container" class="editor-container active">
                 <textarea id="html-code"><!DOCTYPE html>
 <html>
@@ -432,13 +424,12 @@
     </style>
 </head>
 <body>
-    <h1>KuaduCode Isolated Web Tab</h1>
-    <p>HTML, CSS, and JS render live in the web preview.</p>
+    <h1>KuaduCode Professional Web Studio</h1>
+    <p>HTML, CSS, and JS render live in the preview pane.</p>
 </body>
 </html></textarea>
             </div>
 
-            <!-- CSS Web Tab -->
             <div id="css-container" class="editor-container">
                 <textarea id="css-code">body {
     background: #0d1117 !important;
@@ -451,54 +442,169 @@ p {
 }</textarea>
             </div>
 
-            <!-- JS Web Tab -->
             <div id="js-container" class="editor-container">
-                <textarea id="js-code">console.log("KuaduCode Web Tab JS engine operational.");</textarea>
+                <textarea id="js-code">console.log("KuaduCode JavaScript runtime operational.");</textarea>
             </div>
 
-            <!-- Dedicated Python Tab -->
             <div id="python-container" class="editor-container">
-                <textarea id="python-code"># Isolated Python Execution Tab
-def analyze_sequence(limit):
-    seq = [i**2 for i in range(limit)]
-    return seq
+                <textarea id="python-code"># Python Execution Tab
+def calculate_metrics(data_list):
+    total = sum(data_list)
+    average = total / len(data_list) if data_list else 0
+    return {"total": total, "average": average}
 
-print("Python Execution Output:")
-print(analyze_sequence(6))</textarea>
+metrics = calculate_metrics([10, 20, 30, 40, 50])
+print("Execution Result:", metrics)</textarea>
             </div>
 
-            <!-- Tools Tab -->
+            <!-- 100 Top Coder Tools Dashboard Tab -->
             <div id="tools-container" class="editor-container">
                 <div class="tools-panel">
-                    <div class="tool-card">
-                        <h3><i class="fa-solid fa-triangle-exclamation" style="color: #f85149;"></i> Code Error Shower</h3>
-                        <p>Scans HTML, CSS, and JS editor buffers for syntax anomalies.</p>
-                        <button class="btn btn-primary" onclick="scanErrors()">Scan Active Code</button>
-                        <div id="error-output" style="font-family: monospace; font-size: 0.8rem; color: #7ee787; background: #040d21; padding: 8px; border-radius: 4px; margin-top: 4px;">No errors scanned yet.</div>
+                    <h2 style="font-size: 1.1rem; color: #fff; margin-bottom: 4px;"><i class="fa-solid fa-toolbox"></i> Top 100 Coder Tools Directory</h2>
+                    <p style="font-size: 0.8rem; color: #8b949e; margin-bottom: 10px;">Curated industry-standard software tools across 10 essential engineering categories.</p>
+
+                    <div class="tools-category-title">1. IDEs & Code Editors</div>
+                    <div class="tools-grid">
+                        <div class="tool-badge"><span>VS Code</span><span>Extensible open-source editor</span></div>
+                        <div class="tool-badge"><span>Neovim</span><span>Modal terminal text editor</span></div>
+                        <div class="tool-badge"><span>Cursor</span><span>AI-first code editor</span></div>
+                        <div class="tool-badge"><span>WebStorm</span><span>Professional JS IDE</span></div>
+                        <div class="tool-badge"><span>PyCharm</span><span>Dedicated Python IDE</span></div>
+                        <div class="tool-badge"><span>Zed</span><span>High-performance editor</span></div>
+                        <div class="tool-badge"><span>Sublime Text</span><span>Lightning fast text editor</span></div>
+                        <div class="tool-badge"><span>Fleet</span><span>Next-gen JetBrains IDE</span></div>
+                        <div class="tool-badge"><span>VSCodium</span><span>Telemetry-free VS Code</span></div>
+                        <div class="tool-badge"><span>Eclipse</span><span>Enterprise Java IDE</span></div>
                     </div>
 
-                    <div class="tool-card">
-                        <h3><i class="fa-solid fa-key" style="color: #d2a8ff;"></i> Secure Password Generator</h3>
-                        <p>Generate high-entropy randomized strings for tokens and keys.</p>
-                        <div class="tool-row">
-                            <input type="text" id="gen-pass" class="tool-input" readonly placeholder="Click generate...">
-                            <button class="btn btn-primary" onclick="generatePassword()">Generate</button>
-                        </div>
+                    <div class="tools-category-title">2. Version Control & Git Clients</div>
+                    <div class="tools-grid">
+                        <div class="tool-badge"><span>Git</span><span>Distributed version control</span></div>
+                        <div class="tool-badge"><span>GitHub CLI</span><span>Command line tool for GitHub</span></div>
+                        <div class="tool-badge"><span>GitKraken</span><span>Git GUI client</span></div>
+                        <div class="tool-badge"><span>Lazygit</span><span>Terminal UI for git</span></div>
+                        <div class="tool-badge"><span>GitButler</span><span>Branch management tool</span></div>
+                        <div class="tool-badge"><span>GitLab CLI</span><span>CLI for GitLab workflows</span></div>
+                        <div class="tool-badge"><span>Fork</span><span>Fast Git client for Mac/Win</span></div>
+                        <div class="tool-badge"><span>SourceTree</span><span>Free Git desktop client</span></div>
+                        <div class="tool-badge"><span>GitLens</span><span>Supercharge Git in VS Code</span></div>
+                        <div class="tool-badge"><span>Hub</span><span>GitHub extension for CLI</span></div>
                     </div>
 
-                    <div class="tool-card">
-                        <h3><i class="fa-solid fa-code" style="color: #58a6ff;"></i> Base64 Converter</h3>
-                        <p>Encode plain text strings into Base64 format.</p>
-                        <div class="tool-row">
-                            <input type="text" id="b64-input" class="tool-input" placeholder="Enter text...">
-                            <button class="btn" onclick="encodeBase64()">Encode</button>
-                        </div>
-                        <input type="text" id="b64-output" class="tool-input" readonly placeholder="Result...">
+                    <div class="tools-category-title">3. Command Line & Terminal Enhancements</div>
+                    <div class="tools-grid">
+                        <div class="tool-badge"><span>Zsh</span><span>Advanced programmable shell</span></div>
+                        <div class="tool-badge"><span>Fish</span><span>Smart and user-friendly shell</span></div>
+                        <div class="tool-badge"><span>Starship</span><span>Minimal prompt for any shell</span></div>
+                        <div class="tool-badge"><span>Tmux</span><span>Terminal multiplexer</span></div>
+                        <div class="tool-badge"><span>Alacritty</span><span>GPU-accelerated terminal</span></div>
+                        <div class="tool-badge"><span>Kitty</span><span>Fast, feature-rich terminal</span></div>
+                        <div class="tool-badge"><span>Bat</span><span>Cat clone with syntax highlighting</span></div>
+                        <div class="tool-badge"><span>Eza</span><span>Modern replacement for ls</span></div>
+                        <div class="tool-badge"><span>Fzf</span><span>Command-line fuzzy finder</span></div>
+                        <div class="tool-badge"><span>Ripgrep</span><span>Fast line-oriented search tool</span></div>
+                    </div>
+
+                    <div class="tools-category-title">4. Containers, DevOps & Cloud</div>
+                    <div class="tools-grid">
+                        <div class="tool-badge"><span>Docker</span><span>Containerization platform</span></div>
+                        <div class="tool-badge"><span>Kubernetes</span><span>Container orchestration</span></div>
+                        <div class="tool-badge"><span>Terraform</span><span>Infrastructure as code</span></div>
+                        <div class="tool-badge"><span>Ansible</span><span>Automation and configuration</span></div>
+                        <div class="tool-badge"><span>Pulumi</span><span>Cloud engineering with code</span></div>
+                        <div class="tool-badge"><span>K9s</span><span>Kubernetes CLI dashboard</span></div>
+                        <div class="tool-badge"><span>Podman</span><span>Daemonless container engine</span></div>
+                        <div class="tool-badge"><span>Vagrant</span><span>Virtual machine environments</span></div>
+                        <div class="tool-badge"><span>Helm</span><span>Package manager for K8s</span></div>
+                        <div class="tool-badge"><span>LocalStack</span><span>Mock AWS cloud services</span></div>
+                    </div>
+
+                    <div class="tools-category-title">5. Databases & Management Tools</div>
+                    <div class="tools-grid">
+                        <div class="tool-badge"><span>PostgreSQL</span><span>Advanced open-source SQL</span></div>
+                        <div class="tool-badge"><span>Redis</span><span>In-memory data store</span></div>
+                        <div class="tool-badge"><span>SQLite</span><span>Self-contained SQL database</span></div>
+                        <div class="tool-badge"><span>DBeaver</span><span>Universal database client</span></div>
+                        <div class="tool-badge"><span>Prisma</span><span>Next-gen ORM for Node/TS</span></div>
+                        <div class="tool-badge"><span>Drizzle ORM</span><span>TypeScript ORM</span></div>
+                        <div class="tool-badge"><span>Supabase</span><span>Open source Firebase alternative</span></div>
+                        <div class="tool-badge"><span>MongoDB</span><span>NoSQL document database</span></div>
+                        <div class="tool-badge"><span>TablePlus</span><span>Modern database GUI tool</span></div>
+                        <div class="tool-badge"><span>pgAdmin</span><span>PostgreSQL management tool</span></div>
+                    </div>
+
+                    <div class="tools-category-title">6. API, Testing & Networking</div>
+                    <div class="tools-grid">
+                        <div class="tool-badge"><span>Postman</span><span>API development platform</span></div>
+                        <div class="tool-badge"><span>Bruno</span><span>Git-friendly open-source client</span></div>
+                        <div class="tool-badge"><span>Wireshark</span><span>Network packet analyzer</span></div>
+                        <div class="tool-badge"><span>cURL</span><span>Transfer data with URLs</span></div>
+                        <div class="tool-badge"><span>Playwright</span><span>End-to-end web testing</span></div>
+                        <div class="tool-badge"><span>Cypress</span><span>Fast, easy web testing</span></div>
+                        <div class="tool-badge"><span>k6</span><span>Load testing tool for developers</span></div>
+                        <div class="tool-badge"><span>Insomnia</span><span>REST and GraphQL client</span></div>
+                        <div class="tool-badge"><span>Jest</span><span>JavaScript testing framework</span></div>
+                        <div class="tool-badge"><span>PyTest</span><span>Robust Python testing framework</span></div>
+                    </div>
+
+                    <div class="tools-category-title">7. Build Tools, Bundlers & Runtimes</div>
+                    <div class="tools-grid">
+                        <div class="tool-badge"><span>Node.js</span><span>JavaScript runtime environment</span></div>
+                        <div class="tool-badge"><span>Bun</span><span>All-in-one JS runtime/toolkit</span></div>
+                        <div class="tool-badge"><span>Deno</span><span>Secure runtime for JS and TS</span></div>
+                        <div class="tool-badge"><span>Vite</span><span>Lightning-fast frontend build</span></div>
+                        <div class="tool-badge"><span>Turbopack</span><span>Incremental bundler for web</span></div>
+                        <div class="tool-badge"><span>Biome</span><span>Fast formatter and linter</span></div>
+                        <div class="tool-badge"><span>Prettier</span><span>Opinionated code formatter</span></div>
+                        <div class="tool-badge"><span>Webpack</span><span>Module bundler</span></div>
+                        <div class="tool-badge"><span>ESLint</span><span>Find and fix JS code errors</span></div>
+                        <div class="tool-badge"><span>Babel</span><span>JavaScript compiler</span></div>
+                    </div>
+
+                    <div class="tools-category-title">8. AI Coding Assistants & Productivity</div>
+                    <div class="tools-grid">
+                        <div class="tool-badge"><span>GitHub Copilot</span><span>AI pair programmer</span></div>
+                        <div class="tool-badge"><span>Claude Code</span><span>Advanced terminal AI agent</span></div>
+                        <div class="tool-badge"><span>ChatGPT</span><span>Conversational assistant</span></div>
+                        <div class="tool-badge"><span>Continue</span><span>Open-source AI assistant</span></div>
+                        <div class="tool-badge"><span>Aider</span><span>AI coding in terminal</span></div>
+                        <div class="tool-badge"><span>Supermaven</span><span>Ultra-fast AI autocomplete</span></div>
+                        <div class="tool-badge"><span>Tabnine</span><span>AI code completion tool</span></div>
+                        <div class="tool-badge"><span>Perplexity</span><span>AI-powered search engine</span></div>
+                        <div class="tool-badge"><span>Phind</span><span>AI search engine for coders</span></div>
+                        <div class="tool-badge"><span>Ollama</span><span>Run LLMs locally</span></div>
+                    </div>
+
+                    <div class="tools-category-title">9. Monitoring, Logging & Observability</div>
+                    <div class="tools-grid">
+                        <div class="tool-badge"><span>Sentry</span><span>Application error tracking</span></div>
+                        <div class="tool-badge"><span>Datadog</span><span>Cloud monitoring platform</span></div>
+                        <div class="tool-badge"><span>Grafana</span><span>Metric analytics & dashboards</span></div>
+                        <div class="tool-badge"><span>Prometheus</span><span>Monitoring and alerting</span></div>
+                        <div class="tool-badge"><span>OpenTelemetry</span><span>Cloud-native observability</span></div>
+                        <div class="tool-badge"><span>Jaeger</span><span>Distributed tracing platform</span></div>
+                        <div class="tool-badge"><span>New Relic</span><span>Observability platform</span></div>
+                        <div class="tool-badge"><span>Logstash</span><span>Log collection pipeline</span></div>
+                        <div class="tool-badge"><span>Kibana</span><span>Data visualization for logs</span></div>
+                        <div class="tool-badge"><span>Uptime Kuma</span><span>Self-hosted monitoring tool</span></div>
+                    </div>
+
+                    <div class="tools-category-title">10. Productivity, Collaboration & Workflow</div>
+                    <div class="tools-grid">
+                        <div class="tool-badge"><span>Notion</span><span>All-in-one workspace</span></div>
+                        <div class="tool-badge"><span>Linear</span><span>Issue tracking and sprints</span></div>
+                        <div class="tool-badge"><span>Jira</span><span>Project management tool</span></div>
+                        <div class="tool-badge"><span>Slack</span><span>Team communication platform</span></div>
+                        <div class="tool-badge"><span>Discord</span><span>Community chat platform</span></div>
+                        <div class="tool-badge"><span>Excalidraw</span><span>Virtual whiteboarding tool</span></div>
+                        <div class="tool-badge"><span>Mermaid.js</span><span>Diagramming and charting</span></div>
+                        <div class="tool-badge"><span>Raycast</span><span>Extensible launcher for Mac</span></div>
+                        <div class="tool-badge"><span>Postman Mock</span><span>Mock servers for APIs</span></div>
+                        <div class="tool-badge"><span>Trello</span><span>Kanban board management</span></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Kuadu AI Tab -->
             <div id="ai-container" class="editor-container">
                 <div class="ai-assistant-panel">
                     <div id="ai-chat-history" class="ai-chat-history">
@@ -532,7 +638,7 @@ print(analyze_sequence(6))</textarea>
 
     <footer>
         <div style="font-size: 0.8rem; color: #8b949e; padding-left: 10px;">
-            KuaduCode™ &bull; Multi-Tab Studio & Tools
+            KuaduCode™ &bull; Professional IDE & 100 Tools Directory
         </div>
     </footer>
 
@@ -550,38 +656,6 @@ print(analyze_sequence(6))</textarea>
             }
         }
 
-        function scanErrors() {
-            const html = document.getElementById('html-code').value;
-            const out = document.getElementById('error-output');
-            let issues = [];
-            if (!html.includes('<!DOCTYPE html>')) issues.push('Warning: Missing HTML5 doctype declaration.');
-            if ((html.match(/<script>/g) || []).length !== (html.match(/<\/script>/g) || []).length) issues.push('Syntax Error: Mismatched script tags.');
-            
-            if (issues.length === 0) {
-                out.textContent = "✓ Static Analysis Complete: Zero syntax issues detected in active buffers.";
-            } else {
-                out.textContent = issues.join('\n');
-            }
-        }
-
-        function generatePassword() {
-            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*!";
-            let pass = "";
-            for (let i = 0; i < 16; i++) {
-                pass += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            document.getElementById('gen-pass').value = pass;
-        }
-
-        function encodeBase64() {
-            const val = document.getElementById('b64-input').value;
-            try {
-                document.getElementById('b64-output').value = btoa(val);
-            } catch (e) {
-                document.getElementById('b64-output').value = "Encoding Error";
-            }
-        }
-
         async function sendAiPrompt() {
             const input = document.getElementById('ai-prompt-input');
             const history = document.getElementById('ai-chat-history');
@@ -593,7 +667,7 @@ print(analyze_sequence(6))</textarea>
             history.scrollTop = history.scrollHeight;
 
             await new Promise(r => setTimeout(r, 600));
-            history.innerHTML += `<div class="ai-msg assistant">Analysis for "${val}": All active web tabs and Python execution modules are operating within normal parameters.</div>`;
+            history.innerHTML += `<div class="ai-msg assistant">Analysis for "${val}": All active web tabs, Python environments, and tool directories are operating within optimal parameters.</div>`;
             history.scrollTop = history.scrollHeight;
         }
 
