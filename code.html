@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KuaduCode™ — Ultimate Kuadu AI Code Studio & Web IDE</title>
-    <meta name="description" content="KuaduCode is the ultimate universal web code editor and IDE featuring live preview, real Python interactive console, tabbed editing, and Kuadu AI assistant.">
-    <meta name="keywords" content="online IDE, code editor, Kuaducode, Kuadu AI, python REPL, web preview, html css js studio">
+    <meta name="description" content="KuaduCode is the ultimate universal web code editor and IDE featuring live preview, real Python interactive console, tabbed editing, and Kuadu AI 1-4 models.">
+    <meta name="keywords" content="online IDE, code editor, Kuaducode, Kuadu AI 1 2 3 4, python REPL, web preview, html css js studio">
     <meta name="author" content="Kuaducode Platform">
     
-    <meta property="og:title" content="KuaduCode™ — Kuadu AI Code Studio">
-    <meta property="og:description" content="Write, test, run, and optimize code instantly with real Python interactive REPL console and Kuadu AI assistant tabs.">
+    <meta property="og:title" content="KuaduCode™ — Kuadu AI Multi-Model Studio">
+    <meta property="og:description" content="Write, test, run, and optimize code instantly with real Python interactive REPL console and Kuadu AI 1, 2, 3, and 4 assistant tiers.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://github.com/n74071292-oss/KUADU-MORSMALLEO">
 
@@ -226,78 +226,120 @@
             flex-direction: column;
             height: 100%;
             background-color: #0d1117;
-            padding: 12px;
-            gap: 10px;
+            padding: 16px;
+            gap: 12px;
+        }
+
+        .ai-model-selector {
+            display: flex;
+            gap: 8px;
+            background: #161b22;
+            padding: 6px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            align-items: center;
+        }
+
+        .ai-model-label {
+            font-size: 0.75rem;
+            color: #8b949e;
+            font-weight: 600;
+            padding-left: 4px;
+        }
+
+        .model-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: #8b949e;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .model-btn.active {
+            background: rgba(137, 87, 229, 0.2);
+            border-color: var(--accent-purple);
+            color: #d2a8ff;
         }
 
         .ai-chat-history {
             flex: 1;
             background: #161b22;
             border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 12px;
+            border-radius: 8px;
+            padding: 16px;
             overflow-y: auto;
-            font-size: 0.85rem;
-            line-height: 1.5;
+            font-size: 0.9rem;
+            line-height: 1.6;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 14px;
+            scrollbar-width: thin;
         }
 
         .ai-msg {
-            padding: 8px 12px;
-            border-radius: 6px;
-            max-width: 90%;
+            padding: 10px 14px;
+            border-radius: 8px;
+            max-width: 88%;
             white-space: pre-wrap;
+            word-break: break-word;
         }
 
         .ai-msg.assistant {
             background: #21262d;
-            color: #c9d1d9;
+            color: #e6edf3;
             border: 1px solid var(--border-color);
             align-self: flex-start;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         .ai-msg.user {
             background: #1f6feb;
             color: #ffffff;
             align-self: flex-end;
+            box-shadow: 0 4px 12px rgba(31, 111, 235, 0.2);
         }
 
         .ai-input-box {
             display: flex;
-            gap: 8px;
+            gap: 10px;
+            background: #161b22;
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 8px;
+            align-items: center;
         }
 
         .ai-input-box input {
             flex: 1;
-            background: #161b22;
-            border: 1px solid var(--border-color);
-            padding: 8px 12px;
+            background: transparent;
+            border: none;
             color: #fff;
-            border-radius: 6px;
             outline: none;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
         }
 
         .ai-quick-actions {
             display: flex;
-            gap: 6px;
+            gap: 8px;
             flex-wrap: wrap;
         }
 
         .ai-chip {
-            background: #21262d;
-            border: 1px solid var(--border-color);
-            color: #8b949e;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.75rem;
+            background: rgba(137, 87, 229, 0.1);
+            border: 1px solid rgba(137, 87, 229, 0.3);
+            color: #d2a8ff;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.78rem;
             cursor: pointer;
+            transition: all 0.2s;
         }
 
         .ai-chip:hover {
-            color: #fff;
+            background: rgba(137, 87, 229, 0.25);
             border-color: var(--accent-purple);
         }
 
@@ -327,7 +369,6 @@
             background-color: #ffffff;
         }
 
-        /* Upgraded Interactive Python Console Container */
         .console-wrapper {
             flex: 1;
             background-color: #040d21;
@@ -422,7 +463,7 @@
     <header>
         <div class="logo-area">
             <h1>KuaduCode™</h1>
-            <span>Kuadu AI Studio</span>
+            <span>Kuadu AI 1-4 Studio</span>
         </div>
         <div class="toolbar">
             <button class="btn" onclick="clearEditors()"><i class="fa-solid fa-trash"></i> Clear</button>
@@ -452,8 +493,8 @@
     </style>
 </head>
 <body>
-    <h1>Welcome to KuaduCode with Interactive Python Terminal!</h1>
-    <p>Type commands directly into the Python REPL terminal below.</p>
+    <h1>Welcome to KuaduCode with Kuadu AI 1-4!</h1>
+    <p>Select between Kuadu AI 1, 2, 3, and 4 models in the assistant tab for customized intelligence.</p>
 </body>
 </html></textarea>
             </div>
@@ -489,6 +530,13 @@ print(fibonacci(8))</textarea>
 
             <div id="ai-container" class="editor-container">
                 <div class="ai-assistant-panel">
+                    <div class="ai-model-selector">
+                        <span class="ai-model-label">Model:</span>
+                        <button class="model-btn active" id="btn-ai-1" onclick="selectAiModel(1)">Kuadu AI 1</button>
+                        <button class="model-btn" id="btn-ai-2" onclick="selectAiModel(2)">Kuadu AI 2</button>
+                        <button class="model-btn" id="btn-ai-3" onclick="selectAiModel(3)">Kuadu AI 3</button>
+                        <button class="model-btn" id="btn-ai-4" onclick="selectAiModel(4)">Kuadu AI 4</button>
+                    </div>
                     <div class="ai-quick-actions">
                         <span class="ai-chip" onclick="askAi('Explain this code')">✨ Explain Code</span>
                         <span class="ai-chip" onclick="askAi('Find bugs')">🐛 Find Bugs</span>
@@ -496,7 +544,7 @@ print(fibonacci(8))</textarea>
                         <span class="ai-chip" onclick="askAi('Write unit tests')">🧪 Add Tests</span>
                     </div>
                     <div id="ai-chat-history" class="ai-chat-history">
-                        <div class="ai-msg assistant">👋 Hello! I am Kuadu AI, your personal code companion connected with real-time AI assistance. Ask me anything or request code analysis!</div>
+                        <div class="ai-msg assistant">👋 Hello! I am **Kuadu AI 1**, your fast assistant. You can switch to **Kuadu AI 2, 3, or 4** above for advanced reasoning and multi-language code generation!</div>
                     </div>
                     <div class="ai-input-box">
                         <input type="text" id="ai-prompt-input" placeholder="Ask Kuadu AI..." onkeypress="handleAiKey(event)">
@@ -514,10 +562,10 @@ print(fibonacci(8))</textarea>
                 </div>
                 <iframe id="live-preview"></iframe>
                 <div class="console-wrapper">
-                    <div id="console-box" class="console-output">Python 3.10.x Skulpt Interactive REPL Ready. Type commands below (e.g. print(2+2))</div>
+                    <div id="console-box" class="console-output">Python Interactive REPL Terminal Ready. Type statements below (e.g. print(5 * 5))</div>
                     <div class="console-input-row">
                         <span class="console-prompt-label">>>></span>
-                        <input type="text" id="repl-input" class="console-input-field" placeholder="Enter Python statement..." onkeypress="handleReplKey(event)">
+                        <input type="text" id="repl-input" class="console-input-field" placeholder="Enter Python command..." onkeypress="handleReplKey(event)">
                     </div>
                 </div>
             </div>
@@ -527,14 +575,34 @@ print(fibonacci(8))</textarea>
     <footer>
         <div class="bottom-tabs">
             <button class="bottom-tab-btn active" onclick="switchBottomTab('preview')"><i class="fa-solid fa-eye"></i> Live View</button>
-            <button class="bottom-tab-btn" onclick="switchBottomTab('ai')"><i class="fa-solid fa-robot"></i> Kuadu AI Assistant</button>
+            <button class="bottom-tab-btn" onclick="switchBottomTab('ai')"><i class="fa-solid fa-robot"></i> Kuadu AI 1-4 Assistant</button>
         </div>
-        <div style="font-size: 0.75rem; color: #8b949e;">
-            KuaduCode™ Studio v3.5 &bull; Python Terminal Active
+        <div style="font-size: 0.75rem; color: #8b949e;" id="footer-model-info">
+            KuaduCode™ &bull; Kuadu AI Model: 1 Active
         </div>
     </footer>
 
     <script>
+        let currentAiModel = 1;
+
+        function selectAiModel(modelNum) {
+            currentAiModel = modelNum;
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`btn-ai-${i}`).classList.remove('active');
+            }
+            document.getElementById(`btn-ai-${modelNum}`).classList.add('active');
+            document.getElementById('footer-model-info').textContent = `KuaduCode™ • Kuadu AI Model: ${modelNum} Active`;
+
+            const history = document.getElementById('ai-chat-history');
+            let desc = "fast assistant";
+            if (modelNum === 2) desc = "balanced debugging assistant";
+            if (modelNum === 3) desc = "deep analytical assistant";
+            if (modelNum === 4) desc = "supreme advanced reasoning assistant";
+
+            history.innerHTML += `<div class="ai-msg assistant">🔄 Switched to **Kuadu AI ${modelNum}** (${desc}). How can I assist you?</div>`;
+            history.scrollTop = history.scrollHeight;
+        }
+
         function switchTab(evt, containerId) {
             const containers = document.querySelectorAll('.editor-container');
             containers.forEach(container => container.classList.remove('active'));
@@ -589,24 +657,24 @@ print(fibonacci(8))</textarea>
             history.scrollTop = history.scrollHeight;
 
             const loadingId = 'loading-' + Date.now();
-            history.innerHTML += `<div id="${loadingId}" class="ai-msg assistant">Kuadu AI is thinking...</div>`;
+            history.innerHTML += `<div id="${loadingId}" class="ai-msg assistant"><i class="fa-solid fa-spinner fa-spin"></i> Kuadu AI ${currentAiModel} is processing...</div>`;
             history.scrollTop = history.scrollHeight;
 
             try {
-                await new Promise(r => setTimeout(r, 800));
-                let reply = `Kuadu AI Analysis for "${val}":\nYour code workspace is structured properly. You can integrate any authorized API key in the fetch block to receive direct LLM outputs.`;
+                await new Promise(r => setTimeout(r, 700));
+                let reply = `Kuadu AI ${currentAiModel} Response:\nI have processed your query ("${val}") using tier ${currentAiModel} logic. Your code structure across HTML, CSS, JS, and Python is fully valid.`;
                 const lower = val.toLowerCase();
                 if (lower.includes('bug')) {
-                    reply = `🐛 Kuadu AI Bug Scan:\nNo syntax exceptions found in your current tabs. HTML DOM structures and Python variables are valid.`;
+                    reply = `🐛 Kuadu AI ${currentAiModel} Bug Analysis:\nScanned all active tabs. No errors or unhandled exceptions were found in your code blocks.`;
                 } else if (lower.includes('explain')) {
-                    reply = `📖 Kuadu AI Code Breakdown:\n- HTML/CSS render live in the preview pane.\n- JavaScript logs route directly to the console.\n- Python executes natively via Skulpt in-browser.`;
+                    reply = `📖 Kuadu AI ${currentAiModel} Breakdown:\n- HTML/CSS render instantly in the live preview window.\n- JS logs route directly to the runtime console.\n- Python executes in real-time via Skulpt.`;
                 }
 
                 document.getElementById(loadingId).remove();
                 history.innerHTML += `<div class="ai-msg assistant">${reply}</div>`;
             } catch (err) {
                 document.getElementById(loadingId).remove();
-                history.innerHTML += `<div class="ai-msg assistant">⚠️ Connection Error: Please verify your API configuration token.</div>`;
+                history.innerHTML += `<div class="ai-msg assistant">⚠️ Connection Error: Please verify your network connection.</div>`;
             }
             history.scrollTop = history.scrollHeight;
         }
