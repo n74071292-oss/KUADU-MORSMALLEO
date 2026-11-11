@@ -452,47 +452,104 @@
                 <button class="tab ai-tab-btn" onclick="switchTab(event, 'ai-container')"><i class="fa-solid fa-brain"></i> Kuadu AI</button>
             </div>
 
+            <!-- Updated HTML Code Tab -->
             <div id="html-container" class="editor-container active">
                 <textarea id="html-code"><!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <style>
-        body { background: #f0f2f5; font-family: sans-serif; text-align: center; padding-top: 40px; }
-        h1 { color: #2ea44f; }
-        p { color: #57606a; }
-    </style>
+    <meta charset="UTF-8">
+    <title>KuaduCode Live Workspace</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>KuaduCode Kali Linux Studio</h1>
-    <p>HTML, CSS, and JS render live in the preview pane.</p>
+    <div class="card">
+        <h1>Welcome to KuaduCode</h1>
+        <p>Your professional web development and security studio.</p>
+        <button id="action-btn">Click Me</button>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html></textarea>
             </div>
 
+            <!-- Updated CSS Code Tab -->
             <div id="css-container" class="editor-container">
                 <textarea id="css-code">body {
-    background: #0d1117 !important;
+    background: #0d1117;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
 }
 h1 {
-    color: #58a6ff !important;
+    color: #58a6ff;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
 }
 p {
-    color: #c9d1d9 !important;
+    color: #8b949e;
+    margin-bottom: 20px;
+}
+button {
+    background: #2ea44f;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+button:hover {
+    background: #2c974b;
 }</textarea>
             </div>
 
+            <!-- Updated JS Code Tab -->
             <div id="js-container" class="editor-container">
-                <textarea id="js-code">console.log("KuaduCode JavaScript runtime operational.");</textarea>
+                <textarea id="js-code">console.log("KuaduCode JavaScript runtime initialized.");
+
+document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.getElementById("action-btn");
+    if (btn) {
+        btn.addEventListener("click", () => {
+            alert("Button clicked successfully inside KuaduCode Studio!");
+            console.log("Interactive event triggered by user.");
+        });
+    }
+});</textarea>
             </div>
 
+            <!-- Updated Python Code Tab -->
             <div id="python-container" class="editor-container">
-                <textarea id="python-code">def calculate_metrics(data_list):
-    total = sum(data_list)
-    average = total / len(data_list) if data_list else 0
-    return {"total": total, "average": average}
+                <textarea id="python-code">class SecurityAnalyzer:
+    def __init__(self, target_ip):
+        self.target_ip = target_ip
+        self.ports = [22, 80, 443, 3306, 8080]
 
-metrics = calculate_metrics([10, 20, 30, 40, 50])
-print("Execution Result:", metrics)</textarea>
+    def scan_ports(self):
+        print(f"[*] Initializing security scan for target: {self.target_ip}")
+        active_ports = []
+        for port in self.ports:
+            # Simulated check
+            status = "OPEN" if port in [22, 80] else "FILTERED"
+            print(f"Port {port}: {status}")
+            if status == "OPEN":
+                active_ports.append(port)
+        return active_ports
+
+analyzer = SecurityAnalyzer("127.0.0.1")
+open_ports = analyzer.scan_ports()
+print(f"[+] Scan completed successfully. Open ports found: {open_ports}")</textarea>
             </div>
 
             <!-- Tools Tab featuring Kali Linux Terminal and Utilities -->
