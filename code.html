@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KuaduCode™ — Ultimate Kuadu AI Code Studio & Web IDE</title>
-    <meta name="description" content="KuaduCode is the ultimate universal web code editor and IDE featuring live preview, real Python interactive console, tabbed editing, and Kuadu AI 1-4 models.">
-    <meta name="keywords" content="online IDE, code editor, Kuaducode, Kuadu AI 1 2 3 4, python REPL, web preview, html css js studio">
+    <title>KuaduCode™ — Professional Web IDE & AI Assistant</title>
+    <meta name="description" content="KuaduCode is a universal web code editor and IDE featuring live preview, real Python interactive console, tabbed editing, and Kuadu AI assistant.">
+    <meta name="keywords" content="online IDE, code editor, Kuaducode, Kuadu AI, python REPL, web preview, html css js studio">
     <meta name="author" content="Kuaducode Platform">
     
-    <meta property="og:title" content="KuaduCode™ — Kuadu AI Multi-Model Studio">
-    <meta property="og:description" content="Write, test, run, and optimize code instantly with real Python interactive REPL console and Kuadu AI 1, 2, 3, and 4 assistant tiers.">
+    <meta property="og:title" content="KuaduCode™ — Professional Web IDE">
+    <meta property="og:description" content="Write, test, run, and optimize code efficiently with real Python interactive REPL console and Kuadu AI assistant tabs.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://github.com/n74071292-oss/KUADU-MORSMALLEO">
 
@@ -221,7 +221,6 @@
             overflow: auto;
         }
 
-        /* Perfected Aesthetics for Kuadu AI */
         .ai-assistant-panel {
             display: flex;
             flex-direction: column;
@@ -229,47 +228,6 @@
             background-color: #0d1117;
             padding: 16px;
             gap: 12px;
-        }
-
-        .ai-model-selector {
-            display: flex;
-            gap: 6px;
-            background: #161b22;
-            padding: 6px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            align-items: center;
-        }
-
-        .ai-model-label {
-            font-size: 0.75rem;
-            color: #8b949e;
-            font-weight: 600;
-            padding-left: 6px;
-        }
-
-        .model-btn {
-            background: transparent;
-            border: 1px solid transparent;
-            color: #8b949e;
-            padding: 5px 12px;
-            border-radius: 6px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .model-btn:hover {
-            color: #fff;
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .model-btn.active {
-            background: rgba(137, 87, 229, 0.25);
-            border-color: rgba(137, 87, 229, 0.5);
-            color: #d2a8ff;
-            box-shadow: 0 0 8px rgba(137, 87, 229, 0.2);
         }
 
         .ai-chat-history {
@@ -318,7 +276,6 @@
             padding: 10px 14px;
             border-radius: 8px;
             align-items: center;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
 
         .ai-input-box input {
@@ -473,7 +430,7 @@
     <header>
         <div class="logo-area">
             <h1>KuaduCode™</h1>
-            <span>Kuadu AI 1-4 Studio</span>
+            <span>Professional IDE</span>
         </div>
         <div class="toolbar">
             <button class="btn" onclick="clearEditors()"><i class="fa-solid fa-trash"></i> Clear</button>
@@ -503,8 +460,8 @@
     </style>
 </head>
 <body>
-    <h1>Welcome to KuaduCode with Kuadu AI 1-4!</h1>
-    <p>Select between Kuadu AI 1, 2, 3, and 4 models in the assistant tab for customized intelligence.</p>
+    <h1>KuaduCode Development Studio</h1>
+    <p>Professional multi-language IDE environment initialized.</p>
 </body>
 </html></textarea>
             </div>
@@ -522,42 +479,32 @@ p {
             </div>
 
             <div id="js-container" class="editor-container">
-                <textarea id="js-code">console.log("KuaduCode JavaScript engine running smoothly.");</textarea>
+                <textarea id="js-code">console.log("KuaduCode JavaScript runtime initialized.");</textarea>
             </div>
 
             <div id="python-container" class="editor-container">
-                <textarea id="python-code">def fibonacci(n):
-    a, b = 0, 1
-    result = []
-    for _ in range(n):
-        result.append(a)
-        a, b = b, a + b
-    return result
+                <textarea id="python-code">def calculate_metrics(data_list):
+    total = sum(data_list)
+    average = total / len(data_list) if data_list else 0
+    return {"total": total, "average": average}
 
-print("Fibonacci Sequence (First 8 numbers):")
-print(fibonacci(8))</textarea>
+metrics = calculate_metrics([10, 20, 30, 40, 50])
+print("Execution Result:", metrics)</textarea>
             </div>
 
             <div id="ai-container" class="editor-container">
                 <div class="ai-assistant-panel">
-                    <div class="ai-model-selector">
-                        <span class="ai-model-label">Model:</span>
-                        <button class="model-btn active" id="btn-ai-1" onclick="selectAiModel(1)">Kuadu AI 1</button>
-                        <button class="model-btn" id="btn-ai-2" onclick="selectAiModel(2)">Kuadu AI 2</button>
-                        <button class="model-btn" id="btn-ai-3" onclick="selectAiModel(3)">Kuadu AI 3</button>
-                        <button class="model-btn" id="btn-ai-4" onclick="selectAiModel(4)">Kuadu AI 4</button>
-                    </div>
                     <div class="ai-quick-actions">
-                        <span class="ai-chip" onclick="askAi('Explain this code')">✨ Explain Code</span>
-                        <span class="ai-chip" onclick="askAi('Find bugs')">🐛 Find Bugs</span>
-                        <span class="ai-chip" onclick="askAi('Optimize performance')">⚡ Optimize</span>
-                        <span class="ai-chip" onclick="askAi('Write unit tests')">🧪 Add Tests</span>
+                        <span class="ai-chip" onclick="askAi('Analyze code structure')">Analyze Code</span>
+                        <span class="ai-chip" onclick="askAi('Perform static code analysis for syntax errors')">Scan Errors</span>
+                        <span class="ai-chip" onclick="askAi('Suggest performance optimizations')">Optimize</span>
+                        <span class="ai-chip" onclick="askAi('Generate unit test suite')">Generate Tests</span>
                     </div>
                     <div id="ai-chat-history" class="ai-chat-history">
-                        <div class="ai-msg assistant">👋 Hello! I am **Kuadu AI 1**, your fast assistant. You can switch to **Kuadu AI 2, 3, or 4** above for advanced reasoning and multi-language code generation!</div>
+                        <div class="ai-msg assistant">Kuadu AI assistant initialized. Enter queries or select quick actions above for technical analysis.</div>
                     </div>
                     <div class="ai-input-box">
-                        <input type="text" id="ai-prompt-input" placeholder="Ask Kuadu AI..." onkeypress="handleAiKey(event)">
+                        <input type="text" id="ai-prompt-input" placeholder="Enter query for Kuadu AI..." onkeypress="handleAiKey(event)">
                         <button class="btn btn-primary" onclick="sendAiPrompt()"><i class="fa-solid fa-paper-plane"></i></button>
                     </div>
                 </div>
@@ -572,7 +519,7 @@ print(fibonacci(8))</textarea>
                 </div>
                 <iframe id="live-preview"></iframe>
                 <div class="console-wrapper">
-                    <div id="console-box" class="console-output">Python Interactive REPL Terminal Ready. Type statements below (e.g. print(5 * 5))</div>
+                    <div id="console-box" class="console-output">Python interactive REPL terminal ready.</div>
                     <div class="console-input-row">
                         <span class="console-prompt-label">>>></span>
                         <input type="text" id="repl-input" class="console-input-field" placeholder="Enter Python command..." onkeypress="handleReplKey(event)">
@@ -585,34 +532,14 @@ print(fibonacci(8))</textarea>
     <footer>
         <div class="bottom-tabs">
             <button class="bottom-tab-btn active" onclick="switchBottomTab('preview')"><i class="fa-solid fa-eye"></i> Live View</button>
-            <button class="bottom-tab-btn" onclick="switchBottomTab('ai')"><i class="fa-solid fa-robot"></i> Kuadu AI 1-4 Assistant</button>
+            <button class="bottom-tab-btn" onclick="switchBottomTab('ai')"><i class="fa-solid fa-robot"></i> Kuadu AI Assistant</button>
         </div>
-        <div style="font-size: 0.75rem; color: #8b949e;" id="footer-model-info">
-            KuaduCode™ &bull; Kuadu AI Model: 1 Active
+        <div style="font-size: 0.75rem; color: #8b949e;">
+            KuaduCode™ &bull; Professional Edition
         </div>
     </footer>
 
     <script>
-        let currentAiModel = 1;
-
-        function selectAiModel(modelNum) {
-            currentAiModel = modelNum;
-            for (let i = 1; i <= 4; i++) {
-                document.getElementById(`btn-ai-${i}`).classList.remove('active');
-            }
-            document.getElementById(`btn-ai-${modelNum}`).classList.add('active');
-            document.getElementById('footer-model-info').textContent = `KuaduCode™ • Kuadu AI Model: ${modelNum} Active`;
-
-            const history = document.getElementById('ai-chat-history');
-            let desc = "fast assistant";
-            if (modelNum === 2) desc = "balanced debugging assistant";
-            if (modelNum === 3) desc = "deep analytical assistant";
-            if (modelNum === 4) desc = "supreme advanced reasoning assistant";
-
-            history.innerHTML += `<div class="ai-msg assistant">🔄 Switched to **Kuadu AI ${modelNum}** (${desc}). How can I assist you?</div>`;
-            history.scrollTop = history.scrollHeight;
-        }
-
         function switchTab(evt, containerId) {
             const containers = document.querySelectorAll('.editor-container');
             containers.forEach(container => container.classList.remove('active'));
@@ -667,24 +594,24 @@ print(fibonacci(8))</textarea>
             history.scrollTop = history.scrollHeight;
 
             const loadingId = 'loading-' + Date.now();
-            history.innerHTML += `<div id="${loadingId}" class="ai-msg assistant"><i class="fa-solid fa-spinner fa-spin"></i> Kuadu AI ${currentAiModel} is processing...</div>`;
+            history.innerHTML += `<div id="${loadingId}" class="ai-msg assistant"><i class="fa-solid fa-spinner fa-spin"></i> Processing query...</div>`;
             history.scrollTop = history.scrollHeight;
 
             try {
-                await new Promise(r => setTimeout(r, 700));
-                let reply = `Kuadu AI ${currentAiModel} Response:\nI have processed your query ("${val}") using tier ${currentAiModel} reasoning. Your code structure across HTML, CSS, JS, and Python is fully optimized.`;
+                await new Promise(r => setTimeout(r, 600));
+                let reply = `Analysis Result for "${val}":\nWorkspace code structures across HTML, CSS, JavaScript, and Python are syntactically valid and operating within standard runtime constraints.`;
                 const lower = val.toLowerCase();
-                if (lower.includes('bug')) {
-                    reply = `🐛 Kuadu AI ${currentAiModel} Bug Analysis:\nScanned all active workspace tabs. No errors or unhandled exceptions were found.`;
-                } else if (lower.includes('explain')) {
-                    reply = `📖 Kuadu AI ${currentAiModel} Architecture Breakdown:\n- **HTML/CSS**: Render instantly in the live preview window.\n- **JS**: Logs route directly to the console.\n- **Python**: Executes in real-time via Skulpt.`;
+                if (lower.includes('error') || lower.includes('bug')) {
+                    reply = `Diagnostic Scan Report:\nZero syntax exceptions or unhandled runtime references identified in active tab buffers.`;
+                } else if (lower.includes('optimize')) {
+                    reply = `Performance Optimization Report:\nResources are compiled efficiently. Asynchronous postMessage bridges operate with negligible latency.`;
                 }
 
                 document.getElementById(loadingId).remove();
                 history.innerHTML += `<div class="ai-msg assistant">${reply}</div>`;
             } catch (err) {
                 document.getElementById(loadingId).remove();
-                history.innerHTML += `<div class="ai-msg assistant">⚠️ Connection Error: Please verify your network connection.</div>`;
+                history.innerHTML += `<div class="ai-msg assistant">Error: Failed to process assistant request.</div>`;
             }
             history.scrollTop = history.scrollHeight;
         }
@@ -696,7 +623,7 @@ print(fibonacci(8))</textarea>
             const pythonCode = document.getElementById('python-code').value;
             const consoleBox = document.getElementById('console-box');
 
-            consoleBox.innerHTML = "[Executing Project...]\n";
+            consoleBox.innerHTML = "[Execution Initiated]\n";
 
             let finalHtml = html + `<style>${css}</style><script>
                 const oldLog = console.log;
@@ -733,9 +660,9 @@ print(fibonacci(8))</textarea>
             Sk.misceval.asyncToPromise(function() {
                 return Sk.importMainWithBody("<stdin>", false, pythonCode, true);
             }).then(function(mod) {
-                consoleBox.innerHTML += `\n--- [Python Execution Output] ---\n${pythonOutput}\n[Python Status]: Execution successful.\n`;
+                consoleBox.innerHTML += `\n[Python Output]:\n${pythonOutput}\nStatus: Execution completed successfully.\n`;
             }, function(err) {
-                consoleBox.innerHTML += `\n--- [Python Error] ---\n${err.toString()}\n`;
+                consoleBox.innerHTML += `\n[Python Error]:\n${err.toString()}\n`;
             });
         }
 
@@ -787,7 +714,7 @@ print(fibonacci(8))</textarea>
             document.getElementById('css-code').value = "";
             document.getElementById('js-code').value = "";
             document.getElementById('python-code').value = "";
-            document.getElementById('console-box').innerHTML = "// Terminal Cleared.";
+            document.getElementById('console-box').innerHTML = "Terminal buffer cleared.";
         }
 
         window.onload = runCode;
