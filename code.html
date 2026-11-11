@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KuaduCode™ — Professional Web IDE & Core Developer Utilities</title>
-    <meta name="description" content="KuaduCode is a universal web code editor and IDE featuring live preview, Python environment, Kuadu AI, and core developer tools: URL Decoder, Password Generator, Linux Command Line Simulator, and SQL Query Builder.">
+    <title>KuaduCode™ — Professional Web IDE & Kali Linux Terminal</title>
+    <meta name="description" content="KuaduCode is a universal web code editor and IDE featuring live preview, Python environment, Kuadu AI, and an interactive Kali Linux terminal simulator with sudo and package management.">
     <meta name="author" content="Kuaducode Platform">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -191,7 +191,7 @@
             outline: none;
         }
 
-        /* Essential Utilities Dashboard Panel */
+        /* Utilities Dashboard Panel */
         .tools-panel {
             padding: 20px;
             display: flex;
@@ -271,16 +271,17 @@
         }
 
         .terminal-box {
-            background: #040d21;
-            border: 1px solid var(--border-color);
+            background: #0b0f19;
+            border: 1px solid #1f6feb;
             border-radius: 6px;
             padding: 12px;
             font-family: monospace;
             font-size: 0.85rem;
-            color: #7ee787;
-            height: 140px;
+            color: #3fb950;
+            height: 180px;
             overflow-y: auto;
             white-space: pre-wrap;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.4);
         }
 
         .output-pane-container {
@@ -432,7 +433,7 @@
     <header>
         <div class="logo-area">
             <h1>KuaduCode™</h1>
-            <span>Professional IDE & Core Utilities</span>
+            <span>Kali Linux IDE & Utilities</span>
         </div>
         <div class="toolbar">
             <button class="btn" onclick="clearActiveTab()"><i class="fa-solid fa-trash"></i> Clear</button>
@@ -448,7 +449,7 @@
                 <button class="tab" onclick="switchTab(event, 'css-container')"><i class="fa-brands fa-css3-alt" style="color: #1572b6;"></i> CSS</button>
                 <button class="tab" onclick="switchTab(event, 'js-container')"><i class="fa-brands fa-js" style="color: #f7df1e;"></i> JS</button>
                 <button class="tab" onclick="switchTab(event, 'python-container')"><i class="fa-brands fa-python" style="color: #3776ab;"></i> Python</button>
-                <button class="tab" onclick="switchTab(event, 'tools-container')" style="color: #58a6ff;"><i class="fa-solid fa-wrench"></i> Core Utilities</button>
+                <button class="tab" onclick="switchTab(event, 'tools-container')" style="color: #58a6ff;"><i class="fa-solid fa-dragon"></i> Kali Linux & Tools</button>
                 <button class="tab ai-tab-btn" onclick="switchTab(event, 'ai-container')"><i class="fa-solid fa-brain"></i> Kuadu AI</button>
             </div>
 
@@ -463,7 +464,7 @@
     </style>
 </head>
 <body>
-    <h1>KuaduCode Professional Web Studio</h1>
+    <h1>KuaduCode Kali Linux Studio</h1>
     <p>HTML, CSS, and JS render live in the preview pane.</p>
 </body>
 </html></textarea>
@@ -495,13 +496,26 @@ metrics = calculate_metrics([10, 20, 30, 40, 50])
 print("Execution Result:", metrics)</textarea>
             </div>
 
-            <!-- Core Utilities Tab (URL Decoder, Password Generator, Linux CLI, SQL Builder) -->
+            <!-- Kali Linux Terminal & Core Utilities Tab -->
             <div id="tools-container" class="editor-container">
                 <div class="tools-panel">
-                    <h2 style="font-size: 1.1rem; color: #fff; margin-bottom: 2px;"><i class="fa-solid fa-wrench"></i> Essential Developer Utilities</h2>
-                    <p style="font-size: 0.8rem; color: #8b949e; margin-bottom: 10px;">Fully functional tools requested for URL decoding, password generation, Linux command line, and SQL query building.</p>
+                    <h2 style="font-size: 1.1rem; color: #fff; margin-bottom: 2px;"><i class="fa-solid fa-dragon"></i> Kali Linux Terminal & Core Utilities</h2>
+                    <p style="font-size: 0.8rem; color: #8b949e; margin-bottom: 10px;">Interactive Kali Linux terminal supporting <code>sudo</code>, apt package management, security tools (nmap, metasploit, wireshark), plus URL decoder, password generator, and SQL builder.</p>
 
-                    <!-- 1. URL Decoder / Encoder -->
+                    <!-- Kali Linux Terminal Simulator -->
+                    <div class="tool-section-card">
+                        <h3><i class="fa-solid fa-terminal" style="color: #3fb950;"></i> Kali Linux Terminal (Root & Sudo Enabled)</h3>
+                        <p>Type commands (e.g., <code>sudo apt update</code>, <code>sudo apt install nmap</code>, <code>nmap -sV 127.0.0.1</code>, <code>msfconsole</code>, <code>whoami</code>, <code>ls</code>).</p>
+                        <div id="linux-terminal" class="terminal-box">Kali GNU/Linux Rolling (v2026.1) - Root & Sudo Enabled. Type 'help' for available commands.
+┌──(kali㉿kuaducode)-[~]
+└─$ </div>
+                        <div class="tool-row">
+                            <input type="text" id="linux-input" class="tool-input" placeholder="Enter command (e.g. sudo apt install nmap)..." onkeypress="handleLinuxKey(event)">
+                            <button class="tool-btn btn-primary" onclick="runKaliCommand()">Execute</button>
+                        </div>
+                    </div>
+
+                    <!-- URL Decoder / Encoder -->
                     <div class="tool-section-card">
                         <h3><i class="fa-solid fa-link" style="color: #58a6ff;"></i> URL Decoder & Encoder</h3>
                         <p>Encode or decode URL strings instantly.</p>
@@ -513,7 +527,7 @@ print("Execution Result:", metrics)</textarea>
                         <div id="url-output" class="tool-output">Decoded / Encoded output will appear here...</div>
                     </div>
 
-                    <!-- 2. Secure Password Generator -->
+                    <!-- Secure Password Generator -->
                     <div class="tool-section-card">
                         <h3><i class="fa-solid fa-key" style="color: #2ea44f;"></i> Secure Password Generator</h3>
                         <p>Generate high-entropy secure passwords and API keys.</p>
@@ -529,19 +543,7 @@ print("Execution Result:", metrics)</textarea>
                         <div id="pass-output" class="tool-output">Click generate to create secure key...</div>
                     </div>
 
-                    <!-- 3. Linux Command Line Simulator -->
-                    <div class="tool-section-card">
-                        <h3><i class="fa-solid fa-terminal" style="color: #7ee787;"></i> Linux Command Line (Bash Simulator)</h3>
-                        <p>Type standard Linux commands (e.g., <code>ls</code>, <code>pwd</code>, <code>whoami</code>, <code>uname -a</code>, <code>date</code>, <code>clear</code>).</p>
-                        <div id="linux-terminal" class="terminal-box">KuaduCode Linux Bash (v5.2) - Type 'help' for commands.
-kuaducode@ubuntu:~$ </div>
-                        <div class="tool-row">
-                            <input type="text" id="linux-input" class="tool-input" placeholder="Type command (e.g. ls, pwd)..." onkeypress="handleLinuxKey(event)">
-                            <button class="tool-btn" onclick="runLinuxCommand()">Execute</button>
-                        </div>
-                    </div>
-
-                    <!-- 4. SQL Query Builder -->
+                    <!-- SQL Query Builder -->
                     <div class="tool-section-card">
                         <h3><i class="fa-solid fa-database" style="color: #d2a8ff;"></i> SQL Query Builder</h3>
                         <p>Generate precise SQL statements dynamically.</p>
@@ -595,7 +597,7 @@ kuaducode@ubuntu:~$ </div>
 
     <footer>
         <div style="font-size: 0.8rem; color: #8b949e; padding-left: 10px;">
-            KuaduCode™ &bull; Professional IDE & Core Utilities
+            KuaduCode™ &bull; Kali Linux IDE & Core Utilities
         </div>
     </footer>
 
@@ -613,7 +615,7 @@ kuaducode@ubuntu:~$ </div>
             }
         }
 
-        // 1. URL Decoder / Encoder Logic
+        // URL Decoder / Encoder Logic
         function decodeUrlText() {
             const val = document.getElementById('url-input').value;
             try {
@@ -632,7 +634,7 @@ kuaducode@ubuntu:~$ </div>
             }
         }
 
-        // 2. Secure Password Generator Logic
+        // Secure Password Generator Logic
         function generatePassword() {
             const len = parseInt(document.getElementById('pass-length').value) || 16;
             const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*!-_=+";
@@ -643,53 +645,84 @@ kuaducode@ubuntu:~$ </div>
             document.getElementById('pass-output').textContent = pass;
         }
 
-        // 3. Linux Command Line Simulator Logic
-        let linuxFiles = {
-            "home": ["index.html", "app.js", "styles.css", "readme.md"],
-            "etc": ["passwd", "hosts", "resolv.conf"],
-            "var": ["log", "www"]
-        };
-        let currentDir = "/home/kuaducode";
+        // Kali Linux Terminal Simulator Logic (with sudo & app management)
+        let currentUser = "kali";
+        let isRoot = false;
 
-        function runLinuxCommand() {
+        function runKaliCommand() {
             const inputField = document.getElementById('linux-input');
             const cmd = inputField.value.trim();
             const term = document.getElementById('linux-terminal');
             if (!cmd) return;
 
-            term.innerHTML += `kuaducode@ubuntu:${currentDir}$ ${cmd}\n`;
+            const promptSymbol = isRoot ? "#" : "$";
+            term.innerHTML += `┌──(${currentUser}㉿kuaducode)-[~]\n└─${promptSymbol} ${cmd}\n`;
             inputField.value = "";
 
             const parts = cmd.split(" ");
             const base = parts[0];
-            const arg = parts[1];
+            const arg1 = parts[1];
+            const arg2 = parts[2];
 
             let response = "";
+
             if (base === "help") {
-                response = "Available commands: ls, pwd, whoami, uname, date, cat, echo, clear, mkdir, history";
-            } else if (base === "ls") {
-                response = "index.html    app.js    styles.css    readme.md    config.json";
-            } else if (base === "pwd") {
-                response = currentDir;
+                response = "Kali Linux Commands: sudo, apt update, apt install [pkg], nmap, msfconsole, wireshark, sqlmap, hydra, whoami, su, pwd, ls, clear, date";
             } else if (base === "whoami") {
-                response = "kuaducode (developer)";
-            } else if (base === "uname") {
-                response = "Linux kuaducode-os 6.5.0-generic x86_64 GNU/Linux";
+                response = currentUser;
+            } else if (base === "su") {
+                if (arg1 === "root") {
+                    currentUser = "root";
+                    isRoot = true;
+                    response = "Password: ********\n[+] Switched to root user successfully.";
+                } else {
+                    currentUser = arg1 || "kali";
+                    isRoot = (currentUser === "root");
+                    response = `[+] Switched user to ${currentUser}`;
+                }
+            } else if (base === "sudo") {
+                if (parts[1] === "su") {
+                    currentUser = "root";
+                    isRoot = true;
+                    response = "[sudo] password for kali:\n[+] Root privileges enabled via sudo.";
+                } else if (parts[1] === "apt" && parts[2] === "update") {
+                    response = "Hit:1 http://http.kali.org/kali kali-rolling InRelease\nReading package lists... Done\nBuilding dependency tree... Done\nAll packages are up to date.";
+                } else if (parts[1] === "apt" && parts[2] === "install") {
+                    const pkg = parts[3] || "package";
+                    response = `Reading package lists... Done\nBuilding dependency tree... Done\nSelecting previously unselected package ${pkg}.\nUnpacking ${pkg} (v7.40-1kali1)...\nSetting up ${pkg} (7.40-1kali1) ...\n[+] Successfully installed ${pkg}!`;
+                } else {
+                    response = `[+] Executing with root privileges: ${parts.slice(1).join(" ")}\nCommand executed successfully.`;
+                }
+            } else if (base === "apt") {
+                if (arg1 === "update") {
+                    response = "E: Could not open lock file /var/lib/dpkg/lock-frontend - open (13: Permission denied)\nE: Unable to acquire the admin directory (/var/lib/dpkg/), are you root? (Try using 'sudo')";
+                } else if (arg1 === "install") {
+                    response = `E: Permission denied. Try 'sudo apt install ${arg2 || 'package'}'`;
+                } else {
+                    response = "apt: missing or invalid command. Try 'sudo apt update' or 'sudo apt install [pkg]'";
+                }
+            } else if (base === "nmap") {
+                const target = arg1 || "127.0.0.1";
+                response = `Starting Nmap 7.94 ( https://nmap.org )\nNmap scan report for ${target}\nHost is up (0.00015s latency).\nNot shown: 998 closed ports\nPORT   STATE SERVICE\n22/tcp open  ssh\n80/tcp open  http\n\nNmap done: 1 IP address (1 host up) scanned in 0.14 seconds.`;
+            } else if (base === "msfconsole") {
+                response = "     \n     ____                 ________                     \n    |    |  ._. ____  ____ \\      \\   ____   {____ _____  \n    |    |  | |/ ___\\/ ___\\/   |   \\ /  _ \\  |    \\\\__  \\ \n    |    |/\\|  / /_/  > /_/  >    |    (  <_> ) |   |  / __ \\\n    |_______/\\___  /\\___  /|____|__  /\\____/  |___|__(____  /\n           /_____//_____/         \\/                     \\/\n       =[ metasploit v6.4.10-dev                          ]\n+ -- --=[ 2424 exploits - 1245 payloads - 465 encoders     ]\nmetasploit > ";
+            } else if (base === "sqlmap") {
+                response = "        ___
+       __H__
+ ___ ___[,]_____ ___ ___  (v1.8.2-all)\n |_ -| . [,]     | .'| . |\n |___|_  ["]_|_|_|__,|  _|\n       |_|V           |_|  https://sqlmap.org\n[+] starting in interactive mode\n[!] please provide target URL with -u";
+            } else if (base === "hydra") {
+                response = "Hydra v9.5 (c) 2023 by van Hauser / Thorsen - Please don't use for illegal purposes!\n[INFO] 1 target configured\n[DATA] 1 login/pass pair configured\n[STATUS] attack finished for target (1 valid password found!).";
+            } else if (base === "wireshark") {
+                response = "[+] Launching Wireshark packet analyzer GTK+ GUI interface...\nCapturing on interface 'eth0'...";
+            } else if (base === "ls") {
+                response = "Desktop    Downloads    Documents    tools    wordlists.txt    exploit.py";
+            } else if (base === "pwd") {
+                response = "/root";
             } else if (base === "date") {
                 response = new Date().toUTCString();
-            } else if (base === "cat") {
-                if (arg === "readme.md") response = "# KuaduCode Workspace\nOperational and fully secured.";
-                else if (arg === "config.json") response = '{\n  "version": "2.4.0",\n  "env": "production"\n}';
-                else response = `cat: ${arg || 'file'}: No such file or directory`;
-            } else if (base === "echo") {
-                response = parts.slice(1).join(" ");
-            } else if (base === "mkdir") {
-                response = arg ? `Directory '${arg}' created successfully.` : "mkdir: missing operand";
             } else if (base === "clear") {
-                term.innerHTML = `KuaduCode Linux Bash (v5.2) - Type 'help' for commands.\n`;
+                term.innerHTML = `Kali GNU/Linux Rolling (v2026.1) - Root & Sudo Enabled. Type 'help' for available commands.\n`;
                 return;
-            } else if (base === "history") {
-                response = "1. ls\n2. pwd\n3. uname -a\n4. cat readme.md\n5. " + cmd;
             } else {
                 response = `bash: ${base}: command not found. Type 'help' for available commands.`;
             }
@@ -699,10 +732,10 @@ kuaducode@ubuntu:~$ </div>
         }
 
         function handleLinuxKey(e) {
-            if (e.key === 'Enter') runLinuxCommand();
+            if (e.key === 'Enter') runKaliCommand();
         }
 
-        // 4. SQL Query Builder Logic
+        // SQL Query Builder Logic
         function buildSqlQuery() {
             const action = document.getElementById('sql-action').value;
             const table = document.getElementById('sql-table').value.trim() || 'users';
@@ -740,7 +773,7 @@ kuaducode@ubuntu:~$ </div>
             history.scrollTop = history.scrollHeight;
 
             await new Promise(r => setTimeout(r, 600));
-            history.innerHTML += `<div class="ai-msg assistant">Analysis for "${val}": All core developer utilities (URL decoder, password generator, Linux CLI, and SQL builder) are fully functional.</div>`;
+            history.innerHTML += `<div class="ai-msg assistant">Analysis for "${val}": Kali Linux terminal with sudo, apt package management, and developer utilities are fully operational.</div>`;
             history.scrollTop = history.scrollHeight;
         }
 
@@ -811,7 +844,7 @@ kuaducode@ubuntu:~$ </div>
                     output: function(text) { replOutput += text; },
                     read: function(filename) {
                         if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][filename] === undefined) {
-                            throw "File not found: '" + filename + "'";
+                            throw "File not found: '" +'", filename + "'";
                         }
                         return Sk.builtinFiles["files"][filename];
                     }
