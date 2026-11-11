@@ -191,7 +191,6 @@
             outline: none;
         }
 
-        /* Utilities Dashboard Panel */
         .tools-panel {
             padding: 20px;
             display: flex;
@@ -449,7 +448,7 @@
                 <button class="tab" onclick="switchTab(event, 'css-container')"><i class="fa-brands fa-css3-alt" style="color: #1572b6;"></i> CSS</button>
                 <button class="tab" onclick="switchTab(event, 'js-container')"><i class="fa-brands fa-js" style="color: #f7df1e;"></i> JS</button>
                 <button class="tab" onclick="switchTab(event, 'python-container')"><i class="fa-brands fa-python" style="color: #3776ab;"></i> Python</button>
-                <button class="tab" onclick="switchTab(event, 'tools-container')" style="color: #58a6ff;"><i class="fa-solid fa-dragon"></i> Kali Linux & Tools</button>
+                <button class="tab" onclick="switchTab(event, 'tools-container')" style="color: #58a6ff;"><i class="fa-solid fa-toolbox"></i> Tools</button>
                 <button class="tab ai-tab-btn" onclick="switchTab(event, 'ai-container')"><i class="fa-solid fa-brain"></i> Kuadu AI</button>
             </div>
 
@@ -496,10 +495,10 @@ metrics = calculate_metrics([10, 20, 30, 40, 50])
 print("Execution Result:", metrics)</textarea>
             </div>
 
-            <!-- Kali Linux Terminal & Core Utilities Tab -->
+            <!-- Tools Tab featuring Kali Linux Terminal and Utilities -->
             <div id="tools-container" class="editor-container">
                 <div class="tools-panel">
-                    <h2 style="font-size: 1.1rem; color: #fff; margin-bottom: 2px;"><i class="fa-solid fa-dragon"></i> Kali Linux Terminal & Core Utilities</h2>
+                    <h2 style="font-size: 1.1rem; color: #fff; margin-bottom: 2px;"><i class="fa-solid fa-toolbox"></i> Tools & Kali Linux Terminal</h2>
                     <p style="font-size: 0.8rem; color: #8b949e; margin-bottom: 10px;">Interactive Kali Linux terminal supporting <code>sudo</code>, apt package management, security tools (nmap, metasploit, wireshark), plus URL decoder, password generator, and SQL builder.</p>
 
                     <!-- Kali Linux Terminal Simulator -->
@@ -597,7 +596,7 @@ print("Execution Result:", metrics)</textarea>
 
     <footer>
         <div style="font-size: 0.8rem; color: #8b949e; padding-left: 10px;">
-            KuaduCode™ &bull; Kali Linux IDE & Core Utilities
+            KuaduCode™ &bull; Professional IDE & Kali Linux Tools
         </div>
     </footer>
 
@@ -707,9 +706,7 @@ print("Execution Result:", metrics)</textarea>
             } else if (base === "msfconsole") {
                 response = "     \n     ____                 ________                     \n    |    |  ._. ____  ____ \\      \\   ____   {____ _____  \n    |    |  | |/ ___\\/ ___\\/   |   \\ /  _ \\  |    \\\\__  \\ \n    |    |/\\|  / /_/  > /_/  >    |    (  <_> ) |   |  / __ \\\n    |_______/\\___  /\\___  /|____|__  /\\____/  |___|__(____  /\n           /_____//_____/         \\/                     \\/\n       =[ metasploit v6.4.10-dev                          ]\n+ -- --=[ 2424 exploits - 1245 payloads - 465 encoders     ]\nmetasploit > ";
             } else if (base === "sqlmap") {
-                response = "        ___
-       __H__
- ___ ___[,]_____ ___ ___  (v1.8.2-all)\n |_ -| . [,]     | .'| . |\n |___|_  ["]_|_|_|__,|  _|\n       |_|V           |_|  https://sqlmap.org\n[+] starting in interactive mode\n[!] please provide target URL with -u";
+                response = "        ___\n       __H__\n ___ ___[,]_____ ___ ___  (v1.8.2-all)\n |_ -| . [,]     | .'| . |\n |___|_  ["]_|_|_|__,|  _|\n       |_|V           |_|  https://sqlmap.org\n[+] starting in interactive mode\n[!] please provide target URL with -u";
             } else if (base === "hydra") {
                 response = "Hydra v9.5 (c) 2023 by van Hauser / Thorsen - Please don't use for illegal purposes!\n[INFO] 1 target configured\n[DATA] 1 login/pass pair configured\n[STATUS] attack finished for target (1 valid password found!).";
             } else if (base === "wireshark") {
@@ -844,7 +841,7 @@ print("Execution Result:", metrics)</textarea>
                     output: function(text) { replOutput += text; },
                     read: function(filename) {
                         if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][filename] === undefined) {
-                            throw "File not found: '" +'", filename + "'";
+                            throw "File not found: '" + filename + "'";
                         }
                         return Sk.builtinFiles["files"][filename];
                     }
