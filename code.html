@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KuaduCode™ — Ultimate Kuadu AI Code Studio & Web IDE</title>
-    <meta name="description" content="KuaduCode is the ultimate universal web code editor and IDE featuring live preview, real Python execution, tabbed editing, and Kuadu AI assistant.">
-    <meta name="keywords" content="online IDE, code editor, Kuaducode, Kuadu AI, python compiler, web preview, html css js studio">
+    <meta name="description" content="KuaduCode is the ultimate universal web code editor and IDE featuring live preview, real Python interactive console, tabbed editing, and Kuadu AI assistant.">
+    <meta name="keywords" content="online IDE, code editor, Kuaducode, Kuadu AI, python REPL, web preview, html css js studio">
     <meta name="author" content="Kuaducode Platform">
     
     <meta property="og:title" content="KuaduCode™ — Kuadu AI Code Studio">
-    <meta property="og:description" content="Write, test, run, and optimize code instantly with real Python execution and Kuadu AI assistant tabs.">
+    <meta property="og:description" content="Write, test, run, and optimize code instantly with real Python interactive REPL console and Kuadu AI assistant tabs.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://github.com/n74071292-oss/KUADU-MORSMALLEO">
 
@@ -327,17 +327,51 @@
             background-color: #ffffff;
         }
 
+        /* Upgraded Interactive Python Console Container */
+        .console-wrapper {
+            flex: 1;
+            background-color: #040d21;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
         .console-output {
             padding: 12px 16px;
             font-family: monospace;
             font-size: 0.85rem;
             color: #7ee787;
-            background-color: #040d21;
             flex: 1;
-            border-top: 1px solid var(--border-color);
             overflow-y: auto;
             white-space: pre-wrap;
             scrollbar-width: thin;
+        }
+
+        .console-input-row {
+            display: flex;
+            align-items: center;
+            background: #0d1117;
+            border-top: 1px solid var(--border-color);
+            padding: 6px 12px;
+        }
+
+        .console-prompt-label {
+            font-family: monospace;
+            color: #58a6ff;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-right: 8px;
+        }
+
+        .console-input-field {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #c9d1d9;
+            font-family: monospace;
+            font-size: 0.85rem;
+            outline: none;
         }
 
         footer {
@@ -418,8 +452,8 @@
     </style>
 </head>
 <body>
-    <h1>Welcome to KuaduCode with Kuadu AI!</h1>
-    <p>Run Python code with live interpreter output or chat with Kuadu AI below.</p>
+    <h1>Welcome to KuaduCode with Interactive Python Terminal!</h1>
+    <p>Type commands directly into the Python REPL terminal below.</p>
 </body>
 </html></textarea>
             </div>
@@ -475,11 +509,17 @@ print(fibonacci(8))</textarea>
         <div class="pane">
             <div class="output-pane-container">
                 <div class="output-header">
-                    <span><i class="fa-solid fa-desktop"></i> LIVE PREVIEW & PYTHON CONSOLE</span>
+                    <span><i class="fa-solid fa-desktop"></i> LIVE PREVIEW & INTERACTIVE PYTHON TERMINAL</span>
                     <span>Output</span>
                 </div>
                 <iframe id="live-preview"></iframe>
-                <div id="console-box" class="console-output">// Python Interpreter & Console Output Ready...</div>
+                <div class="console-wrapper">
+                    <div id="console-box" class="console-output">Python 3.10.x Skulpt Interactive REPL Ready. Type commands below (e.g. print(2+2))</div>
+                    <div class="console-input-row">
+                        <span class="console-prompt-label">>>></span>
+                        <input type="text" id="repl-input" class="console-input-field" placeholder="Enter Python statement..." onkeypress="handleReplKey(event)">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -490,7 +530,7 @@ print(fibonacci(8))</textarea>
             <button class="bottom-tab-btn" onclick="switchBottomTab('ai')"><i class="fa-solid fa-robot"></i> Kuadu AI Assistant</button>
         </div>
         <div style="font-size: 0.75rem; color: #8b949e;">
-            KuaduCode™ Studio v3.4 &bull; Kuadu AI Active
+            KuaduCode™ Studio v3.5 &bull; Python Terminal Active
         </div>
     </footer>
 
@@ -553,24 +593,6 @@ print(fibonacci(8))</textarea>
             history.scrollTop = history.scrollHeight;
 
             try {
-                // Replace with your endpoint or Copilot proxy API key integration if running externally
-                /*
-                const response = await fetch("https://api.openai.com/v1/chat/completions", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": "Bearer YOUR_API_KEY_HERE"
-                    },
-                    body: JSON.stringify({
-                        model: "gpt-4o-mini",
-                        messages: [{ role: "user", content: val }]
-                    })
-                });
-                const data = await response.json();
-                const reply = data.choices[0].message.content;
-                */
-
-                // Simulated intelligent fallback response for zero-setup execution
                 await new Promise(r => setTimeout(r, 800));
                 let reply = `Kuadu AI Analysis for "${val}":\nYour code workspace is structured properly. You can integrate any authorized API key in the fetch block to receive direct LLM outputs.`;
                 const lower = val.toLowerCase();
@@ -633,10 +655,45 @@ print(fibonacci(8))</textarea>
             Sk.misceval.asyncToPromise(function() {
                 return Sk.importMainWithBody("<stdin>", false, pythonCode, true);
             }).then(function(mod) {
-                consoleBox.innerHTML += `\n--- [Python Execution Output] ---\n${pythonOutput}\n[Python Status]: Execution successful.`;
+                consoleBox.innerHTML += `\n--- [Python Execution Output] ---\n${pythonOutput}\n[Python Status]: Execution successful.\n`;
             }, function(err) {
-                consoleBox.innerHTML += `\n--- [Python Error] ---\n${err.toString()}`;
+                consoleBox.innerHTML += `\n--- [Python Error] ---\n${err.toString()}\n`;
             });
+        }
+
+        function handleReplKey(e) {
+            if (e.key === 'Enter') {
+                const replInput = document.getElementById('repl-input');
+                const cmd = replInput.value.trim();
+                const consoleBox = document.getElementById('console-box');
+                if (!cmd) return;
+
+                consoleBox.innerHTML += `\n>>> ${cmd}\n`;
+                replInput.value = "";
+
+                let replOutput = "";
+                Sk.configure({
+                    output: function(text) {
+                        replOutput += text;
+                    },
+                    read: function(filename) {
+                        if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][filename] === undefined) {
+                            throw "File not found: '" + filename + "'";
+                        }
+                        return Sk.builtinFiles["files"][filename];
+                    }
+                });
+
+                Sk.misceval.asyncToPromise(function() {
+                    return Sk.importMainWithBody("<stdin>", false, cmd, true);
+                }).then(function(mod) {
+                    if (replOutput) consoleBox.innerHTML += replOutput;
+                    consoleBox.scrollTop = consoleBox.scrollHeight;
+                }, function(err) {
+                    consoleBox.innerHTML += err.toString() + "\n";
+                    consoleBox.scrollTop = consoleBox.scrollHeight;
+                });
+            }
         }
 
         window.addEventListener('message', function(e) {
@@ -652,7 +709,7 @@ print(fibonacci(8))</textarea>
             document.getElementById('css-code').value = "";
             document.getElementById('js-code').value = "";
             document.getElementById('python-code').value = "";
-            document.getElementById('console-box').innerHTML = "// Editors Cleared.";
+            document.getElementById('console-box').innerHTML = "// Terminal Cleared.";
         }
 
         window.onload = runCode;
