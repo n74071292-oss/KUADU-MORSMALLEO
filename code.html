@@ -4,7 +4,7 @@
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kuaducode Studio Pro  IDE</title>
+<title>Kuaducode Studio Pro - Ultimate Polyglot IDE</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -420,8 +420,8 @@
   <div class="header-actions">
     <select id="langSelector" class="lang-select">
       <option value="html">HTML / CSS / JS</option>
+      <option value="javascript">JavaScript Console</option>
       <option value="python">Python Console</option>
-      <option value="javascript">JavaScript (Node)</option>
       <option value="php">PHP Script</option>
       <option value="sql">SQL Query</option>
       <option value="ruby">Ruby Script</option>
@@ -488,18 +488,18 @@
   <div class="output-pane">
     <div class="output-tabs">
       <div class="output-tab active" data-target="previewTab">Live HTML Preview</div>
-      <div class="output-tab" data-target="consoleTab">Polyglot Script Console</div>
+      <div class="output-tab" data-target="consoleTab">Polyglot & JS Console</div>
     </div>
     <div id="previewTab" class="output-content active">
       <iframe id="previewFrame"></iframe>
     </div>
     <div id="consoleTab" class="output-content">
       <div class="console-box" id="consoleBoxWrapper">
-        <div id="consoleOutput" class="console-output-area">Kuaducode Interactive Python & Script Console Ready.
-Click 'Run & Output' to start your script.</div>
-        <div class="console-input-line" id="consoleInputContainer" style="display:none;">
-          <span class="console-prompt-label" id="consolePromptLabel">&gt;&gt;</span>
-          <input type="text" id="consoleUserInput" class="console-user-input" placeholder="Type your input and press Enter...">
+        <div id="consoleOutput" class="console-output-area">Kuaducode Interactive Console Ready.
+Type code and click 'Run & Output' or use JavaScript REPL prompt below.</div>
+        <div class="console-input-line" id="consoleInputContainer">
+          <span class="console-prompt-label" id="consolePromptLabel">&gt;</span>
+          <input type="text" id="consoleUserInput" class="console-user-input" placeholder="Type JavaScript expression or Python input and press Enter...">
         </div>
       </div>
     </div>
@@ -577,8 +577,8 @@ Click 'Run & Output' to start your script.</div>
 
   const templates = {
     html: "<div style='padding:20px; font-family:sans-serif;'>\n  <h1>Hello from Kuaducode!</h1>\n  <p>Live HTML/CSS/JS preview is active.</p>\n</div>",
+    javascript: "const greeting = 'Hello from Kuaducode Live JS Console!';\nconsole.log(greeting);\n\nfunction calculateTotal(price, qty) {\n    return price * qty;\n}\n\nconsole.log('Total Price (GH₵):', calculateTotal(150, 4));\nconsole.log('Type any JS expression below in the REPL prompt!');",
     python: "name = input('Enter your full name: ')\nage = input('Enter your age: ')\nprofession = input('Enter your profession: ')\n\nprint('--- User Details Saved ---')\nprint(f'Name: {name}')\nprint(f'Age: {age}')\nprint(f'Profession: {profession}')",
-    javascript: "const msg = 'Hello from Kuaducode JS Runtime!';\nconsole.log(msg);\nconst sum = (a, b) => a + b;\nconsole.log('Calculation sum (15 + 35):', sum(15, 35));",
     php: "$name = \"Kuaducode Developer\";\necho \"Hello $name! PHP execution active.\\n\";\necho \"Current Server Time: \" . date('Y-m-d H:i:s');",
     sql: "SELECT id, username, role, balance_ghs \nFROM users \nWHERE status = 'active' \nORDER BY created_at DESC;",
     ruby: "name = 'Kuaducode Rubyist'\nputs \"Hello #{name}! Ruby runtime active.\"\nputs 'Iteration completed successfully.'",
@@ -738,19 +738,33 @@ Click 'Run & Output' to start your script.</div>
 
     document.querySelector('[data-target="consoleTab"]').click();
     consoleOutput.textContent = `--- Executing [${lang.toUpperCase()}] in Kuaducode Sandbox ---\n\n`;
-    consoleInputContainer.style.display = 'none';
 
     if (lang === 'javascript') {
       let logs = [];
       const oldLog = console.log;
-      console.log = (...args) => logs.push(args.join(' '));
+      const oldError = console.error;
+      const oldWarn = console.warn;
+      
+      console.log = (...args) => logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' '));
+      console.error = (...args) => logs.push('[ERROR] ' + args.join(' '));
+      console.warn = (...args) => logs.push('[WARN] ' + args.join(' '));
+      
       try {
-        new Function(code)();
+        let result = new Function(code)();
+        if (result !== undefined) {
+          logs.push(`=> ${typeof result === 'object' ? JSON.stringify(result) : result}`);
+        }
       } catch (err) {
         logs.push('Runtime Error: ' + err.message);
       }
+      
       console.log = oldLog;
+      console.error = oldError;
+      console.warn = oldWarn;
+      
       consoleOutput.textContent += logs.join('\n') || 'Program executed with no console output.';
+      consoleInputContainer.style.display = 'flex';
+      consolePromptLabel.textContent = 'JS>';
     } 
     else if (lang === 'python') {
       pyExecutionState.running = true;
@@ -792,6 +806,7 @@ Click 'Run & Output' to start your script.</div>
       }
       
       consoleOutput.textContent += `\n\n[Process completed successfully with exit code 0]`;
+      consoleInputContainer.style.display = 'none';
     }
   }
 
@@ -802,7 +817,6 @@ Click 'Run & Output' to start your script.</div>
 
       if (!line || line.startsWith('#')) continue;
 
-      // Check for input() assignment e.g. name = input('Enter name: ')
       if (line.includes('input(')) {
         let varName = line.split('=')[0].trim();
         let promptMatch = line.match(/input\((['"])(.*?)\1\)/);
@@ -814,15 +828,12 @@ Click 'Run & Output' to start your script.</div>
         consoleUserInput.value = '';
         consoleUserInput.focus();
 
-        // Save target variable name and pause loop for user input
         pyExecutionState.pendingVar = varName;
         return;
       }
-      // Check for print statement
       else if (line.startsWith('print(')) {
         let inner = line.substring(6, line.lastIndexOf(')'));
         
-        // Handle f-string evaluation using stored variables
         if (inner.startsWith('f"') || inner.startsWith("f'")) {
           let template = inner.slice(2, -1);
           for (let [k, v] of Object.entries(pyExecutionState.variables)) {
@@ -842,7 +853,6 @@ Click 'Run & Output' to start your script.</div>
           }
         }
       }
-      // Check for variable assignment e.g. x = 10 or x = 'hello'
       else if (line.includes('=')) {
         let parts = line.split('=');
         let vName = parts[0].trim();
@@ -860,18 +870,30 @@ Click 'Run & Output' to start your script.</div>
   }
 
   consoleUserInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && pyExecutionState.running) {
-      let userInputValue = consoleUserInput.value;
-      consoleOutput.textContent += userInputValue + '\n';
-      consoleInputContainer.style.display = 'none';
-
-      // Save user input to the target variable
-      if (pyExecutionState.pendingVar) {
-        pyExecutionState.variables[pyExecutionState.pendingVar] = userInputValue;
+    if (e.key === 'Enter') {
+      let val = consoleUserInput.value;
+      if (!val) return;
+      
+      if (pyExecutionState.running) {
+        consoleOutput.textContent += val + '\n';
+        consoleInputContainer.style.display = 'none';
+        if (pyExecutionState.pendingVar) {
+          pyExecutionState.variables[pyExecutionState.pendingVar] = val;
+        }
+        processNextPythonLine();
+      } else if (langSelector.value === 'javascript') {
+        consoleOutput.textContent += `\nJS> ${val}\n`;
+        consoleUserInput.value = '';
+        try {
+          let evalRes = eval(val);
+          if (evalRes !== undefined) {
+            consoleOutput.textContent += `=> ${typeof evalRes === 'object' ? JSON.stringify(evalRes) : evalRes}\n`;
+          }
+        } catch (err) {
+          consoleOutput.textContent += `Error: ${err.message}\n`;
+        }
+        consoleOutput.scrollTop = consoleOutput.scrollHeight;
       }
-
-      // Resume python script execution
-      processNextPythonLine();
     }
   });
 
@@ -1015,7 +1037,7 @@ Click 'Run & Output' to start your script.</div>
   });
 
   document.getElementById('menuAbout').addEventListener('click', () => {
-    alert('Kuaducode Studio Pro\nDynamic Polyglot IDE supporting interactive Python input streams.');
+    alert('Kuaducode Studio Pro\nInteractive JavaScript Console and Polyglot IDE.');
   });
 
   window.addEventListener('keydown', (e) => {
@@ -1039,9 +1061,9 @@ Click 'Run & Output' to start your script.</div>
   });
 
   createTab('index.html');
-  textArea.value = templates.python;
-  langSelector.value = 'python';
-  langDisplay.textContent = 'Lang: PYTHON';
+  textArea.value = templates.javascript;
+  langSelector.value = 'javascript';
+  langDisplay.textContent = 'Lang: JAVASCRIPT CONSOLE';
   updateLineNumbers();
   updateStats();
   runOutput();
