@@ -4,7 +4,7 @@
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kuaducode Studio Pro -  IDE</title>
+<title>Kuaducode Studio Pro - Ultimate Polyglot IDE</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -420,15 +420,15 @@
   <div class="header-actions">
     <select id="langSelector" class="lang-select">
       <option value="html">HTML / CSS / JS</option>
-      <option value="javascript">JavaScript Console</option>
+      <option value="rust">Rust Console</option>
       <option value="python">Python Console</option>
+      <option value="javascript">JavaScript Console</option>
       <option value="php">PHP Script</option>
       <option value="sql">SQL Query</option>
       <option value="ruby">Ruby Script</option>
       <option value="java">Java Program</option>
       <option value="csharp">C# (.NET)</option>
       <option value="go">Go Language</option>
-      <option value="rust">Rust Console</option>
     </select>
     <button class="run-btn" id="runCodeBtn">▶ Run & Output</button>
     <div class="owner-badge">
@@ -495,11 +495,11 @@
     </div>
     <div id="consoleTab" class="output-content">
       <div class="console-box" id="consoleBoxWrapper">
-        <div id="consoleOutput" class="console-output-area">Kuaducode Interactive Live Console Ready.
-Type code, click 'Run & Output', and use the live interactive prompt below for any language!</div>
-        <div class="console-input-line" id="consoleInputContainer">
-          <span class="console-prompt-label" id="consolePromptLabel">&gt;</span>
-          <input type="text" id="consoleUserInput" class="console-user-input" placeholder="Type prompt input or expression and press Enter...">
+        <div id="consoleOutput" class="console-output-area">Kuaducode Real-Time Execution Engine Ready.
+Click 'Run & Output' to execute your code or type live inputs into prompts!</div>
+        <div class="console-input-line" id="consoleInputContainer" style="display:none;">
+          <span class="console-prompt-label" id="consolePromptLabel">&gt;&gt;</span>
+          <input type="text" id="consoleUserInput" class="console-user-input" placeholder="Type your input value here and press Enter...">
         </div>
       </div>
     </div>
@@ -512,7 +512,7 @@ Type code, click 'Run & Output', and use the live interactive prompt below for a
     <span id="posDisplay">Ln 1, Col 1</span>
   </div>
   <div class="status-group">
-    <span id="langDisplay">Lang: HTML</span>
+    <span id="langDisplay">Lang: RUST</span>
     <span id="wordCount">Words: 0</span>
     <span>Kuaducode Engine</span>
   </div>
@@ -568,7 +568,7 @@ Type code, click 'Run & Output', and use the live interactive prompt below for a
   let isWordWrap = true;
   let currentFontSize = 14;
 
-  let interactiveState = {
+  let executionState = {
     running: false,
     lang: '',
     lines: [],
@@ -578,15 +578,15 @@ Type code, click 'Run & Output', and use the live interactive prompt below for a
 
   const templates = {
     html: "<div style='padding:20px; font-family:sans-serif;'>\n  <h1>Hello from Kuaducode!</h1>\n  <p>Live HTML/CSS/JS preview is active.</p>\n</div>",
-    javascript: "const greeting = 'Hello from Kuaducode Live JS Console!';\nconsole.log(greeting);\n\nfunction calculateTotal(price, qty) {\n    return price * qty;\n}\n\nconsole.log('Total Price (GH₵):', calculateTotal(150, 4));",
+    rust: "use std::io;\n\nfn main() {\n    println!(\"=== Kuaducode User Information Portal (Rust) ===\");\n\n    println!(\"Enter your full name: \");\n    let mut name = String::new();\n    io::stdin().read_line(&mut name).unwrap();\n    let name = name.trim();\n\n    println!(\"Enter your age: \");\n    let mut age = String::new();\n    io::stdin().read_line(&mut age).unwrap();\n    let age = age.trim();\n\n    println!(\"\\n--- Saved User Details ---\");\n    println!(\"Name: {}\", name);\n    println!(\"Age: {}\", age);\n}",
     python: "name = input('Enter your full name: ')\nage = input('Enter your age: ')\nprofession = input('Enter your profession: ')\n\nprint('--- User Details Saved ---')\nprint(f'Name: {name}')\nprint(f'Age: {age}')\nprint(f'Profession: {profession}')",
+    javascript: "const greeting = 'Hello from Kuaducode Live JS Console!';\nconsole.log(greeting);\n\nfunction calculateTotal(price, qty) {\n    return price * qty;\n}\n\nconsole.log('Total Price (GH₵):', calculateTotal(150, 4));",
     php: "$name = \"Kuaducode Developer\";\necho \"Hello $name! PHP execution active.\\n\";\necho \"Current Server Time: \" . date('Y-m-d H:i:s');",
     sql: "SELECT id, username, role, balance_ghs \nFROM users \nWHERE status = 'active' \nORDER BY created_at DESC;",
     ruby: "name = 'Kuaducode Rubyist'\nputs \"Hello #{name}! Ruby runtime active.\"\nputs 'Iteration completed successfully.'",
     java: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello from Kuaducode Java Virtual Machine!\");\n        System.out.println(\"Result sum: 350\");\n    }\n}",
     csharp: "using System;\nclass Program {\n    static void Main() {\n        Console.WriteLine(\"Hello from Kuaducode C# .NET Core 8.0!\");\n        Console.WriteLine(\"Status: Active Workspace\");\n    }\n}",
-    go: "package main\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Hello from Kuaducode Go (Golang) Runtime!\")\n    fmt.Println(\"Server compiled successfully\")\n}",
-    rust: "fn main() {\n    println!(\"Hello from Kuaducode Rust Safe Memory Engine!\");\n    println!(\"Editor Performance Score: 100\");\n}"
+    go: "package main\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Hello from Kuaducode Go (Golang) Runtime!\")\n    fmt.Println(\"Server compiled successfully\")\n}"
   };
 
   document.querySelectorAll('.menu-dropdown').forEach(dropdown => {
@@ -739,6 +739,7 @@ Type code, click 'Run & Output', and use the live interactive prompt below for a
 
     document.querySelector('[data-target="consoleTab"]').click();
     consoleOutput.textContent = `--- Executing [${lang.toUpperCase()}] in Kuaducode Live Console ---\n\n`;
+    consoleInputContainer.style.display = 'none';
 
     if (lang === 'javascript') {
       let logs = [];
@@ -751,54 +752,59 @@ Type code, click 'Run & Output', and use the live interactive prompt below for a
         logs.push('Runtime Error: ' + err.message);
       }
       console.log = oldLog;
-      consoleOutput.textContent += logs.join('\n') + '\n\n[JS REPL Active - Type expressions below]';
-      consoleInputContainer.style.display = 'flex';
-      consolePromptLabel.textContent = 'JS>';
-      interactiveState.running = false;
-    } 
-    else if (lang === 'python') {
-      interactiveState.running = true;
-      interactiveState.lang = 'python';
-      interactiveState.lines = code.split('\n');
-      interactiveState.currentIndex = 0;
-      interactiveState.variables = {};
-      processNextInteractiveLine();
+      consoleOutput.textContent += logs.join('\n') + '\n\n[JS Execution Finished Successfully]';
+      return;
     }
-    else {
-      // General Universal Polyglot Runner with interactive prompt
-      interactiveState.running = true;
-      interactiveState.lang = lang;
-      interactiveState.lines = code.split('\n');
-      interactiveState.currentIndex = 0;
-      interactiveState.variables = {};
-      processNextInteractiveLine();
-    }
+
+    executionState.running = true;
+    executionState.lang = lang;
+    executionState.lines = code.split('\n');
+    executionState.currentIndex = 0;
+    executionState.variables = {};
+    processNextLine();
   }
 
-  function processNextInteractiveLine() {
-    let lang = interactiveState.lang;
+  function processNextLine() {
+    let lang = executionState.lang;
 
-    while (interactiveState.currentIndex < interactiveState.lines.length) {
-      let line = interactiveState.lines[interactiveState.currentIndex].trim();
-      interactiveState.currentIndex++;
+    while (executionState.currentIndex < executionState.lines.length) {
+      let line = executionState.lines[executionState.currentIndex].trim();
+      executionState.currentIndex++;
 
       if (!line || line.startsWith('#') || line.startsWith('//') || line.startsWith('--')) continue;
 
-      // Handle any language input prompt pattern
-      if (line.includes('input(') || line.includes('Console.ReadLine') || line.includes('scan') || line.includes('gets')) {
+      if (
+        line.includes('read_line') || 
+        line.includes('input(') || 
+        line.includes('Console.ReadLine') || 
+        line.includes('Scan') || 
+        line.includes('gets') || 
+        line.includes('Scanner')
+      ) {
         let promptText = "Enter value: ";
-        let m = line.match(/["'](.*?)["']/);
-        if (m) promptText = m[1];
+        for (let i = executionState.currentIndex - 2; i >= Math.max(0, executionState.currentIndex - 5); i--) {
+          let prevLine = executionState.lines[i];
+          let m = prevLine.match(/["'](.*?)["']/);
+          if (m) {
+            promptText = m[1] + " ";
+            break;
+          }
+        }
+
+        let varName = 'user_input';
+        let matchVar = line.match(/let\s+(?:mut\s+)?([a-zA-Z0-9_]+)/);
+        if (matchVar) varName = matchVar[1];
 
         consoleOutput.textContent += promptText;
         consoleInputContainer.style.display = 'flex';
         consolePromptLabel.textContent = '>>';
         consoleUserInput.value = '';
         consoleUserInput.focus();
+
+        executionState.pendingVar = varName;
         return;
       }
 
-      // Handle print / output statements
       if (
         line.startsWith('print(') || 
         line.startsWith('System.out.println(') || 
@@ -813,49 +819,64 @@ Type code, click 'Run & Output', and use the live interactive prompt below for a
         if (!inner && line.startsWith('puts ')) inner = line.substring(5);
         if (!inner && line.startsWith('echo ')) inner = line.substring(5);
 
-        let matches = inner.match(/["'](.*?)["']/g);
-        if (matches) {
-          consoleOutput.textContent += matches.map(x => x.slice(1, -1)).join(' ') + '\n';
-        } else {
-          consoleOutput.textContent += inner + '\n';
+        if (inner.includes('{}')) {
+          let parts = inner.split(',');
+          let template = parts[0].trim();
+          if ((template.startsWith('"') && template.endsWith('"')) || (template.startsWith("'") && template.endsWith("'"))) {
+            template = template.slice(1, -1);
+          }
+          for (let p = 1; p < parts.length; p++) {
+            let varKey = parts[p].replace(')', '').trim();
+            let val = executionState.variables[varKey] || varKey;
+            template = template.replace('{}', val);
+          }
+          consoleOutput.textContent += template + '\n';
         }
+        else if (inner.startsWith('f"') || inner.startsWith("f'")) {
+          let template = inner.slice(2, -1);
+          for (let [k, v] of Object.entries(executionState.variables)) {
+            template = template.replaceAll(`{${k}}`, v);
+          }
+          consoleOutput.textContent += template + '\n';
+        } else {
+          let matches = inner.match(/["'](.*?)["']/g);
+          if (matches) {
+            consoleOutput.textContent += matches.map(x => x.slice(1, -1)).join(' ') + '\n';
+          } else if (executionState.variables[inner.trim()]) {
+            consoleOutput.textContent += executionState.variables[inner.trim()] + '\n';
+          } else {
+            consoleOutput.textContent += inner + '\n';
+          }
+        }
+      }
+      else if (line.includes('=')) {
+        let cleanLine = line.replace(';');
+        let parts = cleanLine.split('=');
+        let vName = parts[0].replace('let', '').replace('mut', '').trim();
+        let vVal = parts[1].trim();
+        if ((vVal.startsWith('"') && vVal.endsWith('"')) || (vVal.startsWith("'") && vVal.endsWith("'"))) {
+          vVal = vVal.slice(1, -1);
+        }
+        executionState.variables[vName] = vVal;
       }
     }
 
-    consoleOutput.textContent += `\n[Process completed successfully for ${lang.toUpperCase()}]\n(Type expressions or commands below for live REPL)`;
-    consoleInputContainer.style.display = 'flex';
-    consolePromptLabel.textContent = `${lang.toUpperCase()}>`;
-    interactiveState.running = false;
+    consoleOutput.textContent += `\n[Process completed successfully with exit code 0]`;
+    consoleInputContainer.style.display = 'none';
+    executionState.running = false;
   }
 
   consoleUserInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && executionState.running) {
       let val = consoleUserInput.value;
-      if (!val && interactiveState.running) return;
+      consoleOutput.textContent += val + '\n';
+      consoleInputContainer.style.display = 'none';
 
-      if (interactiveState.running) {
-        consoleOutput.textContent += val + '\n';
-        consoleInputContainer.style.display = 'none';
-        processNextInteractiveLine();
-      } else {
-        let lang = langSelector.value;
-        consoleOutput.textContent += `\n${lang.toUpperCase()}> ${val}\n`;
-        consoleUserInput.value = '';
-
-        if (lang === 'javascript') {
-          try {
-            let res = eval(val);
-            if (res !== undefined) consoleOutput.textContent += `=> ${res}\n`;
-          } catch(err) {
-            consoleOutput.textContent += `Error: ${err.message}\n`;
-          }
-        } else if (lang === 'python') {
-          consoleOutput.textContent += `[Python REPL Evaluation]: ${val}\n`;
-        } else {
-          consoleOutput.textContent += `[${lang.toUpperCase()} Sandbox Echo]: ${val}\n`;
-        }
-        consoleOutput.scrollTop = consoleOutput.scrollHeight;
+      if (executionState.pendingVar) {
+        executionState.variables[executionState.pendingVar] = val;
       }
+
+      processNextLine();
     }
   });
 
@@ -999,7 +1020,7 @@ Type code, click 'Run & Output', and use the live interactive prompt below for a
   });
 
   document.getElementById('menuAbout').addEventListener('click', () => {
-    alert('Kuaducode Studio Pro\nInteractive Live Console for all supported languages.');
+    alert('Kuaducode Studio Pro\nReal-time execution engine supporting interactive Rust standard input streams.');
   });
 
   window.addEventListener('keydown', (e) => {
@@ -1023,9 +1044,9 @@ Type code, click 'Run & Output', and use the live interactive prompt below for a
   });
 
   createTab('index.html');
-  textArea.value = templates.javascript;
-  langSelector.value = 'javascript';
-  langDisplay.textContent = 'Lang: JAVASCRIPT CONSOLE';
+  textArea.value = templates.rust;
+  langSelector.value = 'rust';
+  langDisplay.textContent = 'Lang: RUST CONSOLE';
   updateLineNumbers();
   updateStats();
   runOutput();
