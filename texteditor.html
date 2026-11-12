@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Untitled - Notepad</title>
+<title>Untitled - Kuaducode Notepad</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f3f3f3;
-    color: #000000;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: #121214;
+    color: #e1e1e6;
     display: flex;
     flex-direction: column;
     height: 100vh;
@@ -17,47 +17,52 @@
   }
   .notepad-menu {
     display: flex;
-    background-color: #f1f1f1;
-    border-bottom: 1px solid #d4d4d4;
-    font-size: 12px;
-    padding: 2px 4px;
+    background-color: #1a1a1e;
+    border-bottom: 1px solid #2a2a2e;
+    font-size: 13px;
+    padding: 4px 8px;
     user-select: none;
   }
   .menu-dropdown {
     position: relative;
-    padding: 3px 8px;
+    padding: 4px 10px;
     cursor: pointer;
+    border-radius: 4px;
+    color: #c4c4cc;
   }
   .menu-dropdown:hover {
-    background-color: #e5e5e5;
+    background-color: #2a2a2e;
+    color: #ffffff;
   }
   .dropdown-content {
     display: none;
     position: absolute;
     top: 100%;
     left: 0;
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    border: 1px solid #cccccc;
-    min-width: 160px;
+    background-color: #1a1a1e;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    border: 1px solid #2a2a2e;
+    min-width: 180px;
     z-index: 1000;
-    padding: 4px 0;
+    padding: 6px 0;
+    border-radius: 6px;
   }
   .menu-dropdown.active .dropdown-content {
     display: block;
   }
   .dropdown-item {
-    padding: 6px 16px;
-    font-size: 12px;
+    padding: 8px 16px;
+    font-size: 13px;
     cursor: pointer;
+    color: #c4c4cc;
   }
   .dropdown-item:hover {
-    background-color: #0078d7;
+    background-color: #007acc;
     color: #ffffff;
   }
   .dropdown-divider {
     height: 1px;
-    background-color: #e1e1e1;
+    background-color: #2a2a2e;
     margin: 4px 0;
   }
   .editor-body {
@@ -65,31 +70,32 @@
     flex: 1;
     overflow: hidden;
     position: relative;
-    background-color: #ffffff;
+    background-color: #121214;
   }
   textarea {
     flex: 1;
-    background-color: #ffffff;
-    color: #000000;
+    background-color: #121214;
+    color: #e1e1e6;
     border: none;
-    padding: 8px;
-    font-family: 'Consolas', 'Courier New', Courier, monospace;
-    font-size: 14px;
-    line-height: 1.4;
+    padding: 16px;
+    font-family: 'Consolas', 'Fira Code', 'Courier New', monospace;
+    font-size: 15px;
+    line-height: 1.6;
     resize: none;
     outline: none;
     white-space: pre-wrap;
     overflow-y: auto;
+    caret-color: #007acc;
   }
   .status-bar {
     display: flex;
     justify-content: flex-end;
-    background-color: #f1f1f1;
-    border-top: 1px solid #d4d4d4;
-    padding: 4px 12px;
+    background-color: #1a1a1e;
+    border-top: 1px solid #2a2a2e;
+    padding: 6px 16px;
     font-size: 12px;
-    color: #333333;
-    gap: 20px;
+    color: #8c8c99;
+    gap: 24px;
     user-select: none;
   }
   .modal-overlay {
@@ -98,52 +104,59 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.3);
+    background: rgba(0,0,0,0.7);
     display: none;
     justify-content: center;
     align-items: center;
     z-index: 2000;
   }
   .modal {
-    background: #ffffff;
-    color: #000000;
-    border: 1px solid #999999;
-    padding: 20px;
-    border-radius: 4px;
-    width: 320px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    background: #1a1a1e;
+    color: #e1e1e6;
+    border: 1px solid #2a2a2e;
+    padding: 24px;
+    border-radius: 8px;
+    width: 340px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.6);
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
   }
   .modal h3 {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
+    color: #ffffff;
+    border-bottom: 1px solid #2a2a2e;
+    padding-bottom: 8px;
   }
   .modal label {
-    font-size: 12px;
+    font-size: 13px;
+    color: #c4c4cc;
   }
-  .modal input[type="range"], .modal input[type="number"] {
+  .modal input[type="range"] {
     width: 100%;
-    padding: 4px;
+    accent-color: #007acc;
+    cursor: pointer;
   }
   .modal-buttons {
     display: flex;
     justify-content: flex-end;
     gap: 8px;
-    margin-top: 8px;
+    margin-top: 4px;
   }
   .modal-buttons button {
-    padding: 4px 12px;
-    font-size: 12px;
+    padding: 6px 16px;
+    font-size: 13px;
     cursor: pointer;
-    background: #e1e1e1;
-    border: 1px solid #adadad;
-    border-radius: 2px;
+    background: #2a2a2e;
+    color: #ffffff;
+    border: 1px solid #3a3a3e;
+    border-radius: 4px;
+    transition: background 0.2s;
   }
   .modal-buttons button:hover {
-    background: #e5f1fb;
-    border-color: #0078d7;
+    background: #007acc;
+    border-color: #007acc;
   }
   input[type="file"] { display: none; }
 </style>
@@ -187,7 +200,7 @@
 </div>
 
 <div class="editor-body">
-  <textarea id="textArea" placeholder=""></textarea>
+  <textarea id="textArea" placeholder="Type or paste your text here..."></textarea>
   <input type="file" id="fileInput">
 </div>
 
@@ -200,11 +213,11 @@
 
 <div id="fontModal" class="modal-overlay">
   <div class="modal">
-    <h3>Font Settings</h3>
-    <label for="fontSizeInput">Font Size (<span id="fontSizeVal">14</span>px):</label>
-    <input type="range" id="fontSizeInput" min="10" max="32" value="14">
+    <h3>Font Size Settings</h3>
+    <label for="fontSizeInput">Font Size (<span id="fontSizeVal">15</span>px):</label>
+    <input type="range" id="fontSizeInput" min="12" max="32" value="15">
     <div class="modal-buttons">
-      <button id="closeFontModal">Close</button>
+      <button id="closeFontModal">Apply & Close</button>
     </div>
   </div>
 </div>
@@ -220,7 +233,7 @@
 
   let currentFileName = 'Untitled';
   let isWordWrap = true;
-  let currentFontSize = 14;
+  let currentFontSize = 15;
 
   document.querySelectorAll('.menu-dropdown').forEach(dropdown => {
     dropdown.addEventListener('click', (e) => {
@@ -254,7 +267,7 @@
     if (textArea.value.trim() === '' || confirm('Do you want to clear current text?')) {
       textArea.value = '';
       currentFileName = 'Untitled';
-      document.title = `${currentFileName} - Notepad`;
+      document.title = `${currentFileName} - Kuaducode Notepad`;
       updateCursorPosition();
     }
   });
@@ -268,7 +281,7 @@
     reader.onload = (event) => {
       textArea.value = event.target.result;
       currentFileName = file.name;
-      document.title = `${currentFileName} - Notepad`;
+      document.title = `${currentFileName} - Kuaducode Notepad`;
       updateCursorPosition();
     };
     reader.readAsText(file);
@@ -326,27 +339,27 @@
     textArea.style.fontSize = currentFontSize + 'px';
     fontSizeInput.value = currentFontSize;
     fontSizeVal.textContent = currentFontSize;
-    zoomDisplay.textContent = `Zoom: ${Math.round((currentFontSize / 14) * 100)}%`;
+    zoomDisplay.textContent = `Zoom: ${Math.round((currentFontSize / 15) * 100)}%`;
   });
 
   document.getElementById('menuZoomOut').addEventListener('click', () => {
-    currentFontSize = Math.max(10, parseInt(currentFontSize) - 2);
+    currentFontSize = Math.max(12, parseInt(currentFontSize) - 2);
     textArea.style.fontSize = currentFontSize + 'px';
     fontSizeInput.value = currentFontSize;
     fontSizeVal.textContent = currentFontSize;
-    zoomDisplay.textContent = `Zoom: ${Math.round((currentFontSize / 14) * 100)}%`;
+    zoomDisplay.textContent = `Zoom: ${Math.round((currentFontSize / 15) * 100)}%`;
   });
 
   document.getElementById('menuResetZoom').addEventListener('click', () => {
-    currentFontSize = 14;
-    textArea.style.fontSize = '14px';
-    fontSizeInput.value = 14;
-    fontSizeVal.textContent = 14;
+    currentFontSize = 15;
+    textArea.style.fontSize = '15px';
+    fontSizeInput.value = 15;
+    fontSizeVal.textContent = 15;
     zoomDisplay.textContent = 'Zoom: 100%';
   });
 
   document.getElementById('menuAbout').addEventListener('click', () => {
-    alert('Kuaducode Local Notepad Editor\nClassic Windows Notepad Experience in HTML5');
+    alert('Kuaducode Local Notepad Editor\nHuman-Eye Optimized Dark Theme Experience');
   });
 
   window.addEventListener('keydown', (e) => {
