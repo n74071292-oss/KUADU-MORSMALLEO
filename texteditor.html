@@ -229,6 +229,7 @@
       <div class="dropdown-item" id="menuNew">New (Ctrl+N)</div>
       <div class="dropdown-item" id="menuOpen">Open... (Ctrl+O)</div>
       <div class="dropdown-item" id="menuSave">Save (Ctrl+S)</div>
+      <div class="dropdown-item" id="menuSaveAs">Save As... (Ctrl+Shift+S)</div>
       <div class="dropdown-divider"></div>
       <div class="dropdown-item" id="menuExit">Exit</div>
     </div>
@@ -443,23 +444,49 @@
     e.target.value = '';
   });
 
-  document.getElementById('menuSave').addEventListener('click', () => {
+  function saveFile() {
     const currentTab = tabs.find(t => t.id === activeTabId);
+    const fileName = currentTab ? currentTab.name : 'document.txt';
+    if (currentTab) currentTab.content = textArea.value;
+
     const blob = new Blob([textArea.value], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = currentTab ? currentTab.name : 'document.txt';
+    a.download = fileName;
     a.click();
     URL.revokeObjectURL(url);
-  });
+  }
+
+  function saveAsFile() {
+    const currentTab = tabs.find(t => t.id === activeTabId);
+    let defaultName = currentTab ? currentTab.name : 'document.txt';
+    let newName = prompt("Save As - Enter file name:", defaultName);
+    if (!newName) return;
+    if (!newName.includes('.')) newName += '.txt';
+    
+    if (currentTab) {
+      currentTab.name = newName;
+      currentTab.content = textArea.value;
+    }
+    
+    const blob = new Blob([textArea.value], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = newName;
+    a.click();
+    URL.revokeObjectURL(url);
+    document.title = `${newName} - Kuaducode TEXT_EDITOR`;
+    renderTabs();
+  }
+
+  document.getElementById('menuSave').addEventListener('click', saveFile);
+  document.getElementById('menuSaveAs').addEventListener('click', saveAsFile);
 
   document.getElementById('menuExit').addEventListener('click', () => {
     if (confirm('Are you sure you want to exit Kuaducode TEXT_EDITOR?')) {
-      window.close();
-      setTimeout(() => {
-        window.location.href = "about:blank";
-      }, 100);
+      window.location.href = "https://n74071292-oss.github.io/KUADU-MORSMALLEO/";
     }
   });
 
@@ -537,8 +564,13 @@
   window.addEventListener('keydown', (e) => {
     if (e.ctrlKey || e.metaKey) {
       if (e.key === 's') {
-        e.preventDefault();
-        document.getElementById('menuSave').click();
+        if (e.shiftKey) {
+          e.preventDefault();
+          saveAsFile();
+        } else {
+          e.preventDefault();
+          saveFile();
+        }
       } else if (e.key === 'o') {
         e.preventDefault();
         fileInput.click();
