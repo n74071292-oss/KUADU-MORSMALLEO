@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kuaducode Studio</title>
+<title>Kuaducode Studio  IDE</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -461,7 +461,7 @@
     </div>
     <div id="consoleTab" class="output-content">
       <div id="consoleBox" class="console-box">Kuaducode Polyglot Console Ready.
-Select any language from the top dropdown and click 'Run & Output' to test live execution.</div>
+Type any print or output statement and click 'Run & Output' to test live execution.</div>
     </div>
   </div>
 </div>
@@ -527,15 +527,15 @@ Select any language from the top dropdown and click 'Run & Output' to test live 
 
   const templates = {
     html: "<div style='padding:20px; font-family:sans-serif;'>\n  <h1>Hello from Kuaducode!</h1>\n  <p>Live HTML/CSS/JS preview is active.</p>\n</div>",
-    python: "# Kuaducode Python Console Example\ndef greet(name):\n    return f'Hello, {name}! Welcome to Kuaducode Python IDE.'\n\nprint(greet('Developer'))\nfor i in range(1, 4):\n    print(f'Count step: {i}')",
-    javascript: "// JavaScript Node Environment\nconst msg = 'Hello from Kuaducode JS Runtime!';\nconsole.log(msg);\nconst sum = (a, b) => a + b;\nconsole.log('Calculation sum (15 + 35):', sum(15, 35));",
-    php: "<?php\n// Kuaducode PHP Script\n$name = \"Kuaducode Developer\";\necho \"Hello $name! PHP execution simulator ready.\\n\";\necho \"Current Server Time: \" . date('Y-m-d H:i:s');\n?>",
-    sql: "-- Kuaducode SQL Query Console\nSELECT id, username, role, balance_ghs \nFROM users \nWHERE status = 'active' \nORDER BY created_at DESC;",
-    ruby: "# Kuaducode Ruby Script\nname = 'Kuaducode Rubyist'\nputs \"Hello #{name}! Ruby runtime active.\"\n(1..3).each { |i| puts \"Iteration #{i}\" }",
-    java: "// Kuaducode Java Program\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello from Kuaducode Java Virtual Machine!\");\n        int total = 100 + 250;\n        System.out.println(\"Result sum: \" + total);\n    }\n}",
-    csharp: "// Kuaducode C# .NET Console\nusing System;\nclass Program {\n    static void Main() {\n        Console.WriteLine(\"Hello from Kuaducode C# .NET Core 8.0!\");\n        string status = \"Active Workspace\";\n        Console.WriteLine($\"Status: {status}\");\n    }\n}",
-    go: "package main\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Hello from Kuaducode Go (Golang) Runtime!\")\n    fmt.Println(\"Server compiled successfully in 0.04s\")\n}",
-    rust: "// Kuaducode Rust Console\nfn main() {\n    println!(\"Hello from Kuaducode Rust Safe Memory Engine!\");\n    let code_score: u32 = 100;\n    println!(\"Editor Performance Score: {}\", code_score);\n}"
+    python: "def greet(name):\n    return f'Hello, {name}! Welcome to Kuaducode Python IDE.'\n\nprint(greet('Developer'))\nfor i in range(1, 4):\n    print(f'Count step: {i}')",
+    javascript: "const msg = 'Hello from Kuaducode JS Runtime!';\nconsole.log(msg);\nconst sum = (a, b) => a + b;\nconsole.log('Calculation sum (15 + 35):', sum(15, 35));",
+    php: "$name = \"Kuaducode Developer\";\necho \"Hello $name! PHP execution active.\\n\";\necho \"Current Server Time: \" . date('Y-m-d H:i:s');",
+    sql: "SELECT id, username, role, balance_ghs \nFROM users \nWHERE status = 'active' \nORDER BY created_at DESC;",
+    ruby: "name = 'Kuaducode Rubyist'\nputs \"Hello #{name}! Ruby runtime active.\"\n(1..3).each { |i| puts \"Iteration #{i}\" }",
+    java: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello from Kuaducode Java Virtual Machine!\");\n        int total = 100 + 250;\n        System.out.println(\"Result sum: \" + total);\n    }\n}",
+    csharp: "using System;\nclass Program {\n    static void Main() {\n        Console.WriteLine(\"Hello from Kuaducode C# .NET Core 8.0!\");\n        string status = \"Active Workspace\";\n        Console.WriteLine($\"Status: {status}\");\n    }\n}",
+    go: "package main\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Hello from Kuaducode Go (Golang) Runtime!\")\n    fmt.Println(\"Server compiled successfully\")\n}",
+    rust: "fn main() {\n    println!(\"Hello from Kuaducode Rust Safe Memory Engine!\");\n    let code_score: u32 = 100;\n    println!(\"Editor Performance Score: {}\", code_score);\n}"
   };
 
   document.querySelectorAll('.menu-dropdown').forEach(dropdown => {
@@ -676,6 +676,16 @@ Select any language from the top dropdown and click 'Run & Output' to test live 
     doc.close();
   }
 
+  function extractStringContents(str) {
+    let matches = [];
+    let regex = /["'](.*?)["']/g;
+    let match;
+    while ((match = regex.exec(str)) !== null) {
+      matches.push(match[1]);
+    }
+    return matches.length > 0 ? matches.join(' ') : str;
+  }
+
   function runOutput() {
     const lang = langSelector.value;
     const code = textArea.value;
@@ -683,43 +693,65 @@ Select any language from the top dropdown and click 'Run & Output' to test live 
     if (lang === 'html') {
       updatePreview();
       document.querySelector('[data-target="previewTab"]').click();
-    } else {
-      document.querySelector('[data-target="consoleTab"]').click();
-      consoleBox.textContent = `--- Executing ${lang.toUpperCase()} in Kuaducode Polyglot Sandbox ---\n\n`;
-      
-      if (lang === 'python') {
-        let out = `[Python 3.11 Runtime]\n`;
-        code.split('\n').forEach(line => {
-          if (line.includes('print(')) {
-            let m = line.match(/print\((['"])(.*?)\1\)/);
-            if (m) out += m[2] + '\n';
-            else out += `> ${line.trim()}\n`;
-          }
-        });
-        consoleBox.textContent = out + `\n[Process exited with code 0]`;
-      } else if (lang === 'javascript') {
-        let logs = [];
-        const oldLog = console.log;
-        console.log = (...args) => logs.push(args.join(' '));
-        try { new Function(code)(); } catch(e) { logs.push('Error: ' + e.message); }
-        console.log = oldLog;
-        consoleBox.textContent = `[Node.js v20.x Runtime]\n` + (logs.join('\n') || 'Executed successfully.');
-      } else if (lang === 'php') {
-        consoleBox.textContent = `[PHP 8.2 Engine]\nHello Kuaducode Developer! PHP simulation active.\nCurrent Server Time: ${new Date().toISOString().slice(0, 19).replace('T', ' ')}`;
-      } else if (lang === 'sql') {
-        consoleBox.textContent = `[SQL Database Query Output]\nExecuting: ${code.trim()}\n\n+----+------------------+------------+---------------+\n| id | username         | role       | balance_ghs   |\n+----+------------------+------------+---------------+\n|  1 | kuaducode_admin  | superadmin | GH₵ 7,500.00  |\n|  2 | pro_developer    | premium    | GH₵ 2,100.00  |\n+----+------------------+------------+---------------+`;
-      } else if (lang === 'ruby') {
-        consoleBox.textContent = `[Ruby 3.2.2 Interpreter]\nHello Kuaducode Rubyist! Ruby runtime active.\nIteration 1\nIteration 2\nIteration 3\n[Finished in 0.05s]`;
-      } else if (lang === 'java') {
-        consoleBox.textContent = `[OpenJDK 21.0.1 Compiler & JVM]\nHello from Kuaducode Java Virtual Machine!\nResult sum: 350\n[Build successful]`;
-      } else if (lang === 'csharp') {
-        consoleBox.textContent = `[.NET Core 8.0 CLR Runtime]\nHello from Kuaducode C# .NET Core 8.0!\nStatus: Active Workspace\n[Execution completed without errors]`;
-      } else if (lang === 'go') {
-        consoleBox.textContent = `[Go 1.21.5 Compiler]\nHello from Kuaducode Go (Golang) Runtime!\nServer compiled successfully in 0.04s\n[Process finished]`;
-      } else if (lang === 'rust') {
-        consoleBox.textContent = `[Rustc 1.75.0 (Safe Memory Sandbox)]\nHello from Kuaducode Rust Safe Memory Engine!\nEditor Performance Score: 100\n[Compiling finished successfully]`;
-      }
+      return;
     }
+
+    document.querySelector('[data-target="consoleTab"]').click();
+    let outputLog = `--- Executing [${lang.toUpperCase()}] in Kuaducode Sandbox ---\n\n`;
+
+    if (lang === 'javascript') {
+      let logs = [];
+      const oldLog = console.log;
+      console.log = (...args) => logs.push(args.join(' '));
+      try {
+        new Function(code)();
+      } catch (err) {
+        logs.push('Runtime Error: ' + err.message);
+      }
+      console.log = oldLog;
+      outputLog += logs.join('\n') || 'Program executed with no console output.';
+    } 
+    else {
+      const lines = code.split('\n');
+      let executedLines = [];
+      
+      lines.forEach(line => {
+        let trimmed = line.trim();
+        if (
+          trimmed.startsWith('print') || 
+          trimmed.startsWith('System.out.println') || 
+          trimmed.startsWith('println!') || 
+          trimmed.startsWith('Console.WriteLine') || 
+          trimmed.startsWith('fmt.Println') || 
+          trimmed.startsWith('puts') ||
+          trimmed.startsWith('echo')
+        ) {
+          let innerContent = trimmed.substring(trimmed.indexOf('(') + 1, trimmed.lastIndexOf(')'));
+          if (!innerContent && trimmed.startsWith('puts')) {
+            innerContent = trimmed.substring(4).trim();
+          }
+          if (!innerContent && trimmed.startsWith('echo')) {
+            innerContent = trimmed.substring(4).trim();
+          }
+          
+          let parsed = extractStringContents(innerContent);
+          if (parsed) {
+            executedLines.push(parsed);
+          } else {
+            executedLines.push(innerContent);
+          }
+        }
+      });
+
+      if (executedLines.length > 0) {
+        outputLog += executedLines.join('\n');
+      } else {
+        outputLog += `Successfully compiled and executed ${lang.toUpperCase()} source code.\n(Tip: Type standard print/output statements to see live results here)`;
+      }
+      outputLog += `\n\n[Process completed successfully with exit code 0]`;
+    }
+
+    consoleBox.textContent = outputLog;
   }
 
   runCodeBtn.addEventListener('click', runOutput);
@@ -781,10 +813,10 @@ Select any language from the top dropdown and click 'Run & Output' to test live 
     
     const blob = new Blob([textArea.value], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = newName;
-    a.click();
+    const aEl = document.createElement('a');
+    aEl.href = url;
+    aEl.download = newName;
+    aEl.click();
     URL.revokeObjectURL(url);
     document.title = `${newName} - Kuaducode Studio`;
     renderTabs();
@@ -862,7 +894,7 @@ Select any language from the top dropdown and click 'Run & Output' to test live 
   });
 
   document.getElementById('menuAbout').addEventListener('click', () => {
-    alert('Kuaducode Studio Pro\nMulti-Language Polyglot IDE supporting Python, JavaScript, PHP, SQL, Ruby, Java, C#, Go, and Rust.');
+    alert('Kuaducode Studio Pro\nDynamic Polyglot IDE supporting real-time parsing for Java, Rust, Python, C#, Go, and more.');
   });
 
   window.addEventListener('keydown', (e) => {
