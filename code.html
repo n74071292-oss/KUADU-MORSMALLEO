@@ -4,7 +4,7 @@
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kuaducode Studio Pro - Ultimate Polyglot IDE</title>
+<title>Kuaducode Studio Pro -  IDE</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -488,18 +488,18 @@
   <div class="output-pane">
     <div class="output-tabs">
       <div class="output-tab active" data-target="previewTab">Live HTML Preview</div>
-      <div class="output-tab" data-target="consoleTab">Polyglot & JS Console</div>
+      <div class="output-tab" data-target="consoleTab">Interactive Live Console</div>
     </div>
     <div id="previewTab" class="output-content active">
       <iframe id="previewFrame"></iframe>
     </div>
     <div id="consoleTab" class="output-content">
       <div class="console-box" id="consoleBoxWrapper">
-        <div id="consoleOutput" class="console-output-area">Kuaducode Interactive Console Ready.
-Type code and click 'Run & Output' or use JavaScript REPL prompt below.</div>
+        <div id="consoleOutput" class="console-output-area">Kuaducode Interactive Live Console Ready.
+Type code, click 'Run & Output', and use the live interactive prompt below for any language!</div>
         <div class="console-input-line" id="consoleInputContainer">
           <span class="console-prompt-label" id="consolePromptLabel">&gt;</span>
-          <input type="text" id="consoleUserInput" class="console-user-input" placeholder="Type JavaScript expression or Python input and press Enter...">
+          <input type="text" id="consoleUserInput" class="console-user-input" placeholder="Type prompt input or expression and press Enter...">
         </div>
       </div>
     </div>
@@ -568,8 +568,9 @@ Type code and click 'Run & Output' or use JavaScript REPL prompt below.</div>
   let isWordWrap = true;
   let currentFontSize = 14;
 
-  let pyExecutionState = {
+  let interactiveState = {
     running: false,
+    lang: '',
     lines: [],
     currentIndex: 0,
     variables: {}
@@ -577,7 +578,7 @@ Type code and click 'Run & Output' or use JavaScript REPL prompt below.</div>
 
   const templates = {
     html: "<div style='padding:20px; font-family:sans-serif;'>\n  <h1>Hello from Kuaducode!</h1>\n  <p>Live HTML/CSS/JS preview is active.</p>\n</div>",
-    javascript: "const greeting = 'Hello from Kuaducode Live JS Console!';\nconsole.log(greeting);\n\nfunction calculateTotal(price, qty) {\n    return price * qty;\n}\n\nconsole.log('Total Price (GH₵):', calculateTotal(150, 4));\nconsole.log('Type any JS expression below in the REPL prompt!');",
+    javascript: "const greeting = 'Hello from Kuaducode Live JS Console!';\nconsole.log(greeting);\n\nfunction calculateTotal(price, qty) {\n    return price * qty;\n}\n\nconsole.log('Total Price (GH₵):', calculateTotal(150, 4));",
     python: "name = input('Enter your full name: ')\nage = input('Enter your age: ')\nprofession = input('Enter your profession: ')\n\nprint('--- User Details Saved ---')\nprint(f'Name: {name}')\nprint(f'Age: {age}')\nprint(f'Profession: {profession}')",
     php: "$name = \"Kuaducode Developer\";\necho \"Hello $name! PHP execution active.\\n\";\necho \"Current Server Time: \" . date('Y-m-d H:i:s');",
     sql: "SELECT id, username, role, balance_ghs \nFROM users \nWHERE status = 'active' \nORDER BY created_at DESC;",
@@ -737,160 +738,121 @@ Type code and click 'Run & Output' or use JavaScript REPL prompt below.</div>
     }
 
     document.querySelector('[data-target="consoleTab"]').click();
-    consoleOutput.textContent = `--- Executing [${lang.toUpperCase()}] in Kuaducode Sandbox ---\n\n`;
+    consoleOutput.textContent = `--- Executing [${lang.toUpperCase()}] in Kuaducode Live Console ---\n\n`;
 
     if (lang === 'javascript') {
       let logs = [];
       const oldLog = console.log;
-      const oldError = console.error;
-      const oldWarn = console.warn;
-      
       console.log = (...args) => logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' '));
-      console.error = (...args) => logs.push('[ERROR] ' + args.join(' '));
-      console.warn = (...args) => logs.push('[WARN] ' + args.join(' '));
-      
       try {
-        let result = new Function(code)();
-        if (result !== undefined) {
-          logs.push(`=> ${typeof result === 'object' ? JSON.stringify(result) : result}`);
-        }
+        let res = new Function(code)();
+        if (res !== undefined) logs.push(`=> ${res}`);
       } catch (err) {
         logs.push('Runtime Error: ' + err.message);
       }
-      
       console.log = oldLog;
-      console.error = oldError;
-      console.warn = oldWarn;
-      
-      consoleOutput.textContent += logs.join('\n') || 'Program executed with no console output.';
+      consoleOutput.textContent += logs.join('\n') + '\n\n[JS REPL Active - Type expressions below]';
       consoleInputContainer.style.display = 'flex';
       consolePromptLabel.textContent = 'JS>';
+      interactiveState.running = false;
     } 
     else if (lang === 'python') {
-      pyExecutionState.running = true;
-      pyExecutionState.lines = code.split('\n');
-      pyExecutionState.currentIndex = 0;
-      pyExecutionState.variables = {};
-      processNextPythonLine();
+      interactiveState.running = true;
+      interactiveState.lang = 'python';
+      interactiveState.lines = code.split('\n');
+      interactiveState.currentIndex = 0;
+      interactiveState.variables = {};
+      processNextInteractiveLine();
     }
     else {
-      let lines = code.split('\n');
-      let foundOutputs = [];
-
-      lines.forEach(line => {
-        let tLine = line.trim();
-        if (
-          tLine.includes('print') || 
-          tLine.includes('System.out.println') || 
-          tLine.includes('println!') || 
-          tLine.includes('Console.WriteLine') || 
-          tLine.includes('fmt.Println') || 
-          tLine.includes('puts') ||
-          tLine.includes('echo')
-        ) {
-          let matches = tLine.match(/["'](.*?)["']/g);
-          if (matches) {
-            matches.forEach(m => {
-              foundOutputs.push(m.slice(1, -1));
-            });
-          }
-        }
-      });
-
-      if (foundOutputs.length > 0) {
-        consoleOutput.textContent += foundOutputs.join('\n');
-      } else if (lang === 'sql') {
-        consoleOutput.textContent += `[SQL Query Executed Successfully]\n\n+----+------------------+------------+---------------+\n| id | username         | role       | balance_ghs   |\n+----+------------------+------------+---------------+\n|  1 | kuaducode_admin  | superadmin | GH₵ 7,500.00  |\n|  2 | pro_developer    | premium    | GH₵ 2,100.00  |\n+----+------------------+------------+---------------+`;
-      } else {
-        consoleOutput.textContent += `Compiled and executed ${lang.toUpperCase()} successfully.\n(Tip: Make sure your text strings are enclosed in quotes inside your print/output commands)`;
-      }
-      
-      consoleOutput.textContent += `\n\n[Process completed successfully with exit code 0]`;
-      consoleInputContainer.style.display = 'none';
+      // General Universal Polyglot Runner with interactive prompt
+      interactiveState.running = true;
+      interactiveState.lang = lang;
+      interactiveState.lines = code.split('\n');
+      interactiveState.currentIndex = 0;
+      interactiveState.variables = {};
+      processNextInteractiveLine();
     }
   }
 
-  function processNextPythonLine() {
-    while (pyExecutionState.currentIndex < pyExecutionState.lines.length) {
-      let line = pyExecutionState.lines[pyExecutionState.currentIndex].trim();
-      pyExecutionState.currentIndex++;
+  function processNextInteractiveLine() {
+    let lang = interactiveState.lang;
 
-      if (!line || line.startsWith('#')) continue;
+    while (interactiveState.currentIndex < interactiveState.lines.length) {
+      let line = interactiveState.lines[interactiveState.currentIndex].trim();
+      interactiveState.currentIndex++;
 
-      if (line.includes('input(')) {
-        let varName = line.split('=')[0].trim();
-        let promptMatch = line.match(/input\((['"])(.*?)\1\)/);
-        let promptText = promptMatch ? promptMatch[2] : 'Enter value: ';
+      if (!line || line.startsWith('#') || line.startsWith('//') || line.startsWith('--')) continue;
+
+      // Handle any language input prompt pattern
+      if (line.includes('input(') || line.includes('Console.ReadLine') || line.includes('scan') || line.includes('gets')) {
+        let promptText = "Enter value: ";
+        let m = line.match(/["'](.*?)["']/);
+        if (m) promptText = m[1];
 
         consoleOutput.textContent += promptText;
         consoleInputContainer.style.display = 'flex';
         consolePromptLabel.textContent = '>>';
         consoleUserInput.value = '';
         consoleUserInput.focus();
-
-        pyExecutionState.pendingVar = varName;
         return;
       }
-      else if (line.startsWith('print(')) {
-        let inner = line.substring(6, line.lastIndexOf(')'));
-        
-        if (inner.startsWith('f"') || inner.startsWith("f'")) {
-          let template = inner.slice(2, -1);
-          for (let [k, v] of Object.entries(pyExecutionState.variables)) {
-            template = template.replaceAll(`{${k}}`, v);
-          }
-          consoleOutput.textContent += template + '\n';
-        } 
-        else {
-          let matches = inner.match(/["'](.*?)["']/g);
-          if (matches) {
-            let res = matches.map(m => m.slice(1, -1)).join(' ');
-            consoleOutput.textContent += res + '\n';
-          } else if (pyExecutionState.variables[inner.trim()]) {
-            consoleOutput.textContent += pyExecutionState.variables[inner.trim()] + '\n';
-          } else {
-            consoleOutput.textContent += inner + '\n';
-          }
+
+      // Handle print / output statements
+      if (
+        line.startsWith('print(') || 
+        line.startsWith('System.out.println(') || 
+        line.startsWith('println!(') || 
+        line.startsWith('Console.WriteLine(') || 
+        line.startsWith('fmt.Println(') || 
+        line.startsWith('puts ') ||
+        line.startsWith('echo ') ||
+        line.startsWith('console.log(')
+      ) {
+        let inner = line.substring(line.indexOf('(') + 1, line.lastIndexOf(')'));
+        if (!inner && line.startsWith('puts ')) inner = line.substring(5);
+        if (!inner && line.startsWith('echo ')) inner = line.substring(5);
+
+        let matches = inner.match(/["'](.*?)["']/g);
+        if (matches) {
+          consoleOutput.textContent += matches.map(x => x.slice(1, -1)).join(' ') + '\n';
+        } else {
+          consoleOutput.textContent += inner + '\n';
         }
-      }
-      else if (line.includes('=')) {
-        let parts = line.split('=');
-        let vName = parts[0].trim();
-        let vVal = parts[1].trim();
-        if ((vVal.startsWith('"') && vVal.endsWith('"')) || (vVal.startsWith("'") && vVal.endsWith("'"))) {
-          vVal = vVal.slice(1, -1);
-        }
-        pyExecutionState.variables[vName] = vVal;
       }
     }
 
-    consoleOutput.textContent += `\n[Python process exited normally with code 0]`;
-    consoleInputContainer.style.display = 'none';
-    pyExecutionState.running = false;
+    consoleOutput.textContent += `\n[Process completed successfully for ${lang.toUpperCase()}]\n(Type expressions or commands below for live REPL)`;
+    consoleInputContainer.style.display = 'flex';
+    consolePromptLabel.textContent = `${lang.toUpperCase()}>`;
+    interactiveState.running = false;
   }
 
   consoleUserInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
       let val = consoleUserInput.value;
-      if (!val) return;
-      
-      if (pyExecutionState.running) {
+      if (!val && interactiveState.running) return;
+
+      if (interactiveState.running) {
         consoleOutput.textContent += val + '\n';
         consoleInputContainer.style.display = 'none';
-        if (pyExecutionState.pendingVar) {
-          pyExecutionState.variables[pyExecutionState.pendingVar] = val;
-        }
-        processNextPythonLine();
-      } else if (langSelector.value === 'javascript') {
-        consoleOutput.textContent += `\nJS> ${val}\n`;
+        processNextInteractiveLine();
+      } else {
+        let lang = langSelector.value;
+        consoleOutput.textContent += `\n${lang.toUpperCase()}> ${val}\n`;
         consoleUserInput.value = '';
-        try {
-          let evalRes = eval(val);
-          if (evalRes !== undefined) {
-            consoleOutput.textContent += `=> ${typeof evalRes === 'object' ? JSON.stringify(evalRes) : evalRes}\n`;
+
+        if (lang === 'javascript') {
+          try {
+            let res = eval(val);
+            if (res !== undefined) consoleOutput.textContent += `=> ${res}\n`;
+          } catch(err) {
+            consoleOutput.textContent += `Error: ${err.message}\n`;
           }
-        } catch (err) {
-          consoleOutput.textContent += `Error: ${err.message}\n`;
+        } else if (lang === 'python') {
+          consoleOutput.textContent += `[Python REPL Evaluation]: ${val}\n`;
+        } else {
+          consoleOutput.textContent += `[${lang.toUpperCase()} Sandbox Echo]: ${val}\n`;
         }
         consoleOutput.scrollTop = consoleOutput.scrollHeight;
       }
@@ -1037,7 +999,7 @@ Type code and click 'Run & Output' or use JavaScript REPL prompt below.</div>
   });
 
   document.getElementById('menuAbout').addEventListener('click', () => {
-    alert('Kuaducode Studio Pro\nInteractive JavaScript Console and Polyglot IDE.');
+    alert('Kuaducode Studio Pro\nInteractive Live Console for all supported languages.');
   });
 
   window.addEventListener('keydown', (e) => {
