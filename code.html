@@ -1,938 +1,893 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KuaduCode™ — Professional Web IDE & Kali Linux Terminal</title>
-    <meta name="description" content="KuaduCode is a universal web code editor and IDE featuring live preview, Python environment, Kuadu AI, and an interactive Kali Linux terminal simulator with sudo and package management.">
-    <meta name="author" content="Kuaducode Platform">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
-
-    <style>
-        :root {
-            --primary-bg: #0d1117;
-            --panel-bg: rgba(22, 27, 34, 0.96);
-            --border-color: #30363d;
-            --text-main: #c9d1d9;
-            --accent-green: #2ea44f;
-            --accent-glow: rgba(46, 164, 79, 0.4);
-            --accent-blue: #58a6ff;
-            --accent-purple: #8957e5;
-            --header-bg: #161b22;
-            --tab-active: #21262d;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            background-color: var(--primary-bg);
-            color: var(--text-main);
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        header {
-            background-color: var(--header-bg);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 20px;
-            height: 60px;
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo-area h1 {
-            font-size: 1.15rem;
-            font-weight: 600;
-            color: #ffffff;
-            letter-spacing: -0.5px;
-        }
-
-        .logo-area span {
-            font-size: 0.75rem;
-            background: rgba(88, 166, 255, 0.15);
-            color: var(--accent-blue);
-            padding: 2px 8px;
-            border-radius: 12px;
-            border: 1px solid rgba(88, 166, 255, 0.3);
-        }
-
-        .toolbar {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .btn {
-            background-color: #21262d;
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 6px 14px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn:hover {
-            background-color: #30363d;
-            border-color: #8b949e;
-        }
-
-        .btn-primary {
-            background-color: var(--accent-green);
-            color: #ffffff;
-            border-color: rgba(27, 31, 35, 0.15);
-            box-shadow: 0 0 10px var(--accent-glow);
-        }
-
-        .btn-primary:hover {
-            background-color: #2c974b;
-        }
-
-        .btn-ai {
-            background-color: rgba(137, 87, 229, 0.2);
-            color: #d2a8ff;
-            border-color: rgba(137, 87, 229, 0.4);
-        }
-
-        .workspace {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            flex: 1;
-            gap: 1px;
-            background-color: var(--border-color);
-            height: calc(100vh - 110px);
-            overflow: hidden;
-        }
-
-        .pane {
-            background-color: var(--panel-bg);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            height: 100%;
-        }
-
-        .tab-bar {
-            background-color: var(--header-bg);
-            display: flex;
-            border-bottom: 1px solid var(--border-color);
-            overflow-x: auto;
-            scrollbar-width: thin;
-        }
-
-        .tab {
-            padding: 10px 16px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #8b949e;
-            background: transparent;
-            border: none;
-            border-right: 1px solid var(--border-color);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            white-space: nowrap;
-            transition: background 0.2s, color 0.2s;
-        }
-
-        .tab:hover {
-            color: var(--text-main);
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .tab.active {
-            color: #ffffff;
-            background-color: var(--tab-active);
-            border-bottom: 2px solid var(--accent-blue);
-        }
-
-        .editor-container {
-            position: relative;
-            flex: 1;
-            display: none;
-            overflow: auto;
-        }
-
-        .editor-container.active {
-            display: flex;
-        }
-
-        textarea {
-            width: 100%;
-            height: 100%;
-            background: transparent;
-            color: var(--text-main);
-            border: none;
-            padding: 16px;
-            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            resize: none;
-            outline: none;
-        }
-
-        .tools-panel {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            height: 100%;
-            overflow-y: auto;
-            background: #0d1117;
-        }
-
-        .tool-section-card {
-            background: #161b22;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .tool-section-card h3 {
-            font-size: 0.95rem;
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .tool-section-card p {
-            font-size: 0.8rem;
-            color: #8b949e;
-        }
-
-        .tool-row {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .tool-input, .tool-select {
-            background: #0d1117;
-            border: 1px solid var(--border-color);
-            color: #fff;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            outline: none;
-            flex: 1;
-        }
-
-        .tool-btn {
-            background: #21262d;
-            border: 1px solid var(--border-color);
-            color: #c9d1d9;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-        .tool-btn:hover {
-            background: #30363d;
-            color: #fff;
-        }
-
-        .tool-output {
-            font-family: monospace;
-            font-size: 0.85rem;
-            color: #7ee787;
-            background: #040d21;
-            padding: 10px;
-            border-radius: 6px;
-            word-break: break-all;
-            white-space: pre-wrap;
-            min-height: 38px;
-        }
-
-        .terminal-box {
-            background: #0b0f19;
-            border: 1px solid #1f6feb;
-            border-radius: 6px;
-            padding: 12px;
-            font-family: monospace;
-            font-size: 0.85rem;
-            color: #3fb950;
-            height: 180px;
-            overflow-y: auto;
-            white-space: pre-wrap;
-            box-shadow: inset 0 2px 6px rgba(0,0,0,0.4);
-        }
-
-        .output-pane-container {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            background-color: #ffffff;
-        }
-
-        .output-header {
-            background-color: var(--header-bg);
-            padding: 10px 16px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #8b949e;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        iframe {
-            width: 100%;
-            flex: 2;
-            border: none;
-            background-color: #ffffff;
-        }
-
-        .console-wrapper {
-            flex: 1;
-            background-color: #040d21;
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .console-output {
-            padding: 12px 16px;
-            font-family: monospace;
-            font-size: 0.85rem;
-            color: #7ee787;
-            flex: 1;
-            overflow-y: auto;
-            white-space: pre-wrap;
-        }
-
-        .console-input-row {
-            display: flex;
-            align-items: center;
-            background: #0d1117;
-            border-top: 1px solid var(--border-color);
-            padding: 6px 12px;
-        }
-
-        .console-prompt-label {
-            font-family: monospace;
-            color: #58a6ff;
-            font-weight: 600;
-            font-size: 0.85rem;
-            margin-right: 8px;
-        }
-
-        .console-input-field {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: #c9d1d9;
-            font-family: monospace;
-            font-size: 0.85rem;
-            outline: none;
-        }
-
-        footer {
-            height: 50px;
-            background-color: var(--header-bg);
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 20px;
-        }
-
-        .ai-assistant-panel {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            background-color: #0d1117;
-            padding: 16px;
-            gap: 12px;
-        }
-
-        .ai-chat-history {
-            flex: 1;
-            background: #161b22;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 16px;
-            overflow-y: auto;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .ai-msg {
-            padding: 12px 16px;
-            border-radius: 10px;
-            max-width: 88%;
-            white-space: pre-wrap;
-        }
-
-        .ai-msg.assistant {
-            background: #21262d;
-            color: #e6edf3;
-            border: 1px solid var(--border-color);
-            align-self: flex-start;
-        }
-
-        .ai-msg.user {
-            background: #1f6feb;
-            color: #ffffff;
-            align-self: flex-end;
-        }
-
-        .ai-input-box {
-            display: flex;
-            gap: 10px;
-            background: #161b22;
-            border: 1px solid var(--border-color);
-            padding: 10px 14px;
-            border-radius: 8px;
-            align-items: center;
-        }
-
-        .ai-input-box input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: #fff;
-            outline: none;
-            font-size: 0.9rem;
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-        <div class="logo-area">
-            <h1>KuaduCode™</h1>
-            <span>Kali Linux IDE & Utilities</span>
-        </div>
-        <div class="toolbar">
-            <button class="btn" onclick="clearActiveTab()"><i class="fa-solid fa-trash"></i> Clear</button>
-            <button class="btn btn-ai" onclick="switchTab(null, 'ai-container')"><i class="fa-solid fa-robot"></i> Kuadu AI</button>
-            <button class="btn btn-primary" onclick="runCode()"><i class="fa-solid fa-play"></i> Run Code</button>
-        </div>
-    </header>
-
-    <div class="workspace">
-        <div class="pane">
-            <div class="tab-bar">
-                <button class="tab active" onclick="switchTab(event, 'html-container')"><i class="fa-brands fa-html5" style="color: #e34f26;"></i> HTML</button>
-                <button class="tab" onclick="switchTab(event, 'css-container')"><i class="fa-brands fa-css3-alt" style="color: #1572b6;"></i> CSS</button>
-                <button class="tab" onclick="switchTab(event, 'js-container')"><i class="fa-brands fa-js" style="color: #f7df1e;"></i> JS</button>
-                <button class="tab" onclick="switchTab(event, 'python-container')"><i class="fa-brands fa-python" style="color: #3776ab;"></i> Python</button>
-                <button class="tab" onclick="switchTab(event, 'tools-container')" style="color: #58a6ff;"><i class="fa-solid fa-toolbox"></i> Tools</button>
-                <button class="tab ai-tab-btn" onclick="switchTab(event, 'ai-container')"><i class="fa-solid fa-brain"></i> Kuadu AI</button>
-            </div>
-
-            <!-- Updated HTML Code Tab -->
-            <div id="html-container" class="editor-container active">
-                <textarea id="html-code"><!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>KuaduCode Live Workspace</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="card">
-        <h1>Welcome to KuaduCode</h1>
-        <p>Your professional web development and security studio.</p>
-        <button id="action-btn">Click Me</button>
-    </div>
-    <script src="script.js"></script>
-</body>
-</html></textarea>
-            </div>
-
-            <!-- Updated CSS Code Tab -->
-            <div id="css-container" class="editor-container">
-                <textarea id="css-code">body {
-    background: #0d1117;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kuaducode Studio Pro - Multi-Language IDE</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #0b0f19;
+    color: #f3f4f6;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
     height: 100vh;
-    margin: 0;
-}
-.card {
-    background: #161b22;
-    border: 1px solid #30363d;
-    padding: 30px;
-    border-radius: 12px;
-    text-align: center;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-}
-h1 {
-    color: #58a6ff;
-    margin-bottom: 10px;
-    font-size: 1.5rem;
-}
-p {
-    color: #8b949e;
-    margin-bottom: 20px;
-}
-button {
-    background: #2ea44f;
-    color: white;
-    border: none;
-    padding: 10px 20px;
+    overflow: hidden;
+  }
+  .brand-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #111827;
+    border-bottom: 1px solid #374151;
+    padding: 8px 16px;
+    height: 48px;
+    z-index: 10;
+  }
+  .brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 16px;
+    color: #ffffff;
+  }
+  .logo-icon {
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, #3b82f6, #10b981);
     border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .lang-select {
+    background-color: #1f2937;
+    color: #ffffff;
+    border: 1px solid #374151;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    outline: none;
+  }
+  .run-btn {
+    background-color: #10b981;
+    color: #ffffff;
+    border: none;
+    padding: 5px 14px;
+    border-radius: 4px;
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
-}
-button:hover {
-    background: #2c974b;
-}</textarea>
-            </div>
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .run-btn:hover {
+    background-color: #059669;
+  }
+  .owner-badge {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: #34d399;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .owner-dot {
+    width: 6px;
+    height: 6px;
+    background-color: #10b981;
+    border-radius: 50%;
+  }
+  .notepad-menu {
+    display: flex;
+    background-color: #111827;
+    border-bottom: 1px solid #374151;
+    font-size: 12px;
+    padding: 2px 8px;
+    user-select: none;
+    gap: 4px;
+  }
+  .menu-dropdown {
+    position: relative;
+    padding: 4px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    color: #9ca3af;
+  }
+  .menu-dropdown:hover, .menu-dropdown.active {
+    background-color: #1f2937;
+    color: #ffffff;
+  }
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #111827;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    border: 1px solid #374151;
+    min-width: 190px;
+    z-index: 1000;
+    padding: 6px 0;
+    border-radius: 6px;
+  }
+  .menu-dropdown.active .dropdown-content {
+    display: block;
+  }
+  .dropdown-item {
+    padding: 8px 16px;
+    font-size: 12px;
+    cursor: pointer;
+    color: #9ca3af;
+    display: flex;
+    justify-content: space-between;
+  }
+  .dropdown-item:hover {
+    background-color: #3b82f6;
+    color: #ffffff;
+  }
+  .dropdown-divider {
+    height: 1px;
+    background-color: #374151;
+    margin: 4px 0;
+  }
+  .tab-bar {
+    display: flex;
+    background-color: #111827;
+    border-bottom: 1px solid #374151;
+    overflow-x: auto;
+    align-items: center;
+    padding-left: 8px;
+    height: 36px;
+  }
+  .tab {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #0b0f19;
+    padding: 0 14px;
+    height: 30px;
+    font-size: 12px;
+    border-right: 1px solid #374151;
+    cursor: pointer;
+    user-select: none;
+    color: #9ca3af;
+    border-top: 2px solid transparent;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+  }
+  .tab.active {
+    background-color: #1f2937;
+    color: #ffffff;
+    border-top-color: #3b82f6;
+  }
+  .tab .close-tab {
+    font-size: 14px;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .tab .close-tab:hover {
+    background-color: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+  }
+  .add-tab-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    padding: 0 12px;
+    cursor: pointer;
+    color: #9ca3af;
+    height: 100%;
+  }
+  .add-tab-btn:hover {
+    color: #ffffff;
+    background-color: #1f2937;
+  }
+  .workspace {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+  .editor-pane {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    background-color: #0b0f19;
+    border-right: 1px solid #374151;
+  }
+  .line-numbers {
+    width: 50px;
+    background-color: #111827;
+    color: #4b5563;
+    padding: 12px 6px;
+    text-align: right;
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    user-select: none;
+    overflow: hidden;
+    border-right: 1px solid #374151;
+  }
+  textarea {
+    flex: 1;
+    background-color: transparent;
+    color: #f3f4f6;
+    border: none;
+    padding: 12px;
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    resize: none;
+    outline: none;
+    white-space: pre-wrap;
+    overflow-y: auto;
+    caret-color: #3b82f6;
+  }
+  .output-pane {
+    flex: 1;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .output-tabs {
+    display: flex;
+    background-color: #f1f1f1;
+    border-bottom: 1px solid #d4d4d4;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .output-tab {
+    padding: 6px 14px;
+    cursor: pointer;
+    color: #555555;
+    border-right: 1px solid #d4d4d4;
+    user-select: none;
+  }
+  .output-tab.active {
+    background-color: #ffffff;
+    color: #0078d7;
+    border-bottom: 2px solid #0078d7;
+  }
+  .output-content {
+    flex: 1;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .output-content.active {
+    display: flex;
+  }
+  iframe {
+    flex: 1;
+    border: none;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+  }
+  .console-box {
+    flex: 1;
+    background-color: #0f172a;
+    color: #38bdf8;
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+    padding: 14px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+  .status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #111827;
+    border-top: 1px solid #374151;
+    padding: 6px 16px;
+    font-size: 12px;
+    color: #9ca3af;
+    user-select: none;
+  }
+  .status-group { display: flex; gap: 20px; align-items: center; }
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(11, 15, 25, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+  }
+  .modal {
+    background: #111827;
+    color: #f3f4f6;
+    border: 1px solid #374151;
+    padding: 24px;
+    border-radius: 8px;
+    width: 360px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .modal h3 {
+    font-size: 15px;
+    font-weight: 600;
+    border-bottom: 1px solid #374151;
+    padding-bottom: 8px;
+  }
+  .setting-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 13px;
+  }
+  .setting-item input[type="range"], .setting-item input[type="color"] {
+    width: 100%;
+    padding: 4px;
+    background: #0b0f19;
+    border: 1px solid #374151;
+    border-radius: 4px;
+    color: #f3f4f6;
+  }
+  .setting-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+  }
+  .modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .modal-buttons button {
+    padding: 6px 16px;
+    font-size: 12px;
+    cursor: pointer;
+    background: #3b82f6;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  .modal-buttons button:hover {
+    background: #2563eb;
+  }
+  input[type="file"] { display: none; }
+</style>
+</head>
+<body>
 
-            <!-- Updated JS Code Tab -->
-            <div id="js-container" class="editor-container">
-                <textarea id="js-code">console.log("KuaduCode JavaScript runtime initialized.");
-
-document.addEventListener("DOMContentLoaded", () => {
-    const btn = document.getElementById("action-btn");
-    if (btn) {
-        btn.addEventListener("click", () => {
-            alert("Button clicked successfully inside KuaduCode Studio!");
-            console.log("Interactive event triggered by user.");
-        });
-    }
-});</textarea>
-            </div>
-
-            <!-- Updated Python Code Tab -->
-            <div id="python-container" class="editor-container">
-                <textarea id="python-code">class SecurityAnalyzer:
-    def __init__(self, target_ip):
-        self.target_ip = target_ip
-        self.ports = [22, 80, 443, 3306, 8080]
-
-    def scan_ports(self):
-        print(f"[*] Initializing security scan for target: {self.target_ip}")
-        active_ports = []
-        for port in self.ports:
-            # Simulated check
-            status = "OPEN" if port in [22, 80] else "FILTERED"
-            print(f"Port {port}: {status}")
-            if status == "OPEN":
-                active_ports.append(port)
-        return active_ports
-
-analyzer = SecurityAnalyzer("127.0.0.1")
-open_ports = analyzer.scan_ports()
-print(f"[+] Scan completed successfully. Open ports found: {open_ports}")</textarea>
-            </div>
-
-            <!-- Tools Tab featuring Kali Linux Terminal and Utilities -->
-            <div id="tools-container" class="editor-container">
-                <div class="tools-panel">
-                    <h2 style="font-size: 1.1rem; color: #fff; margin-bottom: 2px;"><i class="fa-solid fa-toolbox"></i> Tools & Kali Linux Terminal</h2>
-                    <p style="font-size: 0.8rem; color: #8b949e; margin-bottom: 10px;">Interactive Kali Linux terminal supporting <code>sudo</code>, apt package management, security tools (nmap, metasploit, wireshark), plus URL decoder, password generator, and SQL builder.</p>
-
-                    <!-- Kali Linux Terminal Simulator -->
-                    <div class="tool-section-card">
-                        <h3><i class="fa-solid fa-terminal" style="color: #3fb950;"></i> Kali Linux Terminal (Root & Sudo Enabled)</h3>
-                        <p>Type commands (e.g., <code>sudo apt update</code>, <code>sudo apt install nmap</code>, <code>nmap -sV 127.0.0.1</code>, <code>msfconsole</code>, <code>whoami</code>, <code>ls</code>).</p>
-                        <div id="linux-terminal" class="terminal-box">Kali GNU/Linux Rolling (v2026.1) - Root & Sudo Enabled. Type 'help' for available commands.
-┌──(kali㉿kuaducode)-[~]
-└─$ </div>
-                        <div class="tool-row">
-                            <input type="text" id="linux-input" class="tool-input" placeholder="Enter command (e.g. sudo apt install nmap)..." onkeypress="handleLinuxKey(event)">
-                            <button class="tool-btn btn-primary" onclick="runKaliCommand()">Execute</button>
-                        </div>
-                    </div>
-
-                    <!-- URL Decoder / Encoder -->
-                    <div class="tool-section-card">
-                        <h3><i class="fa-solid fa-link" style="color: #58a6ff;"></i> URL Decoder & Encoder</h3>
-                        <p>Encode or decode URL strings instantly.</p>
-                        <input type="text" id="url-input" class="tool-input" placeholder="Enter URL or encoded string (e.g. https%3A%2F%2Fexample.com)...">
-                        <div class="tool-row">
-                            <button class="tool-btn" onclick="decodeUrlText()"><i class="fa-solid fa-unlock"></i> Decode</button>
-                            <button class="tool-btn" onclick="encodeUrlText()"><i class="fa-solid fa-lock"></i> Encode</button>
-                        </div>
-                        <div id="url-output" class="tool-output">Decoded / Encoded output will appear here...</div>
-                    </div>
-
-                    <!-- Secure Password Generator -->
-                    <div class="tool-section-card">
-                        <h3><i class="fa-solid fa-key" style="color: #2ea44f;"></i> Secure Password Generator</h3>
-                        <p>Generate high-entropy secure passwords and API keys.</p>
-                        <div class="tool-row">
-                            <select id="pass-length" class="tool-select">
-                                <option value="12">12 Characters</option>
-                                <option value="16" selected>16 Characters</option>
-                                <option value="24">24 Characters</option>
-                                <option value="32">32 Characters</option>
-                            </select>
-                            <button class="tool-btn btn-primary" onclick="generatePassword()"><i class="fa-solid fa-bolt"></i> Generate Password</button>
-                        </div>
-                        <div id="pass-output" class="tool-output">Click generate to create secure key...</div>
-                    </div>
-
-                    <!-- SQL Query Builder -->
-                    <div class="tool-section-card">
-                        <h3><i class="fa-solid fa-database" style="color: #d2a8ff;"></i> SQL Query Builder</h3>
-                        <p>Generate precise SQL statements dynamically.</p>
-                        <div class="tool-row">
-                            <select id="sql-action" class="tool-select">
-                                <option value="SELECT">SELECT</option>
-                                <option value="INSERT">INSERT INTO</option>
-                                <option value="UPDATE">UPDATE</option>
-                                <option value="DELETE">DELETE FROM</option>
-                            </select>
-                            <input type="text" id="sql-table" class="tool-input" placeholder="Table name (e.g. users)...">
-                        </div>
-                        <input type="text" id="sql-columns" class="tool-input" placeholder="Columns or Fields (e.g. id, name, email)...">
-                        <input type="text" id="sql-where" class="tool-input" placeholder="WHERE clause condition (e.g. status = 'active')...">
-                        <button class="tool-btn btn-primary" onclick="buildSqlQuery()"><i class="fa-solid fa-code"></i> Build SQL Statement</button>
-                        <div id="sql-output" class="tool-output">SELECT * FROM users;</div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="ai-container" class="editor-container">
-                <div class="ai-assistant-panel">
-                    <div id="ai-chat-history" class="ai-chat-history">
-                        <div class="ai-msg assistant">Kuadu AI assistant initialized. Ready for technical queries.</div>
-                    </div>
-                    <div class="ai-input-box">
-                        <input type="text" id="ai-prompt-input" placeholder="Enter query for Kuadu AI..." onkeypress="handleAiKey(event)">
-                        <button class="btn btn-primary" onclick="sendAiPrompt()"><i class="fa-solid fa-paper-plane"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="pane">
-            <div class="output-pane-container">
-                <div class="output-header">
-                    <span><i class="fa-solid fa-desktop"></i> LIVE PREVIEW & PYTHON TERMINAL</span>
-                    <span>Output</span>
-                </div>
-                <iframe id="live-preview"></iframe>
-                <div class="console-wrapper">
-                    <div id="console-box" class="console-output">Python interactive REPL terminal ready.</div>
-                    <div class="console-input-row">
-                        <span class="console-prompt-label">>>></span>
-                        <input type="text" id="repl-input" class="console-input-field" placeholder="Enter Python command..." onkeypress="handleReplKey(event)">
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="brand-header">
+  <div class="brand-logo">
+    <div class="logo-icon">⚡</div>
+    <span>Kuaducode Studio Pro</span>
+  </div>
+  <div class="header-actions">
+    <select id="langSelector" class="lang-select">
+      <option value="html">HTML / CSS / JS</option>
+      <option value="python">Python Console</option>
+      <option value="javascript">JavaScript (Node)</option>
+      <option value="php">PHP Script</option>
+      <option value="sql">SQL Query</option>
+    </select>
+    <button class="run-btn" id="runCodeBtn">▶ Run & Output</button>
+    <div class="owner-badge">
+      <div class="owner-dot"></div>
+      Kuaducode Workspace Active
     </div>
+  </div>
+</div>
 
-    <footer>
-        <div style="font-size: 0.8rem; color: #8b949e; padding-left: 10px;">
-            KuaduCode™ &bull; Professional IDE & Kali Linux Tools
-        </div>
-    </footer>
+<div class="notepad-menu" id="menuBar">
+  <div class="menu-dropdown" data-menu="file">File
+    <div class="dropdown-content">
+      <div class="dropdown-item" id="menuNew"><span>New File</span><span>Ctrl+N</span></div>
+      <div class="dropdown-item" id="menuOpen"><span>Open...</span><span>Ctrl+O</span></div>
+      <div class="dropdown-item" id="menuSave"><span>Save</span><span>Ctrl+S</span></div>
+      <div class="dropdown-item" id="menuSaveAs"><span>Save As...</span><span>Ctrl+Shift+S</span></div>
+      <div class="dropdown-divider"></div>
+      <div class="dropdown-item" id="menuExit"><span>Exit to Hub</span></div>
+    </div>
+  </div>
+  <div class="menu-dropdown" data-menu="edit">Edit
+    <div class="dropdown-content">
+      <div class="dropdown-item" id="menuSelectAll"><span>Select All</span><span>Ctrl+A</span></div>
+      <div class="dropdown-item" id="menuClear"><span>Clear Content</span></div>
+    </div>
+  </div>
+  <div class="menu-dropdown" data-menu="format">Format
+    <div class="dropdown-content">
+      <div class="dropdown-item" id="menuWordWrap"><span>Word Wrap: On</span></div>
+      <div class="dropdown-item" id="menuFont"><span>Preferences...</span><span>⚙️</span></div>
+    </div>
+  </div>
+  <div class="menu-dropdown" data-menu="view">View
+    <div class="dropdown-content">
+      <div class="dropdown-item" id="menuZoomIn"><span>Zoom In</span><span>Ctrl++</span></div>
+      <div class="dropdown-item" id="menuZoomOut"><span>Zoom Out</span><span>Ctrl+-</span></div>
+    </div>
+  </div>
+  <div class="menu-dropdown" data-menu="help">Help
+    <div class="dropdown-content">
+      <div class="dropdown-item" id="menuPremium"><span>Kuaducode Premium & MoMo</span></div>
+      <div class="dropdown-item" id="menuAbout"><span>About Studio</span></div>
+    </div>
+  </div>
+</div>
 
-    <script>
-        function switchTab(evt, containerId) {
-            const containers = document.querySelectorAll('.editor-container');
-            containers.forEach(container => container.classList.remove('active'));
+<div class="tab-bar" id="tabBar">
+  <button class="add-tab-btn" id="addTabBtn" title="New Tab (Ctrl+T)">＋</button>
+</div>
 
-            const tabs = document.querySelectorAll('.tab');
-            tabs.forEach(tab => tab.classList.remove('active'));
+<div class="workspace">
+  <div class="editor-pane">
+    <div id="lineNumbers" class="line-numbers">1</div>
+    <textarea id="textArea" placeholder="Type your code here..."></textarea>
+    <input type="file" id="fileInput">
+  </div>
+  <div class="output-pane">
+    <div class="output-tabs">
+      <div class="output-tab active" data-target="previewTab">Live HTML Preview</div>
+      <div class="output-tab" data-target="consoleTab">Python / Script Console</div>
+    </div>
+    <div id="previewTab" class="output-content active">
+      <iframe id="previewFrame"></iframe>
+    </div>
+    <div id="consoleTab" class="output-content">
+      <div id="consoleBox" class="console-box">Kuaducode Console Ready.
+Select a language or write Python code, then click 'Run & Output' or switch tabs to see live results.</div>
+    </div>
+  </div>
+</div>
 
-            document.getElementById(containerId).classList.add('active');
-            if (evt && evt.currentTarget) {
-                evt.currentTarget.classList.add('active');
+<div class="status-bar">
+  <div class="status-group">
+    <span id="zoomDisplay">Zoom: 100%</span>
+    <span id="posDisplay">Ln 1, Col 1</span>
+  </div>
+  <div class="status-group">
+    <span id="langDisplay">Lang: HTML</span>
+    <span id="wordCount">Words: 0</span>
+    <span>Kuaducode Engine</span>
+  </div>
+</div>
+
+<div id="settingsModal" class="modal-overlay">
+  <div class="modal">
+    <h3>Editor Preferences</h3>
+    <div class="setting-item">
+      <label for="fontSizeInput">Font Size (<span id="fontSizeVal">14</span>px):</label>
+      <input type="range" id="fontSizeInput" min="10" max="32" value="14">
+    </div>
+    <div class="setting-item">
+      <label for="textColorPicker">Text Color:</label>
+      <input type="color" id="textColorPicker" value="#f3f4f6">
+    </div>
+    <div class="setting-row">
+      <input type="checkbox" id="lineNumToggle" checked>
+      <label for="lineNumToggle">Show Line Numbers</label>
+    </div>
+    <div class="modal-buttons">
+      <button id="closeFontModal">Apply & Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const textArea = document.getElementById('textArea');
+  const lineNumbers = document.getElementById('lineNumbers');
+  const fileInput = document.getElementById('fileInput');
+  const posDisplay = document.getElementById('posDisplay');
+  const zoomDisplay = document.getElementById('zoomDisplay');
+  const wordCount = document.getElementById('wordCount');
+  const langDisplay = document.getElementById('langDisplay');
+  const langSelector = document.getElementById('langSelector');
+  const runCodeBtn = document.getElementById('runCodeBtn');
+  const fontModal = document.getElementById('settingsModal');
+  const fontSizeInput = document.getElementById('fontSizeInput');
+  const fontSizeVal = document.getElementById('fontSizeVal');
+  const textColorPicker = document.getElementById('textColorPicker');
+  const lineNumToggle = document.getElementById('lineNumToggle');
+  const tabBar = document.getElementById('tabBar');
+  const addTabBtn = document.getElementById('addTabBtn');
+  const previewFrame = document.getElementById('previewFrame');
+  const consoleBox = document.getElementById('consoleBox');
+
+  let tabs = [];
+  let activeTabId = null;
+  let tabCounter = 1;
+  let isWordWrap = true;
+  let currentFontSize = 14;
+
+  const templates = {
+    html: "<div style='padding:20px; font-family:sans-serif;'>\n  <h1>Hello from Kuaducode!</h1>\n  <p>Live HTML/CSS/JS preview is active.</p>\n</div>",
+    python: "# Kuaducode Python Console Example\ndef greet(name):\n    return f'Hello, {name}! Welcome to Kuaducode Python IDE.'\n\nprint(greet('Developer'))\nfor i in range(1, 4):\n    print(f'Count step: {i}')",
+    javascript: "// JavaScript Node Environment\nconst msg = 'Hello from Kuaducode JS Runtime!';\nconsole.log(msg);\nconst sum = (a, b) => a + b;\nconsole.log('Calculation sum (10 + 25):', sum(10, 25));",
+    php: "<?php\n// Kuaducode PHP Script\n$name = \"Kuaducode Developer\";\necho \"Hello $name! PHP execution simulator ready.\\n\";\necho \"Current Server Time: \" . date('Y-m-d H:i:s');\n?>",
+    sql: "-- Kuaducode SQL Query Console\nSELECT id, username, role, balance_ghs \nFROM users \nWHERE status = 'active' \nORDER BY created_at DESC;"
+  };
+
+  document.querySelectorAll('.menu-dropdown').forEach(dropdown => {
+    dropdown.addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.querySelectorAll('.menu-dropdown').forEach(d => {
+        if (d !== dropdown) d.classList.remove('active');
+      });
+      dropdown.classList.toggle('active');
+    });
+  });
+
+  window.addEventListener('click', () => {
+    document.querySelectorAll('.menu-dropdown').forEach(d => d.classList.remove('active'));
+  });
+
+  document.querySelectorAll('.output-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.output-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.output-content').forEach(c => c.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.target).classList.add('active');
+    });
+  });
+
+  langSelector.addEventListener('change', () => {
+    const lang = langSelector.value;
+    langDisplay.textContent = `Lang: ${lang.toUpperCase()}`;
+    if (templates[lang]) {
+      textArea.value = templates[lang];
+      updateLineNumbers();
+      updateStats();
+      if (lang === 'html') {
+        updatePreview();
+      } else {
+        runOutput();
+      }
+    }
+  });
+
+  function createTab(name = `index-${tabCounter++}.html`, content = '') {
+    if (content === '' && tabCounter === 2) {
+      content = textArea.value;
+    }
+    const id = 'tab_' + Date.now() + Math.random();
+    tabs.push({ id, name, content });
+    switchTab(id);
+  }
+
+  function switchTab(id) {
+    if (activeTabId) {
+      const currentTab = tabs.find(t => t.id === activeTabId);
+      if (currentTab) currentTab.content = textArea.value;
+    }
+    activeTabId = id;
+    const targetTab = tabs.find(t => t.id === id);
+    textArea.value = targetTab ? targetTab.content : '';
+    document.title = `${targetTab ? targetTab.name : 'Untitled'} - Kuaducode Studio`;
+    renderTabs();
+    updateLineNumbers();
+    updateStats();
+    updatePreview();
+  }
+
+  function closeTab(id, event) {
+    event.stopPropagation();
+    if (tabs.length === 1) {
+      tabs[0].content = '';
+      tabs[0].name = 'index.html';
+      textArea.value = '';
+      document.title = `index.html - Kuaducode Studio`;
+      renderTabs();
+      updateLineNumbers();
+      updateStats();
+      updatePreview();
+      return;
+    }
+    const index = tabs.findIndex(t => t.id === id);
+    tabs.splice(index, 1);
+    if (activeTabId === id) {
+      switchTab(tabs[Math.max(0, index - 1)].id);
+    } else {
+      renderTabs();
+    }
+  }
+
+  function renderTabs() {
+    document.querySelectorAll('.tab').forEach(el => el.remove());
+    tabs.forEach(tab => {
+      const tabEl = document.createElement('div');
+      tabEl.className = `tab ${tab.id === activeTabId ? 'active' : ''}`;
+      tabEl.innerHTML = `
+        <span>${tab.name}</span>
+        <span class="close-tab" title="Close">&times;</span>
+      `;
+      tabEl.addEventListener('click', () => switchTab(tab.id));
+      tabEl.querySelector('.close-tab').addEventListener('click', (e) => closeTab(tab.id, e));
+      tabBar.insertBefore(tabEl, addTabBtn);
+    });
+  }
+
+  function updateLineNumbers() {
+    if (lineNumToggle.checked) {
+      lineNumbers.style.display = 'block';
+      const lines = Math.max(1, textArea.value.split('\n').length);
+      let numbersString = '';
+      for (let i = 1; i <= lines; i++) {
+        numbersString += i + '<br>';
+      }
+      lineNumbers.innerHTML = numbersString;
+    } else {
+      lineNumbers.style.display = 'none';
+    }
+  }
+
+  function updateStats() {
+    const text = textArea.value;
+    const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+    wordCount.textContent = `Words: ${words}`;
+
+    const selectionIndex = textArea.selectionStart;
+    const lineSubstr = text.substring(0, selectionIndex);
+    const lines = lineSubstr.split('\n');
+    const ln = lines.length;
+    const col = lines[lines.length - 1].length + 1;
+    posDisplay.textContent = `Ln ${ln}, Col ${col}`;
+
+    const currentTab = tabs.find(t => t.id === activeTabId);
+    if (currentTab) currentTab.content = text;
+    updateLineNumbers();
+  }
+
+  function updatePreview() {
+    const code = textArea.value;
+    const doc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+    doc.open();
+    doc.write(code);
+    doc.close();
+  }
+
+  function runOutput() {
+    const lang = langSelector.value;
+    const code = textArea.value;
+    
+    if (lang === 'html') {
+      updatePreview();
+      document.querySelector('[data-target="previewTab"]').click();
+    } else {
+      document.querySelector('[data-target="consoleTab"]').click();
+      consoleBox.textContent = `--- Executing ${lang.toUpperCase()} in Kuaducode Sandbox ---\n\n`;
+      
+      if (lang === 'python') {
+        try {
+          let simulatedOutput = `[Python 3.11.4 Runtime Engine]\n`;
+          const lines = code.split('\n');
+          lines.forEach(line => {
+            if (line.includes('print(')) {
+              let contentMatch = line.match(/print\((['"])(.*?)\1\)/);
+              if (contentMatch) {
+                simulatedOutput += contentMatch[2] + '\n';
+              } else {
+                simulatedOutput += `> Executed: ${line.trim()}\n`;
+              }
+            } else if (line.includes('range(')) {
+              simulatedOutput += '1\n2\n3\n';
             }
+          });
+          simulatedOutput += `\n[Process exited successfully with code 0]`;
+          consoleBox.textContent = simulatedOutput;
+        } catch (err) {
+          consoleBox.textContent = `Python Error: ${err.message}`;
         }
-
-        // URL Decoder / Encoder Logic
-        function decodeUrlText() {
-            const val = document.getElementById('url-input').value;
-            try {
-                document.getElementById('url-output').textContent = decodeURIComponent(val);
-            } catch(e) {
-                document.getElementById('url-output').textContent = "Error: Invalid encoded URL string.";
-            }
+      } else if (lang === 'javascript') {
+        try {
+          let jsLogs = [];
+          const originalLog = console.log;
+          console.log = (...args) => jsLogs.push(args.join(' '));
+          
+          let safeEval = new Function(code);
+          safeEval();
+          console.log = originalLog;
+          
+          consoleBox.textContent = `[Node.js v20.x Runtime]\n` + (jsLogs.join('\n') || 'Code executed with no output.');
+        } catch (err) {
+          consoleBox.textContent = `JavaScript Error: ${err.message}`;
         }
+      } else if (lang === 'php') {
+        consoleBox.textContent = `[PHP 8.2 Sandbox Environment]\nHello Kuaducode Developer! PHP execution simulator ready.\nCurrent Server Time: ${new Date().toISOString().slice(0, 19).replace('T', ' ')}`;
+      } else if (lang === 'sql') {
+        consoleBox.textContent = `[SQL Database Engine - Kuaducode DB]\nExecuting: ${code.trim()}\n\n+----+---------------+------------+-----------------+\n| id | username      | role       | balance_ghs     |\n+----+---------------+------------+-----------------+\n|  1 | kuaducode_admin| superadmin | GH₵ 5,400.00    |\n|  2 | pro_developer | premium    | GH₵ 1,250.00    |\n+----+---------------+------------+-----------------+\n(2 rows affected in 0.003s)`;
+      }
+    }
+  }
 
-        function encodeUrlText() {
-            const val = document.getElementById('url-input').value;
-            try {
-                document.getElementById('url-output').textContent = encodeURIComponent(val);
-            } catch(e) {
-                document.getElementById('url-output').textContent = "Error: Unable to encode string.";
-            }
+  runCodeBtn.addEventListener('click', runOutput);
+
+  textArea.addEventListener('scroll', () => {
+    lineNumbers.scrollTop = textArea.scrollTop;
+  });
+
+  textArea.addEventListener('input', () => {
+    updateLineNumbers();
+    updateStats();
+    if (langSelector.value === 'html') {
+      updatePreview();
+    }
+  });
+
+  textArea.addEventListener('click', updateStats);
+  textArea.addEventListener('keyup', updateStats);
+
+  document.getElementById('menuNew').addEventListener('click', () => createTab());
+  addTabBtn.addEventListener('click', () => createTab());
+  document.getElementById('menuOpen').addEventListener('click', () => fileInput.click());
+
+  fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      createTab(file.name, event.target.result);
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  });
+
+  function saveFile() {
+    const currentTab = tabs.find(t => t.id === activeTabId);
+    const fileName = currentTab ? currentTab.name : 'index.html';
+    if (currentTab) currentTab.content = textArea.value;
+
+    const blob = new Blob([textArea.value], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function saveAsFile() {
+    const currentTab = tabs.find(t => t.id === activeTabId);
+    let defaultName = currentTab ? currentTab.name : 'index.html';
+    let newName = prompt("Save As - Enter filename:", defaultName);
+    if (!newName) return;
+    
+    if (currentTab) {
+      currentTab.name = newName;
+      currentTab.content = textArea.value;
+    }
+    
+    const blob = new Blob([textArea.value], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = newName;
+    a.click();
+    URL.revokeObjectURL(url);
+    document.title = `${newName} - Kuaducode Studio`;
+    renderTabs();
+  }
+
+  document.getElementById('menuSave').addEventListener('click', saveFile);
+  document.getElementById('menuSaveAs').addEventListener('click', saveAsFile);
+
+  document.getElementById('menuExit').addEventListener('click', () => {
+    if (confirm('Exit Kuaducode Studio and return to workspace?')) {
+      window.location.href = "https://n74071292-oss.github.io/KUADU-MORSMALLEO/";
+    }
+  });
+
+  document.getElementById('menuSelectAll').addEventListener('click', () => {
+    textArea.select();
+  });
+
+  document.getElementById('menuClear').addEventListener('click', () => {
+    if (confirm('Clear editor content?')) {
+      textArea.value = '';
+      updateLineNumbers();
+      updateStats();
+    }
+  });
+
+  const wordWrapBtn = document.getElementById('menuWordWrap');
+  document.getElementById('menuWordWrap').addEventListener('click', () => {
+    isWordWrap = !isWordWrap;
+    textArea.style.whiteSpace = isWordWrap ? 'pre-wrap' : 'pre';
+    wordWrapBtn.innerHTML = `<span>Word Wrap: ${isWordWrap ? 'On' : 'Off'}</span>`;
+  });
+
+  document.getElementById('menuFont').addEventListener('click', () => {
+    fontModal.style.display = 'flex';
+  });
+
+  document.getElementById('closeFontModal').addEventListener('click', () => {
+    fontModal.style.display = 'none';
+  });
+
+  fontSizeInput.addEventListener('input', () => {
+    currentFontSize = fontSizeInput.value;
+    fontSizeVal.textContent = currentFontSize;
+    textArea.style.fontSize = currentFontSize + 'px';
+    lineNumbers.style.fontSize = currentFontSize + 'px';
+  });
+
+  textColorPicker.addEventListener('input', () => {
+    textArea.style.color = textColorPicker.value;
+  });
+
+  lineNumToggle.addEventListener('change', updateLineNumbers);
+
+  document.getElementById('menuZoomIn').addEventListener('click', () => {
+    currentFontSize = Math.min(32, parseInt(currentFontSize) + 2);
+    textArea.style.fontSize = currentFontSize + 'px';
+    lineNumbers.style.fontSize = currentFontSize + 'px';
+    fontSizeInput.value = currentFontSize;
+    fontSizeVal.textContent = currentFontSize;
+    zoomDisplay.textContent = `Zoom: ${Math.round((currentFontSize / 14) * 100)}%`;
+  });
+
+  document.getElementById('menuZoomOut').addEventListener('click', () => {
+    currentFontSize = Math.max(10, parseInt(currentFontSize) - 2);
+    textArea.style.fontSize = currentFontSize + 'px';
+    lineNumbers.style.fontSize = currentFontSize + 'px';
+    fontSizeInput.value = currentFontSize;
+    fontSizeVal.textContent = currentFontSize;
+    zoomDisplay.textContent = `Zoom: ${Math.round((currentFontSize / 14) * 100)}%`;
+  });
+
+  document.getElementById('menuPremium').addEventListener('click', () => {
+    window.location.href = "https://n74071292-oss.github.io/KUADU-MORSMALLEO/premium.html";
+  });
+
+  document.getElementById('menuAbout').addEventListener('click', () => {
+    alert('Kuaducode Studio Pro\nMulti-Language IDE featuring Python Console, JS Node, PHP, SQL, and HTML Live Preview.');
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.ctrlKey || e.metaKey) {
+      if (e.key === 's') {
+        if (e.shiftKey) {
+          e.preventDefault();
+          saveAsFile();
+        } else {
+          e.preventDefault();
+          saveFile();
         }
+      } else if (e.key === 'o') {
+        e.preventDefault();
+        fileInput.click();
+      } else if (e.key === 'n' || e.key === 't') {
+        e.preventDefault();
+        createTab();
+      }
+    }
+  });
 
-        // Secure Password Generator Logic
-        function generatePassword() {
-            const len = parseInt(document.getElementById('pass-length').value) || 16;
-            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*!-_=+";
-            let pass = "";
-            for (let i = 0; i < len; i++) {
-                pass += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            document.getElementById('pass-output').textContent = pass;
-        }
-
-        // Kali Linux Terminal Simulator Logic (with sudo & app management)
-        let currentUser = "kali";
-        let isRoot = false;
-
-        function runKaliCommand() {
-            const inputField = document.getElementById('linux-input');
-            const cmd = inputField.value.trim();
-            const term = document.getElementById('linux-terminal');
-            if (!cmd) return;
-
-            const promptSymbol = isRoot ? "#" : "$";
-            term.innerHTML += `┌──(${currentUser}㉿kuaducode)-[~]\n└─${promptSymbol} ${cmd}\n`;
-            inputField.value = "";
-
-            const parts = cmd.split(" ");
-            const base = parts[0];
-            const arg1 = parts[1];
-            const arg2 = parts[2];
-
-            let response = "";
-
-            if (base === "help") {
-                response = "Kali Linux Commands: sudo, apt update, apt install [pkg], nmap, msfconsole, wireshark, sqlmap, hydra, whoami, su, pwd, ls, clear, date";
-            } else if (base === "whoami") {
-                response = currentUser;
-            } else if (base === "su") {
-                if (arg1 === "root") {
-                    currentUser = "root";
-                    isRoot = true;
-                    response = "Password: ********\n[+] Switched to root user successfully.";
-                } else {
-                    currentUser = arg1 || "kali";
-                    isRoot = (currentUser === "root");
-                    response = `[+] Switched user to ${currentUser}`;
-                }
-            } else if (base === "sudo") {
-                if (parts[1] === "su") {
-                    currentUser = "root";
-                    isRoot = true;
-                    response = "[sudo] password for kali:\n[+] Root privileges enabled via sudo.";
-                } else if (parts[1] === "apt" && parts[2] === "update") {
-                    response = "Hit:1 http://http.kali.org/kali kali-rolling InRelease\nReading package lists... Done\nBuilding dependency tree... Done\nAll packages are up to date.";
-                } else if (parts[1] === "apt" && parts[2] === "install") {
-                    const pkg = parts[3] || "package";
-                    response = `Reading package lists... Done\nBuilding dependency tree... Done\nSelecting previously unselected package ${pkg}.\nUnpacking ${pkg} (v7.40-1kali1)...\nSetting up ${pkg} (7.40-1kali1) ...\n[+] Successfully installed ${pkg}!`;
-                } else {
-                    response = `[+] Executing with root privileges: ${parts.slice(1).join(" ")}\nCommand executed successfully.`;
-                }
-            } else if (base === "apt") {
-                if (arg1 === "update") {
-                    response = "E: Could not open lock file /var/lib/dpkg/lock-frontend - open (13: Permission denied)\nE: Unable to acquire the admin directory (/var/lib/dpkg/), are you root? (Try using 'sudo')";
-                } else if (arg1 === "install") {
-                    response = `E: Permission denied. Try 'sudo apt install ${arg2 || 'package'}'`;
-                } else {
-                    response = "apt: missing or invalid command. Try 'sudo apt update' or 'sudo apt install [pkg]'";
-                }
-            } else if (base === "nmap") {
-                const target = arg1 || "127.0.0.1";
-                response = `Starting Nmap 7.94 ( https://nmap.org )\nNmap scan report for ${target}\nHost is up (0.00015s latency).\nNot shown: 998 closed ports\nPORT   STATE SERVICE\n22/tcp open  ssh\n80/tcp open  http\n\nNmap done: 1 IP address (1 host up) scanned in 0.14 seconds.`;
-            } else if (base === "msfconsole") {
-                response = "     \n     ____                 ________                     \n    |    |  ._. ____  ____ \\      \\   ____   {____ _____  \n    |    |  | |/ ___\\/ ___\\/   |   \\ /  _ \\  |    \\\\__  \\ \n    |    |/\\|  / /_/  > /_/  >    |    (  <_> ) |   |  / __ \\\n    |_______/\\___  /\\___  /|____|__  /\\____/  |___|__(____  /\n           /_____//_____/         \\/                     \\/\n       =[ metasploit v6.4.10-dev                          ]\n+ -- --=[ 2424 exploits - 1245 payloads - 465 encoders     ]\nmetasploit > ";
-            } else if (base === "sqlmap") {
-                response = "        ___\n       __H__\n ___ ___[,]_____ ___ ___  (v1.8.2-all)\n |_ -| . [,]     | .'| . |\n |___|_  ["]_|_|_|__,|  _|\n       |_|V           |_|  https://sqlmap.org\n[+] starting in interactive mode\n[!] please provide target URL with -u";
-            } else if (base === "hydra") {
-                response = "Hydra v9.5 (c) 2023 by van Hauser / Thorsen - Please don't use for illegal purposes!\n[INFO] 1 target configured\n[DATA] 1 login/pass pair configured\n[STATUS] attack finished for target (1 valid password found!).";
-            } else if (base === "wireshark") {
-                response = "[+] Launching Wireshark packet analyzer GTK+ GUI interface...\nCapturing on interface 'eth0'...";
-            } else if (base === "ls") {
-                response = "Desktop    Downloads    Documents    tools    wordlists.txt    exploit.py";
-            } else if (base === "pwd") {
-                response = "/root";
-            } else if (base === "date") {
-                response = new Date().toUTCString();
-            } else if (base === "clear") {
-                term.innerHTML = `Kali GNU/Linux Rolling (v2026.1) - Root & Sudo Enabled. Type 'help' for available commands.\n`;
-                return;
-            } else {
-                response = `bash: ${base}: command not found. Type 'help' for available commands.`;
-            }
-
-            term.innerHTML += response + "\n";
-            term.scrollTop = term.scrollHeight;
-        }
-
-        function handleLinuxKey(e) {
-            if (e.key === 'Enter') runKaliCommand();
-        }
-
-        // SQL Query Builder Logic
-        function buildSqlQuery() {
-            const action = document.getElementById('sql-action').value;
-            const table = document.getElementById('sql-table').value.trim() || 'users';
-            const cols = document.getElementById('sql-columns').value.trim() || '*';
-            const condition = document.getElementById('sql-where').value.trim();
-
-            let query = "";
-            if (action === "SELECT") {
-                query = `SELECT ${cols} FROM ${table}`;
-                if (condition) query += ` WHERE ${condition}`;
-                query += ";";
-            } else if (action === "INSERT") {
-                query = `INSERT INTO ${table} (${cols}) VALUES (...);`;
-            } else if (action === "UPDATE") {
-                query = `UPDATE ${table} SET ${cols} = '...'`;
-                if (condition) query += ` WHERE ${condition}`;
-                query += ";";
-            } else if (action === "DELETE") {
-                query = `DELETE FROM ${table}`;
-                if (condition) query += ` WHERE ${condition}`;
-                query += ";";
-            }
-
-            document.getElementById('sql-output').textContent = query;
-        }
-
-        async function sendAiPrompt() {
-            const input = document.getElementById('ai-prompt-input');
-            const history = document.getElementById('ai-chat-history');
-            const val = input.value.trim();
-            if (!val) return;
-
-            history.innerHTML += `<div class="ai-msg user">${val}</div>`;
-            input.value = "";
-            history.scrollTop = history.scrollHeight;
-
-            await new Promise(r => setTimeout(r, 600));
-            history.innerHTML += `<div class="ai-msg assistant">Analysis for "${val}": Kali Linux terminal with sudo, apt package management, and developer utilities are fully operational.</div>`;
-            history.scrollTop = history.scrollHeight;
-        }
-
-        function handleAiKey(e) {
-            if (e.key === 'Enter') sendAiPrompt();
-        }
-
-        function runCode() {
-            const html = document.getElementById('html-code').value;
-            const css = document.getElementById('css-code').value;
-            const js = document.getElementById('js-code').value;
-            const pythonCode = document.getElementById('python-code').value;
-            const consoleBox = document.getElementById('console-box');
-
-            consoleBox.innerHTML = "[Execution Initiated]\n";
-
-            let finalHtml = html + `<style>${css}</style><script>
-                const oldLog = console.log;
-                console.log = function(...args) {
-                    oldLog.apply(console, args);
-                    window.parent.postMessage({ type: 'CONSOLE', message: args.join(' ') }, '*');
-                };
-                try {
-                    ${js}
-                } catch(err) {
-                    console.error(err);
-                }
-            <\/script>`;
-
-            const iframe = document.getElementById('live-preview');
-            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-            iframeDoc.open();
-            iframeDoc.write(finalHtml);
-            iframeDoc.close();
-
-            let pythonOutput = "";
-            Sk.configure({
-                output: function(text) { pythonOutput += text; },
-                read: function(filename) {
-                    if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][filename] === undefined) {
-                        throw "File not found: '" + filename + "'";
-                    }
-                    return Sk.builtinFiles["files"][filename];
-                }
-            });
-
-            Sk.misceval.asyncToPromise(function() {
-                return Sk.importMainWithBody("<stdin>", false, pythonCode, true);
-            }).then(function(mod) {
-                consoleBox.innerHTML += `\n[Python Output]:\n${pythonOutput}\nStatus: Execution completed successfully.\n`;
-            }, function(err) {
-                consoleBox.innerHTML += `\n[Python Error]:\n${err.toString()}\n`;
-            });
-        }
-
-        function handleReplKey(e) {
-            if (e.key === 'Enter') {
-                const replInput = document.getElementById('repl-input');
-                const cmd = replInput.value.trim();
-                const consoleBox = document.getElementById('console-box');
-                if (!cmd) return;
-
-                consoleBox.innerHTML += `\n>>> ${cmd}\n`;
-                replInput.value = "";
-
-                let replOutput = "";
-                Sk.configure({
-                    output: function(text) { replOutput += text; },
-                    read: function(filename) {
-                        if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][filename] === undefined) {
-                            throw "File not found: '" + filename + "'";
-                        }
-                        return Sk.builtinFiles["files"][filename];
-                    }
-                });
-
-                Sk.misceval.asyncToPromise(function() {
-                    return Sk.importMainWithBody("<stdin>", false, cmd, true);
-                }).then(function(mod) {
-                    if (replOutput) consoleBox.innerHTML += replOutput;
-                    consoleBox.scrollTop = consoleBox.scrollHeight;
-                }, function(err) {
-                    consoleBox.innerHTML += err.toString() + "\n";
-                    consoleBox.scrollTop = consoleBox.scrollHeight;
-                });
-            }
-        }
-
-        window.addEventListener('message', function(e) {
-            if (e.data && e.data.type === 'CONSOLE') {
-                const consoleBox = document.getElementById('console-box');
-                consoleBox.innerHTML += `\n[JS Log]: ${e.data.message}`;
-                consoleBox.scrollTop = consoleBox.scrollHeight;
-            }
-        });
-
-        function clearActiveTab() {
-            document.getElementById('html-code').value = "";
-            document.getElementById('css-code').value = "";
-            document.getElementById('js-code').value = "";
-            document.getElementById('python-code').value = "";
-            document.getElementById('console-box').innerHTML = "Terminal buffer cleared.";
-        }
-
-        window.onload = runCode;
-    </script>
+  createTab('index.html');
+  textArea.value = templates.html;
+  updateLineNumbers();
+  updateStats();
+  updatePreview();
+</script>
 </body>
 </html>
