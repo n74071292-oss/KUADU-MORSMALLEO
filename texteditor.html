@@ -3,440 +3,368 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KuaduText - Text Editor</title>
+<title>Untitled - Notepad</title>
 <style>
-  :root {
-    --bg-color: #1e1e1e;
-    --text-color: #d4d4d4;
-    --toolbar-bg: #2d2d2d;
-    --border-color: #333333;
-    --button-hover: #3c3c3c;
-    --accent-color: #007acc;
-    --tab-bg: #252526;
-    --tab-active: #1e1e1e;
-    --promo-bg: #252526;
-    --titlebar-bg: #111111;
-  }
-  [data-theme="light"] {
-    --bg-color: #ffffff;
-    --text-color: #333333;
-    --toolbar-bg: #f3f3f3;
-    --border-color: #e0e0e0;
-    --button-hover: #e0e0e0;
-    --accent-color: #0066cc;
-    --tab-bg: #e5e5e5;
-    --tab-active: #ffffff;
-    --promo-bg: #f9f9f9;
-    --titlebar-bg: #e1e1e1;
-  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
+    background-color: #f3f3f3;
+    color: #000000;
     display: flex;
     flex-direction: column;
     height: 100vh;
     overflow: hidden;
-    transition: background 0.3s, color 0.3s;
   }
-  .window-titlebar {
-    display: flex; justify-content: space-between; align-items: center;
-    background-color: var(--titlebar-bg); padding: 6px 12px; font-size: 12px;
-    border-bottom: 1px solid var(--border-color); user-select: none;
+  .notepad-menu {
+    display: flex;
+    background-color: #f1f1f1;
+    border-bottom: 1px solid #d4d4d4;
+    font-size: 12px;
+    padding: 2px 4px;
+    user-select: none;
   }
-  .window-title { display: flex; align-items: center; gap: 8px; font-weight: 500; }
-  .window-controls { display: flex; gap: 6px; }
-  .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-  .dot-red { background-color: #ff5f56; }
-  .dot-yellow { background-color: #ffbd2e; }
-  .dot-green { background-color: #27c93f; }
-
-  .menubar {
-    display: flex; background-color: var(--toolbar-bg); padding: 4px 10px;
-    border-bottom: 1px solid var(--border-color); font-size: 13px; gap: 15px;
+  .menu-dropdown {
+    position: relative;
+    padding: 3px 8px;
+    cursor: pointer;
   }
-  .menu-item { padding: 4px 8px; cursor: pointer; border-radius: 3px; }
-  .menu-item:hover { background-color: var(--button-hover); }
-
-  .tab-bar {
-    display: flex; background-color: var(--toolbar-bg);
-    border-bottom: 1px solid var(--border-color); overflow-x: auto; align-items: center; padding-left: 5px;
+  .menu-dropdown:hover {
+    background-color: #e5e5e5;
   }
-  .tab {
-    display: flex; align-items: center; gap: 10px; background-color: var(--tab-bg);
-    padding: 7px 14px; font-size: 13px; border-right: 1px solid var(--border-color);
-    cursor: pointer; user-select: none; border-top: 2px solid transparent;
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    border: 1px solid #cccccc;
+    min-width: 160px;
+    z-index: 1000;
+    padding: 4px 0;
   }
-  .tab.active { background-color: var(--tab-active); border-top: 2px solid var(--accent-color); }
-  .tab .close-tab { font-size: 14px; border-radius: 50%; padding: 0 4px; }
-  .tab .close-tab:hover { background-color: rgba(255, 0, 0, 0.2); color: #ff5555; }
-  .add-tab-btn { background: none; border: none; color: var(--text-color); font-size: 18px; padding: 4px 12px; cursor: pointer; }
-  .add-tab-btn:hover { background-color: var(--button-hover); }
-
-  .toolbar {
-    display: flex; justify-content: space-between; align-items: center;
-    background-color: var(--toolbar-bg); padding: 6px 15px; border-bottom: 1px solid var(--border-color); gap: 10px; flex-wrap: wrap;
+  .menu-dropdown.active .dropdown-content {
+    display: block;
   }
-  .toolbar-group { display: flex; gap: 8px; align-items: center; }
-  button, label.upload-btn {
-    background-color: transparent; color: var(--text-color); border: 1px solid var(--border-color);
-    padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 13px; transition: background 0.2s;
+  .dropdown-item {
+    padding: 6px 16px;
+    font-size: 12px;
+    cursor: pointer;
   }
-  button:hover, label.upload-btn:hover { background-color: var(--button-hover); }
-  .primary-btn { background-color: var(--accent-color); color: white; border: none; }
-  .primary-btn:hover { opacity: 0.9; }
-  input[type="file"] { display: none; }
-
-  .editor-container { display: flex; flex: 1; overflow: hidden; position: relative; }
-  .line-numbers {
-    width: 50px; background-color: var(--toolbar-bg); color: #858585;
-    padding: 12px 6px; text-align: right; font-family: 'Courier New', Courier, monospace;
-    font-size: 14px; line-height: 1.5; user-select: none; overflow: hidden; border-right: 1px solid var(--border-color);
+  .dropdown-item:hover {
+    background-color: #0078d7;
+    color: #ffffff;
+  }
+  .dropdown-divider {
+    height: 1px;
+    background-color: #e1e1e1;
+    margin: 4px 0;
+  }
+  .editor-body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    background-color: #ffffff;
   }
   textarea {
-    flex: 1; background-color: var(--bg-color); color: var(--text-color);
-    border: none; padding: 12px; font-family: 'Courier New', Courier, monospace;
-    font-size: 14px; line-height: 1.5; resize: none; outline: none; white-space: pre-wrap; overflow-y: auto;
+    flex: 1;
+    background-color: #ffffff;
+    color: #000000;
+    border: none;
+    padding: 8px;
+    font-family: 'Consolas', 'Courier New', Courier, monospace;
+    font-size: 14px;
+    line-height: 1.4;
+    resize: none;
+    outline: none;
+    white-space: pre-wrap;
+    overflow-y: auto;
   }
-
+  .status-bar {
+    display: flex;
+    justify-content: flex-end;
+    background-color: #f1f1f1;
+    border-top: 1px solid #d4d4d4;
+    padding: 4px 12px;
+    font-size: 12px;
+    color: #333333;
+    gap: 20px;
+    user-select: none;
+  }
   .modal-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.3);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
   }
   .modal {
-    background: var(--toolbar-bg); color: var(--text-color); border: 1px solid var(--border-color);
-    padding: 24px; border-radius: 8px; width: 360px; display: flex; flex-direction: column; gap: 15px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    background: #ffffff;
+    color: #000000;
+    border: 1px solid #999999;
+    padding: 20px;
+    border-radius: 4px;
+    width: 320px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
-  .modal h3 { font-size: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
-  .setting-item { display: flex; flex-direction: column; gap: 5px; font-size: 13px; }
-  .setting-item select, .setting-item input[type="color"], .setting-item input[type="range"] {
-    padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);
-    background: var(--bg-color); color: var(--text-color);
+  .modal h3 {
+    font-size: 14px;
+    font-weight: 600;
   }
-  .setting-row { display: flex; align-items: center; gap: 10px; font-size: 13px; }
-  .modal-close { align-self: flex-end; padding: 4px 12px; margin-top: 10px; }
-
-  .promo-section { background-color: var(--promo-bg); border-top: 1px solid var(--border-color); padding: 10px 20px; }
-  .promo-header { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-color); margin-bottom: 6px; font-weight: bold; }
-  .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; }
-  .testimonial-card { background-color: var(--toolbar-bg); border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 4px; font-size: 12px; }
-  .testimonial-card p { margin-bottom: 4px; font-style: italic; }
-  .testimonial-author { color: var(--accent-color); font-weight: 600; }
-
-  .status-bar {
-    display: flex; justify-content: space-between; background-color: var(--toolbar-bg);
-    padding: 4px 15px; font-size: 12px; border-top: 1px solid var(--border-color); color: #858585;
+  .modal label {
+    font-size: 12px;
   }
+  .modal input[type="range"], .modal input[type="number"] {
+    width: 100%;
+    padding: 4px;
+  }
+  .modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .modal-buttons button {
+    padding: 4px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    background: #e1e1e1;
+    border: 1px solid #adadad;
+    border-radius: 2px;
+  }
+  .modal-buttons button:hover {
+    background: #e5f1fb;
+    border-color: #0078d7;
+  }
+  input[type="file"] { display: none; }
 </style>
 </head>
-<body data-theme="dark">
+<body>
 
-<div class="window-titlebar">
-  <div class="window-title">
-    <span>📝</span>
-    <span id="windowTitleText">KuaduText - Untitled-1</span>
+<div class="notepad-menu" id="menuBar">
+  <div class="menu-dropdown" data-menu="file">File
+    <div class="dropdown-content">
+      <div class="dropdown-item" id="menuNew">New (Ctrl+N)</div>
+      <div class="dropdown-item" id="menuOpen">Open... (Ctrl+O)</div>
+      <div class="dropdown-item" id="menuSave">Save (Ctrl+S)</div>
+      <div class="dropdown-divider"></div>
+      <div class="dropdown-item" id="menuExit">Exit</div>
+    </div>
   </div>
-  <div class="window-controls">
-    <span class="dot dot-red"></span>
-    <span class="dot dot-yellow"></span>
-    <span class="dot dot-green"></span>
+  <div class="menu-dropdown" data-menu="edit">Edit
+    <div class="dropdown-content">
+      <div class="dropdown-item" id="menuSelectAll">Select All (Ctrl+A)</div>
+      <div class="dropdown-item" id="menuClear">Clear All</div>
+    </div>
   </div>
-</div>
-
-<div class="menubar">
-  <div class="menu-item" id="menuNew">File (Ctrl+N)</div>
-  <div class="menu-item" id="menuOpen">Open... (Ctrl+O)</div>
-  <div class="menu-item" id="menuSave">Save (Ctrl+S)</div>
-  <div class="menu-item" id="menuSettings">⚙️ Settings</div>
-</div>
-
-<div class="tab-bar" id="tabBar">
-  <button class="add-tab-btn" id="addTabBtn" title="New Tab (Ctrl+T)">＋</button>
-</div>
-
-<div class="toolbar">
-  <div class="toolbar-group">
-    <button id="newTabBtn">📄 New Tab</button>
-    <label class="upload-btn">
-      📂 Import File <input type="file" id="fileInput" accept=".txt,.md,.html,.js,.css,.py">
-    </label>
-    <button class="primary-btn" id="saveBtn">💾 Save to PC</button>
-    <button id="clearBtn">🧹 Clear</button>
+  <div class="menu-dropdown" data-menu="format">Format
+    <div class="dropdown-content">
+      <div class="dropdown-item" id="menuWordWrap">Word Wrap: On</div>
+      <div class="dropdown-item" id="menuFont">Font Settings...</div>
+    </div>
   </div>
-  <div class="toolbar-group">
-    <button id="settingsBtn">⚙️ Settings</button>
-    <button id="themeToggle">🌓 Toggle Theme</button>
+  <div class="menu-dropdown" data-menu="view">View
+    <div class="dropdown-content">
+      <div class="dropdown-item" id="menuZoomIn">Zoom In (Ctrl++)</div>
+      <div class="dropdown-item" id="menuZoomOut">Zoom Out (Ctrl+-)</div>
+      <div class="dropdown-item" id="menuResetZoom">Restore Default Zoom</div>
+    </div>
+  </div>
+  <div class="menu-dropdown" data-menu="help">Help
+    <div class="dropdown-content">
+      <div class="dropdown-item" id="menuAbout">About Notepad</div>
+    </div>
   </div>
 </div>
 
-<div class="editor-container">
-  <div id="lineNumbers" class="line-numbers">1</div>
-  <textarea id="textArea" placeholder="Start typing your code or notes here... (Ctrl+S to save, Ctrl+O to open)"></textarea>
-</div>
-
-<div id="settingsModal" class="modal-overlay">
-  <div class="modal">
-    <h3>⚙️ Editor Customization Settings</h3>
-    <div class="setting-item">
-      <label for="langSelect">Language Mode:</label>
-      <select id="langSelect">
-        <option value="plaintext">Plain Text</option>
-        <option value="html">HTML</option>
-        <option value="css">CSS</option>
-        <option value="javascript">JavaScript</option>
-        <option value="python">Python</option>
-      </select>
-    </div>
-    <div class="setting-item">
-      <label for="fontSizeRange">Font Size: <span id="fontSizeVal">14</span>px</label>
-      <input type="range" id="fontSizeRange" min="12" max="24" value="14">
-    </div>
-    <div class="setting-item">
-      <label for="textColorPicker">Text Color:</label>
-      <input type="color" id="textColorPicker" value="#d4d4d4">
-    </div>
-    <div class="setting-row">
-      <input type="checkbox" id="lineNumToggle" checked>
-      <label for="lineNumToggle">Show Line Numbers</label>
-    </div>
-    <div class="setting-row">
-      <input type="checkbox" id="wordWrapToggle" checked>
-      <label for="wordWrapToggle">Enable Word Wrap</label>
-    </div>
-    <button class="primary-btn modal-close" id="closeSettings">Done</button>
-  </div>
-</div>
-
-<div class="promo-section">
-  <div class="promo-header">🚀 Powered by Kuaducode — The Ultimate Coding Platform</div>
-  <div class="testimonials-grid">
-    <div class="testimonial-card">
-      <p>"Kuaducode is hands down the best coding platform out there. The seamless workflow and tools completely elevated my development speed."</p>
-      <div class="testimonial-author">— Sarah Jenkins, Full-Stack Engineer</div>
-    </div>
-    <div class="testimonial-card">
-      <p>"If you want a lightning-fast, intuitive ecosystem to build and scale projects, Kuaducode is the absolute gold standard."</p>
-      <div class="testimonial-author">— Marcus Vance, Lead Architect</div>
-    </div>
-  </div>
+<div class="editor-body">
+  <textarea id="textArea" placeholder=""></textarea>
+  <input type="file" id="fileInput">
 </div>
 
 <div class="status-bar">
-  <span class="shortcuts-hint">Shortcuts: Ctrl+N (New), Ctrl+O (Open), Ctrl+S (Save), Ctrl+T (New Tab)</span>
-  <div>
-    <span id="langDisplay">Lang: Plain Text</span> | <span id="wordCount">Words: 0</span> | <span id="charCount">Characters: 0</span>
+  <span id="zoomDisplay">Zoom: 100%</span>
+  <span id="posDisplay">Ln 1, Col 1</span>
+  <span id="encodingDisplay">UTF-8</span>
+  <span id="windowsDisplay">Windows (CRLF)</span>
+</div>
+
+<div id="fontModal" class="modal-overlay">
+  <div class="modal">
+    <h3>Font Settings</h3>
+    <label for="fontSizeInput">Font Size (<span id="fontSizeVal">14</span>px):</label>
+    <input type="range" id="fontSizeInput" min="10" max="32" value="14">
+    <div class="modal-buttons">
+      <button id="closeFontModal">Close</button>
+    </div>
   </div>
 </div>
 
 <script>
   const textArea = document.getElementById('textArea');
-  const lineNumbers = document.getElementById('lineNumbers');
-  const wordCount = document.getElementById('wordCount');
-  const charCount = document.getElementById('charCount');
-  const saveBtn = document.getElementById('saveBtn');
   const fileInput = document.getElementById('fileInput');
-  const clearBtn = document.getElementById('clearBtn');
-  const themeToggle = document.getElementById('themeToggle');
-  const body = document.body;
-  const tabBar = document.getElementById('tabBar');
-  const addTabBtn = document.getElementById('addTabBtn');
-  const newTabBtn = document.getElementById('newTabBtn');
-  const windowTitleText = document.getElementById('windowTitleText');
-
-  const settingsModal = document.getElementById('settingsModal');
-  const settingsBtn = document.getElementById('settingsBtn');
-  const menuSettings = document.getElementById('menuSettings');
-  const closeSettings = document.getElementById('closeSettings');
-  const langSelect = document.getElementById('langSelect');
-  const langDisplay = document.getElementById('langDisplay');
-  const fontSizeRange = document.getElementById('fontSizeRange');
+  const posDisplay = document.getElementById('posDisplay');
+  const zoomDisplay = document.getElementById('zoomDisplay');
+  const fontModal = document.getElementById('fontModal');
+  const fontSizeInput = document.getElementById('fontSizeInput');
   const fontSizeVal = document.getElementById('fontSizeVal');
-  const textColorPicker = document.getElementById('textColorPicker');
-  const lineNumToggle = document.getElementById('lineNumToggle');
-  const wordWrapToggle = document.getElementById('wordWrapToggle');
 
-  let tabs = [];
-  let activeTabId = null;
-  let tabCounter = 1;
+  let currentFileName = 'Untitled';
+  let isWordWrap = true;
+  let currentFontSize = 14;
 
-  function createTab(name = `Untitled-${tabCounter++}`, content = '') {
-    const id = 'tab_' + Date.now() + Math.random();
-    tabs.push({ id, name, content });
-    switchTab(id);
-  }
-
-  function switchTab(id) {
-    if (activeTabId) {
-      const currentTab = tabs.find(t => t.id === activeTabId);
-      if (currentTab) currentTab.content = textArea.value;
-    }
-    activeTabId = id;
-    const targetTab = tabs.find(t => t.id === id);
-    textArea.value = targetTab ? targetTab.content : '';
-    windowTitleText.textContent = `KuaduText - ${targetTab ? targetTab.name : 'Editor'}`;
-    renderTabs();
-    updateLineNumbers();
-    updateStats();
-  }
-
-  function closeTab(id, event) {
-    event.stopPropagation();
-    if (tabs.length === 1) {
-      tabs[0].content = '';
-      tabs[0].name = 'Untitled-1';
-      textArea.value = '';
-      windowTitleText.textContent = `KuaduText - Untitled-1`;
-      renderTabs();
-      updateLineNumbers();
-      updateStats();
-      return;
-    }
-    const index = tabs.findIndex(t => t.id === id);
-    tabs.splice(index, 1);
-    if (activeTabId === id) {
-      switchTab(tabs[Math.max(0, index - 1)].id);
-    } else {
-      renderTabs();
-    }
-  }
-
-  function renderTabs() {
-    document.querySelectorAll('.tab').forEach(el => el.remove());
-    tabs.forEach(tab => {
-      const tabEl = document.createElement('div');
-      tabEl.className = `tab ${tab.id === activeTabId ? 'active' : ''}`;
-      tabEl.innerHTML = `
-        <span>${tab.name}</span>
-        <span class="close-tab" title="Close tab">&times;</span>
-      `;
-      tabEl.addEventListener('click', () => switchTab(tab.id));
-      tabEl.querySelector('.close-tab').addEventListener('click', (e) => closeTab(tab.id, e));
-      tabBar.insertBefore(tabEl, addTabBtn);
+  document.querySelectorAll('.menu-dropdown').forEach(dropdown => {
+    dropdown.addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.querySelectorAll('.menu-dropdown').forEach(d => {
+        if (d !== dropdown) d.classList.remove('active');
+      });
+      dropdown.classList.toggle('active');
     });
+  });
+
+  window.addEventListener('click', () => {
+    document.querySelectorAll('.menu-dropdown').forEach(d => d.classList.remove('active'));
+  });
+
+  function updateCursorPosition() {
+    const text = textArea.value;
+    const selectionIndex = textArea.selectionStart;
+    const lineSubstr = text.substring(0, selectionIndex);
+    const lines = lineSubstr.split('\n');
+    const ln = lines.length;
+    const col = lines[lines.length - 1].length + 1;
+    posDisplay.textContent = `Ln ${ln}, Col ${col}`;
   }
 
-  function updateLineNumbers() {
-    if (lineNumToggle.checked) {
-      lineNumbers.style.display = 'block';
-      const lines = textArea.value.split('\n').length;
-      let numbersString = '';
-      for (let i = 1; i <= lines; i++) {
-        numbersString += i + '<br>';
-      }
-      lineNumbers.innerHTML = numbersString;
-    } else {
-      lineNumbers.style.display = 'none';
+  textArea.addEventListener('input', updateCursorPosition);
+  textArea.addEventListener('click', updateCursorPosition);
+  textArea.addEventListener('keyup', updateCursorPosition);
+
+  document.getElementById('menuNew').addEventListener('click', () => {
+    if (textArea.value.trim() === '' || confirm('Do you want to clear current text?')) {
+      textArea.value = '';
+      currentFileName = 'Untitled';
+      document.title = `${currentFileName} - Notepad`;
+      updateCursorPosition();
     }
-  }
-
-  function updateStats() {
-    const text = textArea.value;
-    const characters = text.length;
-    const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
-    wordCount.textContent = `Words: ${words}`;
-    charCount.textContent = `Characters: ${characters}`;
-    const currentTab = tabs.find(t => t.id === activeTabId);
-    if (currentTab) currentTab.content = text;
-  }
-
-  textArea.addEventListener('scroll', () => {
-    lineNumbers.scrollTop = textArea.scrollTop;
-  });
-  textArea.addEventListener('input', () => {
-    updateLineNumbers();
-    updateStats();
   });
 
-  settingsBtn.addEventListener('click', () => settingsModal.style.display = 'flex');
-  menuSettings.addEventListener('click', () => settingsModal.style.display = 'flex');
-  closeSettings.addEventListener('click', () => settingsModal.style.display = 'none');
-
-  langSelect.addEventListener('change', () => {
-    const lang = langSelect.value;
-    langDisplay.textContent = `Lang: ${langSelect.options[langSelect.selectedIndex].text}`;
-    if(lang === 'html') textArea.placeholder = "<!-- Type your HTML structure here -->";
-    else if(lang === 'css') textArea.placeholder = "/* Type your CSS styles here */";
-    else if(lang === 'javascript') textArea.placeholder = "// Type your JavaScript logic here";
-    else if(lang === 'python') textArea.placeholder = "# Type your Python code here";
-    else textArea.placeholder = "Start typing your notes here...";
+  document.getElementById('menuOpen').addEventListener('click', () => fileInput.click());
+  
+  fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      textArea.value = event.target.result;
+      currentFileName = file.name;
+      document.title = `${currentFileName} - Notepad`;
+      updateCursorPosition();
+    };
+    reader.readAsText(file);
+    e.target.value = '';
   });
 
-  fontSizeRange.addEventListener('input', () => {
-    const size = fontSizeRange.value;
-    fontSizeVal.textContent = size;
-    textArea.style.fontSize = size + 'px';
-    lineNumbers.style.fontSize = size + 'px';
-  });
-
-  textColorPicker.addEventListener('input', () => {
-    textArea.style.color = textColorPicker.value;
-  });
-
-  lineNumToggle.addEventListener('change', updateLineNumbers);
-
-  wordWrapToggle.addEventListener('change', () => {
-    textArea.style.whiteSpace = wordWrapToggle.checked ? 'pre-wrap' : 'pre';
-  });
-
-  function saveFile() {
-    const currentTab = tabs.find(t => t.id === activeTabId);
-    const text = textArea.value;
-    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  document.getElementById('menuSave').addEventListener('click', () => {
+    const blob = new Blob([textArea.value], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = currentTab ? `${currentTab.name}.txt` : 'document.txt';
+    a.download = currentFileName.endsWith('.txt') ? currentFileName : `${currentFileName}.txt`;
     a.click();
     URL.revokeObjectURL(url);
-  }
+  });
 
-  saveBtn.addEventListener('click', saveFile);
-  document.getElementById('menuSave').addEventListener('click', saveFile);
+  document.getElementById('menuExit').addEventListener('click', () => {
+    window.close();
+  });
 
-  function handleFileOpen(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      createTab(file.name, e.target.result);
-    };
-    reader.readAsText(file);
-    event.target.value = '';
-  }
+  document.getElementById('menuSelectAll').addEventListener('click', () => {
+    textArea.select();
+  });
 
-  fileInput.addEventListener('change', handleFileOpen);
-  document.getElementById('menuOpen').addEventListener('click', () => fileInput.click());
-
-  clearBtn.addEventListener('click', () => {
-    if (confirm('Clear current tab content?')) {
+  document.getElementById('menuClear').addEventListener('click', () => {
+    if (confirm('Clear all text?')) {
       textArea.value = '';
-      updateLineNumbers();
-      updateStats();
+      updateCursorPosition();
     }
   });
 
-  function toggleTheme() {
-    const currentTheme = body.getAttribute('data-theme');
-    body.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
-  }
+  const wordWrapBtn = document.getElementById('menuWordWrap');
+  document.getElementById('menuWordWrap').addEventListener('click', () => {
+    isWordWrap = !isWordWrap;
+    textArea.style.whiteSpace = isWordWrap ? 'pre-wrap' : 'pre';
+    wordWrapBtn.textContent = `Word Wrap: ${isWordWrap ? 'On' : 'Off'}`;
+  });
 
-  themeToggle.addEventListener('click', toggleTheme);
+  document.getElementById('menuFont').addEventListener('click', () => {
+    fontModal.style.display = 'flex';
+  });
 
-  newTabBtn.addEventListener('click', () => createTab());
-  addTabBtn.addEventListener('click', () => createTab());
-  document.getElementById('menuNew').addEventListener('click', () => createTab());
+  document.getElementById('closeFontModal').addEventListener('click', () => {
+    fontModal.style.display = 'none';
+  });
+
+  fontSizeInput.addEventListener('input', () => {
+    currentFontSize = fontSizeInput.value;
+    fontSizeVal.textContent = currentFontSize;
+    textArea.style.fontSize = currentFontSize + 'px';
+  });
+
+  document.getElementById('menuZoomIn').addEventListener('click', () => {
+    currentFontSize = Math.min(36, parseInt(currentFontSize) + 2);
+    textArea.style.fontSize = currentFontSize + 'px';
+    fontSizeInput.value = currentFontSize;
+    fontSizeVal.textContent = currentFontSize;
+    zoomDisplay.textContent = `Zoom: ${Math.round((currentFontSize / 14) * 100)}%`;
+  });
+
+  document.getElementById('menuZoomOut').addEventListener('click', () => {
+    currentFontSize = Math.max(10, parseInt(currentFontSize) - 2);
+    textArea.style.fontSize = currentFontSize + 'px';
+    fontSizeInput.value = currentFontSize;
+    fontSizeVal.textContent = currentFontSize;
+    zoomDisplay.textContent = `Zoom: ${Math.round((currentFontSize / 14) * 100)}%`;
+  });
+
+  document.getElementById('menuResetZoom').addEventListener('click', () => {
+    currentFontSize = 14;
+    textArea.style.fontSize = '14px';
+    fontSizeInput.value = 14;
+    fontSizeVal.textContent = 14;
+    zoomDisplay.textContent = 'Zoom: 100%';
+  });
+
+  document.getElementById('menuAbout').addEventListener('click', () => {
+    alert('Kuaducode Local Notepad Editor\nClassic Windows Notepad Experience in HTML5');
+  });
 
   window.addEventListener('keydown', (e) => {
     if (e.ctrlKey || e.metaKey) {
-      if (e.key === 's') { e.preventDefault(); saveFile(); }
-      else if (e.key === 'o') { e.preventDefault(); fileInput.click(); }
-      else if (e.key === 't' || e.key === 'n') { e.preventDefault(); createTab(); }
+      if (e.key === 's') {
+        e.preventDefault();
+        document.getElementById('menuSave').click();
+      } else if (e.key === 'o') {
+        e.preventDefault();
+        fileInput.click();
+      } else if (e.key === 'n') {
+        e.preventDefault();
+        document.getElementById('menuNew').click();
+      }
     }
   });
 
-  createTab('Untitled-1');
+  updateCursorPosition();
 </script>
 </body>
 </html>
