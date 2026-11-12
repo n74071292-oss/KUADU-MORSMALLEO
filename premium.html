@@ -1,195 +1,302 @@
 <!DOCTYPE html>
-<html lang="en"><head><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9583679349976543"
-     crossorigin="anonymous"></script><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="CodePath Premium plans priced in Ghana cedis"><title>CodePath Premium — Ghana Cedis</title><link rel="stylesheet" href="style.css"></head>
-<body><header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">&lt;/&gt;</span><span>Kuadu<span class="brand-accent">code</span></span></a><nav class="nav-links" aria-label="Main navigation"><a href="index.html#explore">Explore</a><a href="video-lessons.html">Video lessons</a><a href="index.html#premium">Premium</a></nav><a class="top-cta" href="index.html">Home ↗</a></header>
+<html lang="en">
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premium - Kuaducode</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f3f3f3;
+    color: #000000;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    border-bottom: 1px solid #d4d4d4;
+    padding: 10px 20px;
+  }
+  .brand {
+    font-weight: bold;
+    font-size: 16px;
+    color: #0078d7;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .page-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    flex: 1;
+  }
+  .premium-hero {
+    text-align: center;
+    max-width: 600px;
+    margin-bottom: 40px;
+  }
+  .eyebrow {
+    color: #0078d7;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .premium-hero h1 {
+    font-size: 28px;
+    margin-top: 8px;
+    margin-bottom: 12px;
+  }
+  .brand-accent {
+    color: #0078d7;
+  }
+  .hero-text {
+    font-size: 14px;
+    color: #555555;
+    margin-bottom: 24px;
+  }
+  .billing-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+  }
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 22px;
+  }
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc;
+    transition: .3s;
+    border-radius: 22px;
+  }
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+  }
+  input:checked + .slider {
+    background-color: #0078d7;
+  }
+  input:checked + .slider:before {
+    transform: translateX(22px);
+  }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 900px;
+  }
+  .pricing-card {
+    background: #ffffff;
+    border: 1px solid #d4d4d4;
+    border-radius: 6px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  }
+  .pricing-card.featured {
+    border-color: #0078d7;
+    box-shadow: 0 4px 12px rgba(0,120,215,0.15);
+    position: relative;
+  }
+  .pricing-card.featured::after {
+    content: "POPULAR";
+    position: absolute;
+    top: -10px;
+    right: 20px;
+    background-color: #0078d7;
+    color: white;
+    font-size: 9px;
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+  .plan-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .plan-price {
+    font-size: 24px;
+    font-weight: bold;
+    color: #0078d7;
+    margin-bottom: 16px;
+  }
+  .plan-price span {
+    font-size: 12px;
+    color: #777777;
+    font-weight: normal;
+  }
+  .plan-features {
+    list-style: none;
+    margin-bottom: 24px;
+    font-size: 13px;
+    color: #444444;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .plan-features li::before {
+    content: "✓ ";
+    color: #0078d7;
+    font-weight: bold;
+  }
+  .plan-btn {
+    background-color: #f1f1f1;
+    color: #000000;
+    border: 1px solid #adadad;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 4px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .plan-btn:hover {
+    background-color: #e5f1fb;
+    border-color: #0078d7;
+  }
+  .plan-btn.primary {
+    background-color: #0078d7;
+    color: #ffffff;
+    border-color: #005a9e;
+  }
+  .plan-btn.primary:hover {
+    background-color: #005a9e;
+  }
+  .payment-methods {
+    margin-top: 30px;
+    font-size: 12px;
+    color: #666666;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="index.html"><span>&lt;/&gt;</span><span>Kuaducode Workspace</span></a>
+  <a class="plan-btn" href="index.html" style="display:inline-block; margin-bottom:0;">Back to Editor</a>
+</header>
+
 <main class="page-wrap">
   <div class="premium-hero">
     <span class="eyebrow">✦ KUADUCODE MEMBERSHIP</span>
     <h1>Choose your <span class="brand-accent">Premium plan</span></h1>
-    <p class="hero-text">Pick the learning package that fits your goals. Prices in Ghana cedis (GHS).</p>
+    <p class="hero-text">Unlock advanced coding features, Cloudflare DNS/SSL routing, and automated MoMo or Google Wallet payments.</p>
+    
     <div class="billing-toggle">
-      <span class="toggle-label active" id="monthlyLabel">Monthly</span>
+      <span id="monthlyLabel" class="active">Monthly</span>
       <label class="switch" id="billingSwitch">
-        <input type="checkbox">
+        <input type="checkbox" id="billingToggleInput">
         <span class="slider"></span>
       </label>
-      <span class="toggle-label" id="yearlyLabel">Yearly <span class="save-badge">Save 20%</span></span>
+      <span id="annualLabel">Annual (Save 20%)</span>
     </div>
   </div>
 
-  <div class="plan-grid" id="planGrid">
-    <article class="plan-card" data-plan="Starter" data-monthly="20" data-yearly="192">
-      <div class="plan-glow"></div>
-      <span class="premium-badge">STARTER</span>
-      <h2><span class="price-amount">20</span> <span class="price-currency">GHS</span></h2>
-      <p class="price-period">per month</p>
-      <p>Starter access</p>
-      <ul>
-        <li>✓ Extra practice tasks</li>
-        <li>✓ Beginner project checklist</li>
-        <li>✓ Self-study plan</li>
-      </ul>
-      <button class="btn btn-primary choose-plan" data-plan="Starter" data-price="20">Choose Starter</button>
-    </article>
-    <article class="plan-card featured" data-plan="Practice Plus" data-monthly="40" data-yearly="384">
-      <div class="plan-glow"></div>
-      <span class="premium-badge popular-badge">POPULAR</span>
-      <h2><span class="price-amount">40</span> <span class="price-currency">GHS</span></h2>
-      <p class="price-period">per month</p>
-      <p>Practice Plus</p>
-      <ul>
-        <li>✓ Starter benefits</li>
-        <li>✓ Intermediate project briefs</li>
-        <li>✓ Debugging exercises</li>
-        <li>✓ Progress review checklist</li>
-      </ul>
-      <button class="btn btn-primary choose-plan" data-plan="Practice Plus" data-price="40">Choose Practice Plus</button>
-    </article>
-    <article class="plan-card" data-plan="Project Builder" data-monthly="75" data-yearly="720">
-      <div class="plan-glow"></div>
-      <span class="premium-badge">BUILDER</span>
-      <h2><span class="price-amount">75</span> <span class="price-currency">GHS</span></h2>
-      <p class="price-period">per month</p>
-      <p>Project Builder</p>
-      <ul>
-        <li>✓ Practice Plus benefits</li>
-        <li>✓ Advanced project challenges</li>
-        <li>✓ Testing and code review guides</li>
-        <li>✓ Portfolio project roadmap</li>
-      </ul>
-      <button class="btn btn-primary choose-plan" data-plan="Project Builder" data-price="75">Choose Project Builder</button>
-    </article>
-    <article class="plan-card" data-plan="Pro Learning Pack" data-monthly="120" data-yearly="1152">
-      <div class="plan-glow"></div>
-      <span class="premium-badge">PRO</span>
-      <h2><span class="price-amount">120</span> <span class="price-currency">GHS</span></h2>
-      <p class="price-period">per month</p>
-      <p>Pro Learning Pack</p>
-      <ul>
-        <li>✓ Project Builder benefits</li>
-        <li>✓ Full multi-language project path</li>
-        <li>✓ Deployment and security checklist</li>
-        <li>✓ Capstone project rubric</li>
-      </ul>
-      <button class="btn btn-primary choose-plan" data-plan="Pro Learning Pack" data-price="120">Choose Pro</button>
-    </article>
-  </div>
-
-  <!-- Features comparison mini -->
-  <div class="comparison-bar">
-    <div class="comp-item"><span class="comp-icon">📚</span> 200+ lessons</div>
-    <div class="comp-item"><span class="comp-icon">💻</span> 12 languages</div>
-    <div class="comp-item"><span class="comp-icon">🏆</span> Projects & capstone</div>
-    <div class="comp-item"><span class="comp-icon">🎓</span> Certificate ready</div>
-  </div>
-
-  <section class="payment-panel" id="payment">
-    <div class="payment-inner">
-      <span class="eyebrow">💳 PAYMENT METHOD</span>
-      <h2>MTN Mobile Money (MoMo)</h2>
-      <p>Select a package above, then enter your MTN MoMo number. The amount will update automatically.</p>
-      <form id="momoForm">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="selectedPlan">Selected plan</label>
-            <input id="selectedPlan" name="plan" value="Starter" readonly>
-          </div>
-          <div class="form-group">
-            <label for="selectedPrice">Amount (GHS)</label>
-            <input id="selectedPrice" name="amount" value="20.00" readonly>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="momoNumber">MTN MoMo phone number</label>
-          <input id="momoNumber" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="e.g. 0241234567" pattern="(0[0-9]{9}|\+233[0-9]{9})" required>
-        </div>
-        <div class="form-group">
-          <label for="payerName">Name (optional)</label>
-          <input id="payerName" name="payer" autocomplete="name" placeholder="Name on your learning account">
-        </div>
-        <button class="btn btn-primary btn-pay" type="submit">
-          <span>Continue with MTN MoMo</span>
-          <span class="btn-arrow">→</span>
-        </button>
-        <p id="momoMessage" class="payment-message" role="status" aria-live="polite"></p>
-      </form>
-      <div class="payment-trust">
-        <span>🔒 Secured with SSL</span>
-        <span>✅ No charges until confirmation</span>
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <div>
+        <div class="plan-title">Standard Learner</div>
+        <div class="plan-price" id="priceStandard">GH₵ 35 <span>/ month</span></div>
+        <ul class="plan-features">
+          <li>Unlimited local HTML/CSS/JS editing</li>
+          <li>Standard Kuadu AI Assistant limits</li>
+          <li>Cloudflare custom domain setup guide</li>
+          <li>Export & download source files</li>
+        </ul>
       </div>
+      <a href="https://dash.cloudflare.com" target="_blank" class="plan-btn">Configure Cloudflare</a>
+      <a href="#" class="plan-btn primary" onclick="payWithWallet('Standard Learner', 'GH₵ 35')">Pay via Google Wallet / MoMo</a>
     </div>
-  </section>
 
-  <p class="return-link"><a href="index.html">← Return to KuaduCode</a></p>
+    <div class="pricing-card featured">
+      <div>
+        <div class="plan-title">Pro Developer</div>
+        <div class="plan-price" id="pricePro">GH₵ 85 <span>/ month</span></div>
+        <ul class="plan-features">
+          <li>Everything in Standard</li>
+          <li>Unlimited priority Kuadu AI queries</li>
+          <li>Cloudflare Enterprise DNS & SSL Routing</li>
+          <li>Direct MTN MoMo & Google Wallet Support</li>
+        </ul>
+      </div>
+      <a href="https://dash.cloudflare.com" target="_blank" class="plan-btn">Configure Cloudflare</a>
+      <a href="#" class="plan-btn primary" onclick="payWithWallet('Pro Developer', 'GH₵ 85')">Pay via Google Wallet / MoMo</a>
+    </div>
+  </div>
+
+  <div class="payment-methods">
+    Supported Payment Methods: MTN Mobile Money (MoMo), Google Wallet, Visa / Mastercard, and PayPal.
+  </div>
 </main>
 
 <script>
-// Billing toggle - monthly / yearly
-const billingCheckbox = document.querySelector('#billingSwitch input');
-const monthlyLabel = document.getElementById('monthlyLabel');
-const yearlyLabel = document.getElementById('yearlyLabel');
-const planCards = document.querySelectorAll('.plan-card');
-const priceAmounts = document.querySelectorAll('.price-amount');
-const pricePeriods = document.querySelectorAll('.price-period');
-const planButtons = document.querySelectorAll('.choose-plan');
+  const billingToggleInput = document.getElementById('billingToggleInput');
+  const priceStandard = document.getElementById('priceStandard');
+  const pricePro = document.getElementById('pricePro');
+  const monthlyLabel = document.getElementById('monthlyLabel');
+  const annualLabel = document.getElementById('annualLabel');
 
-function updateBilling() {
-  const isYearly = billingCheckbox.checked;
-  monthlyLabel.classList.toggle('active', !isYearly);
-  yearlyLabel.classList.toggle('active', isYearly);
-
-  planCards.forEach((card, i) => {
-    const monthly = parseInt(card.dataset.monthly);
-    const yearly = parseInt(card.dataset.yearly);
-    const perMonth = Math.round(yearly / 12);
-    const amount = isYearly ? perMonth : monthly;
-
-    priceAmounts[i].textContent = amount;
-    pricePeriods[i].textContent = isYearly ? 'per month (billed yearly)' : 'per month';
-
-    // update button price
-    planButtons[i].dataset.price = amount;
-    if (planButtons[i].dataset.plan === card.dataset.plan) {
-      // update hidden price if this plan is selected
-      if (document.getElementById('selectedPlan').value === card.dataset.plan) {
-        document.getElementById('selectedPrice').value = amount.toFixed(2);
-      }
+  billingToggleInput.addEventListener('change', () => {
+    if (billingToggleInput.checked) {
+      priceStandard.innerHTML = 'GH₵ 336 <span>/ year</span>';
+      pricePro.innerHTML = 'GH₵ 816 <span>/ year</span>';
+      annualLabel.style.color = '#0078d7';
+      monthlyLabel.style.color = '#000000';
+    } else {
+      priceStandard.innerHTML = 'GH₵ 35 <span>/ month</span>';
+      pricePro.innerHTML = 'GH₵ 85 <span>/ month</span>';
+      monthlyLabel.style.color = '#0078d7';
+      annualLabel.style.color = '#000000';
     }
   });
-}
 
-billingCheckbox.addEventListener('change', updateBilling);
-
-// Plan selection
-planButtons.forEach(button => button.addEventListener('click', () => {
-  document.getElementById('selectedPlan').value = button.dataset.plan;
-  document.getElementById('selectedPrice').value = Number(button.dataset.price).toFixed(2);
-  document.getElementById('payment').scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-  // highlight active card
-  planCards.forEach(c => c.classList.remove('active-card'));
-  button.closest('.plan-card').classList.add('active-card');
-}));
-
-// Form submit
-document.getElementById('momoForm').addEventListener('submit', event => {
-  event.preventDefault();
-  const phone = document.getElementById('momoNumber').value.trim();
-  if (!/^(0[0-9]{9}|\+233[0-9]{9})$/.test(phone)) {
-    document.getElementById('momoMessage').textContent = 'Enter a valid Ghanaian phone number, e.g. 0241234567 or +233241234567.';
-    return;
+  function payWithWallet(planName, price) {
+    const merchantEmail = prompt("Enter your email address for Google Wallet / MoMo receipt & verification:");
+    if (!merchantEmail) return;
+    
+    const subject = encodeURIComponent(`Kuaducode Premium Subscription - ${planName}`);
+    const body = encodeURIComponent(`Hello Kuaducode Team,\n\nI would like to subscribe to the ${planName} (${price}) using Google Wallet / MTN MoMo.\n\nMy payment/account email is: ${merchantEmail}\n\nPlease send me the payment instructions or Google Wallet link.`);
+    
+    window.location.href = `mailto:n74071292@gmail.com?subject=${subject}&body=${body}`;
   }
-  document.getElementById('momoMessage').textContent = 'Demo checkout only: GHS ' + document.getElementById('selectedPrice').value + ' for ' + document.getElementById('selectedPlan').value + '. No real payment processed.';
-});
-
-// Animate progress bars on scroll
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.style.setProperty('--fill-width', entry.target.dataset.width + '%');
-    }
-  });
-}, { threshold: 0.3 });
-
-document.querySelectorAll('.progress-fill').forEach(el => observer.observe(el));
-</script></body></html>
+</script>
+</body>
+</html>
