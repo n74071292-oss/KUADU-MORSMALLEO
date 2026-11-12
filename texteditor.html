@@ -1,549 +1,565 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KuaduText - Local Text Editor</title>
-    <style>
-        :root {
-            --bg-color: #1e1e1e;
-            --text-color: #d4d4d4;
-            --toolbar-bg: #2d2d2d;
-            --border-color: #333333;
-            --button-hover: #3c3c3c;
-            --accent-color: #007acc;
-            --tab-bg: #252526;
-            --tab-active: #1e1e1e;
-            --promo-bg: #252526;
-            --titlebar-bg: #111111;
-        }
-
-        [data-theme="light"] {
-            --bg-color: #ffffff;
-            --text-color: #333333;
-            --toolbar-bg: #f3f3f3;
-            --border-color: #e0e0e0;
-            --button-hover: #e0e0e0;
-            --accent-color: #0066cc;
-            --tab-bg: #e5e5e5;
-            --tab-active: #ffffff;
-            --promo-bg: #f9f9f9;
-            --titlebar-bg: #e1e1e1;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
-            transition: background 0.3s, color 0.3s;
-        }
-
-        /* Desktop App Window Titlebar */
-        .window-titlebar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: var(--titlebar-bg);
-            padding: 6px 12px;
-            font-size: 12px;
-            border-bottom: 1px solid var(--border-color);
-            user-select: none;
-        }
-
-        .window-title {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 500;
-        }
-
-        .window-controls {
-            display: flex;
-            gap: 6px;
-        }
-
-        .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-
-        .dot-red { background-color: #ff5f56; }
-        .dot-yellow { background-color: #ffbd2e; }
-        .dot-green { background-color: #27c93f; }
-
-        /* Menu Bar */
-        .menubar {
-            display: flex;
-            background-color: var(--toolbar-bg);
-            padding: 4px 10px;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 13px;
-            gap: 15px;
-        }
-
-        .menu-item {
-            padding: 4px 8px;
-            cursor: pointer;
-            border-radius: 3px;
-        }
-
-        .menu-item:hover {
-            background-color: var(--button-hover);
-        }
-
-        /* Tab Bar */
-        .tab-bar {
-            display: flex;
-            background-color: var(--toolbar-bg);
-            border-bottom: 1px solid var(--border-color);
-            overflow-x: auto;
-            align-items: center;
-            padding-left: 5px;
-        }
-
-        .tab {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background-color: var(--tab-bg);
-            padding: 7px 14px;
-            font-size: 13px;
-            border-right: 1px solid var(--border-color);
-            cursor: pointer;
-            user-select: none;
-            border-top: 2px solid transparent;
-        }
-
-        .tab.active {
-            background-color: var(--tab-active);
-            border-top: 2px solid var(--accent-color);
-        }
-
-        .tab .close-tab {
-            font-size: 14px;
-            border-radius: 50%;
-            padding: 0 4px;
-        }
-
-        .tab .close-tab:hover {
-            background-color: rgba(255, 0, 0, 0.2);
-            color: #ff5555;
-        }
-
-        .add-tab-btn {
-            background: none;
-            border: none;
-            color: var(--text-color);
-            font-size: 18px;
-            padding: 4px 12px;
-            cursor: pointer;
-        }
-
-        .add-tab-btn:hover {
-            background-color: var(--button-hover);
-        }
-
-        /* Toolbar */
-        .toolbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: var(--toolbar-bg);
-            padding: 6px 15px;
-            border-bottom: 1px solid var(--border-color);
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .toolbar-group {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        button, label.upload-btn {
-            background-color: transparent;
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: background 0.2s;
-        }
-
-        button:hover, label.upload-btn:hover {
-            background-color: var(--button-hover);
-        }
-
-        .primary-btn {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-        }
-
-        .primary-btn:hover {
-            opacity: 0.9;
-        }
-
-        input[type="file"] {
-            display: none;
-        }
-
-        /* Editor Layout */
-        .editor-container {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .line-numbers {
-            width: 50px;
-            background-color: var(--toolbar-bg);
-            color: #858585;
-            padding: 12px 6px;
-            text-align: right;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
-            line-height: 1.5;
-            user-select: none;
-            overflow: hidden;
-            border-right: 1px solid var(--border-color);
-        }
-
-        textarea {
-            flex: 1;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            border: none;
-            padding: 12px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
-            line-height: 1.5;
-            resize: none;
-            outline: none;
-            white-space: pre-wrap;
-            overflow-y: auto;
-        }
-
-        /* Testimonials / Kuaducode Advertising Section */
-        .promo-section {
-            background-color: var(--promo-bg);
-            border-top: 1px solid var(--border-color);
-            padding: 10px 20px;
-        }
-
-        .promo-header {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--accent-color);
-            margin-bottom: 6px;
-            font-weight: bold;
-        }
-
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 10px;
-        }
-
-        .testimonial-card {
-            background-color: var(--toolbar-bg);
-            border: 1px solid var(--border-color);
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-size: 12px;
-        }
-
-        .testimonial-card p {
-            margin-bottom: 4px;
-            font-style: italic;
-        }
-
-        .testimonial-author {
-            color: var(--accent-color);
-            font-weight: 600;
-        }
-
-        /* Status Bar */
-        .status-bar {
-            display: flex;
-            justify-content: space-between;
-            background-color: var(--toolbar-bg);
-            padding: 4px 15px;
-            font-size: 12px;
-            border-top: 1px solid var(--border-color);
-            color: #858585;
-        }
-
-        .shortcuts-hint {
-            font-style: italic;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KuaduText - Local Text Editor</title>
+<style>
+  :root {--bg-color: #1e1e1e; --text-color: #d4d4d4; --toolbar-bg: #2d2d2d; --border-color: #333333; --button-hover: #3c3c3c; --accent-color: #007acc; --tab-bg: #252526; --tab-active: #1e1e1e; --promo-bg: #252526; --titlebar-bg: #111111; }
+  [data-theme="light"] {--bg-color: #ffffff; --text-color: #333333; --toolbar-bg: #f3f3f3; --border-color: #e0e0e0; --button-hover: #e0e0e0; --accent-color: #0066cc; --tab-bg: #e5e5e5; --tab-active: #ffffff; --promo-bg: #f9f9f9; --titlebar-bg: #e1e1e1; }
+  * {box-sizing: border-box; margin: 0; padding: 0; }
+  body {font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-color); display: flex; flex-direction: column; height: 100vh; overflow: hidden; transition: background 0.3s, color 0.3s; }
+  .window-titlebar {display: flex; justify-content: space-between; align-items: center; background-color: var(--titlebar-bg); padding: 6px 12px; font-size: 12px; border-bottom: 1px solid var(--border-color); user-select: none; }
+  .window-title {display: flex; align-items: center; gap: 8px; font-weight: 500; }
+  .window-controls {display: flex; gap: 6px; }
+  .dot {width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .dot-red { background-color: #ff5f56; }
+  .dot-yellow { background-color: #ffbd2e; }
+  .dot-green { background-color: #27c93f; }
+  .menubar {display: flex; background-color: var(--toolbar-bg); padding: 4px 10px; border-bottom: 1px solid var(--border-color); font-size: 13px; gap: 15px; }
+  .menu-item {padding: 4px 8px; cursor: pointer; border-radius: 3px; }
+  .menu-item:hover {background-color: var(--button-hover); }
+  .tab-bar {display: flex; background-color: var(--toolbar-bg); border-bottom: 1px solid var(--border-color); overflow-x: auto; align-items: center; padding-left: 5px; }
+  .tab {display: flex; align-items: center; gap: 10px; background-color: var(--tab-bg); padding: 7px 14px; font-size: 13px; border-right: 1px solid var(--border-color); cursor: pointer; user-select: none; border-top: 2px solid transparent; }
+  .tab.active {background-color: var(--tab-active); border-top: 2px solid var(--accent-color); }
+  .tab .close-tab {font-size: 14px; border-radius: 50%; padding: 0 4px; }
+  .tab .close-tab:hover {background-color: rgba(255, 0, 0, 0.2); color: #ff5555; }
+  .add-tab-btn {background: none; border: none; color: var(--text-color); font-size: 18px; padding: 4px 12px; cursor: pointer; }
+  .add-tab-btn:hover {background-color: var(--button-hover); }
+  .toolbar {display: flex; justify-content: space-between; align-items: center; background-color: var(--toolbar-bg); padding: 6px 15px; border-bottom: 1px solid var(--border-color); gap: 10px; flex-wrap: wrap; }
+  .toolbar-group {display: flex; gap: 8px; align-items: center; }
+  button, label.upload-btn {background-color: transparent; color: var(--text-color); border: 1px solid var(--border-color); padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 13px; transition: background 0.2s; }
+  button:hover, label.upload-btn:hover {background-color: var(--button-hover); }
+  .primary-btn {background-color: var(--accent-color); color: white; border: none; }
+  .primary-btn:hover {opacity: 0.9; }
+  input[type="file"] {display: none; }
+  .editor-container {display: flex; flex: 1; overflow: hidden; position: relative; }
+  .line-numbers {width: 50px; background-color: var(--toolbar-bg); color: #858585; padding: 12px 6px; text-align: right; font-family: 'Courier New', Courier, monospace; font-size: 14px; line-height: 1.5; user-select: none; overflow: hidden; border-right: 1px solid var(--border-color); }
+  textarea {flex: 1; background-color: var(--bg-color); color: var(--text-color); border: none; padding: 12px; font-family: 'Courier New', Courier, monospace; font-size: 14px; line-height: 1.5; resize: none; outline: none; white-space: pre-wrap; overflow-y: auto; }
+  .promo-section {background-color: var(--promo-bg); border-top: 1px solid var(--border-color); padding: 10px 20px; }
+  .promo-header {font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-color); margin-bottom: 6px; font-weight: bold; }
+  .testimonials-grid {display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; }
+  .testimonial-card {background-color: var(--toolbar-bg); border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 4px; font-size: 12px; }
+  .testimonial-card p {margin-bottom: 4px; font-style: italic; }
+  .testimonial-author {color: var(--accent-color); font-weight: 600; }
+  .status-bar {display: flex; justify-content: space-between; background-color: var(--toolbar-bg); padding: 4px 15px; font-size: 12px; border-top: 1px solid var(--border-color); color: #858585; }
+  .shortcuts-hint {font-style: italic; }
+</style>
 </head>
 <body data-theme="dark">
 
-    <!-- Desktop App Header Window Frame -->
-    <div class="window-titlebar">
-        <div class="window-title">
-            <span>📝</span>
-            <span id="windowTitleText">KuaduText - Untitled-1</span>
-        </div>
-        <div class="window-controls">
-            <span class="dot dot-red"></span>
-            <span class="dot dot-yellow"></span>
-            <span class="dot dot-green"></span>
-        </div>
+<div class="window-titlebar">
+  <div class="window-title">
+    <span>📝</span>
+    <span id="windowTitleText">KuaduText - Untitled-1</span>
+  </div>
+  <div class="window-controls">
+    <span class="dot dot-red"></span>
+    <span class="dot dot-yellow"></span>
+    <span class="dot dot-green"></span>
+  </div>
+</div>
+
+<div class="menubar">
+  <div class="menu-item" id="menuNew">File (Ctrl+N)</div>
+  <div class="menu-item" id="menuOpen">Open... (Ctrl+O)</div>
+  <div class="menu-item" id="menuSave">Save (Ctrl+S)</div>
+  <div class="menu-item" id="menuTheme">Theme</div>
+</div>
+
+<div class="tab-bar" id="tabBar">
+  <button class="add-tab-btn" id="addTabBtn" title="New Tab (Ctrl+T)">＋</button>
+</div>
+
+<div class="toolbar">
+  <div class="toolbar-group">
+    <button id="newTabBtn">📄 New Tab</button>
+    <label class="upload-btn">
+      📂 Import File <input type="file" id="fileInput" accept=".txt,.md,.html,.js,.css">
+    </label>
+    <button class="primary-btn" id="saveBtn">💾 Save to PC</button>
+    <button id="clearBtn">🧹 Clear</button>
+  </div>
+  <div class="toolbar-group">
+    <button id="themeToggle">🌓 Toggle Theme</button>
+  </div>
+</div>
+
+<div class="editor-container">
+  <div id="lineNumbers" class="line-numbers">1</div>
+  <textarea id="textArea" placeholder="Start typing your notes here... (Ctrl+S to save, Ctrl+O to open)"></textarea>
+</div>
+
+<div class="promo-section">
+  <div class="promo-header">🚀 Powered by Kuaducode — The Ultimate Coding Platform</div>
+  <div class="testimonials-grid">
+    <div class="testimonial-card">
+      <p>"Kuaducode is hands down the best coding platform out there. The seamless workflow and tools completely elevated my development speed."</p>
+      <div class="testimonial-author">— Sarah Jenkins, Full-Stack Engineer</div>
     </div>
-
-    <!-- Menu Bar -->
-    <div class="menubar">
-        <div class="menu-item" id="menuNew">File (Ctrl+N)</div>
-        <div class="menu-item" id="menuOpen">Open... (Ctrl+O)</div>
-        <div class="menu-item" id="menuSave">Save (Ctrl+S)</div>
-        <div class="menu-item" id="menuTheme">Theme</div>
+    <div class="testimonial-card">
+      <p>"If you want a lightning-fast, intuitive ecosystem to build and scale projects, Kuaducode is the absolute gold standard."</p>
+      <div class="testimonial-author">— Marcus Vance, Lead Architect</div>
     </div>
+  </div>
+</div>
 
-    <!-- Tab Bar -->
-    <div class="tab-bar" id="tabBar">
-        <button class="add-tab-btn" id="addTabBtn" title="New Tab (Ctrl+T)">＋</button>
+<div class="status-bar">
+  <span class="shortcuts-hint">Shortcuts: Ctrl+N (New), Ctrl+O (Open), Ctrl+S (Save), Ctrl+T (New Tab)</span>
+  <div>
+    <span id="wordCount">Words: 0</span> | <span id="charCount">Characters: 0</span>
+  </div>
+</div>
+
+<script>
+  const textArea = document.getElementById('textArea');
+  const lineNumbers = document.getElementById('lineNumbers');
+  const wordCount = document.getElementById('wordCount');
+  const charCount = document.getElementById('charCount');
+  const saveBtn = document.getElementById('saveBtn');
+  const fileInput = document.getElementById('fileInput');
+  const clearBtn = document.getElementById('clearBtn');
+  const themeToggle = document.getElementById('themeToggle');
+  const body = document.body;
+  const tabBar = document.getElementById('tabBar');
+  const addTabBtn = document.getElementById('addTabBtn');
+  const newTabBtn = document.getElementById('newTabBtn');
+  const windowTitleText = document.getElementById('windowTitleText');
+  let tabs = [];
+  let activeTabId = null;
+  let tabCounter = 1;
+
+  function createTab(name = `Untitled-${tabCounter++}`, content = '') {
+    const id = 'tab_' + Date.now() + Math.random();
+    tabs.push({ id, name, content });
+    switchTab(id);
+  }
+
+  function switchTab(id) {
+    if (activeTabId) {
+      const currentTab = tabs.find(t => t.id === activeTabId);
+      if (currentTab) currentTab.content = textArea.value;
+    }
+    activeTabId = id;
+    const targetTab = tabs.find(t => t.id === id);
+    textArea.value = targetTab ? targetTab.content : '';
+    windowTitleText.textContent = `KuaduText - ${targetTab ? targetTab.name : 'Editor'}`;
+    renderTabs();
+    updateLineNumbers();
+    updateStats();
+  }
+
+  function closeTab(id, event) {
+    event.stopPropagation();
+    if (tabs.length === 1) {
+      tabs[0].content = '';
+      tabs[0].name = 'Untitled-1';
+      textArea.value = '';
+      windowTitleText.textContent = `KuaduText - Untitled-1`;
+      renderTabs();
+      updateLineNumbers();
+      updateStats();
+      return;
+    }
+    const index = tabs.findIndex(t => t.id === id);
+    tabs.splice(index, 1);
+    if (activeTabId === id) {
+      switchTab(tabs[Math.max(0, index - 1)].id);
+    } else {
+      renderTabs();
+    }
+  }
+
+  function renderTabs() {
+    document.querySelectorAll('.tab').forEach(el => el.remove());
+    tabs.forEach(tab => {
+      const tabEl = document.createElement('div');
+      tabEl.className = `tab ${tab.id === activeTabId ? 'active' : ''}`;
+      tabEl.innerHTML = `
+        <span>${tab.name}</span>
+        <span class="close-tab" title="Close tab">&times;</span>
+      `;
+      tabEl.addEventListener('click', () => switchTab(tab.id));
+      tabEl.querySelector('.close-tab').addEventListener('click', (e) => closeTab(tab.id, e));
+      tabBar.insertBefore(tabEl, addTabBtn);
+    });
+  }
+
+  function updateLineNumbers() {
+    const lines = textArea.value.split('\n').length;
+    let numbersString = '';
+    for (let i = 1; i <= lines; i++) {
+      numbersString += i + '<br>';
+    }
+    lineNumbers.innerHTML = numbersString;
+  }
+
+  function updateStats() {
+    const text = textArea.value;
+    const characters = text.length;
+    const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+    wordCount.textContent = `Words: ${words}`;
+    charCount.textContent = `Characters: ${characters}`;
+    const currentTab = tabs.find(t => t.id === activeTabId);
+    if (currentTab) currentTab.content = text;
+  }
+
+  textArea.addEventListener('scroll', () => {
+    lineNumbers.scrollTop = textArea.scrollTop;
+  });
+
+  textArea.addEventListener('input', () => {
+    updateLineNumbers();
+    updateStats();
+  });
+
+  function saveFile() {
+    const currentTab = tabs.find(t => t.id === activeTabId);
+    const text = textArea.value;
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = currentTab ? `${currentTab.name}.txt` : 'document.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  saveBtn.addEventListener('click', saveFile);
+  document.getElementById('menuSave').addEventListener('click', saveFile);
+
+  function handleFileOpen(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      createTab(file.name, e.target.result);
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+  }
+
+  fileInput.addEventListener('change', handleFileOpen);
+  document.getElementById('menuOpen').addEventListener('click', () => fileInput.click());
+
+  clearBtn.addEventListener('click', () => {
+    if (confirm('Clear current tab content?')) {
+      textArea.value = '';
+      updateLineNumbers();
+      updateStats();
+    }
+  });
+
+  function toggleTheme() {
+    const currentTheme = body.getAttribute('data-theme');
+    body.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
+  }
+
+  themeToggle.addEventListener('click', toggleTheme);
+  document.getElementById('menuTheme').addEventListener('click', toggleTheme);
+
+  newTabBtn.addEventListener('click', () => createTab());
+  addTabBtn.addEventListener('click', () => createTab());
+  document.getElementById('menuNew').addEventListener('click', () => createTab());
+
+  window.addEventListener('keydown', (e) => {
+    if (e.ctrlKey || e.metaKey) {
+      if (e.key === 's') {
+        e.preventDefault();
+        saveFile();
+      } else if (e.key === 'o') {
+        e.preventDefault();
+        fileInput.click();
+      } else if (e.key === 't' || e.key === 'n') {
+        e.preventDefault();
+        createTab();
+      }
+    }
+  });
+
+  createTab('Untitled-1');
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KuaduText - Local Text Editor</title>
+<style>
+  :root {--bg-color: #1e1e1e; --text-color: #d4d4d4; --toolbar-bg: #2d2d2d; --border-color: #333333; --button-hover: #3c3c3c; --accent-color: #007acc; --tab-bg: #252526; --tab-active: #1e1e1e; --promo-bg: #252526; --titlebar-bg: #111111; }
+  [data-theme="light"] {--bg-color: #ffffff; --text-color: #333333; --toolbar-bg: #f3f3f3; --border-color: #e0e0e0; --button-hover: #e0e0e0; --accent-color: #0066cc; --tab-bg: #e5e5e5; --tab-active: #ffffff; --promo-bg: #f9f9f9; --titlebar-bg: #e1e1e1; }
+  * {box-sizing: border-box; margin: 0; padding: 0; }
+  body {font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-color); display: flex; flex-direction: column; height: 100vh; overflow: hidden; transition: background 0.3s, color 0.3s; }
+  .window-titlebar {display: flex; justify-content: space-between; align-items: center; background-color: var(--titlebar-bg); padding: 6px 12px; font-size: 12px; border-bottom: 1px solid var(--border-color); user-select: none; }
+  .window-title {display: flex; align-items: center; gap: 8px; font-weight: 500; }
+  .window-controls {display: flex; gap: 6px; }
+  .dot {width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .dot-red { background-color: #ff5f56; }
+  .dot-yellow { background-color: #ffbd2e; }
+  .dot-green { background-color: #27c93f; }
+  .menubar {display: flex; background-color: var(--toolbar-bg); padding: 4px 10px; border-bottom: 1px solid var(--border-color); font-size: 13px; gap: 15px; }
+  .menu-item {padding: 4px 8px; cursor: pointer; border-radius: 3px; }
+  .menu-item:hover {background-color: var(--button-hover); }
+  .tab-bar {display: flex; background-color: var(--toolbar-bg); border-bottom: 1px solid var(--border-color); overflow-x: auto; align-items: center; padding-left: 5px; }
+  .tab {display: flex; align-items: center; gap: 10px; background-color: var(--tab-bg); padding: 7px 14px; font-size: 13px; border-right: 1px solid var(--border-color); cursor: pointer; user-select: none; border-top: 2px solid transparent; }
+  .tab.active {background-color: var(--tab-active); border-top: 2px solid var(--accent-color); }
+  .tab .close-tab {font-size: 14px; border-radius: 50%; padding: 0 4px; }
+  .tab .close-tab:hover {background-color: rgba(255, 0, 0, 0.2); color: #ff5555; }
+  .add-tab-btn {background: none; border: none; color: var(--text-color); font-size: 18px; padding: 4px 12px; cursor: pointer; }
+  .add-tab-btn:hover {background-color: var(--button-hover); }
+  .toolbar {display: flex; justify-content: space-between; align-items: center; background-color: var(--toolbar-bg); padding: 6px 15px; border-bottom: 1px solid var(--border-color); gap: 10px; flex-wrap: wrap; }
+  .toolbar-group {display: flex; gap: 8px; align-items: center; }
+  button, label.upload-btn {background-color: transparent; color: var(--text-color); border: 1px solid var(--border-color); padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 13px; transition: background 0.2s; }
+  button:hover, label.upload-btn:hover {background-color: var(--button-hover); }
+  .primary-btn {background-color: var(--accent-color); color: white; border: none; }
+  .primary-btn:hover {opacity: 0.9; }
+  input[type="file"] {display: none; }
+  .editor-container {display: flex; flex: 1; overflow: hidden; position: relative; }
+  .line-numbers {width: 50px; background-color: var(--toolbar-bg); color: #858585; padding: 12px 6px; text-align: right; font-family: 'Courier New', Courier, monospace; font-size: 14px; line-height: 1.5; user-select: none; overflow: hidden; border-right: 1px solid var(--border-color); }
+  textarea {flex: 1; background-color: var(--bg-color); color: var(--text-color); border: none; padding: 12px; font-family: 'Courier New', Courier, monospace; font-size: 14px; line-height: 1.5; resize: none; outline: none; white-space: pre-wrap; overflow-y: auto; }
+  .promo-section {background-color: var(--promo-bg); border-top: 1px solid var(--border-color); padding: 10px 20px; }
+  .promo-header {font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-color); margin-bottom: 6px; font-weight: bold; }
+  .testimonials-grid {display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; }
+  .testimonial-card {background-color: var(--toolbar-bg); border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 4px; font-size: 12px; }
+  .testimonial-card p {margin-bottom: 4px; font-style: italic; }
+  .testimonial-author {color: var(--accent-color); font-weight: 600; }
+  .status-bar {display: flex; justify-content: space-between; background-color: var(--toolbar-bg); padding: 4px 15px; font-size: 12px; border-top: 1px solid var(--border-color); color: #858585; }
+  .shortcuts-hint {font-style: italic; }
+</style>
+</head>
+<body data-theme="dark">
+
+<div class="window-titlebar">
+  <div class="window-title">
+    <span>📝</span>
+    <span id="windowTitleText">KuaduText - Untitled-1</span>
+  </div>
+  <div class="window-controls">
+    <span class="dot dot-red"></span>
+    <span class="dot dot-yellow"></span>
+    <span class="dot dot-green"></span>
+  </div>
+</div>
+
+<div class="menubar">
+  <div class="menu-item" id="menuNew">File (Ctrl+N)</div>
+  <div class="menu-item" id="menuOpen">Open... (Ctrl+O)</div>
+  <div class="menu-item" id="menuSave">Save (Ctrl+S)</div>
+  <div class="menu-item" id="menuTheme">Theme</div>
+</div>
+
+<div class="tab-bar" id="tabBar">
+  <button class="add-tab-btn" id="addTabBtn" title="New Tab (Ctrl+T)">＋</button>
+</div>
+
+<div class="toolbar">
+  <div class="toolbar-group">
+    <button id="newTabBtn">📄 New Tab</button>
+    <label class="upload-btn">
+      📂 Import File <input type="file" id="fileInput" accept=".txt,.md,.html,.js,.css">
+    </label>
+    <button class="primary-btn" id="saveBtn">💾 Save to PC</button>
+    <button id="clearBtn">🧹 Clear</button>
+  </div>
+  <div class="toolbar-group">
+    <button id="themeToggle">🌓 Toggle Theme</button>
+  </div>
+</div>
+
+<div class="editor-container">
+  <div id="lineNumbers" class="line-numbers">1</div>
+  <textarea id="textArea" placeholder="Start typing your notes here... (Ctrl+S to save, Ctrl+O to open)"></textarea>
+</div>
+
+<div class="promo-section">
+  <div class="promo-header">🚀 Powered by Kuaducode — The Ultimate Coding Platform</div>
+  <div class="testimonials-grid">
+    <div class="testimonial-card">
+      <p>"Kuaducode is hands down the best coding platform out there. The seamless workflow and tools completely elevated my development speed."</p>
+      <div class="testimonial-author">— Sarah Jenkins, Full-Stack Engineer</div>
     </div>
-
-    <!-- Toolbar -->
-    <div class="toolbar">
-        <div class="toolbar-group">
-            <button id="newTabBtn">📄 New Tab</button>
-            <label class="upload-btn">
-                📂 Import File
-                <input type="file" id="fileInput" accept=".txt,.md,.html,.js,.css">
-            </label>
-            <button class="primary-btn" id="saveBtn">💾 Save to PC</button>
-            <button id="clearBtn">🧹 Clear</button>
-        </div>
-        <div class="toolbar-group">
-            <button id="themeToggle">🌓 Toggle Theme</button>
-        </div>
+    <div class="testimonial-card">
+      <p>"If you want a lightning-fast, intuitive ecosystem to build and scale projects, Kuaducode is the absolute gold standard."</p>
+      <div class="testimonial-author">— Marcus Vance, Lead Architect</div>
     </div>
+  </div>
+</div>
 
-    <!-- Main Text Area with Line Numbers -->
-    <div class="editor-container">
-        <div id="lineNumbers" class="line-numbers">1</div>
-        <textarea id="textArea" placeholder="Start typing your notes here... (Ctrl+S to save, Ctrl+O to open)"></textarea>
-    </div>
+<div class="status-bar">
+  <span class="shortcuts-hint">Shortcuts: Ctrl+N (New), Ctrl+O (Open), Ctrl+S (Save), Ctrl+T (New Tab)</span>
+  <div>
+    <span id="wordCount">Words: 0</span> | <span id="charCount">Characters: 0</span>
+  </div>
+</div>
 
-    <!-- Kuaducode Testimonials Section -->
-    <div class="promo-section">
-        <div class="promo-header">🚀 Powered by Kuaducode — The Ultimate Coding Platform</div>
-        <div class="testimonials-grid">
-            <div class="testimonial-card">
-                <p>"Kuaducode is hands down the best coding platform out there. The seamless workflow and tools completely elevated my development speed."</p>
-                <div class="testimonial-author">— Sarah Jenkins, Full-Stack Engineer</div>
-            </div>
-            <div class="testimonial-card">
-                <p>"If you want a lightning-fast, intuitive ecosystem to build and scale projects, Kuaducode is the absolute gold standard."</p>
-                <div class="testimonial-author">— Marcus Vance, Lead Architect</div>
-            </div>
-        </div>
-    </div>
+<script>
+  const textArea = document.getElementById('textArea');
+  const lineNumbers = document.getElementById('lineNumbers');
+  const wordCount = document.getElementById('wordCount');
+  const charCount = document.getElementById('charCount');
+  const saveBtn = document.getElementById('saveBtn');
+  const fileInput = document.getElementById('fileInput');
+  const clearBtn = document.getElementById('clearBtn');
+  const themeToggle = document.getElementById('themeToggle');
+  const body = document.body;
+  const tabBar = document.getElementById('tabBar');
+  const addTabBtn = document.getElementById('addTabBtn');
+  const newTabBtn = document.getElementById('newTabBtn');
+  const windowTitleText = document.getElementById('windowTitleText');
+  let tabs = [];
+  let activeTabId = null;
+  let tabCounter = 1;
 
-    <!-- Bottom Status Bar -->
-    <div class="status-bar">
-        <span class="shortcuts-hint">Shortcuts: Ctrl+N (New), Ctrl+O (Open), Ctrl+S (Save), Ctrl+T (New Tab)</span>
-        <div>
-            <span id="wordCount">Words: 0</span> | 
-            <span id="charCount">Characters: 0</span>
-        </div>
-    </div>
+  function createTab(name = `Untitled-${tabCounter++}`, content = '') {
+    const id = 'tab_' + Date.now() + Math.random();
+    tabs.push({ id, name, content });
+    switchTab(id);
+  }
 
-    <script>
-        const textArea = document.getElementById('textArea');
-        const lineNumbers = document.getElementById('lineNumbers');
-        const wordCount = document.getElementById('wordCount');
-        const charCount = document.getElementById('charCount');
-        const saveBtn = document.getElementById('saveBtn');
-        const fileInput = document.getElementById('fileInput');
-        const clearBtn = document.getElementById('clearBtn');
-        const themeToggle = document.getElementById('themeToggle');
-        const body = document.body;
-        const tabBar = document.getElementById('tabBar');
-        const addTabBtn = document.getElementById('addTabBtn');
-        const newTabBtn = document.getElementById('newTabBtn');
-        const windowTitleText = document.getElementById('windowTitleText');
+  function switchTab(id) {
+    if (activeTabId) {
+      const currentTab = tabs.find(t => t.id === activeTabId);
+      if (currentTab) currentTab.content = textArea.value;
+    }
+    activeTabId = id;
+    const targetTab = tabs.find(t => t.id === id);
+    textArea.value = targetTab ? targetTab.content : '';
+    windowTitleText.textContent = `KuaduText - ${targetTab ? targetTab.name : 'Editor'}`;
+    renderTabs();
+    updateLineNumbers();
+    updateStats();
+  }
 
-        let tabs = [];
-        let activeTabId = null;
-        let tabCounter = 1;
+  function closeTab(id, event) {
+    event.stopPropagation();
+    if (tabs.length === 1) {
+      tabs[0].content = '';
+      tabs[0].name = 'Untitled-1';
+      textArea.value = '';
+      windowTitleText.textContent = `KuaduText - Untitled-1`;
+      renderTabs();
+      updateLineNumbers();
+      updateStats();
+      return;
+    }
+    const index = tabs.findIndex(t => t.id === id);
+    tabs.splice(index, 1);
+    if (activeTabId === id) {
+      switchTab(tabs[Math.max(0, index - 1)].id);
+    } else {
+      renderTabs();
+    }
+  }
 
-        function createTab(name = `Untitled-${tabCounter++}`, content = '') {
-            const id = 'tab_' + Date.now() + Math.random();
-            tabs.push({ id, name, content });
-            switchTab(id);
-        }
+  function renderTabs() {
+    document.querySelectorAll('.tab').forEach(el => el.remove());
+    tabs.forEach(tab => {
+      const tabEl = document.createElement('div');
+      tabEl.className = `tab ${tab.id === activeTabId ? 'active' : ''}`;
+      tabEl.innerHTML = `
+        <span>${tab.name}</span>
+        <span class="close-tab" title="Close tab">&times;</span>
+      `;
+      tabEl.addEventListener('click', () => switchTab(tab.id));
+      tabEl.querySelector('.close-tab').addEventListener('click', (e) => closeTab(tab.id, e));
+      tabBar.insertBefore(tabEl, addTabBtn);
+    });
+  }
 
-        function switchTab(id) {
-            if (activeTabId) {
-                const currentTab = tabs.find(t => t.id === activeTabId);
-                if (currentTab) currentTab.content = textArea.value;
-            }
+  function updateLineNumbers() {
+    const lines = textArea.value.split('\n').length;
+    let numbersString = '';
+    for (let i = 1; i <= lines; i++) {
+      numbersString += i + '<br>';
+    }
+    lineNumbers.innerHTML = numbersString;
+  }
 
-            activeTabId = id;
-            const targetTab = tabs.find(t => t.id === id);
-            textArea.value = targetTab ? targetTab.content : '';
-            windowTitleText.textContent = `KuaduText - ${targetTab ? targetTab.name : 'Editor'}`;
-            renderTabs();
-            updateLineNumbers();
-            updateStats();
-        }
+  function updateStats() {
+    const text = textArea.value;
+    const characters = text.length;
+    const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+    wordCount.textContent = `Words: ${words}`;
+    charCount.textContent = `Characters: ${characters}`;
+    const currentTab = tabs.find(t => t.id === activeTabId);
+    if (currentTab) currentTab.content = text;
+  }
 
-        function closeTab(id, event) {
-            event.stopPropagation();
-            if (tabs.length === 1) {
-                tabs[0].content = '';
-                tabs[0].name = 'Untitled-1';
-                textArea.value = '';
-                windowTitleText.textContent = `KuaduText - Untitled-1`;
-                renderTabs();
-                updateLineNumbers();
-                updateStats();
-                return;
-            }
+  textArea.addEventListener('scroll', () => {
+    lineNumbers.scrollTop = textArea.scrollTop;
+  });
 
-            const index = tabs.findIndex(t => t.id === id);
-            tabs.splice(index, 1);
+  textArea.addEventListener('input', () => {
+    updateLineNumbers();
+    updateStats();
+  });
 
-            if (activeTabId === id) {
-                switchTab(tabs[Math.max(0, index - 1)].id);
-            } else {
-                renderTabs();
-            }
-        }
+  function saveFile() {
+    const currentTab = tabs.find(t => t.id === activeTabId);
+    const text = textArea.value;
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = currentTab ? `${currentTab.name}.txt` : 'document.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
 
-        function renderTabs() {
-            document.querySelectorAll('.tab').forEach(el => el.remove());
+  saveBtn.addEventListener('click', saveFile);
+  document.getElementById('menuSave').addEventListener('click', saveFile);
 
-            tabs.forEach(tab => {
-                const tabEl = document.createElement('div');
-                tabEl.className = `tab ${tab.id === activeTabId ? 'active' : ''}`;
-                tabEl.innerHTML = `
-                    <span>${tab.name}</span>
-                    <span class="close-tab" title="Close tab">&times;</span>
-                `;
-                tabEl.addEventListener('click', () => switchTab(tab.id));
-                tabEl.querySelector('.close-tab').addEventListener('click', (e) => closeTab(tab.id, e));
-                
-                tabBar.insertBefore(tabEl, addTabBtn);
-            });
-        }
+  function handleFileOpen(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      createTab(file.name, e.target.result);
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+  }
 
-        function updateLineNumbers() {
-            const lines = textArea.value.split('\n').length;
-            let numbersString = '';
-            for (let i = 1; i <= lines; i++) {
-                numbersString += i + '<br>';
-            }
-            lineNumbers.innerHTML = numbersString;
-        }
+  fileInput.addEventListener('change', handleFileOpen);
+  document.getElementById('menuOpen').addEventListener('click', () => fileInput.click());
 
-        function updateStats() {
-            const text = textArea.value;
-            const characters = text.length;
-            const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
-            
-            wordCount.textContent = `Words: ${words}`;
-            charCount.textContent = `Characters: ${characters}`;
-            
-            const currentTab = tabs.find(t => t.id === activeTabId);
-            if (currentTab) currentTab.content = text;
-        }
+  clearBtn.addEventListener('click', () => {
+    if (confirm('Clear current tab content?')) {
+      textArea.value = '';
+      updateLineNumbers();
+      updateStats();
+    }
+  });
 
-        textArea.addEventListener('scroll', () => {
-            lineNumbers.scrollTop = textArea.scrollTop;
-        });
+  function toggleTheme() {
+    const currentTheme = body.getAttribute('data-theme');
+    body.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
+  }
 
-        textArea.addEventListener('input', () => {
-            updateLineNumbers();
-            updateStats();
-        });
+  themeToggle.addEventListener('click', toggleTheme);
+  document.getElementById('menuTheme').addEventListener('click', toggleTheme);
 
-        function saveFile() {
-            const currentTab = tabs.find(t => t.id === activeTabId);
-            const text = textArea.value;
-            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = currentTab ? `${currentTab.name}.txt` : 'document.txt';
-            a.click();
-            URL.revokeObjectURL(url);
-        }
+  newTabBtn.addEventListener('click', () => createTab());
+  addTabBtn.addEventListener('click', () => createTab());
+  document.getElementById('menuNew').addEventListener('click', () => createTab());
 
-        saveBtn.addEventListener('click', saveFile);
-        document.getElementById('menuSave').addEventListener('click', saveFile);
+  window.addEventListener('keydown', (e) => {
+    if (e.ctrlKey || e.metaKey) {
+      if (e.key === 's') {
+        e.preventDefault();
+        saveFile();
+      } else if (e.key === 'o') {
+        e.preventDefault();
+        fileInput.click();
+      } else if (e.key === 't' || e.key === 'n') {
+        e.preventDefault();
+        createTab();
+      }
+    }
+  });
 
-        function handleFileOpen(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                createTab(file.name, e.target.result);
-            };
-            reader.readAsText(file);
-            event.target.value = '';
-        }
-
-        fileInput.addEventListener('change', handleFileOpen);
-        document.getElementById('menuOpen').addEventListener('click', () => fileInput.click());
-
-        clearBtn.addEventListener('click', () => {
-            if (confirm('Clear current tab content?')) {
-                textArea.value = '';
-                updateLineNumbers();
-                updateStats();
-            }
-        });
-
-        function toggleTheme() {
-            const currentTheme = body.getAttribute('data-theme');
-            body.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
-        }
-        themeToggle.addEventListener('click', toggleTheme);
-        document.getElementById('menuTheme').addEventListener('click', toggleTheme);
-
-        newTabBtn.addEventListener('click', () => createTab());
-        addTabBtn.addEventListener('click', () => createTab());
-        document.getElementById('menuNew').addEventListener('click', () => createTab());
-
-        window.addEventListener('keydown', (e) => {
-            if (e.ctrlKey || e.metaKey) {
-                if (e.key === 's') {
-                    e.preventDefault();
-                    saveFile();
-                } else if (e.key === 'o') {
-                    e.preventDefault();
-                    fileInput.click();
-                } else if (e.key === 't' || e.key === 'n') {
-                    e.preventDefault();
-                    createTab();
-                }
-            }
-        });
-
-        createTab('Untitled-1');
-    </script>
+  createTab('Untitled-1');
+</script>
 </body>
 </html>
