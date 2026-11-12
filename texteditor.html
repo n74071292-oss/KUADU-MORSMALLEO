@@ -390,7 +390,7 @@
   function updateLineNumbers() {
     if (lineNumToggle.checked) {
       lineNumbers.style.display = 'block';
-      const lines = textArea.value.split('\n').length;
+      const lines = Math.max(1, textArea.value.split('\n').length);
       let numbersString = '';
       for (let i = 1; i <= lines; i++) {
         numbersString += i + '<br>';
@@ -412,6 +412,7 @@
 
     const currentTab = tabs.find(t => t.id === activeTabId);
     if (currentTab) currentTab.content = text;
+    updateLineNumbers();
   }
 
   textArea.addEventListener('scroll', () => {
@@ -454,7 +455,12 @@
   });
 
   document.getElementById('menuExit').addEventListener('click', () => {
-    window.close();
+    if (confirm('Are you sure you want to exit Kuaducode TEXT_EDITOR?')) {
+      window.close();
+      setTimeout(() => {
+        window.location.href = "about:blank";
+      }, 100);
+    }
   });
 
   document.getElementById('menuSelectAll').addEventListener('click', () => {
