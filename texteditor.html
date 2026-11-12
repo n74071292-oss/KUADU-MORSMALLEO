@@ -3,40 +3,258 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kuaducode Studio - Pro Text Editor</title>
-<link rel="stylesheet" href="style.css">
+<title>Untitled - Kuaducode TEXT_EDITOR</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f3f3f3;
+    color: #000000;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .notepad-menu {
+    display: flex;
+    background-color: #f1f1f1;
+    border-bottom: 1px solid #d4d4d4;
+    font-size: 12px;
+    padding: 2px 4px;
+    user-select: none;
+  }
+  .menu-dropdown {
+    position: relative;
+    padding: 3px 8px;
+    cursor: pointer;
+    border-radius: 2px;
+  }
+  .menu-dropdown:hover, .menu-dropdown.active {
+    background-color: #e5e5e5;
+  }
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    border: 1px solid #cccccc;
+    min-width: 180px;
+    z-index: 1000;
+    padding: 4px 0;
+  }
+  .menu-dropdown.active .dropdown-content {
+    display: block;
+  }
+  .dropdown-item {
+    padding: 6px 16px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .dropdown-item:hover {
+    background-color: #0078d7;
+    color: #ffffff;
+  }
+  .dropdown-divider {
+    height: 1px;
+    background-color: #e1e1e1;
+    margin: 4px 0;
+  }
+  .tab-bar {
+    display: flex;
+    background-color: #e5e5e5;
+    border-bottom: 1px solid #cccccc;
+    overflow-x: auto;
+    align-items: center;
+    padding-left: 2px;
+    height: 28px;
+  }
+  .tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #f1f1f1;
+    padding: 0 10px;
+    height: 26px;
+    font-size: 11px;
+    border-right: 1px solid #cccccc;
+    border-top: 1px solid #cccccc;
+    cursor: pointer;
+    user-select: none;
+    color: #333333;
+  }
+  .tab.active {
+    background-color: #ffffff;
+    color: #000000;
+    border-top: 2px solid #0078d7;
+  }
+  .tab .close-tab {
+    font-size: 12px;
+    border-radius: 50%;
+    padding: 0 3px;
+  }
+  .tab .close-tab:hover {
+    background-color: rgba(255, 0, 0, 0.2);
+    color: #ff0000;
+  }
+  .add-tab-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    padding: 0 8px;
+    cursor: pointer;
+    color: #333333;
+  }
+  .add-tab-btn:hover {
+    background-color: #d4d4d4;
+  }
+  .editor-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    background-color: #ffffff;
+  }
+  .line-numbers {
+    width: 45px;
+    background-color: #f7f7f7;
+    color: #888888;
+    padding: 8px 4px;
+    text-align: right;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.4;
+    user-select: none;
+    overflow: hidden;
+    border-right: 1px solid #e1e1e1;
+  }
+  textarea {
+    flex: 1;
+    background-color: #ffffff;
+    color: #000000;
+    border: none;
+    padding: 8px;
+    font-family: 'Consolas', 'Courier New', Courier, monospace;
+    font-size: 14px;
+    line-height: 1.4;
+    resize: none;
+    outline: none;
+    white-space: pre-wrap;
+    overflow-y: auto;
+  }
+  .status-bar {
+    display: flex;
+    justify-content: flex-end;
+    background-color: #f1f1f1;
+    border-top: 1px solid #d4d4d4;
+    padding: 4px 12px;
+    font-size: 11px;
+    color: #333333;
+    gap: 20px;
+    user-select: none;
+  }
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.3);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+  }
+  .modal {
+    background: #ffffff;
+    color: #000000;
+    border: 1px solid #999999;
+    padding: 20px;
+    border-radius: 4px;
+    width: 320px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .modal h3 {
+    font-size: 13px;
+    font-weight: 600;
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 6px;
+  }
+  .setting-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 12px;
+  }
+  .setting-item input[type="range"], .setting-item input[type="color"] {
+    width: 100%;
+    padding: 2px;
+  }
+  .setting-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+  }
+  .modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .modal-buttons button {
+    padding: 4px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    background: #e1e1e1;
+    border: 1px solid #adadad;
+    border-radius: 2px;
+  }
+  .modal-buttons button:hover {
+    background: #e5f1fb;
+    border-color: #0078d7;
+  }
+  input[type="file"] { display: none; }
+</style>
 </head>
 <body>
 
-<div class="brand-header">
-  <div class="brand-logo">
-    <div class="logo-icon">⚡</div>
-    <span>Kuaducode Studio</span>
-  </div>
-  <div class="owner-badge">
-    <div class="owner-dot"></div>
-    Owner: Kuaducode Workspace
-  </div>
-</div>
-
-<div class="menubar">
-  <div class="menu-dropdown" id="menuFile">File
+<div class="notepad-menu" id="menuBar">
+  <div class="menu-dropdown" data-menu="file">File
     <div class="dropdown-content">
-      <div class="dropdown-item" id="menuNew"><span>New File</span><span>Ctrl+N</span></div>
-      <div class="dropdown-item" id="menuOpen"><span>Open...</span><span>Ctrl+O</span></div>
-      <div class="dropdown-item" id="menuSave"><span>Save</span><span>Ctrl+S</span></div>
+      <div class="dropdown-item" id="menuNew">New (Ctrl+N)</div>
+      <div class="dropdown-item" id="menuOpen">Open... (Ctrl+O)</div>
+      <div class="dropdown-item" id="menuSave">Save (Ctrl+S)</div>
       <div class="dropdown-divider"></div>
-      <div class="dropdown-item" id="menuClear"><span>Clear Content</span></div>
+      <div class="dropdown-item" id="menuExit">Exit</div>
     </div>
   </div>
-  <div class="menu-dropdown" id="menuEdit">Edit
+  <div class="menu-dropdown" data-menu="edit">Edit
     <div class="dropdown-content">
-      <div class="dropdown-item" id="menuSelectAll"><span>Select All</span><span>Ctrl+A</span></div>
+      <div class="dropdown-item" id="menuSelectAll">Select All (Ctrl+A)</div>
+      <div class="dropdown-item" id="menuClear">Clear All</div>
     </div>
   </div>
-  <div class="menu-dropdown" id="menuSettingsTab">Settings
+  <div class="menu-dropdown" data-menu="format">Format
     <div class="dropdown-content">
-      <div class="dropdown-item" id="menuOpenSettings"><span>Editor Preferences...</span><span>⚙️</span></div>
+      <div class="dropdown-item" id="menuWordWrap">Word Wrap: On</div>
+      <div class="dropdown-item" id="menuFont">Preferences & Settings...</div>
+    </div>
+  </div>
+  <div class="menu-dropdown" data-menu="view">View
+    <div class="dropdown-content">
+      <div class="dropdown-item" id="menuZoomIn">Zoom In (Ctrl++)</div>
+      <div class="dropdown-item" id="menuZoomOut">Zoom Out (Ctrl+-)</div>
+      <div class="dropdown-item" id="menuResetZoom">Restore Default Zoom</div>
+    </div>
+  </div>
+  <div class="menu-dropdown" data-menu="help">Help
+    <div class="dropdown-content">
+      <div class="dropdown-item" id="menuAbout">About Kuaducode TEXT_EDITOR</div>
     </div>
   </div>
 </div>
@@ -45,75 +263,287 @@
   <button class="add-tab-btn" id="addTabBtn" title="New Tab (Ctrl+T)">＋</button>
 </div>
 
-<div class="toolbar">
-  <div class="toolbar-group">
-    <button id="newTabBtn">📄 New Tab</button>
-    <label class="upload-btn">
-      📂 Import <input type="file" id="fileInput" accept=".txt,.md,.html,.js,.css,.py">
-    </label>
-    <button class="primary-btn" id="saveBtn">💾 Save File</button>
-  </div>
-  <div class="toolbar-group">
-    <button id="settingsBtn">⚙️ Settings</button>
-  </div>
-</div>
-
 <div class="editor-container">
   <div id="lineNumbers" class="line-numbers">1</div>
-  <textarea id="textArea" placeholder="// Welcome to Kuaducode Studio Pro&#10;// Start typing your code or notes here..."></textarea>
+  <textarea id="textArea" placeholder="Type or paste text here..."></textarea>
+  <input type="file" id="fileInput">
+</div>
+
+<div class="status-bar">
+  <span id="zoomDisplay">Zoom: 100%</span>
+  <span id="posDisplay">Ln 1, Col 1</span>
+  <span id="encodingDisplay">UTF-8</span>
+  <span id="windowsDisplay">Kuaducode Workspace</span>
 </div>
 
 <div id="settingsModal" class="modal-overlay">
   <div class="modal">
-    <h3>⚙️ Editor Preferences</h3>
-    
+    <h3>Kuaducode TEXT_EDITOR Preferences</h3>
     <div class="setting-item">
-      <label for="langSelect">Language Mode:</label>
-      <select id="langSelect">
-        <option value="plaintext">Plain Text</option>
-        <option value="html">HTML</option>
-        <option value="css">CSS</option>
-        <option value="javascript">JavaScript</option>
-        <option value="python">Python</option>
-      </select>
+      <label for="fontSizeInput">Font Size (<span id="fontSizeVal">14</span>px):</label>
+      <input type="range" id="fontSizeInput" min="10" max="32" value="14">
     </div>
-
-    <div class="setting-item">
-      <label for="fontSizeRange">Font Size: <span id="fontSizeVal">14</span>px</label>
-      <input type="range" id="fontSizeRange" min="12" max="24" value="14">
-    </div>
-
     <div class="setting-item">
       <label for="textColorPicker">Text Color:</label>
-      <input type="color" id="textColorPicker" value="#f3f4f6">
+      <input type="color" id="textColorPicker" value="#000000">
     </div>
-
     <div class="setting-row">
       <input type="checkbox" id="lineNumToggle" checked>
       <label for="lineNumToggle">Show Line Numbers</label>
     </div>
-
-    <div class="setting-row">
-      <input type="checkbox" id="wordWrapToggle" checked>
-      <label for="wordWrapToggle">Enable Word Wrap</label>
+    <div class="modal-buttons">
+      <button id="closeFontModal">Apply & Close</button>
     </div>
-
-    <button class="modal-close" id="closeSettings">Save & Close</button>
   </div>
 </div>
 
-<div class="status-bar">
-  <div class="status-group">
-    <span class="pulse-badge"><span class="owner-dot"></span> Kuaducode Active</span>
-    <span id="langDisplay">Lang: Plain Text</span>
-  </div>
-  <div class="status-group">
-    <span id="wordCount">Words: 0</span>
-    <span id="charCount">Chars: 0</span>
-    <span id="cursorPos">Ln 1, Col 1</span>
-  </div>
-</div>
+<script>
+  const textArea = document.getElementById('textArea');
+  const lineNumbers = document.getElementById('lineNumbers');
+  const fileInput = document.getElementById('fileInput');
+  const posDisplay = document.getElementById('posDisplay');
+  const zoomDisplay = document.getElementById('zoomDisplay');
+  const fontModal = document.getElementById('settingsModal');
+  const fontSizeInput = document.getElementById('fontSizeInput');
+  const fontSizeVal = document.getElementById('fontSizeVal');
+  const textColorPicker = document.getElementById('textColorPicker');
+  const lineNumToggle = document.getElementById('lineNumToggle');
+  const tabBar = document.getElementById('tabBar');
+  const addTabBtn = document.getElementById('addTabBtn');
 
-<script src="script.js"></script>
+  let tabs = [];
+  let activeTabId = null;
+  let tabCounter = 1;
+  let isWordWrap = true;
+  let currentFontSize = 14;
+
+  document.querySelectorAll('.menu-dropdown').forEach(dropdown => {
+    dropdown.addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.querySelectorAll('.menu-dropdown').forEach(d => {
+        if (d !== dropdown) d.classList.remove('active');
+      });
+      dropdown.classList.toggle('active');
+    });
+  });
+
+  window.addEventListener('click', () => {
+    document.querySelectorAll('.menu-dropdown').forEach(d => d.classList.remove('active'));
+  });
+
+  function createTab(name = `Untitled-${tabCounter++}`, content = '') {
+    const id = 'tab_' + Date.now() + Math.random();
+    tabs.push({ id, name, content });
+    switchTab(id);
+  }
+
+  function switchTab(id) {
+    if (activeTabId) {
+      const currentTab = tabs.find(t => t.id === activeTabId);
+      if (currentTab) currentTab.content = textArea.value;
+    }
+    activeTabId = id;
+    const targetTab = tabs.find(t => t.id === id);
+    textArea.value = targetTab ? targetTab.content : '';
+    document.title = `${targetTab ? targetTab.name : 'Untitled'} - Kuaducode TEXT_EDITOR`;
+    renderTabs();
+    updateLineNumbers();
+    updateCursorPosition();
+  }
+
+  function closeTab(id, event) {
+    event.stopPropagation();
+    if (tabs.length === 1) {
+      tabs[0].content = '';
+      tabs[0].name = 'Untitled-1';
+      textArea.value = '';
+      document.title = `Untitled-1 - Kuaducode TEXT_EDITOR`;
+      renderTabs();
+      updateLineNumbers();
+      updateCursorPosition();
+      return;
+    }
+    const index = tabs.findIndex(t => t.id === id);
+    tabs.splice(index, 1);
+    if (activeTabId === id) {
+      switchTab(tabs[Math.max(0, index - 1)].id);
+    } else {
+      renderTabs();
+    }
+  }
+
+  function renderTabs() {
+    document.querySelectorAll('.tab').forEach(el => el.remove());
+    tabs.forEach(tab => {
+      const tabEl = document.createElement('div');
+      tabEl.className = `tab ${tab.id === activeTabId ? 'active' : ''}`;
+      tabEl.innerHTML = `
+        <span>${tab.name}</span>
+        <span class="close-tab" title="Close">&times;</span>
+      `;
+      tabEl.addEventListener('click', () => switchTab(tab.id));
+      tabEl.querySelector('.close-tab').addEventListener('click', (e) => closeTab(tab.id, e));
+      tabBar.insertBefore(tabEl, addTabBtn);
+    });
+  }
+
+  function updateLineNumbers() {
+    if (lineNumToggle.checked) {
+      lineNumbers.style.display = 'block';
+      const lines = textArea.value.split('\n').length;
+      let numbersString = '';
+      for (let i = 1; i <= lines; i++) {
+        numbersString += i + '<br>';
+      }
+      lineNumbers.innerHTML = numbersString;
+    } else {
+      lineNumbers.style.display = 'none';
+    }
+  }
+
+  function updateCursorPosition() {
+    const text = textArea.value;
+    const selectionIndex = textArea.selectionStart;
+    const lineSubstr = text.substring(0, selectionIndex);
+    const lines = lineSubstr.split('\n');
+    const ln = lines.length;
+    const col = lines[lines.length - 1].length + 1;
+    posDisplay.textContent = `Ln ${ln}, Col ${col}`;
+
+    const currentTab = tabs.find(t => t.id === activeTabId);
+    if (currentTab) currentTab.content = text;
+  }
+
+  textArea.addEventListener('scroll', () => {
+    lineNumbers.scrollTop = textArea.scrollTop;
+  });
+
+  textArea.addEventListener('input', () => {
+    updateLineNumbers();
+    updateCursorPosition();
+  });
+
+  textArea.addEventListener('click', updateCursorPosition);
+  textArea.addEventListener('keyup', updateCursorPosition);
+
+  document.getElementById('menuNew').addEventListener('click', () => createTab());
+  addTabBtn.addEventListener('click', () => createTab());
+
+  document.getElementById('menuOpen').addEventListener('click', () => fileInput.click());
+
+  fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      createTab(file.name, event.target.result);
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  });
+
+  document.getElementById('menuSave').addEventListener('click', () => {
+    const currentTab = tabs.find(t => t.id === activeTabId);
+    const blob = new Blob([textArea.value], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = currentTab ? currentTab.name : 'document.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  document.getElementById('menuExit').addEventListener('click', () => {
+    window.close();
+  });
+
+  document.getElementById('menuSelectAll').addEventListener('click', () => {
+    textArea.select();
+  });
+
+  document.getElementById('menuClear').addEventListener('click', () => {
+    if (confirm('Clear all text in current tab?')) {
+      textArea.value = '';
+      updateLineNumbers();
+      updateCursorPosition();
+    }
+  });
+
+  const wordWrapBtn = document.getElementById('menuWordWrap');
+  document.getElementById('menuWordWrap').addEventListener('click', () => {
+    isWordWrap = !isWordWrap;
+    textArea.style.whiteSpace = isWordWrap ? 'pre-wrap' : 'pre';
+    wordWrapBtn.textContent = `Word Wrap: ${isWordWrap ? 'On' : 'Off'}`;
+  });
+
+  document.getElementById('menuFont').addEventListener('click', () => {
+    fontModal.style.display = 'flex';
+  });
+
+  document.getElementById('closeFontModal').addEventListener('click', () => {
+    fontModal.style.display = 'none';
+  });
+
+  fontSizeInput.addEventListener('input', () => {
+    currentFontSize = fontSizeInput.value;
+    fontSizeVal.textContent = currentFontSize;
+    textArea.style.fontSize = currentFontSize + 'px';
+    lineNumbers.style.fontSize = currentFontSize + 'px';
+  });
+
+  textColorPicker.addEventListener('input', () => {
+    textArea.style.color = textColorPicker.value;
+  });
+
+  lineNumToggle.addEventListener('change', updateLineNumbers);
+
+  document.getElementById('menuZoomIn').addEventListener('click', () => {
+    currentFontSize = Math.min(36, parseInt(currentFontSize) + 2);
+    textArea.style.fontSize = currentFontSize + 'px';
+    lineNumbers.style.fontSize = currentFontSize + 'px';
+    fontSizeInput.value = currentFontSize;
+    fontSizeVal.textContent = currentFontSize;
+    zoomDisplay.textContent = `Zoom: ${Math.round((currentFontSize / 14) * 100)}%`;
+  });
+
+  document.getElementById('menuZoomOut').addEventListener('click', () => {
+    currentFontSize = Math.max(10, parseInt(currentFontSize) - 2);
+    textArea.style.fontSize = currentFontSize + 'px';
+    lineNumbers.style.fontSize = currentFontSize + 'px';
+    fontSizeInput.value = currentFontSize;
+    fontSizeVal.textContent = currentFontSize;
+    zoomDisplay.textContent = `Zoom: ${Math.round((currentFontSize / 14) * 100)}%`;
+  });
+
+  document.getElementById('menuResetZoom').addEventListener('click', () => {
+    currentFontSize = 14;
+    textArea.style.fontSize = '14px';
+    lineNumbers.style.fontSize = '14px';
+    fontSizeInput.value = 14;
+    fontSizeVal.textContent = 14;
+    zoomDisplay.textContent = 'Zoom: 100%';
+  });
+
+  document.getElementById('menuAbout').addEventListener('click', () => {
+    alert('Kuaducode TEXT_EDITOR\nClassic Notepad Layout with Workspace Integration');
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.ctrlKey || e.metaKey) {
+      if (e.key === 's') {
+        e.preventDefault();
+        document.getElementById('menuSave').click();
+      } else if (e.key === 'o') {
+        e.preventDefault();
+        fileInput.click();
+      } else if (e.key === 'n' || e.key === 't') {
+        e.preventDefault();
+        createTab();
+      }
+    }
+  });
+
+  createTab('Untitled-1');
+</script>
 </body>
 </html>
