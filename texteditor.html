@@ -3,381 +3,117 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Untitled - Kuaducode Notepad</title>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background-color: #121214;
-    color: #e1e1e6;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    overflow: hidden;
-  }
-  .notepad-menu {
-    display: flex;
-    background-color: #1a1a1e;
-    border-bottom: 1px solid #2a2a2e;
-    font-size: 13px;
-    padding: 4px 8px;
-    user-select: none;
-  }
-  .menu-dropdown {
-    position: relative;
-    padding: 4px 10px;
-    cursor: pointer;
-    border-radius: 4px;
-    color: #c4c4cc;
-  }
-  .menu-dropdown:hover {
-    background-color: #2a2a2e;
-    color: #ffffff;
-  }
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #1a1a1e;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-    border: 1px solid #2a2a2e;
-    min-width: 180px;
-    z-index: 1000;
-    padding: 6px 0;
-    border-radius: 6px;
-  }
-  .menu-dropdown.active .dropdown-content {
-    display: block;
-  }
-  .dropdown-item {
-    padding: 8px 16px;
-    font-size: 13px;
-    cursor: pointer;
-    color: #c4c4cc;
-  }
-  .dropdown-item:hover {
-    background-color: #007acc;
-    color: #ffffff;
-  }
-  .dropdown-divider {
-    height: 1px;
-    background-color: #2a2a2e;
-    margin: 4px 0;
-  }
-  .editor-body {
-    display: flex;
-    flex: 1;
-    overflow: hidden;
-    position: relative;
-    background-color: #121214;
-  }
-  textarea {
-    flex: 1;
-    background-color: #121214;
-    color: #e1e1e6;
-    border: none;
-    padding: 16px;
-    font-family: 'Consolas', 'Fira Code', 'Courier New', monospace;
-    font-size: 15px;
-    line-height: 1.6;
-    resize: none;
-    outline: none;
-    white-space: pre-wrap;
-    overflow-y: auto;
-    caret-color: #007acc;
-  }
-  .status-bar {
-    display: flex;
-    justify-content: flex-end;
-    background-color: #1a1a1e;
-    border-top: 1px solid #2a2a2e;
-    padding: 6px 16px;
-    font-size: 12px;
-    color: #8c8c99;
-    gap: 24px;
-    user-select: none;
-  }
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.7);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-  }
-  .modal {
-    background: #1a1a1e;
-    color: #e1e1e6;
-    border: 1px solid #2a2a2e;
-    padding: 24px;
-    border-radius: 8px;
-    width: 340px;
-    box-shadow: 0 12px 32px rgba(0,0,0,0.6);
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-  .modal h3 {
-    font-size: 15px;
-    font-weight: 600;
-    color: #ffffff;
-    border-bottom: 1px solid #2a2a2e;
-    padding-bottom: 8px;
-  }
-  .modal label {
-    font-size: 13px;
-    color: #c4c4cc;
-  }
-  .modal input[type="range"] {
-    width: 100%;
-    accent-color: #007acc;
-    cursor: pointer;
-  }
-  .modal-buttons {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-    margin-top: 4px;
-  }
-  .modal-buttons button {
-    padding: 6px 16px;
-    font-size: 13px;
-    cursor: pointer;
-    background: #2a2a2e;
-    color: #ffffff;
-    border: 1px solid #3a3a3e;
-    border-radius: 4px;
-    transition: background 0.2s;
-  }
-  .modal-buttons button:hover {
-    background: #007acc;
-    border-color: #007acc;
-  }
-  input[type="file"] { display: none; }
-</style>
+<title>Kuaducode Studio - Pro Text Editor</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="notepad-menu" id="menuBar">
-  <div class="menu-dropdown" data-menu="file">File
+<div class="brand-header">
+  <div class="brand-logo">
+    <div class="logo-icon">⚡</div>
+    <span>Kuaducode Studio</span>
+  </div>
+  <div class="owner-badge">
+    <div class="owner-dot"></div>
+    Owner: Kuaducode Workspace
+  </div>
+</div>
+
+<div class="menubar">
+  <div class="menu-dropdown" id="menuFile">File
     <div class="dropdown-content">
-      <div class="dropdown-item" id="menuNew">New (Ctrl+N)</div>
-      <div class="dropdown-item" id="menuOpen">Open... (Ctrl+O)</div>
-      <div class="dropdown-item" id="menuSave">Save (Ctrl+S)</div>
+      <div class="dropdown-item" id="menuNew"><span>New File</span><span>Ctrl+N</span></div>
+      <div class="dropdown-item" id="menuOpen"><span>Open...</span><span>Ctrl+O</span></div>
+      <div class="dropdown-item" id="menuSave"><span>Save</span><span>Ctrl+S</span></div>
       <div class="dropdown-divider"></div>
-      <div class="dropdown-item" id="menuExit">Exit</div>
+      <div class="dropdown-item" id="menuClear"><span>Clear Content</span></div>
     </div>
   </div>
-  <div class="menu-dropdown" data-menu="edit">Edit
+  <div class="menu-dropdown" id="menuEdit">Edit
     <div class="dropdown-content">
-      <div class="dropdown-item" id="menuSelectAll">Select All (Ctrl+A)</div>
-      <div class="dropdown-item" id="menuClear">Clear All</div>
+      <div class="dropdown-item" id="menuSelectAll"><span>Select All</span><span>Ctrl+A</span></div>
     </div>
   </div>
-  <div class="menu-dropdown" data-menu="format">Format
+  <div class="menu-dropdown" id="menuSettingsTab">Settings
     <div class="dropdown-content">
-      <div class="dropdown-item" id="menuWordWrap">Word Wrap: On</div>
-      <div class="dropdown-item" id="menuFont">Font Settings...</div>
-    </div>
-  </div>
-  <div class="menu-dropdown" data-menu="view">View
-    <div class="dropdown-content">
-      <div class="dropdown-item" id="menuZoomIn">Zoom In (Ctrl++)</div>
-      <div class="dropdown-item" id="menuZoomOut">Zoom Out (Ctrl+-)</div>
-      <div class="dropdown-item" id="menuResetZoom">Restore Default Zoom</div>
-    </div>
-  </div>
-  <div class="menu-dropdown" data-menu="help">Help
-    <div class="dropdown-content">
-      <div class="dropdown-item" id="menuAbout">About Notepad</div>
+      <div class="dropdown-item" id="menuOpenSettings"><span>Editor Preferences...</span><span>⚙️</span></div>
     </div>
   </div>
 </div>
 
-<div class="editor-body">
-  <textarea id="textArea" placeholder="Type or paste your text here..."></textarea>
-  <input type="file" id="fileInput">
+<div class="tab-bar" id="tabBar">
+  <button class="add-tab-btn" id="addTabBtn" title="New Tab (Ctrl+T)">＋</button>
+</div>
+
+<div class="toolbar">
+  <div class="toolbar-group">
+    <button id="newTabBtn">📄 New Tab</button>
+    <label class="upload-btn">
+      📂 Import <input type="file" id="fileInput" accept=".txt,.md,.html,.js,.css,.py">
+    </label>
+    <button class="primary-btn" id="saveBtn">💾 Save File</button>
+  </div>
+  <div class="toolbar-group">
+    <button id="settingsBtn">⚙️ Settings</button>
+  </div>
+</div>
+
+<div class="editor-container">
+  <div id="lineNumbers" class="line-numbers">1</div>
+  <textarea id="textArea" placeholder="// Welcome to Kuaducode Studio Pro&#10;// Start typing your code or notes here..."></textarea>
+</div>
+
+<div id="settingsModal" class="modal-overlay">
+  <div class="modal">
+    <h3>⚙️ Editor Preferences</h3>
+    
+    <div class="setting-item">
+      <label for="langSelect">Language Mode:</label>
+      <select id="langSelect">
+        <option value="plaintext">Plain Text</option>
+        <option value="html">HTML</option>
+        <option value="css">CSS</option>
+        <option value="javascript">JavaScript</option>
+        <option value="python">Python</option>
+      </select>
+    </div>
+
+    <div class="setting-item">
+      <label for="fontSizeRange">Font Size: <span id="fontSizeVal">14</span>px</label>
+      <input type="range" id="fontSizeRange" min="12" max="24" value="14">
+    </div>
+
+    <div class="setting-item">
+      <label for="textColorPicker">Text Color:</label>
+      <input type="color" id="textColorPicker" value="#f3f4f6">
+    </div>
+
+    <div class="setting-row">
+      <input type="checkbox" id="lineNumToggle" checked>
+      <label for="lineNumToggle">Show Line Numbers</label>
+    </div>
+
+    <div class="setting-row">
+      <input type="checkbox" id="wordWrapToggle" checked>
+      <label for="wordWrapToggle">Enable Word Wrap</label>
+    </div>
+
+    <button class="modal-close" id="closeSettings">Save & Close</button>
+  </div>
 </div>
 
 <div class="status-bar">
-  <span id="zoomDisplay">Zoom: 100%</span>
-  <span id="posDisplay">Ln 1, Col 1</span>
-  <span id="encodingDisplay">UTF-8</span>
-  <span id="windowsDisplay">Windows (CRLF)</span>
-</div>
-
-<div id="fontModal" class="modal-overlay">
-  <div class="modal">
-    <h3>Font Size Settings</h3>
-    <label for="fontSizeInput">Font Size (<span id="fontSizeVal">15</span>px):</label>
-    <input type="range" id="fontSizeInput" min="12" max="32" value="15">
-    <div class="modal-buttons">
-      <button id="closeFontModal">Apply & Close</button>
-    </div>
+  <div class="status-group">
+    <span class="pulse-badge"><span class="owner-dot"></span> Kuaducode Active</span>
+    <span id="langDisplay">Lang: Plain Text</span>
+  </div>
+  <div class="status-group">
+    <span id="wordCount">Words: 0</span>
+    <span id="charCount">Chars: 0</span>
+    <span id="cursorPos">Ln 1, Col 1</span>
   </div>
 </div>
 
-<script>
-  const textArea = document.getElementById('textArea');
-  const fileInput = document.getElementById('fileInput');
-  const posDisplay = document.getElementById('posDisplay');
-  const zoomDisplay = document.getElementById('zoomDisplay');
-  const fontModal = document.getElementById('fontModal');
-  const fontSizeInput = document.getElementById('fontSizeInput');
-  const fontSizeVal = document.getElementById('fontSizeVal');
-
-  let currentFileName = 'Untitled';
-  let isWordWrap = true;
-  let currentFontSize = 15;
-
-  document.querySelectorAll('.menu-dropdown').forEach(dropdown => {
-    dropdown.addEventListener('click', (e) => {
-      e.stopPropagation();
-      document.querySelectorAll('.menu-dropdown').forEach(d => {
-        if (d !== dropdown) d.classList.remove('active');
-      });
-      dropdown.classList.toggle('active');
-    });
-  });
-
-  window.addEventListener('click', () => {
-    document.querySelectorAll('.menu-dropdown').forEach(d => d.classList.remove('active'));
-  });
-
-  function updateCursorPosition() {
-    const text = textArea.value;
-    const selectionIndex = textArea.selectionStart;
-    const lineSubstr = text.substring(0, selectionIndex);
-    const lines = lineSubstr.split('\n');
-    const ln = lines.length;
-    const col = lines[lines.length - 1].length + 1;
-    posDisplay.textContent = `Ln ${ln}, Col ${col}`;
-  }
-
-  textArea.addEventListener('input', updateCursorPosition);
-  textArea.addEventListener('click', updateCursorPosition);
-  textArea.addEventListener('keyup', updateCursorPosition);
-
-  document.getElementById('menuNew').addEventListener('click', () => {
-    if (textArea.value.trim() === '' || confirm('Do you want to clear current text?')) {
-      textArea.value = '';
-      currentFileName = 'Untitled';
-      document.title = `${currentFileName} - Kuaducode Notepad`;
-      updateCursorPosition();
-    }
-  });
-
-  document.getElementById('menuOpen').addEventListener('click', () => fileInput.click());
-  
-  fileInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      textArea.value = event.target.result;
-      currentFileName = file.name;
-      document.title = `${currentFileName} - Kuaducode Notepad`;
-      updateCursorPosition();
-    };
-    reader.readAsText(file);
-    e.target.value = '';
-  });
-
-  document.getElementById('menuSave').addEventListener('click', () => {
-    const blob = new Blob([textArea.value], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = currentFileName.endsWith('.txt') ? currentFileName : `${currentFileName}.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
-  });
-
-  document.getElementById('menuExit').addEventListener('click', () => {
-    window.close();
-  });
-
-  document.getElementById('menuSelectAll').addEventListener('click', () => {
-    textArea.select();
-  });
-
-  document.getElementById('menuClear').addEventListener('click', () => {
-    if (confirm('Clear all text?')) {
-      textArea.value = '';
-      updateCursorPosition();
-    }
-  });
-
-  const wordWrapBtn = document.getElementById('menuWordWrap');
-  document.getElementById('menuWordWrap').addEventListener('click', () => {
-    isWordWrap = !isWordWrap;
-    textArea.style.whiteSpace = isWordWrap ? 'pre-wrap' : 'pre';
-    wordWrapBtn.textContent = `Word Wrap: ${isWordWrap ? 'On' : 'Off'}`;
-  });
-
-  document.getElementById('menuFont').addEventListener('click', () => {
-    fontModal.style.display = 'flex';
-  });
-
-  document.getElementById('closeFontModal').addEventListener('click', () => {
-    fontModal.style.display = 'none';
-  });
-
-  fontSizeInput.addEventListener('input', () => {
-    currentFontSize = fontSizeInput.value;
-    fontSizeVal.textContent = currentFontSize;
-    textArea.style.fontSize = currentFontSize + 'px';
-  });
-
-  document.getElementById('menuZoomIn').addEventListener('click', () => {
-    currentFontSize = Math.min(36, parseInt(currentFontSize) + 2);
-    textArea.style.fontSize = currentFontSize + 'px';
-    fontSizeInput.value = currentFontSize;
-    fontSizeVal.textContent = currentFontSize;
-    zoomDisplay.textContent = `Zoom: ${Math.round((currentFontSize / 15) * 100)}%`;
-  });
-
-  document.getElementById('menuZoomOut').addEventListener('click', () => {
-    currentFontSize = Math.max(12, parseInt(currentFontSize) - 2);
-    textArea.style.fontSize = currentFontSize + 'px';
-    fontSizeInput.value = currentFontSize;
-    fontSizeVal.textContent = currentFontSize;
-    zoomDisplay.textContent = `Zoom: ${Math.round((currentFontSize / 15) * 100)}%`;
-  });
-
-  document.getElementById('menuResetZoom').addEventListener('click', () => {
-    currentFontSize = 15;
-    textArea.style.fontSize = '15px';
-    fontSizeInput.value = 15;
-    fontSizeVal.textContent = 15;
-    zoomDisplay.textContent = 'Zoom: 100%';
-  });
-
-  document.getElementById('menuAbout').addEventListener('click', () => {
-    alert('Kuaducode Local Notepad Editor\nHuman-Eye Optimized Dark Theme Experience');
-  });
-
-  window.addEventListener('keydown', (e) => {
-    if (e.ctrlKey || e.metaKey) {
-      if (e.key === 's') {
-        e.preventDefault();
-        document.getElementById('menuSave').click();
-      } else if (e.key === 'o') {
-        e.preventDefault();
-        fileInput.click();
-      } else if (e.key === 'n') {
-        e.preventDefault();
-        document.getElementById('menuNew').click();
-      }
-    }
-  });
-
-  updateCursorPosition();
-</script>
+<script src="script.js"></script>
 </body>
 </html>
