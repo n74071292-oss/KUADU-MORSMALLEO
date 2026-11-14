@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KuaduCode™ — World-Class Multi-Language IDE & AI Studio</title>
+    <title>Kuaducode™ - World-Class Multi-Language IDE & AI Studio</title>
     <script src="https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
     <style>
@@ -13,766 +13,119 @@
             --bg-panel: rgba(248, 250, 252, 0.96);
             --border-color: #cbd5e1;
             --text-main: #0f172a;
-            --text-muted: #64748b;
-            --accent: #0284c7;
-            --accent-gradient: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
-            --ai-gradient: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
-            --success: #059669;
-            --danger: #dc2626;
-            --shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
-
         body {
-            background: linear-gradient(rgba(248, 250, 252, 0.9), rgba(241, 245, 249, 0.94)), 
-                        url('https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=2000&auto=format&fit=crop') no-repeat center center fixed;
-            background-size: cover;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--bg-deep);
             color: var(--text-main);
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
         }
-
-        header {
-            background-color: var(--bg-dark);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-color);
-            padding: 10px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-            z-index: 10;
-        }
-
-        .logo {
-            font-size: 1.25rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-icon {
-            width: 34px;
-            height: 34px;
-            background: var(--accent-gradient);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-weight: bold;
-            box-shadow: 0 0 15px rgba(14, 165, 233, 0.3);
-        }
-
-        .logo span {
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .toolbar {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        button {
-            background: var(--accent-gradient);
-            color: white;
-            border: none;
-            padding: 8px 16px;
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--bg-dark);
+            padding: 20px;
             border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.85rem;
-            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2);
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 16px rgba(2, 132, 199, 0.3);
-            filter: brightness(1.05);
-        }
-
-        button:active {
-            transform: translateY(1px);
-        }
-
-        button.ai-btn {
-            background: var(--ai-gradient);
-            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
-        }
-
-        button.clear-btn {
-            background: rgba(226, 232, 240, 0.9);
-            color: var(--text-muted);
-            box-shadow: none;
             border: 1px solid var(--border-color);
         }
-
-        button.clear-btn:hover {
-            background: #cbd5e1;
-            color: var(--text-main);
-        }
-
-        .main-container {
-            display: grid;
-            grid-template-columns: 1.1fr 1fr;
-            flex: 1;
-            gap: 12px;
-            padding: 12px;
-            overflow: hidden;
-        }
-
-        .column {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        .panel {
-            background-color: var(--bg-dark);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-        }
-
-        .panel-header {
-            background-color: var(--bg-panel);
-            padding: 8px 14px;
-            font-size: 0.78rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-weight: 700;
-            color: var(--text-muted);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .panel-header .badge {
-            font-size: 0.68rem;
-            padding: 2px 8px;
-            border-radius: 20px;
-            background: rgba(14, 165, 233, 0.1);
-            color: var(--accent);
-            border: 1px solid rgba(14, 165, 233, 0.2);
-            text-transform: none;
-            font-weight: 500;
-        }
-
-        .tab-header {
-            background-color: var(--bg-panel);
-            padding: 0 10px;
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            gap: 2px;
-            overflow-x: auto;
-        }
-
-        .tab-btn {
-            background: transparent;
-            color: var(--text-muted);
-            border: none;
-            padding: 9px 12px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            box-shadow: none;
-            border-radius: 0;
-            transition: all 0.2s ease;
-            white-space: nowrap;
-        }
-
-        .tab-btn:hover {
-            color: var(--text-main);
-            background: rgba(0, 0, 0, 0.02);
-            transform: none;
-            box-shadow: none;
-            filter: none;
-        }
-
-        .tab-btn.active {
-            color: var(--accent);
-            border-bottom-color: var(--accent);
-            background: rgba(14, 165, 233, 0.06);
-        }
-
-        .tab-btn.ai-tab.active {
-            color: #7c3aed;
-            border-bottom-color: #8b5cf6;
-            background: rgba(139, 92, 246, 0.06);
-        }
-
-        .tab-content {
-            display: none;
-            flex: 1;
-            position: relative;
-            overflow: hidden;
-            flex-direction: column;
-        }
-
-        .tab-content.active {
-            display: flex;
-        }
-
-        .editor-container {
-            flex: 1;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            background-color: rgba(255, 255, 255, 0.6);
-        }
-
         textarea {
             width: 100%;
-            height: 100%;
-            background-color: transparent;
-            color: #1e293b;
-            border: none;
-            padding: 12px;
-            font-family: 'Fira Code', 'JetBrains Mono', 'Courier New', Courier, monospace;
-            font-size: 0.84rem;
-            resize: none;
-            outline: none;
-            line-height: 1.6;
-            tab-size: 4;
-        }
-
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            background: white;
-        }
-
-        .console-wrapper {
-            flex: 1;
-            background-color: rgba(248, 250, 252, 0.8);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .console-output {
-            flex: 1;
-            color: #0369a1;
-            font-family: 'Fira Code', 'JetBrains Mono', 'Courier New', Courier, monospace;
-            padding: 14px;
-            overflow-y: auto;
-            font-size: 0.84rem;
-            white-space: pre-wrap;
-            line-height: 1.6;
-            background: rgba(255, 255, 255, 0.7);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .console-output.error {
-            color: var(--danger);
-        }
-
-        .console-output.success {
-            color: var(--success);
-        }
-
-        .console-input-bar {
-            display: flex;
-            border-top: 1px solid var(--border-color);
-            background: rgba(255, 255, 255, 0.95);
-            padding: 8px 12px;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .console-input-bar input, .ai-input-box input {
-            flex: 1;
-            background: rgba(241, 245, 249, 0.9);
+            height: 150px;
+            font-family: monospace;
+            padding: 10px;
+            box-sizing: border-box;
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 8px 12px;
-            color: var(--text-main);
-            font-family: 'Fira Code', 'JetBrains Mono', monospace;
-            font-size: 0.82rem;
-            outline: none;
-            transition: all 0.2s;
-        }
-
-        .console-input-bar input:focus, .ai-input-box input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
-        }
-
-        .ai-chat-body {
-            flex: 1;
-            padding: 14px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.6);
-            font-size: 0.85rem;
-        }
-
-        .ai-msg {
-            padding: 10px 14px;
-            border-radius: 10px;
-            max-width: 85%;
-            line-height: 1.5;
-        }
-
-        .ai-msg.bot {
-            background: rgba(139, 92, 246, 0.08);
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            color: #4c1d95;
-            align-self: flex-start;
-        }
-
-        .ai-msg.user {
-            background: var(--accent-gradient);
-            color: white;
-            align-self: flex-end;
-        }
-
-        .ai-input-box {
-            display: flex;
-            padding: 10px 12px;
-            background: rgba(255, 255, 255, 0.95);
-            border-top: 1px solid var(--border-color);
-            gap: 8px;
-            align-items: center;
-        }
-
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.3);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--border-color);
             border-radius: 4px;
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
+        button {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
         }
-
-        table.sql-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 6px;
-            font-size: 0.8rem;
-            background: white;
-            border-radius: 6px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        button:hover {
+            background-color: #1d4ed8;
         }
-
-        table.sql-table th, table.sql-table td {
-            border: 1px solid var(--border-color);
-            padding: 8px 12px;
-            text-align: left;
-        }
-
-        table.sql-table th {
-            background-color: var(--bg-panel);
-            color: var(--text-main);
-            font-weight: 600;
-        }
-
-        table.sql-table tr:hover td {
-            background-color: rgba(14, 165, 233, 0.05);
-        }
-
-        @media (max-width: 1100px) {
-            .main-container {
-                grid-template-columns: 1fr;
-                grid-template-rows: auto;
-                overflow-y: auto;
-            }
-            body {
-                overflow: auto;
-            }
-            .column {
-                height: 550px;
-            }
+        pre {
+            background: #1e293b;
+            color: #38bdf8;
+            padding: 15px;
+            border-radius: 4px;
+            min-height: 80px;
+            white-space: pre-wrap;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">
-            <div class="logo-icon">K</div>
-            <span>KuaduCode</span>™ IDE
-        </div>
-        <div class="toolbar">
-            <button class="ai-btn" onclick="switchTab('ai', document.querySelector('.ai-tab'))">✨ Kuadu AI</button>
-            <button class="clear-btn" onclick="clearAll()">Clear</button>
-            <button onclick="runAll()">▶ Run All</button>
-        </div>
-    </header>
+    <div class="container">
+        <h2>Kuaducode Python Runner</h2>
+        <p>Write your Python code below:</p>
+        
+        <textarea id="python-code">
+import js
 
-    <div class="main-container">
-        <!-- Left Column: Editors -->
-        <div class="column">
-            <div class="panel">
-                <div class="panel-header">
-                    <span>HTML / CSS / JS Source</span>
-                    <span class="badge">Live View Ready</span>
-                </div>
-                <div class="editor-container">
-                    <textarea id="html-editor" placeholder="Write HTML/CSS/JS here..."><!DOCTYPE html>
-<html>
-<head>
-    <style>
-        body { font-family: 'Inter', sans-serif; background: #f8fafc; padding: 20px; text-align: center; }
-        .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: inline-block; }
-        h1 { color: #0284c7; margin-bottom: 10px; }
-        p { color: #64748b; }
-    </style>
-</head>
-<body>
-    <div class="card">
-        <h1>Welcome to KuaduCode™</h1>
-        <p>Built for developers, powered by web intelligence & AI.</p>
-    </div>
-</body>
-</html></textarea>
-                </div>
-            </div>
+name = js.prompt("Enter your full name:")
+age = js.prompt("Enter your age:")
+city = js.prompt("Enter your city/location:")
+profession = js.prompt("Enter your profession:")
 
-            <div class="panel">
-                <div class="panel-header">
-                    <span>Python 3 Workspace</span>
-                    <button style="padding: 3px 10px; font-size: 0.72rem;" onclick="runPython()">Run Python ▶</button>
-                </div>
-                <div class="editor-container">
-                    <textarea id="python-editor" placeholder="# Write Python code here...&#10;name = input('Enter your name: ')&#10;print(f'Hello, {name} from KuaduCode Python Runtime!')"></textarea>
-                </div>
-            </div>
+print("=== USER PROFILE SUMMARY ===")
+print(f"Name      : {name}")
+print(f"Age       : {age}")
+print(f"City      : {city}")
+print(f"Profession: {profession}")
+        </textarea>
+        <br>
+        <button onclick="runPython()">Run Python Code</button>
 
-            <div class="panel">
-                <div class="panel-header">
-                    <span>SQL Workspace (SQLite)</span>
-                    <button style="padding: 3px 10px; font-size: 0.72rem;" onclick="runSQL()">Run SQL Query ▶</button>
-                </div>
-                <div class="editor-container">
-                    <textarea id="sql-editor" placeholder="-- Write SQL queries here...&#10;CREATE TABLE developers (id INTEGER PRIMARY KEY, name TEXT, role TEXT);&#10;INSERT INTO developers (name, role) VALUES ('Kwadwo', 'Full-Stack Lead');&#10;SELECT * FROM developers;"></textarea>
-                </div>
-            </div>
-        </div>
-
-        <!-- Right Column: Previews & Consoles -->
-        <div class="column">
-            <div class="panel" style="flex: 1;">
-                <div class="tab-header">
-                    <button class="tab-btn active" onclick="switchTab('preview', this)">🌐 Live View</button>
-                    <button class="tab-btn" onclick="switchTab('python', this)">🐍 Python <span id="py-status" style="font-size:0.65rem; color:var(--success);">●</span></button>
-                    <button class="tab-btn" onclick="switchTab('sql', this)">🗄️ SQL <span id="sql-status" style="font-size:0.65rem; color:var(--success);">●</span></button>
-                    <button class="tab-btn ai-tab" onclick="switchTab('ai', this)">✨ Kuadu AI</button>
-                </div>
-
-                <div id="tab-preview" class="tab-content active">
-                    <iframe id="live-preview"></iframe>
-                </div>
-
-                <div id="tab-python" class="tab-content">
-                    <div class="console-wrapper">
-                        <div id="python-console" class="console-output">Loading Pyodide runtime environment...</div>
-                        <div class="console-input-bar">
-                            <input type="text" id="python-input" placeholder="Type input here when prompted..." onkeydown="handlePythonInputKey(event)">
-                            <button onclick="submitPythonInput()">Send Input</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="tab-sql" class="tab-content">
-                    <div class="console-wrapper">
-                        <div id="sql-console" class="console-output">Loading SQLite WASM engine...</div>
-                        <div class="console-input-bar">
-                            <input type="text" id="sql-input" placeholder="Type quick SQL query here..." onkeydown="handleSQLInputKey(event)">
-                            <button onclick="submitSQLInput()">Execute</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="tab-ai" class="tab-content">
-                    <div class="console-wrapper">
-                        <div id="ai-chat-box" class="ai-chat-body">
-                            <div class="ai-msg bot">Hello! I am **Kuadu AI**, your intelligent assistant. How can I help you refactor code, debug errors, or build your web project today?</div>
-                        </div>
-                        <div class="ai-input-box">
-                            <input type="text" id="ai-user-input" placeholder="Ask Kuadu AI a question or request code..." onkeydown="handleAIInputKey(event)">
-                            <button class="ai-btn" onclick="sendAIMessage()">Ask AI</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <h3>Console Output:</h3>
+        <pre id="output">Initializing Pyodide...</pre>
     </div>
 
     <script>
-        const htmlEditor = document.getElementById('html-editor');
-        const livePreview = document.getElementById('live-preview');
-
-        function updatePreview() {
-            const code = htmlEditor.value;
-            const blob = new Blob([code], { type: 'text/html' });
-            livePreview.src = URL.createObjectURL(blob);
-        }
-
-        htmlEditor.addEventListener('input', updatePreview);
-        window.addEventListener('DOMContentLoaded', updatePreview);
-
-        function switchTab(tabName, btnElement) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-
-            document.getElementById('tab-' + tabName).classList.add('active');
-            btnElement.classList.add('active');
-        }
-
-        function runAll() {
-            updatePreview();
-            runPython();
-            runSQL();
-        }
-
-        function clearAll() {
-            if(confirm("Clear all editors and consoles?")) {
-                document.getElementById('html-editor').value = "";
-                document.getElementById('python-editor').value = "";
-                document.getElementById('sql-editor').value = "";
-                updatePreview();
-                document.getElementById('python-console').innerText = "Cleared.";
-                document.getElementById('sql-console').innerText = "Cleared.";
-            }
-        }
-
         let pyodideReady = false;
         let pyodideInstance = null;
-        let pythonInputResolve = null;
 
-        async function initPython() {
-            const consoleEl = document.getElementById('python-console');
-            const statusEl = document.getElementById('py-status');
+        async function loadPyodideEnvironment() {
             try {
                 pyodideInstance = await loadPyodide();
                 pyodideReady = true;
-                statusEl.style.color = "var(--success)";
-                consoleEl.innerText = "Python environment ready. Click 'Run Python' to execute.";
+                document.getElementById("output").innerText = "Pyodide Ready. Click 'Run Python Code' to start.";
             } catch (err) {
-                statusEl.style.color = "var(--danger)";
-                consoleEl.className = "console-output error";
-                consoleEl.innerText = "Failed to load Python: " + err.message;
+                document.getElementById("output").innerText = "Error loading Pyodide: " + err.message;
             }
         }
 
-        function customInput(promptText = "") {
-            return new Promise((resolve) => {
-                const consoleEl = document.getElementById('python-console');
-                if (promptText) {
-                    consoleEl.innerText += promptText;
-                }
-                pythonInputResolve = resolve;
-                const inputField = document.getElementById('python-input');
-                inputField.focus();
-            });
-        }
-
-        function submitPythonInput() {
-            const inputField = document.getElementById('python-input');
-            const val = inputField.value;
-            inputField.value = "";
-
-            const consoleEl = document.getElementById('python-console');
-            consoleEl.innerText += val + "\n";
-            consoleEl.scrollTop = consoleEl.scrollHeight;
-
-            if (pythonInputResolve) {
-                const resolve = pythonInputResolve;
-                pythonInputResolve = null;
-                resolve(val);
-            }
-        }
-
-        function handlePythonInputKey(event) {
-            if (event.key === 'Enter') {
-                submitPythonInput();
-            }
-        }
+        loadPyodideEnvironment();
 
         async function runPython() {
-            const consoleEl = document.getElementById('python-console');
+            const outputElement = document.getElementById("output");
             if (!pyodideReady) {
-                consoleEl.innerText = "Python engine is still loading...";
+                outputElement.innerText = "Please wait, Pyodide is still loading...";
                 return;
             }
 
-            consoleEl.className = "console-output";
-            consoleEl.innerText = "Executing python code...\n";
-            let code = document.getElementById('python-editor').value;
+            const code = document.getElementById("python-code").value;
+            outputElement.innerText = "Running...\n";
+
+            pyodideInstance.setStdout({
+                batched: (msg) => {
+                    outputElement.innerText += msg + "\n";
+                }
+            });
 
             try {
-                pyodideInstance.setStdout({
-                    batched: (msg) => {
-                        consoleEl.innerText += msg + "\n";
-                        consoleEl.scrollTop = consoleEl.scrollHeight;
-                    }
-                });
-
-                pyodideInstance.setStdin({
-                    stdin: (promptText) => {
-                        return customInput(promptText || "");
-                    }
-                });
-
-                await pyodideInstance.loadPackagesFromImports(code);
                 await pyodideInstance.runPythonAsync(code);
-                consoleEl.innerText += "\n[Execution completed successfully]\n";
-                consoleEl.scrollTop = consoleEl.scrollHeight;
             } catch (err) {
-                consoleEl.className = "console-output error";
-                consoleEl.innerText += "\n" + err.message;
-                consoleEl.scrollTop = consoleEl.scrollHeight;
+                outputElement.innerText += "\nError: " + err.message;
             }
         }
-
-        let db = null;
-
-        async function initSQL() {
-            const consoleEl = document.getElementById('sql-console');
-            const statusEl = document.getElementById('sql-status');
-            try {
-                const SQL = await initSqlJs({
-                    locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}`
-                });
-                db = new SQL.Database();
-                statusEl.style.color = "var(--success)";
-                consoleEl.innerText = "SQL engine ready. Enter queries below or use workspace editor.";
-            } catch (err) {
-                statusEl.style.color = "var(--danger)";
-                consoleEl.className = "console-output error";
-                consoleEl.innerText = "Failed to load SQL engine: " + err.message;
-            }
-        }
-
-        function executeSQLQuery(query) {
-            const consoleEl = document.getElementById('sql-console');
-            if (!db) {
-                consoleEl.innerText = "SQL engine is still loading...";
-                return;
-            }
-
-            consoleEl.className = "console-output";
-
-            try {
-                const results = db.exec(query);
-                if (results.length === 0) {
-                    consoleEl.innerText = "Query executed successfully with no result set.";
-                    return;
-                }
-
-                let htmlOutput = "";
-                results.forEach(res => {
-                    let table = '<table class="sql-table"><thead><tr>';
-                    res.columns.forEach(col => table += `<th>${col}</th>`);
-                    table += '</tr></thead><tbody>';
-
-                    res.values.forEach(row => {
-                        table += '<tr>';
-                        row.forEach(val => table += `<td>${val !== null ? val : 'NULL'}</td>`);
-                        table += '</tr>';
-                    });
-                    table += '</tbody></table>';
-                    htmlOutput += table + "<br>";
-                });
-
-                consoleEl.innerHTML = htmlOutput;
-            } catch (err) {
-                consoleEl.className = "console-output error";
-                consoleEl.innerText = err.message;
-            }
-        }
-
-        function runSQL() {
-            const query = document.getElementById('sql-editor').value;
-            executeSQLQuery(query);
-        }
-
-        function submitSQLInput() {
-            const inputField = document.getElementById('sql-input');
-            const val = inputField.value.trim();
-            if (!val) return;
-            inputField.value = "";
-            document.getElementById('sql-editor').value = val;
-            executeSQLQuery(val);
-        }
-
-        function handleSQLInputKey(event) {
-            if (event.key === 'Enter') {
-                submitSQLInput();
-            }
-        }
-
-        function sendAIMessage() {
-            const inputField = document.getElementById('ai-user-input');
-            const text = inputField.value.trim();
-            if (!text) return;
-            inputField.value = "";
-
-            const chatBox = document.getElementById('ai-chat-box');
-            chatBox.innerHTML += `<div class="ai-msg user">${text}</div>`;
-            chatBox.scrollTop = chatBox.scrollHeight;
-
-            setTimeout(() => {
-                let reply = "That's a fantastic idea! KuaduCode™ is fully equipped to handle that requirement. Let me know if you want me to generate code snippets for your HTML, Python, or SQLite databases!";
-                if (text.toLowerCase().includes('hello') || text.toLowerCase().includes('hi')) {
-                    reply = "Hello there! Ready to write some world-class code with KuaduCode™?";
-                } else if (text.toLowerCase().includes('python')) {
-                    reply = "KuaduCode runs Python 3 right in your browser using Pyodide! You can use `input()` and standard libraries seamlessly.";
-                } else if (text.toLowerCase().includes('sql')) {
-                    reply = "Our integrated SQLite WASM engine lets you run full tables, `CREATE TABLE`, `INSERT`, and `SELECT` queries instantly!";
-                }
-                chatBox.innerHTML += `<div class="ai-msg bot">${reply}</div>`;
-                chatBox.scrollTop = chatBox.scrollHeight;
-            }, 600);
-        }
-
-        function handleAIInputKey(event) {
-            if (event.key === 'Enter') {
-                sendAIMessage();
-            }
-        }
-
-        initPython();
-        initSQL();
     </script>
 </body>
 </html>
