@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KuaduCode™ — Professional Web IDE & Kali Linux Advanced Toolkit</title>
-    <meta name="description" content="KuaduCode is a universal web code editor and IDE featuring live preview, Python environment, Kuadu AI, and fully upgraded professional Kali Linux and developer utilities.">
-    <meta name="author" content="Kuaducode Platform">
+    <title>KuaduCode™ — Professional Web IDE & Advanced Developer Toolkit</title>
+    <meta name="description" content="KuaduCode is a universal web code editor and IDE featuring live preview, Python environment, Kuadu AI, and fully functional professional Kali Linux and developer utilities.">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
@@ -228,6 +227,7 @@
             display: flex;
             gap: 10px;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .tool-input, .tool-select {
@@ -269,6 +269,9 @@
             min-height: 38px;
             max-height: 120px;
             overflow-y: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
         }
 
         .terminal-box {
@@ -427,6 +430,20 @@
             outline: none;
             font-size: 0.9rem;
         }
+
+        .copy-chip {
+            background: #21262d;
+            border: 1px solid var(--border-color);
+            color: #c9d1d9;
+            padding: 2px 8px;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .copy-chip:hover {
+            background: #30363d;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -437,7 +454,7 @@
             <span>Professional IDE & Upgraded Tools</span>
         </div>
         <div class="toolbar">
-            <button class="btn" onclick="clearActiveTab()"><i class="fa-solid fa-trash"></i> Clear</button>
+            <button class="btn" onclick="clearActiveTab()"><i class="fa-solid fa-trash"></i> Clear Current Tab</button>
             <button class="btn btn-ai" onclick="switchTab(null, 'ai-container')"><i class="fa-solid fa-robot"></i> Kuadu AI</button>
             <button class="btn btn-primary" onclick="runCode()"><i class="fa-solid fa-play"></i> Run Code</button>
         </div>
@@ -535,433 +552,4 @@ document.addEventListener("DOMContentLoaded", () => {
         self.ports = [22, 80, 443, 3306, 8080]
 
     def scan_ports(self):
-        print(f"[*] Initializing security scan for target: {self.target_ip}")
-        active_ports = []
-        for port in self.ports:
-            status = "OPEN" if port in [22, 80] else "FILTERED"
-            print(f"Port {port}: {status}")
-            if status == "OPEN":
-                active_ports.append(port)
-        return active_ports
-
-analyzer = SecurityAnalyzer("127.0.0.1")
-open_ports = analyzer.scan_ports()
-print(f"[+] Scan completed successfully. Open ports found: {open_ports}")</textarea>
-            </div>
-
-            <!-- Upgraded Tools Tab -->
-            <div id="tools-container" class="editor-container">
-                <div class="tools-panel">
-                    <h2 style="font-size: 1.1rem; color: #fff; margin-bottom: 2px;"><i class="fa-solid fa-toolbox"></i> Upgraded Developer & Kali Linux Toolkit</h2>
-                    <p style="font-size: 0.8rem; color: #8b949e; margin-bottom: 10px;">Fully upgraded tool suite featuring an interactive Kali Linux terminal (with sudo & package installer), advanced URL Encoder/Decoder, Secure Cryptographic Password & API Key Generator, and comprehensive SQL Query Builder.</p>
-
-                    <!-- Upgraded Kali Linux Terminal Simulator -->
-                    <div class="tool-section-card">
-                        <h3><i class="fa-solid fa-terminal" style="color: #3fb950;"></i> Kali Linux Advanced Terminal (Root & Sudo Enabled)</h3>
-                        <p>Type commands (e.g., <code>sudo apt update</code>, <code>sudo apt install metasploit-framework</code>, <code>nmap -A 192.168.1.1</code>, <code>msfconsole</code>, <code>su root</code>, <code>whoami</code>).</p>
-                        <div id="linux-terminal" class="terminal-box">Kali GNU/Linux Rolling (v2026.1) - Root & Sudo Enabled. Type 'help' for available commands.
-┌──(kali㉿kuaducode)-[~]
-└─$ </div>
-                        <div class="tool-row">
-                            <input type="text" id="linux-input" class="tool-input" placeholder="Enter Linux command..." onkeypress="handleLinuxKey(event)">
-                            <button class="tool-btn btn-primary" onclick="runKaliCommand()">Execute</button>
-                        </div>
-                    </div>
-
-                    <!-- Upgraded URL Encoder / Decoder -->
-                    <div class="tool-section-card">
-                        <h3><i class="fa-solid fa-link" style="color: #58a6ff;"></i> Advanced URL Encoder & Decoder</h3>
-                        <p>Full support for single/double encoding, URI component parsing, and parameter extraction.</p>
-                        <input type="text" id="url-input" class="tool-input" placeholder="Enter URL string or parameters (e.g. https://site.com?q=test query)...">
-                        <div class="tool-row">
-                            <button class="tool-btn" onclick="decodeUrlText()"><i class="fa-solid fa-unlock"></i> Decode URL</button>
-                            <button class="tool-btn" onclick="encodeUrlText()"><i class="fa-solid fa-lock"></i> Encode URL</button>
-                            <button class="tool-btn" onclick="parseUrlParams()"><i class="fa-solid fa-list"></i> Parse Params</button>
-                        </div>
-                        <div id="url-output" class="tool-output">Advanced output will appear here...</div>
-                    </div>
-
-                    <!-- Upgraded Secure Password & API Key Generator -->
-                    <div class="tool-section-card">
-                        <h3><i class="fa-solid fa-key" style="color: #2ea44f;"></i> Upgraded Secure Password & API Key Generator</h3>
-                        <p>Generate high-entropy keys with custom character sets, symbols, and length configuration.</p>
-                        <div class="tool-row">
-                            <select id="pass-length" class="tool-select">
-                                <option value="16">16 Characters (Standard)</option>
-                                <option value="32" selected>32 Characters (Secure API)</option>
-                                <option value="64">64 Characters (High Entropy)</option>
-                            </select>
-                            <label style="font-size:0.8rem; display:flex; align-items:center; gap:4px; color:#c9d1d9;">
-                                <input type="checkbox" id="pass-symbols" checked> Symbols
-                            </label>
-                            <button class="tool-btn btn-primary" onclick="generateAdvancedPassword()"><i class="fa-solid fa-bolt"></i> Generate Key</button>
-                        </div>
-                        <div id="pass-output" class="tool-output">Click generate to create secure high-entropy key...</div>
-                    </div>
-
-                    <!-- Upgraded SQL Query Builder -->
-                    <div class="tool-section-card">
-                        <h3><i class="fa-solid fa-database" style="color: #d2a8ff;"></i> Upgraded SQL Query Builder</h3>
-                        <p>Build enterprise-grade SQL statements with JOINs, GROUP BY, and complex WHERE clauses.</p>
-                        <div class="tool-row">
-                            <select id="sql-action" class="tool-select">
-                                <option value="SELECT">SELECT</option>
-                                <option value="INSERT">INSERT INTO</option>
-                                <option value="UPDATE">UPDATE</option>
-                                <option value="DELETE">DELETE FROM</option>
-                                <option value="CREATE">CREATE TABLE</option>
-                            </select>
-                            <input type="text" id="sql-table" class="tool-input" placeholder="Table name (e.g. users, orders)...">
-                        </div>
-                        <input type="text" id="sql-columns" class="tool-input" placeholder="Columns or Fields (e.g. id, username, email)...">
-                        <input type="text" id="sql-join" class="tool-input" placeholder="JOIN clause (e.g. LEFT JOIN profiles ON users.id = profiles.user_id)...">
-                        <input type="text" id="sql-where" class="tool-input" placeholder="WHERE condition (e.g. status = 'active' AND role = 'admin')...">
-                        <input type="text" id="sql-extra" class="tool-input" placeholder="GROUP BY / ORDER BY / LIMIT (e.g. ORDER BY created_at DESC LIMIT 50)...">
-                        <button class="tool-btn btn-primary" onclick="buildAdvancedSqlQuery()"><i class="fa-solid fa-code"></i> Generate Advanced SQL</button>
-                        <div id="sql-output" class="tool-output">SELECT * FROM users;</div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="ai-container" class="editor-container">
-                <div class="ai-assistant-panel">
-                    <div id="ai-chat-history" class="ai-chat-history">
-                        <div class="ai-msg assistant">Kuadu AI assistant initialized. Ready for technical queries.</div>
-                    </div>
-                    <div class="ai-input-box">
-                        <input type="text" id="ai-prompt-input" placeholder="Enter query for Kuadu AI..." onkeypress="handleAiKey(event)">
-                        <button class="btn btn-primary" onclick="sendAiPrompt()"><i class="fa-solid fa-paper-plane"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="pane">
-            <div class="output-pane-container">
-                <div class="output-header">
-                    <span><i class="fa-solid fa-desktop"></i> LIVE PREVIEW & PYTHON TERMINAL</span>
-                    <span>Output</span>
-                </div>
-                <iframe id="live-preview"></iframe>
-                <div class="console-wrapper">
-                    <div id="console-box" class="console-output">Python interactive REPL terminal ready.</div>
-                    <div class="console-input-row">
-                        <span class="console-prompt-label">>>></span>
-                        <input type="text" id="repl-input" class="console-input-field" placeholder="Enter Python command..." onkeypress="handleReplKey(event)">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <footer>
-        <div style="font-size: 0.8rem; color: #8b949e; padding-left: 10px;">
-            KuaduCode™ &bull; Professional IDE & Upgraded Tools
-        </div>
-    </footer>
-
-    <script>
-        function switchTab(evt, containerId) {
-            const containers = document.querySelectorAll('.editor-container');
-            containers.forEach(container => container.classList.remove('active'));
-
-            const tabs = document.querySelectorAll('.tab');
-            tabs.forEach(tab => tab.classList.remove('active'));
-
-            document.getElementById(containerId).classList.add('active');
-            if (evt && evt.currentTarget) {
-                evt.currentTarget.classList.add('active');
-            }
-        }
-
-        // Upgraded URL Encoder / Decoder & Parser
-        function decodeUrlText() {
-            const val = document.getElementById('url-input').value;
-            try {
-                document.getElementById('url-output').textContent = "--- DECODED ---\n" + decodeURIComponent(val);
-            } catch(e) {
-                document.getElementById('url-output').textContent = "Error: Invalid encoded URL string.";
-            }
-        }
-
-        function encodeUrlText() {
-            const val = document.getElementById('url-input').value;
-            try {
-                document.getElementById('url-output').textContent = "--- ENCODED ---\n" + encodeURIComponent(val);
-            } catch(e) {
-                document.getElementById('url-output').textContent = "Error: Unable to encode string.";
-            }
-        }
-
-        function parseUrlParams() {
-            const val = document.getElementById('url-input').value;
-            try {
-                const url = new URL(val.includes('://') ? val : 'https://example.com/?' + val);
-                let result = "--- URL PARSE RESULTS ---\n";
-                result += `Protocol: ${url.protocol}\nHost: ${url.hostname}\nPathname: ${url.pathname}\n\nQuery Parameters:\n`;
-                url.searchParams.forEach((v, k) => {
-                    result += `  ${k} = ${v}\n`;
-                });
-                document.getElementById('url-output').textContent = result;
-            } catch(e) {
-                document.getElementById('url-output').textContent = "Error parsing URL or query parameters.";
-            }
-        }
-
-        // Upgraded Secure Password & API Key Generator
-        function generateAdvancedPassword() {
-            const len = parseInt(document.getElementById('pass-length').value) || 32;
-            const useSymbols = document.getElementById('pass-symbols').checked;
-            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789" + (useSymbols ? "@#$%&*!-_=+[]{}<>:?" : "");
-            let pass = "";
-            for (let i = 0; i < len; i++) {
-                pass += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            document.getElementById('pass-output').textContent = `[Generated Entropy Key (${len} chars)]:\n${pass}`;
-        }
-
-        // Upgraded Kali Linux Terminal Simulator Logic
-        let currentUser = "kali";
-        let isRoot = false;
-        let installedPackages = ["nmap", "wireshark", "sqlmap", "metasploit-framework", "hydra", "netcat", "aircrack-ng"];
-
-        function runKaliCommand() {
-            const inputField = document.getElementById('linux-input');
-            const cmd = inputField.value.trim();
-            const term = document.getElementById('linux-terminal');
-            if (!cmd) return;
-
-            const promptSymbol = isRoot ? "#" : "$";
-            term.innerHTML += `┌──(${currentUser}㉿kuaducode)-[~]\n└─${promptSymbol} ${cmd}\n`;
-            inputField.value = "";
-
-            const parts = cmd.split(" ");
-            const base = parts[0];
-            const arg1 = parts[1];
-            const arg2 = parts[2];
-
-            let response = "";
-
-            if (base === "help") {
-                response = "Upgraded Kali Linux Commands:\n  sudo apt update / upgrade / install [pkg]\n  su root\n  nmap [-A/-sV] [target]\n  msfconsole\n  sqlmap [-u url]\n  wireshark\n  hydra\n  whoami, pwd, ls, date, clear, history";
-            } else if (base === "whoami") {
-                response = currentUser;
-            } else if (base === "su") {
-                if (arg1 === "root" || !arg1) {
-                    currentUser = "root";
-                    isRoot = true;
-                    response = "Password: ********\n[+] Switched to root user successfully with full administrative privileges.";
-                } else {
-                    currentUser = arg1;
-                    isRoot = (currentUser === "root");
-                    response = `[+] Switched user to ${currentUser}`;
-                }
-            } else if (base === "sudo") {
-                if (parts[1] === "su") {
-                    currentUser = "root";
-                    isRoot = true;
-                    response = "[sudo] password for kali:\n[+] Root session initialized successfully via sudo.";
-                } else if (parts[1] === "apt") {
-                    if (parts[2] === "update") {
-                        response = "Hit:1 http://http.kali.org/kali kali-rolling InRelease\nGet:2 http://security.kali.org/kali-security kali-security/updates mirroring... Done\nReading package lists... Done\n[+] Package database successfully updated (All repositories synced).";
-                    } else if (parts[2] === "upgrade") {
-                        response = "Reading package lists... Done\nBuilding dependency tree... Done\nCalculating upgrade... Done\n0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.";
-                    } else if (parts[2] === "install") {
-                        const pkg = parts[3] || "security-tool";
-                        if (!installedPackages.includes(pkg)) installedPackages.push(pkg);
-                        response = `Reading package lists... Done\nBuilding dependency tree...\nReading state information...\nThe following NEW packages will be installed:\n  ${pkg}\nGet:1 http://http.kali.org/kali kali-rolling/main amd64 ${pkg} [14.2 MB]\nFetched 14.2 MB in 1s (14.2 MB/s)\nSelecting previously unselected package ${pkg}.\nPreparing to unpack...\nUnpacking ${pkg} (v8.2-0kali1)...\nSetting up ${pkg} (8.2-0kali1) ...\n[+] Successfully installed ${pkg}!`;
-                    } else {
-                        response = `[sudo] Executing: ${parts.slice(1).join(" ")}\n[+] Process executed with root privileges successfully.`;
-                    }
-                } else {
-                    response = `[sudo] Executing: ${parts.slice(1).join(" ")}\nCommand executed successfully.`;
-                }
-            } else if (base === "apt") {
-                response = "E: Permission denied. Root privileges required. Try prefixing your command with 'sudo'.";
-            } else if (base === "nmap") {
-                const target = arg1 === "-A" || arg1 === "-sV" ? (arg2 || "127.0.0.1") : (arg1 || "127.0.0.1");
-                response = `Starting Nmap 7.94 ( https://nmap.org )\nNmap scan report for ${target}\nHost is up (0.00012s latency).\nNot shown: 995 closed ports\nPORT     STATE SERVICE VERSION\n22/tcp   open  ssh     OpenSSH 9.2p1 Debian 2+deb12u2\n80/tcp   open  http    Apache httpd 2.4.59\n3306/tcp open  mysql   MySQL 8.0.36\n\nNmap done: 1 IP address (1 host up) scanned in 0.18 seconds.`;
-            } else if (base === "msfconsole") {
-                response = "     \n     ____                 ________                     \n    |    |  ._. ____  ____ \\      \\   ____   {____ _____  \n    |    |  | |/ ___\\/ ___\\/   |   \\ /  _ \\  |    \\\\__  \\ \n    |    |/\\|  / /_/  > /_/  >    |    (  <_> ) |   |  / __ \\\n    |_______/\\___  /\\___  /|____|__  /\\____/  |___|__(____  /\n           /_____//_____/         \\/                     \\/\n       =[ metasploit v6.4.10-dev-19824                     ]\n+ -- --=[ 2424 exploits - 1245 payloads - 465 encoders     ]\nmetasploit > ";
-            } else if (base === "sqlmap") {
-                response = "        ___\n       __H__\n ___ ___[,]_____ ___ ___  (v1.8.2-all)\n |_ -| . [,]     | .'| . |\n |___|_  ["]_|_|_|__,|  _|\n       |_|V           |_|  https://sqlmap.org\n[+] testing connection to target URL\n[+] sqlmap identified the following injection point(s): GET parameter 'id' is vulnerable.";
-            } else if (base === "hydra") {
-                response = "Hydra v9.5 (c) by van Hauser / Thorsen\n[DATA] max 16 tasks per 1 server, overall 16 tasks, 400 login tries\n[STATUS] attack finished for target (1 valid credential pair 'admin:password123' found!).";
-            } else if (base === "wireshark") {
-                response = "[+] Launching Wireshark packet analyzer GTK+ GUI...\n[+] Interface eth0 connected. Capturing packets (Promiscuous mode active)...";
-            } else if (base === "ls") {
-                response = "Desktop    Downloads    Documents    tools    wordlists.txt    exploit.py    payloads/";
-            } else if (base === "pwd") {
-                response = isRoot ? "/root" : "/home/kali";
-            } else if (base === "date") {
-                response = new Date().toUTCString();
-            } else if (base === "history") {
-                response = "1. sudo apt update\n2. sudo apt install metasploit-framework\n3. nmap -A 127.0.0.1\n4. msfconsole\n5. " + cmd;
-            } else if (base === "clear") {
-                term.innerHTML = `Kali GNU/Linux Rolling (v2026.1) - Root & Sudo Enabled. Type 'help' for available commands.\n`;
-                return;
-            } else {
-                response = `bash: ${base}: command not found. Type 'help' for available commands.`;
-            }
-
-            term.innerHTML += response + "\n";
-            term.scrollTop = term.scrollHeight;
-        }
-
-        function handleLinuxKey(e) {
-            if (e.key === 'Enter') runKaliCommand();
-        }
-
-        // Upgraded SQL Query Builder Logic
-        function buildAdvancedSqlQuery() {
-            const action = document.getElementById('sql-action').value;
-            const table = document.getElementById('sql-table').value.trim() || 'users';
-            const cols = document.getElementById('sql-columns').value.trim() || '*';
-            const joinClause = document.getElementById('sql-join').value.trim();
-            const condition = document.getElementById('sql-where').value.trim();
-            const extra = document.getElementById('sql-extra').value.trim();
-
-            let query = "";
-            if (action === "SELECT") {
-                query = `SELECT ${cols}\nFROM ${table}`;
-                if (joinClause) query += `\n${joinClause}`;
-                if (condition) query += `\nWHERE ${condition}`;
-                if (extra) query += `\n${extra}`;
-                query += ";";
-            } else if (action === "INSERT") {
-                query = `INSERT INTO ${table} (${cols})\nVALUES ('val1', 'val2', 'val3');`;
-            } else if (action === "UPDATE") {
-                query = `UPDATE ${table}\nSET ${cols} = 'new_value'`;
-                if (condition) query += `\nWHERE ${condition}`;
-                query += ";";
-            } else if (action === "DELETE") {
-                query = `DELETE FROM ${table}`;
-                if (condition) query += `\nWHERE ${condition}`;
-                query += ";";
-            } else if (action === "CREATE") {
-                query = `CREATE TABLE ${table} (\n    id INT AUTO_INCREMENT PRIMARY KEY,\n    ${cols},\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);`;
-            }
-
-            document.getElementById('sql-output').textContent = query;
-        }
-
-        async function sendAiPrompt() {
-            const input = document.getElementById('ai-prompt-input');
-            const history = document.getElementById('ai-chat-history');
-            const val = input.value.trim();
-            if (!val) return;
-
-            history.innerHTML += `<div class="ai-msg user">${val}</div>`;
-            input.value = "";
-            history.scrollTop = history.scrollHeight;
-
-            await new Promise(r => setTimeout(r, 600));
-            history.innerHTML += `<div class="ai-msg assistant">Analysis for "${val}": All upgraded tools (Kali Linux advanced terminal, URL parser, high-entropy key generator, and advanced SQL builder) are fully operational.</div>`;
-            history.scrollTop = history.scrollHeight;
-        }
-
-        function handleAiKey(e) {
-            if (e.key === 'Enter') sendAiPrompt();
-        }
-
-        function runCode() {
-            const html = document.getElementById('html-code').value;
-            const css = document.getElementById('css-code').value;
-            const js = document.getElementById('js-code').value;
-            const pythonCode = document.getElementById('python-code').value;
-            const consoleBox = document.getElementById('console-box');
-
-            consoleBox.innerHTML = "[Execution Initiated]\n";
-
-            let finalHtml = html + `<style>${css}</style><script>
-                const oldLog = console.log;
-                console.log = function(...args) {
-                    oldLog.apply(console, args);
-                    window.parent.postMessage({ type: 'CONSOLE', message: args.join(' ') }, '*');
-                };
-                try {
-                    ${js}
-                } catch(err) {
-                    console.error(err);
-                }
-            <\/script>`;
-
-            const iframe = document.getElementById('live-preview');
-            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-            iframeDoc.open();
-            iframeDoc.write(finalHtml);
-            iframeDoc.close();
-
-            let pythonOutput = "";
-            Sk.configure({
-                output: function(text) { pythonOutput += text; },
-                read: function(filename) {
-                    if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][filename] === undefined) {
-                        throw "File not found: '" + filename + "'";
-                    }
-                    return Sk.builtinFiles["files"][filename];
-                }
-            });
-
-            Sk.misceval.asyncToPromise(function() {
-                return Sk.importMainWithBody("<stdin>", false, pythonCode, true);
-            }).then(function(mod) {
-                consoleBox.innerHTML += `\n[Python Output]:\n${pythonOutput}\nStatus: Execution completed successfully.\n`;
-            }, function(err) {
-                consoleBox.innerHTML += `\n[Python Error]:\n${err.toString()}\n`;
-            });
-        }
-
-        function handleReplKey(e) {
-            if (e.key === 'Enter') {
-                const replInput = document.getElementById('repl-input');
-                const cmd = replInput.value.trim();
-                const consoleBox = document.getElementById('console-box');
-                if (!cmd) return;
-
-                consoleBox.innerHTML += `\n>>> ${cmd}\n`;
-                replInput.value = "";
-
-                let replOutput = "";
-                Sk.configure({
-                    output: function(text) { replOutput += text; },
-                    read: function(filename) {
-                        if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][filename] === undefined) {
-                            throw "File not found: '" + filename + "'";
-                        }
-                        return Sk.builtinFiles["files"][filename];
-                    }
-                });
-
-                Sk.misceval.asyncToPromise(function() {
-                    return Sk.importMainWithBody("<stdin>", false, cmd, true);
-                }).then(function(mod) {
-                    if (replOutput) consoleBox.innerHTML += replOutput;
-                    consoleBox.scrollTop = consoleBox.scrollHeight;
-                }, function(err) {
-                    consoleBox.innerHTML += err.toString() + "\n";
-                    consoleBox.scrollTop = consoleBox.scrollHeight;
-                });
-            }
-        }
-
-        window.addEventListener('message', function(e) {
-            if (e.data && e.data.type === 'CONSOLE') {
-                const consoleBox = document.getElementById('console-box');
-                consoleBox.innerHTML += `\n[JS Log]: ${e.data.message}`;
-                consoleBox.scrollTop = consoleBox.scrollHeight;
-            }
-        });
-
-        function clearActiveTab() {
-            document.getElementById('html-code').value = "";
-            document.getElementById('css-code').value = "";
-            document.getElementById('js-code').value = "";
-            document.getElementById('python-code').value = "";
-            document.getElementById('console-box').innerHTML = "Terminal buffer cleared.";
-        }
-
-        window.onload = runCode;
-    </script>
-</body>
-</html>
+        print(f"[*] Initializing security scan for target: {self
