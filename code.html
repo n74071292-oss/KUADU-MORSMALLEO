@@ -1,203 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0b1020">
-  <title>Kuaducode — Code Studio</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
-    :root{--bg:#090e1c;--panel:#111a2d;--panel2:#0d1526;--line:#25324b;--text:#edf3ff;--muted:#8e9bb4;--accent:#8b7cff;--cyan:#52d9d0;--yellow:#f59e0b}
-    *{box-sizing:border-box}body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font-family:Manrope,system-ui,sans-serif}
-    .backdrop{position:fixed;inset:0;z-index:-1;background:linear-gradient(110deg,rgba(7,12,25,.96),rgba(8,14,29,.88)),url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=2000&q=85') center/cover no-repeat}
-    .app-shell{max-width:1600px;margin:auto;padding:0 34px}.topbar{height:82px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.1)}
-    .brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-size:21px;font-weight:800;letter-spacing:-.8px}.brand-mark{display:grid;place-items:center;width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,#8b7cff,#46d9d0);color:#09101d;font:700 15px 'DM Mono'}.brand-accent{color:#9c91ff}.brand small{font-size:9px;letter-spacing:2px;color:#8492ae;margin:5px 0 0 2px}
-    .top-actions{display:flex;align-items:center;gap:14px}.status{font-size:12px;color:#a7b3c9}.status i,.live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#4ee0a5;margin-right:7px;box-shadow:0 0 12px #4ee0a5}
-    button{font:600 12px Manrope;cursor:pointer;border:0}.run-button{padding:11px 17px;border-radius:9px;background:linear-gradient(120deg,#8b7cff,#5bcbce);color:#08101e;box-shadow:0 5px 22px #6e70d433}.run-button:hover{filter:brightness(1.12);transform:translateY(-1px)}
-    .premium-top-btn{padding:11px 17px;border-radius:9px;background:linear-gradient(120deg,#f59e0b,#d97706);color:#08101e;box-shadow:0 5px 22px rgba(245,158,11,.2);font-weight:700;display:flex;align-items:center;gap:6px}.premium-top-btn:hover{filter:brightness(1.12);transform:translateY(-1px)}
-    .pending-dot{width:6px;height:6px;border-radius:50%;background:#08101e;display:inline-block;box-shadow:0 0 0 2px rgba(8,16,30,0.4);animation:pulse-dot 1.5s infinite}
-    @keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
-    .tabs{display:flex;gap:7px;padding:22px 0 18px;border-bottom:1px solid rgba(255,255,255,.09)}.tab{padding:11px 17px;border-radius:8px;background:transparent;color:#9ba8c0;text-decoration:none;display:inline-flex;align-items:center}.tab span{margin-right:7px}.tab.active{background:#202a43;color:#fff;box-shadow:inset 0 0 0 1px #384666}.badge{background:#ef687d;color:#fff;border-radius:20px;padding:2px 6px;margin-left:5px;font-size:10px}
-    .panel{display:none;padding:26px 0 32px}.panel.active{display:block}.workspace-grid{display:grid;grid-template-columns:repeat(2, 1fr);gap:20px}
-    .editor-card{background:rgba(14,22,39,.96);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 15px 40px #0002;display:flex;flex-direction:column}
-    .editor-header-bar{height:42px;display:flex;align-items:center;padding:0 14px;background:#151f35;border-bottom:1px solid var(--line);font-size:11px;font-weight:700;color:#dce5f7}
-    .editor-header-bar .language{margin-left:auto;font:10px 'DM Mono';color:#7888a7;letter-spacing:1px}
-    .file-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:9px}
-    .file-dot.html{background:#ef687d}.file-dot.css{background:#6fb8e9}.file-dot.js{background:#f59e0b}.file-dot.python{background:#38bdf8}.file-dot.preview{background:#52d9d0}
-    .text-area-wrap{flex:1;display:flex;background:#0c1425}
-    textarea{display:block;width:100%;height:320px;resize:none;border:0;outline:0;background:#0c1425;color:#d9e5fa;padding:16px;font:13px/1.7 'DM Mono',monospace;tab-size:2;white-space:pre;overflow:auto;caret-color:#a99fff}textarea:focus{box-shadow:inset 0 0 0 1px #7169c8}
-    .preview-wrap{background:#fff;height:353px;border:0;width:100%;display:block}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b1020">
+<title>Kuaducode Studio</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
 
-    .premium-panel-content{max-width:600px;margin:0 auto;background:rgba(14,22,39,.96);border:1px solid var(--line);border-radius:12px;padding:32px;box-shadow:0 15px 40px #0002}
-    .premium-panel-content h2{font-size:24px;margin-bottom:6px;color:#fff;display:flex;align-items:center;gap:10px}
-    .pending-badge-inline{font-size:11px;background:rgba(245,158,11,.15);color:#f59e0b;padding:4px 10px;border-radius:20px;border:1px solid rgba(245,158,11,.3);font-weight:700;letter-spacing:.5px}
-    .premium-panel-content p{color:var(--muted);font-size:13px;margin-bottom:24px;line-height:1.6}
-    .notice-box{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:10px;padding:16px;margin-bottom:20px;font-size:12px;color:#fcd34d;line-height:1.6}
-    .momo-form-group{margin-bottom:18px;text-align:left}
-    .momo-form-group label{display:block;margin-bottom:8px;font-size:12px;color:var(--muted);font-weight:600}
-    .momo-form-group input{width:100%;padding:12px 16px;background:#0c1425;border:1px solid var(--line);border-radius:8px;color:#fff;font-size:14px;font-family:'DM Mono',monospace}
-    .momo-form-group input:focus{outline:none;border-color:var(--yellow)}
-    .pay-momo-btn{width:100%;padding:14px;border-radius:9px;background:#25324b;color:#8e9bb4;font-weight:800;font-size:14px;cursor:not-allowed;margin-top:10px;border:1px solid #324468}
-    #momoStatus{margin-top:16px;font-size:13px;font-weight:600;min-height:24px;color:#f59e0b}
-    
-    footer{height:58px;border-top:1px solid rgba(255,255,255,.09);display:flex;justify-content:space-between;align-items:center;color:#71809b;font-size:10px}footer b{color:#9c91ff}
-    @media(max-width:950px){.app-shell{padding:0 16px}.workspace-grid{grid-template-columns:1fr}}
-  </style>
-</head>
-<body>
-  <div class="backdrop"></div>
-  <div class="app-shell">
-    <header class="topbar">
-      <a class="brand" href="code.html" aria-label="Kuaducode home">
-        <span class="brand-mark">&lt;/&gt;</span>
-        <span>Kuadu<span class="brand-accent">code</span></span>
-        <small>CODE STUDIO</small>
-      </a>
-      <div class="top-actions">
-        <span class="status"><i></i> Live Runner Ready</span>
-        <button id="runBtn" class="run-button">▶ Run preview</button>
-        <button id="premiumTopBtn" class="premium-top-btn"><span class="pending-dot"></span> Premium (Pending)</button>
-      </div>
-    </header>
-
-    <nav class="tabs" aria-label="Workspace tabs">
-      <a href="code.html" class="tab active" id="codeTabLink"><span>▣</span> Code Studio</a>
-    </nav>
-
-    <main>
-      <section id="codePanel" class="panel active">
-        <div class="workspace-grid">
-          <div class="editor-card">
-            <div class="editor-header-bar"><span class="file-dot html"></span> index.html <span class="language">HTML5</span></div>
-            <div class="text-area-wrap"><textarea id="htmlCode" spellcheck="false">&lt;div class="card"&gt;
-  &lt;h1&gt;Hello from Kuaducode!&lt;/h1&gt;
-  &lt;p&gt;Edit your HTML, CSS, JS, and Python below and hit Run.&lt;/p&gt;
-  &lt;button onclick="sayHello()"&gt;Click Me&lt;/button&gt;
-&lt;/div&gt;</textarea></div>
-          </div>
-          
-          <div class="editor-card">
-            <div class="editor-header-bar"><span class="file-dot css"></span> style.css <span class="language">CSS3</span></div>
-            <div class="text-area-wrap"><textarea id="cssCode" spellcheck="false">body {
-  font-family: 'Manrope', system-ui, sans-serif;
-  background: #f4f6fa;
-  color: #111;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
+:root {
+--bg:#090e1c;
+--panel:#111a2d;
+--line:#25324b;
+--text:#edf3ff;
+--muted:#8e9bb4;
+--accent:#8b7cff;
 }
-.card {
-  background: white;
-  padding: 30px;
-  border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-  text-align: center;
+
+* {
+box-sizing:border-box;
 }
+
+body {
+margin:0;
+min-height:100vh;
+background:#090e1c;
+color:var(--text);
+font-family:Manrope,Arial,sans-serif;
+}
+
+.backdrop {
+position:fixed;
+inset:0;
+z-index:-1;
+background:linear-gradient(110deg,rgba(7,12,25,.96),rgba(8,14,29,.88)),url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=2000&q=85') center/cover no-repeat;
+}
+
+.app-shell {
+max-width:1600px;
+margin:auto;
+padding:0 34px;
+}
+
+.topbar {
+height:82px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.brand {
+display:flex;
+align-items:center;
+gap:10px;
+color:white;
+text-decoration:none;
+font-size:21px;
+font-weight:800;
+}
+
+.brand-mark {
+display:grid;
+place-items:center;
+width:36px;
+height:36px;
+border-radius:11px;
+background:linear-gradient(135deg,#8b7cff,#46d9d0);
+color:#09101d;
+}
+
+.brand-accent {
+color:#9c91ff;
+}
+
+.brand small {
+font-size:9px;
+letter-spacing:2px;
+color:#8492ae;
+}
+
+.top-actions,.heading-actions {
+display:flex;
+align-items:center;
+gap:14px;
+}
+
+.status {
+font-size:12px;
+color:#a7b3c9;
+}
+
+.status i,.live-dot {
+display:inline-block;
+width:7px;
+height:7px;
+border-radius:50%;
+background:#4ee0a5;
+margin-right:7px;
+}
+
 button {
-  background: #8b7cff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 700;
-  cursor: pointer;
-  margin-top: 12px;
-}</textarea></div>
-          </div>
+font:600 12px Manrope;
+cursor:pointer;
+border:0;
+}
 
-          <div class="editor-card">
-            <div class="editor-header-bar"><span class="file-dot js"></span> script.js <span class="language">JAVASCRIPT</span></div>
-            <div class="text-area-wrap"><textarea id="jsCode" spellcheck="false">function sayHello() {
-  alert("Kuaducode live preview running smoothly!");
-}</textarea></div>
-          </div>
+.run-button {
+padding:11px 17px;
+border-radius:9px;
+background:linear-gradient(120deg,#8b7cff,#5bcbce);
+color:#08101e;
+}
 
-          <div class="editor-card">
-            <div class="editor-header-bar"><span class="file-dot python"></span> script.py <span class="language">PYTHON</span></div>
-            <div class="text-area-wrap"><textarea id="pythonCode" spellcheck="false">def greet_user(name):
-    return f"Hello, {name} from Kuaducode Python environment!"
+.run-button:hover {
+filter:brightness(1.12);
+}
 
-print(greet_user("Developer"))</textarea></div>
-          </div>
+.tabs {
+display:flex;
+gap:7px;
+padding:22px 0 18px;
+border-bottom:1px solid rgba(255,255,255,.09);
+}
 
-          <div class="editor-card" style="grid-column: 1 / -1;">
-            <div class="editor-header-bar"><span class="file-dot preview"></span> Live Preview <span class="language">OUTPUT</span></div>
-            <iframe id="previewFrame" class="preview-wrap" title="Live Preview Output" style="height: 380px;"></iframe>
-          </div>
-        </div>
-      </section>
+.tab {
+padding:11px 17px;
+border-radius:8px;
+background:transparent;
+color:#9ba8c0;
+}
 
-      <section id="premiumPanel" class="panel">
-        <div class="premium-panel-content">
-          <h2>Kuaducode Premium Access <span class="pending-badge-inline">PENDING / MAINTENANCE</span></h2>
-          <p>Upgrade your development environment starting from GH₵ 20 via MTN Mobile Money.</p>
-          
-          <div class="notice-box">
-            ⚠️ <strong>Notice:</strong> MTN Mobile Money payment gateway integration is currently undergoing maintenance and is temporarily pending. Automated USSD routing is offline. Check back soon!
-          </div>
+.tab.active {
+background:#202a43;
+color:white;
+}
 
-          <div class="momo-form-group">
-            <label for="momoAmount">Select Amount (GH₵)</label>
-            <input type="number" id="momoAmount" value="20" min="20" step="5" disabled>
-          </div>
-          <div class="momo-form-group">
-            <label for="momoPhone">MTN Mobile Money Number</label>
-            <input type="tel" id="momoPhone" placeholder="024 XXX XXXX" maxlength="10" disabled>
-          </div>
-          <button id="payMomoBtn" class="pay-momo-btn" disabled>Gateway Temporarily Unavailable (Pending)</button>
-          <div id="momoStatus">Status: Gateway offline for scheduled maintenance.</div>
-        </div>
-      </section>
-    </main>
+.panel {
+display:none;
+padding:26px 0 32px;
+}
 
-    <footer><span>Kuaducode Code Studio</span><span>Built for learning & creating <b>✦</b></span></footer>
-  </div>
+.panel.active {
+display:block;
+}
 
-  <script>
-    const $ = (id) => document.getElementById(id);
-    const codePanel = $("codePanel");
-    const premiumPanel = $("premiumPanel");
+.workspace-heading {
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:20px;
+}
 
-    function runPreview() {
-      const html = $("htmlCode").value;
-      const css = "<style>" + $("cssCode").value + "</style>";
-      const js = "<script>" + $("jsCode").value + "<\/script>";
-      const frame = $("previewFrame");
-      const doc = frame.contentDocument || frame.contentWindow.document;
-      doc.open();
-      doc.write(html + css + js);
-      doc.close();
-    }
+.workspace-heading h1 {
+font-size:22px;
+margin:0 0 5px;
+}
 
-    $("runBtn").addEventListener("click", runPreview);
-    window.addEventListener("load", runPreview);
+.workspace-heading p {
+margin:0;
+color:var(--muted);
+font-size:12px;
+}
 
-    $("codeTabLink").addEventListener("click", (e) => { e.preventDefault(); switchTab('code'); });
-    $("premiumTopBtn").addEventListener("click", (e) => { e.preventDefault(); switchTab('premium'); });
+.soft-button {
+padding:10px 13px;
+border-radius:8px;
+background:#1a2540;
+color:#c5d0e4;
+border:1px solid #2a3856;
+}
 
-    function switchTab(target) {
-      if(target === 'premium') {
-        codePanel.classList.remove('active');
-        premiumPanel.classList.add('active');
-        $("codeTabLink").classList.remove('active');
-      } else {
-        premiumPanel.classList.remove('active');
-        codePanel.classList.add('active');
-        $("codeTabLink").classList.add('active');
-      }
-    }
+.web-layout {
+display:grid;
+grid-template-columns:minmax(420px,1fr) minmax(350px,1fr);
+gap:16px;
+min-height:610px;
+}
 
-    document.querySelectorAll("textarea").forEach(ta => {
-      ta.addEventListener("keydown", e => {
-        if (e.key === "Tab") { 
-          e.preventDefault(); 
-          const start = ta.selectionStart, end = ta.selectionEnd; 
-          ta.setRangeText("  ", start, end, "end"); 
-        }
-      });
-    });
-  </script>
-</body>
-</html>
+.editors {
+display:grid;
+grid-template-rows:repeat(3,minmax(180px,1fr));
+gap:12px;
+min-height:610px;
+}
+
+.editor-card,.preview-card,.output-card,.console-card {
+background:rgba(14,22,39,.96);
+border:1px solid var(--line);
+border-radius:12px;
+overflow:hidden;
+}
+
+.editor-title,.preview-toolbar,.output-heading,.console-toolbar {
+height:42px;
+display:flex;
+align-items:center;
+padding:0 14px;
+background:#151f35;
+border-bottom:1px solid var(--line);
+font-size:11px;
+font-weight:700;
+}
+
+.language {
+margin-left:auto;
+font:10px 'DM Mono';
+color:#7888a7;
+}
+
+.file-dot {
+width:8px;
+height:8px;
+border-radius:50%;
+display:inline-block;
+margin-right:9px;
+}
+
+.html {background:#f08b5c;}
+.css {background:#65a9ff;}
+.js {background:#f0cf66;}
+.py {background:#6fb8e9;}
+
+textarea {
+display:block;
+width:100%;
+height:calc(100% - 42px);
+min-height:140px;
+resize:none;
+border:0;
+outline:0;
+background:#0c1425;
+color:#d9e5fa;
+padding:14px 16px;
+font:12px/1.65 'DM Mono',monospace;
+tab-size:4;
+white-space:pre;
+overflow:auto;
+}
+
+textarea:focus {
+box-shadow:inset 0 0 0 1px
