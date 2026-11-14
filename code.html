@@ -18,12 +18,12 @@
     .pending-dot{width:6px;height:6px;border-radius:50%;background:#08101e;display:inline-block;box-shadow:0 0 0 2px rgba(8,16,30,0.4);animation:pulse-dot 1.5s infinite}
     @keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
     .tabs{display:flex;gap:7px;padding:22px 0 18px;border-bottom:1px solid rgba(255,255,255,.09)}.tab{padding:11px 17px;border-radius:8px;background:transparent;color:#9ba8c0;text-decoration:none;display:inline-flex;align-items:center}.tab span{margin-right:7px}.tab.active{background:#202a43;color:#fff;box-shadow:inset 0 0 0 1px #384666}.badge{background:#ef687d;color:#fff;border-radius:20px;padding:2px 6px;margin-left:5px;font-size:10px}
-    .panel{display:none;padding:26px 0 32px}.panel.active{display:block}.workspace-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .panel{display:none;padding:26px 0 32px}.panel.active{display:block}.workspace-grid{display:grid;grid-template-columns:repeat(2, 1fr);gap:20px}
     .editor-card{background:rgba(14,22,39,.96);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 15px 40px #0002;display:flex;flex-direction:column}
     .editor-header-bar{height:42px;display:flex;align-items:center;padding:0 14px;background:#151f35;border-bottom:1px solid var(--line);font-size:11px;font-weight:700;color:#dce5f7}
     .editor-header-bar .language{margin-left:auto;font:10px 'DM Mono';color:#7888a7;letter-spacing:1px}
     .file-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:9px}
-    .file-dot.html{background:#ef687d}.file-dot.css{background:#6fb8e9}.file-dot.js{background:#f59e0b}.file-dot.preview{background:#52d9d0}
+    .file-dot.html{background:#ef687d}.file-dot.css{background:#6fb8e9}.file-dot.js{background:#f59e0b}.file-dot.python{background:#38bdf8}.file-dot.preview{background:#52d9d0}
     .text-area-wrap{flex:1;display:flex;background:#0c1425}
     textarea{display:block;width:100%;height:320px;resize:none;border:0;outline:0;background:#0c1425;color:#d9e5fa;padding:16px;font:13px/1.7 'DM Mono',monospace;tab-size:2;white-space:pre;overflow:auto;caret-color:#a99fff}textarea:focus{box-shadow:inset 0 0 0 1px #7169c8}
     .preview-wrap{background:#fff;height:353px;border:0;width:100%;display:block}
@@ -62,18 +62,16 @@
 
     <nav class="tabs" aria-label="Workspace tabs">
       <a href="code.html" class="tab active" id="codeTabLink"><span>▣</span> Code Studio</a>
-      <a href="#premium" class="tab" id="premiumTabLink"><span>⭐</span> Premium MoMo <span class="pending-badge-inline" style="font-size:9px;padding:1px 6px;margin-left:4px;">PENDING</span></a>
     </nav>
 
     <main>
-      <!-- Code Studio Workspace Panel -->
       <section id="codePanel" class="panel active">
         <div class="workspace-grid">
           <div class="editor-card">
             <div class="editor-header-bar"><span class="file-dot html"></span> index.html <span class="language">HTML5</span></div>
             <div class="text-area-wrap"><textarea id="htmlCode" spellcheck="false">&lt;div class="card"&gt;
   &lt;h1&gt;Hello from Kuaducode!&lt;/h1&gt;
-  &lt;p&gt;Edit your HTML, CSS, and JS below and hit Run.&lt;/p&gt;
+  &lt;p&gt;Edit your HTML, CSS, JS, and Python below and hit Run.&lt;/p&gt;
   &lt;button onclick="sayHello()"&gt;Click Me&lt;/button&gt;
 &lt;/div&gt;</textarea></div>
           </div>
@@ -117,13 +115,20 @@ button {
           </div>
 
           <div class="editor-card">
+            <div class="editor-header-bar"><span class="file-dot python"></span> script.py <span class="language">PYTHON</span></div>
+            <div class="text-area-wrap"><textarea id="pythonCode" spellcheck="false">def greet_user(name):
+    return f"Hello, {name} from Kuaducode Python environment!"
+
+print(greet_user("Developer"))</textarea></div>
+          </div>
+
+          <div class="editor-card" style="grid-column: 1 / -1;">
             <div class="editor-header-bar"><span class="file-dot preview"></span> Live Preview <span class="language">OUTPUT</span></div>
-            <iframe id="previewFrame" class="preview-wrap" title="Live Preview Output"></iframe>
+            <iframe id="previewFrame" class="preview-wrap" title="Live Preview Output" style="height: 380px;"></iframe>
           </div>
         </div>
       </section>
 
-      <!-- Premium Panel -->
       <section id="premiumPanel" class="panel">
         <div class="premium-panel-content">
           <h2>Kuaducode Premium Access <span class="pending-badge-inline">PENDING / MAINTENANCE</span></h2>
@@ -169,6 +174,30 @@ button {
     $("runBtn").addEventListener("click", runPreview);
     window.addEventListener("load", runPreview);
 
-    // Navigation tabs
     $("codeTabLink").addEventListener("click", (e) => { e.preventDefault(); switchTab('code'); });
-    $("premiumTopBtn").addEventListener("click", (e)
+    $("premiumTopBtn").addEventListener("click", (e) => { e.preventDefault(); switchTab('premium'); });
+
+    function switchTab(target) {
+      if(target === 'premium') {
+        codePanel.classList.remove('active');
+        premiumPanel.classList.add('active');
+        $("codeTabLink").classList.remove('active');
+      } else {
+        premiumPanel.classList.remove('active');
+        codePanel.classList.add('active');
+        $("codeTabLink").classList.add('active');
+      }
+    }
+
+    document.querySelectorAll("textarea").forEach(ta => {
+      ta.addEventListener("keydown", e => {
+        if (e.key === "Tab") { 
+          e.preventDefault(); 
+          const start = ta.selectionStart, end = ta.selectionEnd; 
+          ta.setRangeText("  ", start, end, "end"); 
+        }
+      });
+    });
+  </script>
+</body>
+</html>
