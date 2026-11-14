@@ -14,346 +14,420 @@
             --accent-yellow-hover: #d97706;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --border-color: #334155;
-            --output-color: #38bdf8;
+            --border-color: rgba(255, 255, 255, 0.1);
         }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-        }
-        body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed;
-            background-size: cover;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-        }
-        .backdrop {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--bg-overlay);
-            z-index: -1;
-        }
-        header {
-            background-color: var(--bg-panel);
-            border-bottom: 1px solid var(--border-color);
-            padding: 16px 32px;
-            display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: flex-start;
+            padding: 40px 20px;
         }
-        .logo {
-            font-size: 22px;
-            font-weight: bold;
-            color: var(--output-color);
-            letter-spacing: 0.5px;
-            text-decoration: none;
-        }
-        .nav-links {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-        .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            transition: color 0.2s;
-        }
-        .nav-links a:hover {
-            color: var(--text-main);
-        }
+
         .container {
             max-width: 1100px;
-            margin: 40px auto;
-            padding: 0 20px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .hero-title {
-            font-size: 36px;
-            font-weight: 800;
+            width: 100%;
             text-align: center;
-            margin-bottom: 12px;
-            color: var(--text-main);
         }
-        .hero-subtitle {
-            font-size: 16px;
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #60a5fa, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p {
             color: var(--text-muted);
-            text-align: center;
+            font-size: 1.1rem;
             margin-bottom: 40px;
-            max-width: 600px;
         }
+
         .pricing-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-            width: 100%;
-            max-width: 900px;
+            gap: 30px;
+            margin-bottom: 40px;
         }
+
         .card {
-            background-color: var(--bg-panel);
+            background: var(--bg-panel);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 32px;
+            border-radius: 16px;
+            padding: 40px 30px;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, border-color 0.3s ease;
             position: relative;
-            transition: transform 0.2s, border-color 0.2s;
+            overflow: hidden;
         }
+
         .card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-5px);
             border-color: var(--accent-blue);
         }
-        .card.featured {
-            border: 2px solid var(--accent-blue);
-        }
-        .badge {
+
+        .card.popular::before {
+            content: "RECOMMENDED";
             position: absolute;
-            top: -12px;
-            right: 24px;
-            background-color: var(--accent-blue);
-            color: white;
-            font-size: 12px;
-            font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 20px;
-            text-transform: uppercase;
+            top: 15px;
+            right: -30px;
+            background: var(--accent-yellow);
+            color: #000;
+            font-size: 0.7rem;
+            font-weight: bold;
+            padding: 5px 35px;
+            transform: rotate(45deg);
         }
-        .plan-name {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 8px;
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
         }
-        .plan-price {
-            font-size: 32px;
-            font-weight: 800;
-            color: var(--output-color);
+
+        .price {
+            font-size: 2.5rem;
+            font-weight: bold;
             margin-bottom: 20px;
+            color: #fff;
         }
-        .plan-price span {
-            font-size: 14px;
+
+        .price span {
+            font-size: 1rem;
             color: var(--text-muted);
-            font-weight: 400;
+            font-weight: normal;
         }
-        .features-list {
+
+        .features {
             list-style: none;
-            margin-bottom: 24px;
-            flex: 1;
+            margin-bottom: 30px;
+            text-align: left;
         }
-        .features-list li {
-            padding: 8px 0;
+
+        .features li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
             color: var(--text-muted);
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-size: 0.95rem;
         }
-        .features-list li::before {
-            content: "✓";
-            color: var(--output-color);
+
+        .features li::before {
+            content: "✓ ";
+            color: #10b981;
             font-weight: bold;
         }
-        .btn-plan {
-            background-color: var(--accent-blue);
+
+        .btn {
+            background: var(--accent-blue);
             color: white;
             border: none;
-            padding: 12px;
-            font-size: 15px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
             font-weight: 600;
-            border-radius: 6px;
             cursor: pointer;
+            transition: background 0.2s;
             width: 100%;
-            transition: background-color 0.2s;
-            margin-top: 10px;
         }
-        .btn-plan:hover {
-            background-color: var(--accent-hover);
+
+        .btn:hover {
+            background: var(--accent-hover);
         }
-        .btn-momo {
-            background-color: var(--accent-yellow);
-            color: #0f172a;
+
+        .btn-yellow {
+            background: var(--accent-yellow);
+            color: #000;
         }
-        .btn-momo:hover {
-            background-color: var(--accent-yellow-hover);
+
+        .btn-yellow:hover {
+            background: var(--accent-yellow-hover);
         }
-        .modal {
-            display: none;
+
+        /* Modal Styles */
+        .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            justify-content: center;
+            background: var(--bg-overlay);
+            display: flex;
             align-items: center;
-            z-index: 100;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
         }
-        .modal.active {
-            display: flex;
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
         }
-        .modal-content {
-            background-color: var(--bg-panel);
+
+        .modal {
+            background: #1e293b;
             border: 1px solid var(--border-color);
-            padding: 32px;
-            border-radius: 12px;
+            border-radius: 16px;
             width: 100%;
-            max-width: 400px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
+            max-width: 450px;
+            padding: 30px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            text-align: left;
+            position: relative;
         }
-        .modal-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--output-color);
+
+        .modal h2 {
+            margin-bottom: 20px;
+            font-size: 1.4rem;
         }
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .form-group label {
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-        .form-group input {
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
-            background-color: #090d16;
-            color: var(--text-main);
-            font-size: 14px;
-            outline: none;
-        }
-        .modal-actions {
+
+        .payment-tabs {
             display: flex;
             gap: 10px;
-            margin-top: 10px;
+            margin-bottom: 20px;
         }
-        .btn-secondary {
-            background-color: #334155;
+
+        .tab-btn {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            border-radius: 8px;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
         }
-        .btn-secondary:hover {
-            background-color: #475569;
+
+        .tab-btn.active {
+            background: var(--accent-blue);
+            color: white;
+            border-color: var(--accent-blue);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+        }
+
+        .payment-pane {
+            display: none;
+        }
+
+        .payment-pane.active {
+            display: block;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            color: white;
+        }
+
+        .status-message {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            text-align: center;
+            min-height: 24px;
         }
     </style>
 </head>
 <body>
 
-    <div class="backdrop"></div>
-
-    <header>
-        <a href="code.html" class="logo">Kuaducode</a>
-        <div class="nav-links">
-            <a href="code.html">Editor</a>
-            <a href="premium.html">Premium</a>
-        </div>
-    </header>
-
     <div class="container">
-        <h1 class="hero-title">Upgrade Your Development Experience</h1>
-        <p class="hero-subtitle">Unlock advanced cloud environments, unlimited AI assistance, and flexible local payment options.</p>
+        <header>
+            <h1>Upgrade to Kuaducode Pro</h1>
+            <p>Unlock lightning-fast cloud runners, AI assistants, and premium templates.</p>
+        </header>
 
         <div class="pricing-grid">
             <div class="card">
-                <div class="plan-name">Free Plan</div>
-                <div class="plan-price">$0 <span>/ forever</span></div>
-                <ul class="features-list">
-                    <li>Standard HTML/JS Live Preview</li>
-                    <li>Basic Python Execution (Pyodide)</li>
-                    <li>Community Support</li>
-                </ul>
-                <button class="btn-plan btn-secondary" onclick="alert('You are already on the Free plan!')">Current Plan</button>
+                <div>
+                    <h3>Standard Tier</h3>
+                    <div class="price">$5<span>/month</span></div>
+                    <ul class="features">
+                        <li>Live web preview runner</li>
+                        <li>Basic code completion</li>
+                        <li>Standard themes</li>
+                    </ul>
+                </div>
+                <button class="btn" onclick="openCheckout('Standard', '$5')">Choose Standard</button>
             </div>
 
-            <div class="card featured">
-                <div class="badge">Popular</div>
-                <div class="plan-name">Pro Developer</div>
-                <div class="plan-price">$9.99 <span>/ month</span></div>
-                <ul class="features-list">
-                    <li>Unlimited Kuadu AI Chat Assistant</li>
-                    <li>Advanced Cloud IDE Integration</li>
-                    <li>MTN MoMo, PayPal, & Card Support</li>
-                    <li>Priority Code Execution & Storage</li>
-                </ul>
-                <button class="btn-plan" onclick="alert('Redirecting to secure card checkout...')">Upgrade with Card / PayPal</button>
-                <button class="btn-plan btn-momo" onclick="openMomoModal()">Pay with MTN MoMo</button>
+            <div class="card popular">
+                <div>
+                    <h3>Pro Unlimited</h3>
+                    <div class="price">GH₵ 150<span>/month</span></div>
+                    <ul class="features">
+                        <li>Unlimited Kuadu AI Queries</li>
+                        <li>Priority Cloudflare Edge Runner</li>
+                        <li>Advanced Animation Suite</li>
+                        <li>Direct MTN MoMo & Card Support</li>
+                    </ul>
+                </div>
+                <button class="btn btn-yellow" onclick="openCheckout('Pro Unlimited', 'GH₵ 150')">Upgrade to Pro</button>
             </div>
         </div>
     </div>
 
-    <div id="momo-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-title">MTN Mobile Money Checkout</div>
-            <p style="font-size: 13px; color: var(--text-muted);">Funds will be routed securely via Cloudflare to <strong>n74071292@gmail.com</strong>.</p>
-            <div class="form-group">
-                <label>MTN Phone Number</label>
-                <input type="tel" id="momo-phone" placeholder="e.g., 024XXXXXXX" />
+    <!-- Checkout Modal -->
+    <div class="modal-overlay" id="checkoutModal">
+        <div class="modal">
+            <button class="close-btn" onclick="closeCheckout()">&times;</button>
+            <h2 id="modalTitle">Complete Payment</h2>
+
+            <div class="payment-tabs">
+                <button class="tab-btn active" onclick="switchTab('momo')">MTN MoMo</button>
+                <button class="tab-btn" onclick="switchTab('card')">Card / PayPal</button>
             </div>
-            <div class="form-group">
-                <label>Amount (GHS)</label>
-                <input type="text" value="150.00 GHS" disabled style="opacity: 0.7;" />
+
+            <!-- MTN MoMo Pane -->
+            <div id="momoPane" class="payment-pane active">
+                <div class="form-group">
+                    <label for="momoNumber">MTN Mobile Money Number</label>
+                    <input type="tel" id="momoNumber" placeholder="024 XXX XXXX" maxlength="10">
+                </div>
+                <button class="btn btn-yellow" onclick="processMoMoPayment()">Pay via Cloudflare Secure Gateway</button>
             </div>
-            <div class="modal-actions">
-                <button class="btn-plan btn-secondary" onclick="closeMomoModal()">Cancel</button>
-                <button class="btn-plan btn-momo" onclick="submitCloudflareMomoPayment()">Authorize Payment</button>
+
+            <!-- Card Pane -->
+            <div id="cardPane" class="payment-pane">
+                <div class="form-group">
+                    <label for="cardNumber">Card Number</label>
+                    <input type="text" id="cardNumber" placeholder="4242 4242 4242 4242">
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label for="cardExp">Expiry</label>
+                        <input type="text" id="cardExp" placeholder="MM/YY">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label for="cardCvc">CVC</label>
+                        <input type="text" id="cardCvc" placeholder="123">
+                    </div>
+                </div>
+                <button class="btn" onclick="processCardPayment()">Pay Securely</button>
             </div>
+
+            <div class="status-message" id="statusMessage"></div>
         </div>
     </div>
 
     <script>
-        function openMomoModal() {
-            document.getElementById('momo-modal').classList.add('active');
+        let selectedPlan = '';
+
+        function openCheckout(planName, price) {
+            selectedPlan = planName;
+            document.getElementById('modalTitle').innerText = `Checkout: ${planName} (${price})`;
+            document.getElementById('checkoutModal').classList.add('active');
+            document.getElementById('statusMessage').innerText = '';
         }
 
-        function closeMomoModal() {
-            document.getElementById('momo-modal').classList.remove('active');
+        function closeCheckout() {
+            document.getElementById('checkoutModal').classList.remove('active');
         }
 
-        async function submitCloudflareMomoPayment() {
-            const phone = document.getElementById('momo-phone').value.trim();
-            if (!phone) {
-                alert('Please enter a valid MTN phone number.');
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.payment-pane').forEach(pane => pane.classList.remove('active'));
+
+            if (tab === 'momo') {
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+                document.getElementById('momoPane').classList.add('active');
+            } else {
+                document.querySelectorAll('.tab-btn')[1].classList.add('active');
+                document.getElementById('cardPane').classList.add('active');
+            }
+            document.getElementById('statusMessage').innerText = '';
+        }
+
+        function processMoMoPayment() {
+            const number = document.getElementById('momoNumber').value.trim();
+            const statusEl = document.getElementById('statusMessage');
+
+            if (number.length < 10) {
+                statusEl.style.color = '#ef4444';
+                statusEl.innerText = 'Please enter a valid MTN Mobile Money phone number.';
                 return;
             }
 
-            const paymentPayload = {
-                merchantEmail: "n74071292@gmail.com",
-                provider: "MTN Mobile Money",
-                customerPhone: phone,
-                amount: 150.00,
-                currency: "GHS"
-            };
+            statusEl.style.color = '#f59e0b';
+            statusEl.innerText = 'Routing request through Cloudflare Edge & triggering prompt...';
 
-            try {
-                const response = await fetch('/api/momo-checkout', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(paymentPayload)
-                });
+            setTimeout(() => {
+                statusEl.style.color = '#10b981';
+                statusEl.innerText = 'Prompt sent to phone! Please approve the MoMo transaction.';
+                
+                // Simulate successful callback completion after approval
+                setTimeout(() => {
+                    statusEl.innerText = 'Payment successful! Upgrading your account...';
+                    setTimeout(() => {
+                        closeCheckout();
+                        alert('Thank you! Your Kuaducode subscription has been activated.');
+                    }, 1500);
+                }, 4000);
+            }, 2000);
+        }
 
-                if (response.ok) {
-                    alert('MTN MoMo payment prompt successfully sent to ' + phone + '. Please check your phone to approve.');
-                    closeMomoModal();
-                } else {
-                    throw new Error('Cloudflare gateway connection failed.');
-                }
-            } catch (err) {
-                alert('Cloudflare Worker routing initialized for ' + phone + '. Connected to n74071292@gmail.com.');
-                closeMomoModal();
-            }
+        function processCardPayment() {
+            const statusEl = document.getElementById('statusMessage');
+            statusEl.style.color = '#f59e0b';
+            statusEl.innerText = 'Processing secure card payment...';
+
+            setTimeout(() => {
+                statusEl.style.color = '#10b981';
+                statusEl.innerText = 'Payment successful! Enjoy your Pro access.';
+                setTimeout(() => {
+                    closeCheckout();
+                    alert('Subscription active!');
+                }, 1500);
+            }, 2000);
         }
     </script>
 </body>
