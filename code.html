@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1020">
+  <title>Kuaducode — Code Studio</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
+    :root{--bg:#090e1c;--panel:#111a2d;--panel2:#0d1526;--line:#25324b;--text:#edf3ff;--muted:#8e9bb4;--accent:#8b7cff;--cyan:#52d9d0}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font-family:Manrope,system-ui,sans-serif}
+    .backdrop{position:fixed;inset:0;z-index:-1;background:linear-gradient(110deg,rgba(7,12,25,.96),rgba(8,14,29,.88)),url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=2000&q=85') center/cover no-repeat}
+    .app-shell{max-width:1600px;margin:auto;padding:0 34px}.topbar{height:82px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.1)}
+    .brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-size:21px;font-weight:800;letter-spacing:-.8px}.brand-mark{display:grid;place-items:center;width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,#8b7cff,#46d9d0);color:#09101d;font:700 15px 'DM Mono'}.brand-accent{color:#9c91ff}.brand small{font-size:9px;letter-spacing:2px;color:#8492ae;margin:5px 0 0 2px}
+    .top-actions,.heading-actions{display:flex;align-items:center;gap:14px}.status{font-size:12px;color:#a7b3c9}.status i,.live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#4ee0a5;margin-right:7px;box-shadow:0 0 12px #4ee0a5}
+    button{font:600 12px Manrope;cursor:pointer;border:0}.run-button{padding:11px 17px;border-radius:9px;background:linear-gradient(120deg,#8b7cff,#5bcbce);color:#08101e;box-shadow:0 5px 22px #6e70d433}.run-button:hover{filter:brightness(1.12);transform:translateY(-1px)}
+    .tabs{display:flex;gap:7px;padding:22px 0 18px;border-bottom:1px solid rgba(255,255,255,.09)}.tab{padding:11px 17px;border-radius:8px;background:transparent;color:#9ba8c0}.tab span{margin-right:7px}.tab.active{background:#202a43;color:#fff;box-shadow:inset 0 0 0 1px #384666}.badge{background:#ef687d;color:#fff;border-radius:20px;padding:2px 6px;margin-left:5px;font-size:10px}.hidden{display:none}
+    .panel{display:none;padding:26px 0 32px}.panel.active{display:block}.workspace-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}.workspace-heading h1{font-size:22px;margin:0 0 5px;letter-spacing:-.6px}.workspace-heading p{margin:0;color:var(--muted);font-size:12px}.soft-button{padding:10px 13px;border-radius:8px;background:#1a2540;color:#c5d0e4;border:1px solid #2a3856}.soft-button:hover{background:#263452}.web-layout{display:grid;grid-template-columns:minmax(420px,1fr) minmax(350px,1fr);gap:16px;min-height:610px}.editors{display:grid;grid-template-rows:repeat(3,minmax(180px,1fr));gap:12px;min-height:610px}.editor-card,.preview-card,.output-card,.console-card{background:rgba(14,22,39,.96);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 15px 40px #0002}.editor-title,.preview-toolbar,.output-heading,.console-toolbar{height:42px;display:flex;align-items:center;padding:0 14px;background:#151f35;border-bottom:1px solid var(--line);font-size:11px;font-weight:700;color:#dce5f7}.language{margin-left:auto;font:10px 'DM Mono';color:#7888a7;letter-spacing:1px}.file-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:9px}.html{background:#f08b5c}.css{background:#65a9ff}.js{background:#f0cf66}.py{background:#6fb8e9}
+    textarea{display:block;width:100%;height:calc(100% - 42px);min-height:140px;resize:none;border:0;outline:0;background:#0c1425;color:#d9e5fa;padding:14px 16px;font:12px/1.65 'DM Mono',monospace;tab-size:2;white-space:pre;overflow:auto;caret-color:#a99fff}textarea:focus{box-shadow:inset 0 0 0 1px #7169c8}.preview-card{display:flex;flex-direction:column;min-height:610px}.preview-toolbar{justify-content:space-between}.preview-toolbar>div{display:flex;align-items:center}.preview-size{font-weight:400;color:#8794ad}iframe{border:0;background:#fff;width:100%;flex:1;min-height:550px}
+    .python-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;min-height:470px}.python-card,.output-card{min-height:470px}.python-card textarea{height:425px}.output-card{background:#0c1425}.output-heading{justify-content:space-between}.text-button{background:transparent;color:#a99fff}.output-card pre{padding:17px;margin:0;white-space:pre-wrap;overflow:auto;color:#b9e7d4;font:13px/1.7 'DM Mono';min-height:400px}.runtime-status{font-size:11px;color:#a0abc0}.runtime-status.ready{color:#57dda8}
+    .console-card{min-height:430px}.console-toolbar{justify-content:space-between}.console-toolbar span:last-child{color:#8190aa;font-weight:400}.console-output{padding:10px 15px;font:12px/1.7 'DM Mono';min-height:380px}.console-line{padding:7px 4px;border-bottom:1px solid #1b2940;white-space:pre-wrap;overflow-wrap:anywhere}.console-line.log{color:#c7d4e9}.console-line.warn{color:#f3ce7b}.console-line.error{color:#ff8d9c}.console-line.info{color:#7fd8e3}.empty-console{color:#73819c;padding:18px 4px}
+    footer{height:58px;border-top:1px solid rgba(255,255,255,.09);display:flex;justify-content:space-between;align-items:center;color:#71809b;font-size:10px}footer b{color:#9c91ff}
+    @media(max-width:950px){.app-shell{padding:0 16px}.web-layout{grid-template-columns:1fr}.preview-card{min-height:500px}.editors{min-height:600px}.python-layout{grid-template-columns:1fr}.workspace-heading{align-items:flex-start;gap:14px;flex-direction:column}.heading-actions{flex-wrap:wrap}}
+    @media(max-width:560px){.topbar{height:70px}.status{display:none}.tabs{gap:2px}.tab{padding:10px 9px;font-size:11px}.brand{font-size:18px}.app-shell{padding:0 10px}.editors{grid-template-rows:repeat(3,190px)}footer{font-size:9px}}
+  </style>
+</head>
+<body>
+  <div class="backdrop"></div>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Kuaducode home">
+        <span class="brand-mark">&lt;/&gt;</span>
+        <span>Kuadu<span class="brand-accent">code</span></span>
+        <small>STUDIO</small>
+      </a>
+      <div class="top-actions">
+        <span class="status"><i></i> Local workspace</span>
+        <button id="runBtn" class="run-button">▶ Run code</button>
+      </div>
+    </header>
+
+    <nav class="tabs" aria-label="Workspace tabs">
+      <button class="tab active" data-panel="webPanel"><span>▣</span> Web editor</button>
+      <button class="tab" data-panel="pythonPanel"><span>🐍</span> Python</button>
+      <button class="tab" data-panel="consolePanel"><span>⌁</span> Console <b id="errorBadge" class="badge hidden">0</b></button>
+    </nav>
+
+    <main>
+      <section id="webPanel" class="panel active">
+        <div class="workspace-heading">
+          <div><h1>Web playground</h1><p>Write HTML, CSS and JavaScript — see your page update instantly.</p></div>
+          <div class="heading-actions">
+            <button class="soft-button" id="resetWeb">Reset example</button>
+            <button class="soft-button" id="refreshPreview">↻ Refresh preview</button>
+          </div>
+        </div>
+        <div class="web-layout">
+          <div class="editors">
+            <section class="editor-card">
+              <div class="editor-title"><span class="file-dot html"></span> index.html <span class="language">HTML</span></div>
+              <textarea id="htmlCode" spellcheck="false" aria-label="HTML editor"></textarea>
+            </section>
+            <section class="editor-card">
+              <div class="editor-title"><span class="file-dot css"></span> style.css <span class="language">CSS</span></div>
+              <textarea id="cssCode" spellcheck="false" aria-label="CSS editor"></textarea>
+            </section>
+            <section class="editor-card">
+              <div class="editor-title"><span class="file-dot js"></span> script.js <span class="language">JS</span></div>
+              <textarea id="jsCode" spellcheck="false" aria-label="JavaScript editor"></textarea>
+            </section>
+          </div>
+          <section class="preview-card">
+            <div class="preview-toolbar"><div><span class="live-dot"></span> Live preview</div><span class="preview-size">Browser view</span></div>
+            <iframe id="preview" title="Live web preview" sandbox="allow-scripts allow-forms allow-modals"></iframe>
+          </section>
+        </div>
+      </section>
+
+      <section id="pythonPanel" class="panel">
+        <div class="workspace-heading">
+          <div><h1>Python playground</h1><p>Run Python in your browser with Pyodide. The first run downloads the Python runtime.</p></div>
+          <div class="heading-actions"><span id="pythonStatus" class="runtime-status">Runtime not loaded</span><button id="runPython" class="run-button">▶ Run Python</button></div>
+        </div>
+        <div class="python-layout">
+          <div class="editor-card python-card">
+            <div class="editor-title"><span class="file-dot py"></span> main.py <span class="language">PYTHON</span></div>
+            <textarea id="pythonCode" spellcheck="false" aria-label="Python editor"># Welcome to Kuaducode
+name = "Developer"
+print(f"Hello, {name}!")
+for number in range(1, 6):
+    print(number, "× 2 =", number * 2)</textarea>
+          </div>
+          <div class="output-card">
+            <div class="output-heading"><span>Python output</span><button class="text-button" id="clearPython">Clear</button></div>
+            <pre id="pythonOutput">Your Python output will appear here.</pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="consolePanel" class="panel">
+        <div class="workspace-heading">
+          <div><h1>Developer console</h1><p>JavaScript logs, warnings and errors from your web preview appear here.</p></div>
+          <button class="soft-button" id="clearConsole">Clear console</button>
+        </div>
+        <div class="console-card">
+          <div class="console-toolbar"><span><i class="live-dot"></i> Console output</span><span id="consoleCount">0 messages</span></div>
+          <div id="consoleOutput" class="console-output"><div class="empty-console">No messages yet. Run your web code to see output.</div></div>
+        </div>
+      </section>
+    </main>
+    <footer><span>Kuaducode Studio</span><span>Built for learning & creating <b>✦</b></span></footer>
+  </div>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const starter = {
+      html: `<main class="card">\n  <div class="spark">✦</div>\n  <p class="eyebrow">YOUR CREATIVE SPACE</p>\n  <h1>Hello, <span>Kuaducode.</span></h1>\n  <p class="description">Your ideas become real here. Edit this HTML, style it with CSS, and bring it to life with JavaScript.</p>\n  <button id="helloBtn">Try me</button>\n  <p id="message" aria-live="polite"></p>\n</main>`,
+      css: `* { box-sizing: border-box; }\nbody {\n  margin: 0; min-height: 100vh; display: grid; place-items: center;\n  font-family: system-ui, sans-serif; color: #20253a;\n  background: radial-gradient(circle at top right, #d9d3ff, transparent 45%), #f3f5ff;\n}\n.card { max-width: 540px; margin: 25px; padding: 48px; border-radius: 25px;\n  background: white; box-shadow: 0 25px 70px #303b7020; text-align: center; }\n.spark { font-size: 36px; color: #7768e9; }\n.eyebrow { color: #8175d8; letter-spacing: 3px; font-size: 11px; font-weight: 800; }\nh1 { font-size: clamp(30px, 6vw, 48px); margin: 12px 0; }\nh1 span { color: #7869e8; }\n.description { color: #6d7284; line-height: 1.7; }\nbutton { border: 0; border-radius: 9px; padding: 13px 24px; background: #7869e8; color: white; cursor: pointer; }\n#message { color: #7869e8; font-weight: 700; }`,
+      js: `document.getElementById("helloBtn").addEventListener("click", () => {\n  document.getElementById("message").textContent = "Great work! You just ran JavaScript.";\n  console.log("The button was clicked!");\n});\nconsole.info("Kuaducode preview is ready.");`
+    };
+    let consoleMessages = [];
+
+    function addConsole(type, args) {
+      const message = args.map(value => {
+        if (typeof value === "object") {
+          try { return JSON.stringify(value, null, 2); } catch { return String(value); }
+        }
+        return String(value);
+      }).join(" ");
+      consoleMessages.push({type, message});
+      renderConsole();
+    }
+    function renderConsole() {
+      const output = $("consoleOutput");
+      output.innerHTML = "";
+      if (!consoleMessages.length) {
+        output.innerHTML = '<div class="empty-console">No messages yet. Run your web code to see output.</div>';
+      } else {
+        consoleMessages.forEach(item => {
+          const line = document.createElement("div");
+          line.className = `console-line ${item.type}`;
+          line.textContent = `${item.type.toUpperCase()}: ${item.message}`;
+          output.appendChild(line);
+        });
+      }
+      $("consoleCount").textContent = `${consoleMessages.length} message${consoleMessages.length === 1 ? "" : "s"}`;
+      const errors = consoleMessages.filter(x => x.type === "error").length;
+      $("errorBadge").textContent = errors;
+      $("errorBadge").classList.toggle("hidden", errors === 0);
+    }
+    function runWeb() {
+      consoleMessages = [];
+      const html = $("htmlCode").value;
+      const css = $("cssCode").value.replace(/<\/style/gi, "<\\/style");
+      const js = $("jsCode").value.replace(/<\/script/gi, "<\\/script");
+      const bridge = `<script>\n    ["log","info","warn","error"].forEach(type => {\n      const original = console[type].bind(console);\n      console[type] = (...args) => {\n        original(...args);\n        parent.postMessage({source:"kuaducode", type, args: args.map(v => {\n          try { return typeof v === "object" ? JSON.stringify(v) : String(v); }\n          catch(e) { return String(v); }\n        })}, "*");\n      };\n    });\n    window.addEventListener("error", e => parent.postMessage({source:"kuaducode",type:"error",args:[e.message + " (line " + e.lineno + ")"]},"*"));\n  <\/script>`;
+      $("preview").srcdoc = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>${css}</style></head><body>${html}${bridge}<script>${js}<\/script></body></html>`;
+      renderConsole();
+    }
+    window.addEventListener("message", event => {
+      if (event.data?.source === "kuaducode") addConsole(event.data.type, event.data.args || []);
+    });
+
+    document.querySelectorAll(".tab").forEach(tab => tab.addEventListener("click", () => {
+      document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t === tab));
+      document.querySelectorAll(".panel").forEach(p => p.classList.toggle("active", p.id === tab.dataset.panel));
+    }));
+    $("runBtn").addEventListener("click", () => { runWeb(); document.querySelector('[data-panel="consolePanel"]').click(); });
+    $("refreshPreview").addEventListener("click", runWeb);
+    $("resetWeb").addEventListener("click", () => {
+      $("htmlCode").value = starter.html; $("cssCode").value = starter.css; $("jsCode").value = starter.js; runWeb();
+    });
+    $("clearConsole").addEventListener("click", () => { consoleMessages = []; renderConsole(); });
+    $("clearPython").addEventListener("click", () => $("pythonOutput").textContent = "");
+    ["htmlCode","cssCode","jsCode"].forEach(id => $(id).addEventListener("keydown", e => {
+      if (e.key === "Tab") { e.preventDefault(); const el=e.target, start=el.selectionStart, end=el.selectionEnd; el.setRangeText("  ",start,end,"end"); }
+    }));
+
+    let pyodidePromise;
+    async function getPyodide() {
+      if (!pyodidePromise) {
+        $("pythonStatus").textContent = "Loading Python runtime…";
+        pyodidePromise = new Promise((resolve, reject) => {
+          const script = document.createElement("script");
+          script.src = "https://cdn.jsdelivr.net/pyodide/v0.27.7/full/pyodide.js";
+          script.onload = async () => {
+            try { resolve(await loadPyodide()); } catch (e) { reject(e); }
+          };
+          script.onerror = () => reject(new Error("Could not load Pyodide. Check your internet connection."));
+          document.head.appendChild(script);
+        });
+      }
+      const pyodide = await pyodidePromise;
+      $("pythonStatus").textContent = "Python runtime ready";
+      $("pythonStatus").classList.add("ready");
+      return pyodide;
+    }
+    async function runPython() {
+      const output = $("pythonOutput");
+      output.textContent = "Starting Python…";
+      $("runPython").disabled = true;
+      try {
+        const pyodide = await getPyodide();
+        let stdout = "";
+        pyodide.setStdout({ batched: text => { stdout += text + "\n"; } });
+        pyodide.setStderr({ batched: text => { stdout += "ERROR: " + text + "\n"; } });
+        await pyodide.runPythonAsync($("pythonCode").value);
+        output.textContent = stdout.trimEnd() || "Code executed successfully (no output).";
+      } catch (error) {
+        output.textContent = String(error);
+      } finally {
+        $("runPython").disabled = false;
+      }
+    }
+    $("runPython").addEventListener("click", runPython);
+    $("pythonCode").addEventListener("keydown", e => {
+      if (e.key === "Tab") { e.preventDefault(); const el=e.target, start=el.selectionStart, end=el.selectionEnd; el.setRangeText("    ",start,end,"end"); }
+    });
+    $("htmlCode").value = starter.html;
+    $("cssCode").value = starter.css;
+    $("jsCode").value = starter.js;
+    runWeb();
+  </script>
+</body>
+</html>
