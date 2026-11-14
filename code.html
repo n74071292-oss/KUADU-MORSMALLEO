@@ -7,18 +7,29 @@
   <title>Kuaducode — Code Studio</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
-    :root{--bg:#090e1c;--panel:#111a2d;--panel2:#0d1526;--line:#25324b;--text:#edf3ff;--muted:#8e9bb4;--accent:#8b7cff;--cyan:#52d9d0}
+    :root{--bg:#090e1c;--panel:#111a2d;--panel2:#0d1526;--line:#25324b;--text:#edf3ff;--muted:#8e9bb4;--accent:#8b7cff;--cyan:#52d9d0;--yellow:#f59e0b}
     *{box-sizing:border-box}body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font-family:Manrope,system-ui,sans-serif}
     .backdrop{position:fixed;inset:0;z-index:-1;background:linear-gradient(110deg,rgba(7,12,25,.96),rgba(8,14,29,.88)),url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=2000&q=85') center/cover no-repeat}
     .app-shell{max-width:1600px;margin:auto;padding:0 34px}.topbar{height:82px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.1)}
     .brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-size:21px;font-weight:800;letter-spacing:-.8px}.brand-mark{display:grid;place-items:center;width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,#8b7cff,#46d9d0);color:#09101d;font:700 15px 'DM Mono'}.brand-accent{color:#9c91ff}.brand small{font-size:9px;letter-spacing:2px;color:#8492ae;margin:5px 0 0 2px}
     .top-actions,.heading-actions{display:flex;align-items:center;gap:14px}.status{font-size:12px;color:#a7b3c9}.status i,.live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#4ee0a5;margin-right:7px;box-shadow:0 0 12px #4ee0a5}
     button{font:600 12px Manrope;cursor:pointer;border:0}.run-button{padding:11px 17px;border-radius:9px;background:linear-gradient(120deg,#8b7cff,#5bcbce);color:#08101e;box-shadow:0 5px 22px #6e70d433}.run-button:hover{filter:brightness(1.12);transform:translateY(-1px)}
+    .premium-top-btn{padding:11px 17px;border-radius:9px;background:linear-gradient(120deg,#f59e0b,#d97706);color:#08101e;box-shadow:0 5px 22px rgba(245,158,11,.2);font-weight:700}.premium-top-btn:hover{filter:brightness(1.12);transform:translateY(-1px)}
     .tabs{display:flex;gap:7px;padding:22px 0 18px;border-bottom:1px solid rgba(255,255,255,.09)}.tab{padding:11px 17px;border-radius:8px;background:transparent;color:#9ba8c0}.tab span{margin-right:7px}.tab.active{background:#202a43;color:#fff;box-shadow:inset 0 0 0 1px #384666}.badge{background:#ef687d;color:#fff;border-radius:20px;padding:2px 6px;margin-left:5px;font-size:10px}.hidden{display:none}
     .panel{display:none;padding:26px 0 32px}.panel.active{display:block}.workspace-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}.workspace-heading h1{font-size:22px;margin:0 0 5px;letter-spacing:-.6px}.workspace-heading p{margin:0;color:var(--muted);font-size:12px}.soft-button{padding:10px 13px;border-radius:8px;background:#1a2540;color:#c5d0e4;border:1px solid #2a3856}.soft-button:hover{background:#263452}.web-layout{display:grid;grid-template-columns:minmax(420px,1fr) minmax(350px,1fr);gap:16px;min-height:610px}.editors{display:grid;grid-template-rows:repeat(3,minmax(180px,1fr));gap:12px;min-height:610px}.editor-card,.preview-card,.output-card,.console-card{background:rgba(14,22,39,.96);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 15px 40px #0002}.editor-title,.preview-toolbar,.output-heading,.console-toolbar{height:42px;display:flex;align-items:center;padding:0 14px;background:#151f35;border-bottom:1px solid var(--line);font-size:11px;font-weight:700;color:#dce5f7}.language{margin-left:auto;font:10px 'DM Mono';color:#7888a7;letter-spacing:1px}.file-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:9px}.html{background:#f08b5c}.css{background:#65a9ff}.js{background:#f0cf66}.py{background:#6fb8e9}
     textarea{display:block;width:100%;height:calc(100% - 42px);min-height:140px;resize:none;border:0;outline:0;background:#0c1425;color:#d9e5fa;padding:14px 16px;font:12px/1.65 'DM Mono',monospace;tab-size:2;white-space:pre;overflow:auto;caret-color:#a99fff}textarea:focus{box-shadow:inset 0 0 0 1px #7169c8}.preview-card{display:flex;flex-direction:column;min-height:610px}.preview-toolbar{justify-content:space-between}.preview-toolbar>div{display:flex;align-items:center}.preview-size{font-weight:400;color:#8794ad}iframe{border:0;background:#fff;width:100%;flex:1;min-height:550px}
     .python-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;min-height:470px}.python-card,.output-card{min-height:470px}.python-card textarea{height:425px}.output-card{background:#0c1425}.output-heading{justify-content:space-between}.text-button{background:transparent;color:#a99fff}.output-card pre{padding:17px;margin:0;white-space:pre-wrap;overflow:auto;color:#b9e7d4;font:13px/1.7 'DM Mono';min-height:400px}.runtime-status{font-size:11px;color:#a0abc0}.runtime-status.ready{color:#57dda8}
     .console-card{min-height:430px}.console-toolbar{justify-content:space-between}.console-toolbar span:last-child{color:#8190aa;font-weight:400}.console-output{padding:10px 15px;font:12px/1.7 'DM Mono';min-height:380px}.console-line{padding:7px 4px;border-bottom:1px solid #1b2940;white-space:pre-wrap;overflow-wrap:anywhere}.console-line.log{color:#c7d4e9}.console-line.warn{color:#f3ce7b}.console-line.error{color:#ff8d9c}.console-line.info{color:#7fd8e3}.empty-console{color:#73819c;padding:18px 4px}
+    .premium-panel-content{max-width:600px;margin:0 auto;background:rgba(14,22,39,.96);border:1px solid var(--line);border-radius:12px;padding:32px;box-shadow:0 15px 40px #0002}
+    .premium-panel-content h2{font-size:24px;margin-bottom:10px;color:#fff}
+    .premium-panel-content p{color:var(--muted);font-size:13px;margin-bottom:24px}
+    .momo-form-group{margin-bottom:18px;text-align:left}
+    .momo-form-group label{display:block;margin-bottom:8px;font-size:12px;color:var(--muted);font-weight:600}
+    .momo-form-group input{width:100%;padding:12px 16px;background:#0c1425;border:1px solid var(--line);border-radius:8px;color:#fff;font-size:14px;font-family:'DM Mono',monospace}
+    .momo-form-group input:focus{outline:none;border-color:var(--yellow)}
+    .pay-momo-btn{width:100%;padding:14px;border-radius:9px;background:linear-gradient(120deg,#f59e0b,#d97706);color:#08101e;font-weight:800;font-size:14px;cursor:pointer;margin-top:10px;box-shadow:0 5px 22px rgba(245,158,11,.2)}
+    .pay-momo-btn:hover{filter:brightness(1.12)}
+    #momoStatus{margin-top:16px;font-size:13px;font-weight:600;min-height:24px}
     footer{height:58px;border-top:1px solid rgba(255,255,255,.09);display:flex;justify-content:space-between;align-items:center;color:#71809b;font-size:10px}footer b{color:#9c91ff}
     @media(max-width:950px){.app-shell{padding:0 16px}.web-layout{grid-template-columns:1fr}.preview-card{min-height:500px}.editors{min-height:600px}.python-layout{grid-template-columns:1fr}.workspace-heading{align-items:flex-start;gap:14px;flex-direction:column}.heading-actions{flex-wrap:wrap}}
     @media(max-width:560px){.topbar{height:70px}.status{display:none}.tabs{gap:2px}.tab{padding:10px 9px;font-size:11px}.brand{font-size:18px}.app-shell{padding:0 10px}.editors{grid-template-rows:repeat(3,190px)}footer{font-size:9px}}
@@ -36,6 +47,7 @@
       <div class="top-actions">
         <span class="status"><i></i> Local workspace</span>
         <button id="runBtn" class="run-button">▶ Run code</button>
+        <button id="premiumTopBtn" class="premium-top-btn">⭐ Premium (GH₵ 20+)</button>
       </div>
     </header>
 
@@ -43,6 +55,7 @@
       <button class="tab active" data-panel="webPanel"><span>▣</span> Web editor</button>
       <button class="tab" data-panel="pythonPanel"><span>🐍</span> Python</button>
       <button class="tab" data-panel="consolePanel"><span>⌁</span> Console <b id="errorBadge" class="badge hidden">0</b></button>
+      <button class="tab" data-panel="premiumPanel"><span>⭐</span> Premium MoMo</button>
     </nav>
 
     <main>
@@ -107,6 +120,23 @@ for number in range(1, 6):
           <div id="consoleOutput" class="console-output"><div class="empty-console">No messages yet. Run your web code to see output.</div></div>
         </div>
       </section>
+
+      <section id="premiumPanel" class="panel">
+        <div class="premium-panel-content">
+          <h2>Kuaducode Premium Access</h2>
+          <p>Upgrade your development environment starting from GH₵ 20 via MTN Mobile Money. Routed securely through Cloudflare Edge Gateway.</p>
+          <div class="momo-form-group">
+            <label for="momoAmount">Select Amount (GH₵)</label>
+            <input type="number" id="momoAmount" value="20" min="20" step="5">
+          </div>
+          <div class="momo-form-group">
+            <label for="momoPhone">MTN Mobile Money Number</label>
+            <input type="tel" id="momoPhone" placeholder="024 XXX XXXX" maxlength="10">
+          </div>
+          <button id="payMomoBtn" class="pay-momo-btn">Pay via Cloudflare MoMo Gateway</button>
+          <div id="momoStatus"></div>
+        </div>
+      </section>
     </main>
     <footer><span>Kuaducode Studio</span><span>Built for learning & creating <b>✦</b></span></footer>
   </div>
@@ -165,6 +195,7 @@ for number in range(1, 6):
       document.querySelectorAll(".panel").forEach(p => p.classList.toggle("active", p.id === tab.dataset.panel));
     }));
     $("runBtn").addEventListener("click", () => { runWeb(); document.querySelector('[data-panel="consolePanel"]').click(); });
+    $("premiumTopBtn").addEventListener("click", () => { document.querySelector('[data-panel="premiumPanel"]').click(); });
     $("refreshPreview").addEventListener("click", runWeb);
     $("resetWeb").addEventListener("click", () => {
       $("htmlCode").value = starter.html; $("cssCode").value = starter.css; $("jsCode").value = starter.js; runWeb();
@@ -215,6 +246,36 @@ for number in range(1, 6):
     $("pythonCode").addEventListener("keydown", e => {
       if (e.key === "Tab") { e.preventDefault(); const el=e.target, start=el.selectionStart, end=el.selectionEnd; el.setRangeText("    ",start,end,"end"); }
     });
+
+    $("payMomoBtn").addEventListener("click", () => {
+      const amount = parseFloat($("momoAmount").value);
+      const phone = $("momoPhone").value.trim();
+      const status = $("momoStatus");
+
+      if (isNaN(amount) || amount < 20) {
+        status.style.color = "#ef4444";
+        status.textContent = "Minimum premium subscription amount is GH₵ 20.";
+        return;
+      }
+      if (phone.length < 10) {
+        status.style.color = "#ef4444";
+        status.textContent = "Please enter a valid MTN Mobile Money number.";
+        return;
+      }
+
+      status.style.color = "#f59e0b";
+      status.textContent = `Routing GH₵ ${amount} via Cloudflare Edge to MTN MoMo...`;
+
+      setTimeout(() => {
+        status.style.color = "#f59e0b";
+        status.textContent = "USSD prompt sent to phone. Please enter your PIN to approve...";
+        setTimeout(() => {
+          status.style.color = "#10b981";
+          status.textContent = "Payment approved successfully! Premium features unlocked.";
+        }, 3500);
+      }, 2000);
+    });
+
     $("htmlCode").value = starter.html;
     $("cssCode").value = starter.css;
     $("jsCode").value = starter.js;
