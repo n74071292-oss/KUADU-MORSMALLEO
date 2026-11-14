@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuaducode™ - World-Class Multi-Language IDE & AI Studio</title>
+    <title>Kuaducode - IDE & AI Studio</title>
     <script src="https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js"></script>
     <style>
         :root {
-            --bg-deep: #0f172a;
-            --bg-panel: #1e293b;
+            --bg-overlay: rgba(15, 23, 42, 0.90);
+            --bg-panel: rgba(30, 41, 59, 0.95);
             --bg-editor: #090d16;
             --accent-blue: #2563eb;
             --accent-hover: #1d4ed8;
@@ -24,12 +24,22 @@
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-deep);
+            background: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
             color: var(--text-main);
             height: 100vh;
             display: flex;
             flex-direction: column;
             overflow: hidden;
+        }
+        .backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-overlay);
+            z-index: -1;
         }
         header {
             background-color: var(--bg-panel);
@@ -68,22 +78,36 @@
             flex: 1;
             height: calc(100vh - 57px);
         }
-        .editor-pane {
+        .pane {
             flex: 1;
             display: flex;
             flex-direction: column;
             border-right: 1px solid var(--border-color);
             background-color: var(--bg-editor);
         }
-        .pane-header {
+        .pane.hidden {
+            display: none;
+        }
+        .tab-bar {
             background-color: var(--bg-panel);
-            padding: 8px 16px;
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .tab {
+            padding: 10px 20px;
             font-size: 13px;
             font-weight: 600;
             color: var(--text-muted);
-            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            border-right: 1px solid var(--border-color);
+            background-color: rgba(0, 0, 0, 0.2);
             text-transform: uppercase;
             letter-spacing: 0.5px;
+        }
+        .tab.active {
+            color: var(--text-main);
+            background-color: var(--bg-editor);
+            border-bottom: 2px solid var(--accent-blue);
         }
         textarea {
             flex: 1;
@@ -98,18 +122,13 @@
             outline: none;
             line-height: 1.5;
         }
-        .preview-pane {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background-color: var(--bg-deep);
-        }
         .preview-container {
             flex: 1;
             display: flex;
             flex-direction: column;
             padding: 16px;
             gap: 16px;
+            background-color: rgba(9, 13, 22, 0.85);
             overflow-y: auto;
         }
         iframe {
@@ -138,8 +157,10 @@
 </head>
 <body>
 
+    <div class="backdrop"></div>
+
     <header>
-        <div class="logo">Kuaducode™ IDE & AI Studio</div>
+        <div class="logo">Kuaducode</div>
         <div class="toolbar">
             <button onclick="runPythonCode()">Run Python</button>
             <button onclick="refreshPreview()">Update WebView</button>
@@ -147,8 +168,10 @@
     </header>
 
     <div class="main-layout">
-        <div class="editor-pane">
-            <div class="pane-header">Code Editor (HTML / Python Sandbox)</div>
+        <div id="editor-pane" class="pane">
+            <div class="tab-bar">
+                <div class="tab active" onclick="switchTab('editor')">Code Editor</div>
+            </div>
             <textarea id="code-editor">
 import js
 
@@ -165,8 +188,10 @@ print(f"Profession: {profession}")
             </textarea>
         </div>
 
-        <div class="preview-pane">
-            <div class="pane-header">Live WebView & Python Console</div>
+        <div id="preview-pane" class="pane">
+            <div class="tab-bar">
+                <div class="tab active" onclick="switchTab('preview')">Live WebView & Console</div>
+            </div>
             <div class="preview-container">
                 <iframe id="web-preview" srcdoc="<h3>Live WebView Preview</h3><p>Run code or edit content to preview live output here.</p>"></iframe>
                 <pre id="output-console">Initializing Pyodide environment...</pre>
@@ -217,6 +242,19 @@ print(f"Profession: {profession}")
             const codeText = document.getElementById("code-editor").value;
             const iframe = document.getElementById("web-preview");
             iframe.srcdoc = codeText;
+        }
+
+        function switchTab(target) {
+            const editorPane = document.getElementById("editor-pane");
+            const previewPane = document.getElementById("preview-pane");
+
+            if (target === 'editor') {
+                editorPane.classList.remove('hidden');
+                previewPane.classList.add('hidden');
+            } else {
+                previewPane.classList.remove('hidden');
+                editorPane.classList.add('hidden');
+            }
         }
     </script>
 </body>
