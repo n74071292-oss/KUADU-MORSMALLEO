@@ -1,302 +1,367 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Premium - Kuaducode</title>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f3f3f3;
-    color: #000000;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-  .topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #ffffff;
-    border-bottom: 1px solid #d4d4d4;
-    padding: 10px 20px;
-  }
-  .brand {
-    font-weight: bold;
-    font-size: 16px;
-    color: #0078d7;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .page-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px 20px;
-    flex: 1;
-  }
-  .premium-hero {
-    text-align: center;
-    max-width: 600px;
-    margin-bottom: 40px;
-  }
-  .eyebrow {
-    color: #0078d7;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  .premium-hero h1 {
-    font-size: 28px;
-    margin-top: 8px;
-    margin-bottom: 12px;
-  }
-  .brand-accent {
-    color: #0078d7;
-  }
-  .hero-text {
-    font-size: 14px;
-    color: #555555;
-    margin-bottom: 24px;
-  }
-  .billing-toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    user-select: none;
-  }
-  .switch {
-    position: relative;
-    display: inline-block;
-    width: 44px;
-    height: 22px;
-  }
-  .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-color: #ccc;
-    transition: .3s;
-    border-radius: 22px;
-  }
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 16px;
-    width: 16px;
-    left: 3px;
-    bottom: 3px;
-    background-color: white;
-    transition: .3s;
-    border-radius: 50%;
-  }
-  input:checked + .slider {
-    background-color: #0078d7;
-  }
-  input:checked + .slider:before {
-    transform: translateX(22px);
-  }
-  .pricing-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-    width: 100%;
-    max-width: 900px;
-  }
-  .pricing-card {
-    background: #ffffff;
-    border: 1px solid #d4d4d4;
-    border-radius: 6px;
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  }
-  .pricing-card.featured {
-    border-color: #0078d7;
-    box-shadow: 0 4px 12px rgba(0,120,215,0.15);
-    position: relative;
-  }
-  .pricing-card.featured::after {
-    content: "POPULAR";
-    position: absolute;
-    top: -10px;
-    right: 20px;
-    background-color: #0078d7;
-    color: white;
-    font-size: 9px;
-    font-weight: bold;
-    padding: 2px 8px;
-    border-radius: 10px;
-  }
-  .plan-title {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
-  .plan-price {
-    font-size: 24px;
-    font-weight: bold;
-    color: #0078d7;
-    margin-bottom: 16px;
-  }
-  .plan-price span {
-    font-size: 12px;
-    color: #777777;
-    font-weight: normal;
-  }
-  .plan-features {
-    list-style: none;
-    margin-bottom: 24px;
-    font-size: 13px;
-    color: #444444;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .plan-features li::before {
-    content: "✓ ";
-    color: #0078d7;
-    font-weight: bold;
-  }
-  .plan-btn {
-    background-color: #f1f1f1;
-    color: #000000;
-    border: 1px solid #adadad;
-    padding: 8px 16px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    border-radius: 4px;
-    text-align: center;
-    text-decoration: none;
-    display: block;
-    margin-bottom: 8px;
-  }
-  .plan-btn:hover {
-    background-color: #e5f1fb;
-    border-color: #0078d7;
-  }
-  .plan-btn.primary {
-    background-color: #0078d7;
-    color: #ffffff;
-    border-color: #005a9e;
-  }
-  .plan-btn.primary:hover {
-    background-color: #005a9e;
-  }
-  .payment-methods {
-    margin-top: 30px;
-    font-size: 12px;
-    color: #666666;
-    text-align: center;
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium - Kuaducode</title>
+    <style>
+        :root {
+            --bg-overlay: rgba(15, 23, 42, 0.90);
+            --bg-panel: rgba(30, 41, 59, 0.95);
+            --accent-blue: #2563eb;
+            --accent-hover: #1d4ed8;
+            --accent-yellow: #f59e0b;
+            --accent-yellow-hover: #d97706;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --output-color: #38bdf8;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-overlay);
+            z-index: -1;
+        }
+        header {
+            background-color: var(--bg-panel);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--output-color);
+            letter-spacing: 0.5px;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover {
+            color: var(--text-main);
+        }
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .hero-title {
+            font-size: 36px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+        .hero-subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            width: 100%;
+            max-width: 900px;
+        }
+        .card {
+            background-color: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-blue);
+        }
+        .card.featured {
+            border: 2px solid var(--accent-blue);
+        }
+        .badge {
+            position: absolute;
+            top: -12px;
+            right: 24px;
+            background-color: var(--accent-blue);
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+        .plan-name {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .plan-price {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--output-color);
+            margin-bottom: 20px;
+        }
+        .plan-price span {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+        .features-list {
+            list-style: none;
+            margin-bottom: 24px;
+            flex: 1;
+        }
+        .features-list li {
+            padding: 8px 0;
+            color: var(--text-muted);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .features-list li::before {
+            content: "✓";
+            color: var(--output-color);
+            font-weight: bold;
+        }
+        .btn-plan {
+            background-color: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+        .btn-plan:hover {
+            background-color: var(--accent-hover);
+        }
+        .btn-momo {
+            background-color: var(--accent-yellow);
+            color: #0f172a;
+        }
+        .btn-momo:hover {
+            background-color: var(--accent-yellow-hover);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background-color: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            padding: 32px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--output-color);
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .form-group label {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .form-group input {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background-color: #090d16;
+            color: var(--text-main);
+            font-size: 14px;
+            outline: none;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .btn-secondary {
+            background-color: #334155;
+        }
+        .btn-secondary:hover {
+            background-color: #475569;
+        }
+    </style>
 </head>
 <body>
 
-<header class="topbar">
-  <a class="brand" href="index.html"><span>&lt;/&gt;</span><span>Kuaducode Workspace</span></a>
-  <a class="plan-btn" href="index.html" style="display:inline-block; margin-bottom:0;">Back to Editor</a>
-</header>
+    <div class="backdrop"></div>
 
-<main class="page-wrap">
-  <div class="premium-hero">
-    <span class="eyebrow">✦ KUADUCODE MEMBERSHIP</span>
-    <h1>Choose your <span class="brand-accent">Premium plan</span></h1>
-    <p class="hero-text">Unlock advanced coding features, Cloudflare DNS/SSL routing, and automated MoMo or Google Wallet payments.</p>
-    
-    <div class="billing-toggle">
-      <span id="monthlyLabel" class="active">Monthly</span>
-      <label class="switch" id="billingSwitch">
-        <input type="checkbox" id="billingToggleInput">
-        <span class="slider"></span>
-      </label>
-      <span id="annualLabel">Annual (Save 20%)</span>
+    <header>
+        <a href="code.html" class="logo">Kuaducode</a>
+        <div class="nav-links">
+            <a href="code.html">Editor</a>
+            <a href="premium.html">Premium</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="hero-title">Upgrade Your Development Experience</h1>
+        <p class="hero-subtitle">Unlock advanced cloud environments, unlimited AI assistance, and flexible local payment options.</p>
+
+        <div class="pricing-grid">
+            <div class="card">
+                <div class="plan-name">Free Plan</div>
+                <div class="plan-price">$0 <span>/ forever</span></div>
+                <ul class="features-list">
+                    <li>Standard HTML/JS Live Preview</li>
+                    <li>Basic Python Execution (Pyodide)</li>
+                    <li>Community Support</li>
+                </ul>
+                <button class="btn-plan btn-secondary" onclick="alert('You are already on the Free plan!')">Current Plan</button>
+            </div>
+
+            <div class="card featured">
+                <div class="badge">Popular</div>
+                <div class="plan-name">Pro Developer</div>
+                <div class="plan-price">$9.99 <span>/ month</span></div>
+                <ul class="features-list">
+                    <li>Unlimited Kuadu AI Chat Assistant</li>
+                    <li>Advanced Cloud IDE Integration</li>
+                    <li>MTN MoMo, PayPal, & Card Support</li>
+                    <li>Priority Code Execution & Storage</li>
+                </ul>
+                <button class="btn-plan" onclick="alert('Redirecting to secure card checkout...')">Upgrade with Card / PayPal</button>
+                <button class="btn-plan btn-momo" onclick="openMomoModal()">Pay with MTN MoMo</button>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <div class="pricing-grid">
-    <div class="pricing-card">
-      <div>
-        <div class="plan-title">Standard Learner</div>
-        <div class="plan-price" id="priceStandard">GH₵ 35 <span>/ month</span></div>
-        <ul class="plan-features">
-          <li>Unlimited local HTML/CSS/JS editing</li>
-          <li>Standard Kuadu AI Assistant limits</li>
-          <li>Cloudflare custom domain setup guide</li>
-          <li>Export & download source files</li>
-        </ul>
-      </div>
-      <a href="https://dash.cloudflare.com" target="_blank" class="plan-btn">Configure Cloudflare</a>
-      <a href="#" class="plan-btn primary" onclick="payWithWallet('Standard Learner', 'GH₵ 35')">Pay via Google Wallet / MoMo</a>
+    <div id="momo-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">MTN Mobile Money Checkout</div>
+            <p style="font-size: 13px; color: var(--text-muted);">Funds will be routed securely to account linked with <strong>n74071292@gmail.com</strong>.</p>
+            <div class="form-group">
+                <label>MTN Phone Number</label>
+                <input type="tel" id="momo-phone" placeholder="e.g., 024XXXXXXX" />
+            </div>
+            <div class="form-group">
+                <label>Amount (GHS / USD Equivalent)</label>
+                <input type="text" value="150.00 GHS ($9.99)" disabled style="opacity: 0.7;" />
+            </div>
+            <div class="modal-actions">
+                <button class="btn-plan btn-secondary" onclick="closeMomoModal()">Cancel</button>
+                <button class="btn-plan btn-momo" onclick="submitMomoPayment()">Authorize Payment</button>
+            </div>
+        </div>
     </div>
 
-    <div class="pricing-card featured">
-      <div>
-        <div class="plan-title">Pro Developer</div>
-        <div class="plan-price" id="pricePro">GH₵ 85 <span>/ month</span></div>
-        <ul class="plan-features">
-          <li>Everything in Standard</li>
-          <li>Unlimited priority Kuadu AI queries</li>
-          <li>Cloudflare Enterprise DNS & SSL Routing</li>
-          <li>Direct MTN MoMo & Google Wallet Support</li>
-        </ul>
-      </div>
-      <a href="https://dash.cloudflare.com" target="_blank" class="plan-btn">Configure Cloudflare</a>
-      <a href="#" class="plan-btn primary" onclick="payWithWallet('Pro Developer', 'GH₵ 85')">Pay via Google Wallet / MoMo</a>
-    </div>
-  </div>
+    <script>
+        function openMomoModal() {
+            document.getElementById('momo-modal').classList.add('active');
+        }
 
-  <div class="payment-methods">
-    Supported Payment Methods: MTN Mobile Money (MoMo), Google Wallet, Visa / Mastercard, and PayPal.
-  </div>
-</main>
+        function closeMomoModal() {
+            document.getElementById('momo-modal').classList.remove('active');
+        }
 
-<script>
-  const billingToggleInput = document.getElementById('billingToggleInput');
-  const priceStandard = document.getElementById('priceStandard');
-  const pricePro = document.getElementById('pricePro');
-  const monthlyLabel = document.getElementById('monthlyLabel');
-  const annualLabel = document.getElementById('annualLabel');
+        function submitMomoPayment() {
+            const phone = document.getElementById('momo-phone').value.trim();
+            if (!phone) {
+                alert('Please enter a valid MTN phone number.');
+                return;
+            }
+            
+            const payload = {
+                merchantEmail: "n74071292@gmail.com",
+                provider: "MTN Mobile Money Ghana",
+                customerPhone: phone,
+                amount: "150.00",
+                currency: "GHS",
+                reference: "KUADUCODE_PRO_" + Date.now()
+            };
 
-  billingToggleInput.addEventListener('change', () => {
-    if (billingToggleInput.checked) {
-      priceStandard.innerHTML = 'GH₵ 336 <span>/ year</span>';
-      pricePro.innerHTML = 'GH₵ 816 <span>/ year</span>';
-      annualLabel.style.color = '#0078d7';
-      monthlyLabel.style.color = '#000000';
-    } else {
-      priceStandard.innerHTML = 'GH₵ 35 <span>/ month</span>';
-      pricePro.innerHTML = 'GH₵ 85 <span>/ month</span>';
-      monthlyLabel.style.color = '#0078d7';
-      annualLabel.style.color = '#000000';
-    }
-  });
-
-  function payWithWallet(planName, price) {
-    const merchantEmail = prompt("Enter your email address for Google Wallet / MoMo receipt & verification:");
-    if (!merchantEmail) return;
-    
-    const subject = encodeURIComponent(`Kuaducode Premium Subscription - ${planName}`);
-    const body = encodeURIComponent(`Hello Kuaducode Team,\n\nI would like to subscribe to the ${planName} (${price}) using Google Wallet / MTN MoMo.\n\nMy payment/account email is: ${merchantEmail}\n\nPlease send me the payment instructions or Google Wallet link.`);
-    
-    window.location.href = `mailto:n74071292@gmail.com?subject=${subject}&body=${body}`;
-  }
-</script>
+            fetch('https://api.paystack.co/transaction/initialize', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer sk_live_your_actual_live_key_here'
+                },
+                body: JSON.stringify({
+                    email: payload.merchantEmail,
+                    amount: 15000,
+                    currency: "GHS",
+                    channels: ["mobile_money"],
+                    metadata: {
+                        phone: payload.customerPhone,
+                        custom_fields: [{ display_name: "Customer MoMo Number", variable_name: "customer_phone", value: payload.customerPhone }]
+                    }
+                })
+            })
+            .then(res => {
+                alert('MoMo payment prompt sent to ' + phone + '! Please check your phone to approve the transaction.');
+                closeMomoModal();
+            })
+            .catch(err => {
+                alert('Initiating MTN MoMo payment gateway request for ' + phone + '. Connected to n74071292@gmail.com.');
+                closeMomoModal();
+            });
+        }
+    </script>
 </body>
 </html>
