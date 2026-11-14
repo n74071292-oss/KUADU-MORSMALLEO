@@ -1,36 +1,121 @@
-<div class="console-dock-container" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 10px; background: #0f172a; border-top: 1px solid #334155; font-family: monospace;">
-    
-    <!-- Python Console -->
-    <div class="console-box" style="background: #1e293b; border: 1px solid #334155; border-radius: 6px; display: flex; flex-direction: column;">
-        <div class="console-header" style="background: #0f172a; padding: 8px 12px; font-size: 0.8rem; color: #38bdf8; border-bottom: 1px solid #334155; display: flex; justify-content: space-between;">
-            <span>Python Console</span>
-            <span style="color: #22c55e;">● Active</span>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuaducode Studio Pro</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: #07090e; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        
+        header { background: #0f172a; border-bottom: 1px solid #1e293b; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; height: 48px; }
+        .logo { font-weight: 700; color: #38bdf8; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
+        .nav-links { display: flex; gap: 16px; font-size: 0.85rem; color: #94a3b8; }
+        .nav-links span { cursor: pointer; transition: color 0.2s; }
+        .nav-links span:hover { color: #f8fafc; }
+
+        .workspace { display: grid; grid-template-columns: 1fr 1fr; flex: 1; height: calc(100vh - 48px - 200px); border-bottom: 1px solid #1e293b; }
+        
+        .pane { display: flex; flex-direction: column; border-right: 1px solid #1e293b; background: #0f172a; }
+        .pane:last-child { border-right: none; }
+        .pane-header { background: #111827; padding: 8px 14px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: #94a3b8; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1f2937; }
+        
+        textarea, iframe { flex: 1; border: none; background: #0b0f19; color: #e2e8f0; font-family: 'Fira Code', monospace; padding: 16px; resize: none; outline: none; font-size: 0.9rem; line-height: 1.6; }
+        iframe { background: #ffffff; }
+
+        .console-dock-container { height: 200px; display: grid; grid-template-columns: repeat(3, 1fr); background: #0f172a; font-family: 'Fira Code', monospace; }
+        .console-box { background: #0b0f19; border-right: 1px solid #1e293b; border-top: 1px solid #1e293b; display: flex; flex-direction: column; }
+        .console-box:last-child { border-right: none; }
+        .console-header { background: #111827; padding: 6px 12px; font-size: 0.75rem; border-bottom: 1px solid #1f2937; display: flex; justify-content: space-between; align-items: center; font-weight: 600; }
+        .console-output { padding: 12px; height: calc(200px - 31px); overflow-y: auto; font-size: 0.8rem; color: #cbd5e1; margin: 0; line-height: 1.5; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">⚡ Kuaducode Studio Pro</div>
+        <div class="nav-links">
+            <span>File</span>
+            <span>Edit</span>
+            <span>View</span>
+            <span>Tools</span>
+            <span>Settings</span>
         </div>
-        <div class="console-output" style="padding: 10px; height: 140px; overflow-y: auto; color: #e2e8f0; font-size: 0.85rem;">
-            <pre style="margin: 0;">Python 3.10.12 (Kuadu Engine)<br>>>> import sys<br>>>> print("Python environment ready.")</pre>
+    </header>
+
+    <div class="workspace">
+        <div class="pane">
+            <div class="pane-header">
+                <span>HTML / App Source</span>
+                <span style="color: #38bdf8;">index.html</span>
+            </div>
+            <textarea id="code-editor" oninput="updatePreview()">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;style&gt;
+        body { font-family: sans-serif; text-align: center; padding-top: 40px; background: #f0fdf4; color: #166534; }
+        h1 { font-size: 2rem; margin-bottom: 8px; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Kuaducode Live Output&lt;/h1&gt;
+    &lt;p&gt;Your workspace is fully upgraded and responsive.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+        </div>
+
+        <div class="pane">
+            <div class="pane-header">
+                <span>Live Preview Runner</span>
+                <span style="color: #22c55e;">● Running</span>
+            </div>
+            <iframe id="preview-frame"></iframe>
         </div>
     </div>
 
-    <!-- Rust Console -->
-    <div class="console-box" style="background: #1e293b; border: 1px solid #334155; border-radius: 6px; display: flex; flex-direction: column;">
-        <div class="console-header" style="background: #0f172a; padding: 8px 12px; font-size: 0.8rem; color: #f97316; border-bottom: 1px solid #334155; display: flex; justify-content: space-between;">
-            <span>Rust Console</span>
-            <span style="color: #22c55e;">● Active</span>
+    <div class="console-dock-container">
+        <div class="console-box">
+            <div class="console-header" style="color: #38bdf8;">
+                <span>Python Console</span>
+                <span style="color: #22c55e; font-size: 0.7rem;">● Active</span>
+            </div>
+            <pre class="console-output">Python 3.10.12 (Kuadu Engine)
+>>> import sys
+>>> print("Python environment ready.")
+>>> print("Ready for execution tasks.")</pre>
         </div>
-        <div class="console-output" style="padding: 10px; height: 140px; overflow-y: auto; color: #e2e8f0; font-size: 0.85rem;">
-            <pre style="margin: 0;">rustc 1.75.0 (WASM)<br>Compiling KuaduCore v0.1.0<br>Finished release target(s) in 0.42s</pre>
+
+        <div class="console-box">
+            <div class="console-header" style="color: #f97316;">
+                <span>Rust Console</span>
+                <span style="color: #22c55e; font-size: 0.7rem;">● Active</span>
+            </div>
+            <pre class="console-output">rustc 1.75.0 (WASM)
+Compiling KuaduCore v0.1.0
+Target: WebAssembly/Native
+Finished release target(s) in 0.38s</pre>
+        </div>
+
+        <div class="console-box">
+            <div class="console-header" style="color: #a855f7;">
+                <span>SQL Console</span>
+                <span style="color: #22c55e; font-size: 0.7rem;">● Connected</span>
+            </div>
+            <pre class="console-output">Connected to SQLite DB.
+sqlite> PRAGMA foreign_keys = ON;
+sqlite> SELECT COUNT(*) FROM users;
+1248 rows active (0.001s)</pre>
         </div>
     </div>
 
-    <!-- SQL Console -->
-    <div class="console-box" style="background: #1e293b; border: 1px solid #334155; border-radius: 6px; display: flex; flex-direction: column;">
-        <div class="console-header" style="background: #0f172a; padding: 8px 12px; font-size: 0.8rem; color: #a855f7; border-bottom: 1px solid #334155; display: flex; justify-content: space-between;">
-            <span>SQL Console</span>
-            <span style="color: #22c55e;">● Connected</span>
-        </div>
-        <div class="console-output" style="padding: 10px; height: 140px; overflow-y: auto; color: #e2e8f0; font-size: 0.85rem;">
-            <pre style="margin: 0;">Connected to SQLite DB.<br>sqlite> SELECT * FROM users;<br>0 rows affected (0.001s)</pre>
-        </div>
-    </div>
+    <script>
+        function updatePreview() {
+            const code = document.getElementById('code-editor').value;
+            const iframe = document.getElementById('preview-frame');
+            iframe.srcdoc = code;
+        }
 
-</div>
+        updatePreview();
+    </script>
+</body>
+</html>
