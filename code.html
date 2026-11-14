@@ -8,18 +8,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
     <style>
         :root {
-            --bg-deep: #07090e;
-            --bg-dark: #0b0f19;
-            --bg-panel: #131c2e;
-            --bg-panel-hover: #1b2640;
-            --border-color: #1e293b;
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
-            --accent: #38bdf8;
-            --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #2563eb 100%);
-            --success: #34d399;
-            --danger: #f87171;
-            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+            --bg-deep: rgba(241, 245, 249, 0.85);
+            --bg-dark: rgba(255, 255, 255, 0.92);
+            --bg-panel: rgba(248, 250, 252, 0.95);
+            --bg-panel-hover: #f1f5f9;
+            --border-color: #cbd5e1;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent: #0284c7;
+            --accent-gradient: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            --success: #059669;
+            --danger: #dc2626;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
         }
 
         * {
@@ -30,7 +30,10 @@
         }
 
         body {
-            background-color: var(--bg-deep);
+            /* Gorgeous bright professional background image with a soft light overlay */
+            background: linear-gradient(rgba(248, 250, 252, 0.88), rgba(241, 245, 249, 0.92)), 
+                        url('https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=2000&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
             color: var(--text-main);
             height: 100vh;
             display: flex;
@@ -40,12 +43,13 @@
 
         header {
             background-color: var(--bg-dark);
+            backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border-color);
             padding: 12px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
             z-index: 10;
         }
 
@@ -69,7 +73,7 @@
             justify-content: center;
             color: #fff;
             font-weight: bold;
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+            box-shadow: 0 0 15px rgba(14, 165, 233, 0.3);
         }
 
         .logo span {
@@ -93,7 +97,7 @@
             cursor: pointer;
             font-weight: 600;
             font-size: 0.875rem;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2);
             transition: all 0.25s ease;
             display: flex;
             align-items: center;
@@ -102,8 +106,8 @@
 
         button:hover {
             transform: translateY(-1px);
-            box-shadow: 0 6px 16px rgba(56, 189, 248, 0.4);
-            filter: brightness(1.1);
+            box-shadow: 0 6px 16px rgba(2, 132, 199, 0.3);
+            filter: brightness(1.05);
         }
 
         button:active {
@@ -111,14 +115,14 @@
         }
 
         button.clear-btn {
-            background: #1e293b;
+            background: rgba(226, 232, 240, 0.8);
             color: var(--text-muted);
             box-shadow: none;
             border: 1px solid var(--border-color);
         }
 
         button.clear-btn:hover {
-            background: #273449;
+            background: #cbd5e1;
             color: var(--text-main);
         }
 
@@ -128,7 +132,6 @@
             flex: 1;
             gap: 12px;
             padding: 12px;
-            background-color: var(--bg-deep);
             overflow: hidden;
         }
 
@@ -142,6 +145,7 @@
 
         .panel {
             background-color: var(--bg-dark);
+            backdrop-filter: blur(12px);
             border: 1px solid var(--border-color);
             border-radius: 12px;
             display: flex;
@@ -169,9 +173,9 @@
             font-size: 0.7rem;
             padding: 2px 8px;
             border-radius: 20px;
-            background: rgba(56, 189, 248, 0.1);
+            background: rgba(14, 165, 233, 0.1);
             color: var(--accent);
-            border: 1px solid rgba(56, 189, 248, 0.2);
+            border: 1px solid rgba(14, 165, 233, 0.2);
             text-transform: none;
             font-weight: 500;
         }
@@ -201,7 +205,7 @@
 
         .tab-btn:hover {
             color: var(--text-main);
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(0, 0, 0, 0.02);
             transform: none;
             box-shadow: none;
             filter: none;
@@ -210,7 +214,7 @@
         .tab-btn.active {
             color: var(--accent);
             border-bottom-color: var(--accent);
-            background: rgba(56, 189, 248, 0.05);
+            background: rgba(14, 165, 233, 0.05);
         }
 
         .tab-content {
@@ -230,14 +234,14 @@
             position: relative;
             display: flex;
             flex-direction: column;
-            background-color: #070a12;
+            background-color: rgba(255, 255, 255, 0.5);
         }
 
         textarea {
             width: 100%;
             height: 100%;
             background-color: transparent;
-            color: #e2e8f0;
+            color: #1e293b;
             border: none;
             padding: 14px;
             font-family: 'Fira Code', 'JetBrains Mono', 'Courier New', Courier, monospace;
@@ -257,7 +261,7 @@
 
         .console-wrapper {
             flex: 1;
-            background-color: #070a12;
+            background-color: rgba(255, 255, 255, 0.5);
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -265,7 +269,7 @@
 
         .console-output {
             flex: 1;
-            color: #38bdf8;
+            color: #0369a1;
             font-family: 'Fira Code', 'JetBrains Mono', 'Courier New', Courier, monospace;
             padding: 14px;
             overflow-y: auto;
@@ -292,7 +296,7 @@
 
         .console-input-bar input {
             flex: 1;
-            background: var(--bg-deep);
+            background: rgba(241, 245, 249, 0.8);
             border: 1px solid var(--border-color);
             border-radius: 6px;
             padding: 8px 12px;
@@ -316,14 +320,14 @@
             height: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: var(--bg-dark);
+            background: rgba(255, 255, 255, 0.3);
         }
         ::-webkit-scrollbar-thumb {
             background: var(--border-color);
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #475569;
+            background: #94a3b8;
         }
 
         table.sql-table {
@@ -346,7 +350,7 @@
         }
 
         table.sql-table tr:hover td {
-            background-color: rgba(56, 189, 248, 0.05);
+            background-color: rgba(14, 165, 233, 0.05);
         }
 
         @media (max-width: 1100px) {
@@ -395,7 +399,7 @@
                     <button style="padding: 3px 10px; font-size: 0.75rem;" onclick="runPython()">Run Python ▶</button>
                 </div>
                 <div class="editor-container">
-                    <textarea id="python-editor" placeholder="# Write Python code here..."></textarea>
+                    <textarea id="python-editor" placeholder="# Write Python code here... e.g. name = input('Your name: ')"></textarea>
                 </div>
             </div>
 
@@ -426,7 +430,7 @@
                     <div class="console-wrapper">
                         <div id="python-console" class="console-output">Loading Pyodide runtime environment...</div>
                         <div class="console-input-bar">
-                            <input type="text" id="python-input" placeholder="Type input here..." onkeydown="handlePythonInputKey(event)">
+                            <input type="text" id="python-input" placeholder="Type input here when prompted..." onkeydown="handlePythonInputKey(event)">
                             <button onclick="submitPythonInput()">Send Input</button>
                         </div>
                     </div>
@@ -509,7 +513,8 @@
                     consoleEl.innerText += promptText;
                 }
                 pythonInputResolve = resolve;
-                document.getElementById('python-input').focus();
+                const inputField = document.getElementById('python-input');
+                inputField.focus();
             });
         }
 
@@ -520,6 +525,7 @@
 
             const consoleEl = document.getElementById('python-console');
             consoleEl.innerText += val + "\n";
+            consoleEl.scrollTop = consoleEl.scrollHeight;
 
             if (pythonInputResolve) {
                 const resolve = pythonInputResolve;
@@ -536,3 +542,119 @@
 
         async function runPython() {
             const consoleEl = document.getElementById('python-console');
+            if (!pyodideReady) {
+                consoleEl.innerText = "Python engine is still loading...";
+                return;
+            }
+
+            consoleEl.className = "console-output";
+            consoleEl.innerText = "Executing python code...\n";
+            let code = document.getElementById('python-editor').value;
+
+            try {
+                pyodideInstance.setStdout({
+                    batched: (msg) => {
+                        consoleEl.innerText += msg + "\n";
+                        consoleEl.scrollTop = consoleEl.scrollHeight;
+                    }
+                });
+
+                pyodideInstance.setStdin({
+                    stdin: () => {
+                        return customInput();
+                    }
+                });
+
+                await pyodideInstance.loadPackagesFromImports(code);
+                await pyodideInstance.runPythonAsync(code);
+                consoleEl.innerText += "\n[Execution completed successfully]\n";
+                consoleEl.scrollTop = consoleEl.scrollHeight;
+            } catch (err) {
+                consoleEl.className = "console-output error";
+                consoleEl.innerText += "\n" + err.message;
+                consoleEl.scrollTop = consoleEl.scrollHeight;
+            }
+        }
+
+        let db = null;
+
+        async function initSQL() {
+            const consoleEl = document.getElementById('sql-console');
+            const statusEl = document.getElementById('sql-status');
+            try {
+                const SQL = await initSqlJs({
+                    locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}`
+                });
+                db = new SQL.Database();
+                statusEl.style.color = "var(--success)";
+                consoleEl.innerText = "SQL engine ready. Enter queries below or use workspace editor.";
+            } catch (err) {
+                statusEl.style.color = "var(--danger)";
+                consoleEl.className = "console-output error";
+                consoleEl.innerText = "Failed to load SQL engine: " + err.message;
+            }
+        }
+
+        function executeSQLQuery(query) {
+            const consoleEl = document.getElementById('sql-console');
+            if (!db) {
+                consoleEl.innerText = "SQL engine is still loading...";
+                return;
+            }
+
+            consoleEl.className = "console-output";
+
+            try {
+                const results = db.exec(query);
+                if (results.length === 0) {
+                    consoleEl.innerText = "Query executed successfully with no result set.";
+                    return;
+                }
+
+                let htmlOutput = "";
+                results.forEach(res => {
+                    let table = '<table class="sql-table"><thead><tr>';
+                    res.columns.forEach(col => table += `<th>${col}</th>`);
+                    table += '</tr></thead><tbody>';
+
+                    res.values.forEach(row => {
+                        table += '<tr>';
+                        row.forEach(val => table += `<td>${val !== null ? val : 'NULL'}</td>`);
+                        table += '</tr>';
+                    });
+                    table += '</tbody></table>';
+                    htmlOutput += table + "<br>";
+                });
+
+                consoleEl.innerHTML = htmlOutput;
+            } catch (err) {
+                consoleEl.className = "console-output error";
+                consoleEl.innerText = err.message;
+            }
+        }
+
+        function runSQL() {
+            const query = document.getElementById('sql-editor').value;
+            executeSQLQuery(query);
+        }
+
+        function submitSQLInput() {
+            const inputField = document.getElementById('sql-input');
+            const val = inputField.value.trim();
+            if (!val) return;
+            inputField.value = "";
+            document.getElementById('sql-editor').value = val;
+            executeSQLQuery(val);
+        }
+
+        function handleSQLInputKey(event) {
+            if (event.key === 'Enter') {
+                submitSQLInput();
+            }
+        }
+
+        initPython();
+        initSQL();
+    </script>
+</body>
+</html>
