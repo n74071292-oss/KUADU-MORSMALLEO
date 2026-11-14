@@ -569,8 +569,8 @@
                 });
 
                 pyodideInstance.setStdin({
-                    stdin: () => {
-                        return customInput();
+                    stdin: (promptText) => {
+                        return customInput(promptText || "");
                     }
                 });
 
@@ -643,27 +643,4 @@
         }
 
         function runSQL() {
-            const query = document.getElementById('sql-editor').value;
-            executeSQLQuery(query);
-        }
-
-        function submitSQLInput() {
-            const inputField = document.getElementById('sql-input');
-            const val = inputField.value.trim();
-            if (!val) return;
-            inputField.value = "";
-            document.getElementById('sql-editor').value = val;
-            executeSQLQuery(val);
-        }
-
-        function handleSQLInputKey(event) {
-            if (event.key === 'Enter') {
-                submitSQLInput();
-            }
-        }
-
-        initPython();
-        initSQL();
-    </script>
-</body>
-</html>
+            const query = document.getElementById
