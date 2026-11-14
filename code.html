@@ -62,7 +62,6 @@
 
     <nav class="tabs" aria-label="Workspace tabs">
       <a href="code.html" class="tab active" id="codeTabLink"><span>▣</span> Code Studio</a>
-      <a href="texteditor.html" class="tab" id="textEditorTabLink"><span>📝</span> Text Editor</a>
       <a href="#premium" class="tab" id="premiumTabLink"><span>⭐</span> Premium MoMo <span class="pending-badge-inline" style="font-size:9px;padding:1px 6px;margin-left:4px;">PENDING</span></a>
     </nav>
 
@@ -172,35 +171,4 @@ button {
 
     // Navigation tabs
     $("codeTabLink").addEventListener("click", (e) => { e.preventDefault(); switchTab('code'); });
-    $("textEditorTabLink").addEventListener("click", (e) => { e.preventDefault(); window.location.href = 'texteditor.html'; });
-    $("premiumTopBtn").addEventListener("click", (e) => { e.preventDefault(); switchTab('premium'); });
-    $("premiumTabLink").addEventListener("click", (e) => { e.preventDefault(); switchTab('premium'); });
-
-    function switchTab(target) {
-      if(target === 'premium') {
-        codePanel.classList.remove('active');
-        premiumPanel.classList.add('active');
-        $("codeTabLink").classList.remove('active');
-        $("textEditorTabLink").classList.remove('active');
-        $("premiumTabLink").classList.add('active');
-      } else {
-        premiumPanel.classList.remove('active');
-        codePanel.classList.add('active');
-        $("premiumTabLink").classList.remove('active');
-        $("codeTabLink").classList.add('active');
-      }
-    }
-
-    // Tab key support in textareas
-    document.querySelectorAll("textarea").forEach(ta => {
-      ta.addEventListener("keydown", e => {
-        if (e.key === "Tab") { 
-          e.preventDefault(); 
-          const start = ta.selectionStart, end = ta.selectionEnd; 
-          ta.setRangeText("  ", start, end, "end"); 
-        }
-      });
-    });
-  </script>
-</body>
-</html>
+    $("premiumTopBtn").addEventListener("click", (e)
