@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KuaduCode™ — Modern Multi-Language Professional IDE</title>
-    <!-- Pyodide for Python execution in browser -->
     <script src="https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js"></script>
-    <!-- sql.js for SQL execution in browser -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
     <style>
         :root {
@@ -15,7 +13,6 @@
             --bg-panel: #131c2e;
             --bg-panel-hover: #1b2640;
             --border-color: #1e293b;
-            --border-glow: rgba(56, 189, 248, 0.25);
             --text-main: #f1f5f9;
             --text-muted: #94a3b8;
             --accent: #38bdf8;
@@ -41,7 +38,6 @@
             overflow: hidden;
         }
 
-        /* Sleek Modern Header */
         header {
             background-color: var(--bg-dark);
             border-bottom: 1px solid var(--border-color);
@@ -124,10 +120,8 @@
         button.clear-btn:hover {
             background: #273449;
             color: var(--text-main);
-            box-shadow: none;
         }
 
-        /* Main Workspace Grid */
         .main-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -155,11 +149,6 @@
             flex: 1;
             overflow: hidden;
             box-shadow: var(--shadow);
-            transition: border-color 0.25s ease;
-        }
-
-        .panel:hover {
-            border-color: rgba(56, 189, 248, 0.3);
         }
 
         .panel-header {
@@ -185,6 +174,55 @@
             border: 1px solid rgba(56, 189, 248, 0.2);
             text-transform: none;
             font-weight: 500;
+        }
+
+        .tab-header {
+            background-color: var(--bg-panel);
+            padding: 0 12px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            gap: 4px;
+        }
+
+        .tab-btn {
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            padding: 10px 16px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            box-shadow: none;
+            border-radius: 0;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.02);
+            transform: none;
+            box-shadow: none;
+            filter: none;
+        }
+
+        .tab-btn.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+            background: rgba(56, 189, 248, 0.05);
+        }
+
+        .tab-content {
+            display: none;
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            flex-direction: column;
+        }
+
+        .tab-content.active {
+            display: flex;
         }
 
         .editor-container {
@@ -237,7 +275,6 @@
             color: var(--success);
         }
 
-        /* Modern Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -253,7 +290,6 @@
             background: #475569;
         }
 
-        /* SQL Result Table Styling */
         table.sql-table {
             width: 100%;
             border-collapse: collapse;
@@ -287,7 +323,7 @@
                 overflow: auto;
             }
             .column {
-                height: 600px;
+                height: 550px;
             }
         }
     </style>
@@ -301,101 +337,62 @@
         </div>
         <div class="toolbar">
             <button class="clear-btn" onclick="clearAll()">Clear All</button>
-            <button onclick="runAll()">▶ Run Web & Code</button>
+            <button onclick="runAll()">▶ Run All Environments</button>
         </div>
     </header>
 
     <div class="main-container">
-        <!-- LEFT COLUMN: Code Editors -->
         <div class="column">
-            <!-- HTML / CSS / JS Editor Panel -->
             <div class="panel">
                 <div class="panel-header">
                     <span>HTML / CSS / JS Source</span>
                     <span class="badge">Live View Ready</span>
                 </div>
                 <div class="editor-container">
-                    <textarea id="html-editor" placeholder="Write HTML/CSS/JS here...">&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-  &lt;style&gt;
-    body { 
-      font-family: 'Inter', sans-serif; 
-      text-align: center; 
-      padding-top: 40px; 
-      background: linear-gradient(135deg, #f0fdf4, #dcfce7); 
-      color: #166534; 
-    }
-    h1 { font-size: 1.5rem; margin-bottom: 8px; }
-    p { font-size: 0.95rem; opacity: 0.8; }
-  &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;h1&gt;✨ KuaduCode™ Live Engine Active&lt;/h1&gt;
-  &lt;p&gt;Modify markup to see instant changes.&lt;/p&gt;
-&lt;/body&gt;
-&lt;/html&gt;</textarea>
+                    <textarea id="html-editor" placeholder="Write HTML/CSS/JS here..."></textarea>
                 </div>
             </div>
 
-            <!-- Python Editor Panel -->
             <div class="panel">
                 <div class="panel-header">
                     <span>Python 3 Workspace</span>
                     <button style="padding: 3px 10px; font-size: 0.75rem;" onclick="runPython()">Run Python ▶</button>
                 </div>
                 <div class="editor-container">
-                    <textarea id="python-editor" placeholder="# Write Python code here...">import math
-
-radius = 6
-area = math.pi * (radius ** 2)
-print(f"Calculated circle area for r={radius}: {round(area, 2)}")</textarea>
+                    <textarea id="python-editor" placeholder="# Write Python code here..."></textarea>
                 </div>
             </div>
 
-            <!-- SQL Editor Panel -->
             <div class="panel">
                 <div class="panel-header">
                     <span>SQL Workspace (SQLite)</span>
                     <button style="padding: 3px 10px; font-size: 0.75rem;" onclick="runSQL()">Run SQL Query ▶</button>
                 </div>
                 <div class="editor-container">
-                    <textarea id="sql-editor" placeholder="-- Write SQL queries here...">CREATE TABLE projects (id INTEGER PRIMARY KEY, name TEXT, status TEXT);
-INSERT INTO projects VALUES (1, 'KuaduCode IDE', 'Active');
-INSERT INTO projects VALUES (2, 'Cloud Sync', 'In Progress');
-
-SELECT * FROM projects;</textarea>
+                    <textarea id="sql-editor" placeholder="-- Write SQL queries here..."></textarea>
                 </div>
             </div>
         </div>
 
-        <!-- RIGHT COLUMN: Previews & Consoles -->
         <div class="column">
-            <!-- Live Preview Panel -->
-            <div class="panel" style="flex: 1.6;">
-                <div class="panel-header">
-                    <span>Live Web View</span>
-                    <span class="badge">Realtime</span>
-                </div>
-                <iframe id="live-preview"></iframe>
-            </div>
-
-            <!-- Python Output Panel -->
             <div class="panel" style="flex: 1;">
-                <div class="panel-header">
-                    <span>Python Console Output</span>
-                    <span id="py-status" class="badge">Initializing...</span>
+                <div class="tab-header">
+                    <button class="tab-btn active" onclick="switchTab('preview', this)">🌐 Live Web View</button>
+                    <button class="tab-btn" onclick="switchTab('python', this)">🐍 Python Console <span id="py-status" style="font-size:0.65rem; color:var(--success);">●</span></button>
+                    <button class="tab-btn" onclick="switchTab('sql', this)">🗄️ SQL Results <span id="sql-status" style="font-size:0.65rem; color:var(--success);">●</span></button>
                 </div>
-                <div id="python-console" class="console-output">Loading Pyodide runtime environment...</div>
-            </div>
 
-            <!-- SQL Output Panel -->
-            <div class="panel" style="flex: 1;">
-                <div class="panel-header">
-                    <span>SQL Query Result</span>
-                    <span id="sql-status" class="badge">Initializing...</span>
+                <div id="tab-preview" class="tab-content active">
+                    <iframe id="live-preview"></iframe>
                 </div>
-                <div id="sql-console" class="console-output">Loading SQLite WASM engine...</div>
+
+                <div id="tab-python" class="tab-content">
+                    <div id="python-console" class="console-output">Loading Pyodide runtime environment...</div>
+                </div>
+
+                <div id="tab-sql" class="tab-content">
+                    <div id="sql-console" class="console-output">Loading SQLite WASM engine...</div>
+                </div>
             </div>
         </div>
     </div>
@@ -412,6 +409,14 @@ SELECT * FROM projects;</textarea>
 
         htmlEditor.addEventListener('input', updatePreview);
         window.addEventListener('DOMContentLoaded', updatePreview);
+
+        function switchTab(tabName, btnElement) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+            document.getElementById('tab-' + tabName).classList.add('active');
+            btnElement.classList.add('active');
+        }
 
         function runAll() {
             updatePreview();
@@ -430,7 +435,6 @@ SELECT * FROM projects;</textarea>
             }
         }
 
-        // --- Python Engine Setup ---
         let pyodideReady = false;
         let pyodideInstance = null;
 
@@ -440,13 +444,9 @@ SELECT * FROM projects;</textarea>
             try {
                 pyodideInstance = await loadPyodide();
                 pyodideReady = true;
-                statusEl.innerText = "Ready";
                 statusEl.style.color = "var(--success)";
-                statusEl.style.borderColor = "rgba(52, 211, 153, 0.3)";
-                statusEl.style.background = "rgba(52, 211, 153, 0.1)";
                 consoleEl.innerText = "Python environment ready. Click 'Run Python' to execute.";
             } catch (err) {
-                statusEl.innerText = "Error";
                 statusEl.style.color = "var(--danger)";
                 consoleEl.className = "console-output error";
                 consoleEl.innerText = "Failed to load Python: " + err.message;
@@ -482,7 +482,6 @@ SELECT * FROM projects;</textarea>
             }
         }
 
-        // --- SQL Engine Setup ---
         let db = null;
 
         async function initSQL() {
@@ -493,13 +492,9 @@ SELECT * FROM projects;</textarea>
                     locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}`
                 });
                 db = new SQL.Database();
-                statusEl.innerText = "Ready";
                 statusEl.style.color = "var(--success)";
-                statusEl.style.borderColor = "rgba(52, 211, 153, 0.3)";
-                statusEl.style.background = "rgba(52, 211, 153, 0.1)";
                 consoleEl.innerText = "SQL engine ready. Click 'Run SQL Query' to execute.";
             } catch (err) {
-                statusEl.innerText = "Error";
                 statusEl.style.color = "var(--danger)";
                 consoleEl.className = "console-output error";
                 consoleEl.innerText = "Failed to load SQL engine: " + err.message;
