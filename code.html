@@ -5,69 +5,151 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kuaducode™ - World-Class Multi-Language IDE & AI Studio</title>
     <script src="https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
     <style>
         :root {
-            --bg-deep: rgba(241, 245, 249, 0.85);
-            --bg-dark: rgba(255, 255, 255, 0.94);
-            --bg-panel: rgba(248, 250, 252, 0.96);
-            --border-color: #cbd5e1;
-            --text-main: #0f172a;
+            --bg-deep: #0f172a;
+            --bg-panel: #1e293b;
+            --bg-editor: #090d16;
+            --accent-blue: #2563eb;
+            --accent-hover: #1d4ed8;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --output-color: #38bdf8;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-deep);
             color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: var(--bg-dark);
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
+        header {
+            background-color: var(--bg-panel);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        textarea {
-            width: 100%;
-            height: 150px;
-            font-family: monospace;
-            padding: 10px;
-            box-sizing: border-box;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--output-color);
+            letter-spacing: 0.5px;
+        }
+        .toolbar {
+            display: flex;
+            gap: 10px;
         }
         button {
-            background-color: #2563eb;
+            background-color: var(--accent-blue);
             color: white;
             border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 4px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 6px;
             cursor: pointer;
-            margin-top: 10px;
+            transition: background-color 0.2s;
         }
         button:hover {
-            background-color: #1d4ed8;
+            background-color: var(--accent-hover);
+        }
+        .main-layout {
+            display: flex;
+            flex: 1;
+            height: calc(100vh - 57px);
+        }
+        .editor-pane {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border-color);
+            background-color: var(--bg-editor);
+        }
+        .pane-header {
+            background-color: var(--bg-panel);
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        textarea {
+            flex: 1;
+            width: 100%;
+            background-color: var(--bg-editor);
+            color: var(--text-main);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            padding: 16px;
+            border: none;
+            resize: none;
+            outline: none;
+            line-height: 1.5;
+        }
+        .preview-pane {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-deep);
+        }
+        .preview-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            gap: 16px;
+            overflow-y: auto;
+        }
+        iframe {
+            width: 100%;
+            height: 50%;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
         }
         pre {
-            background: #1e293b;
-            color: #38bdf8;
-            padding: 15px;
-            border-radius: 4px;
-            min-height: 80px;
+            flex: 1;
+            background: var(--bg-editor);
+            color: var(--output-color);
+            font-family: 'Courier New', Courier, monospace;
+            padding: 16px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            min-height: 120px;
+            max-height: 250px;
+            overflow-y: auto;
             white-space: pre-wrap;
+            font-size: 13px;
+            line-height: 1.4;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h2>Kuaducode Python Runner</h2>
-        <p>Write your Python code below:</p>
-        
-        <textarea id="python-code">
+    <header>
+        <div class="logo">Kuaducode™ IDE & AI Studio</div>
+        <div class="toolbar">
+            <button onclick="runPythonCode()">Run Python</button>
+            <button onclick="refreshPreview()">Update WebView</button>
+        </div>
+    </header>
+
+    <div class="main-layout">
+        <div class="editor-pane">
+            <div class="pane-header">Code Editor (HTML / Python Sandbox)</div>
+            <textarea id="code-editor">
 import js
 
 name = js.prompt("Enter your full name:")
@@ -80,51 +162,61 @@ print(f"Name      : {name}")
 print(f"Age       : {age}")
 print(f"City      : {city}")
 print(f"Profession: {profession}")
-        </textarea>
-        <br>
-        <button onclick="runPython()">Run Python Code</button>
+            </textarea>
+        </div>
 
-        <h3>Console Output:</h3>
-        <pre id="output">Initializing Pyodide...</pre>
+        <div class="preview-pane">
+            <div class="pane-header">Live WebView & Python Console</div>
+            <div class="preview-container">
+                <iframe id="web-preview" srcdoc="<h3>Live WebView Preview</h3><p>Run code or edit content to preview live output here.</p>"></iframe>
+                <pre id="output-console">Initializing Pyodide environment...</pre>
+            </div>
+        </div>
     </div>
 
     <script>
         let pyodideReady = false;
         let pyodideInstance = null;
 
-        async function loadPyodideEnvironment() {
+        async function initPyodide() {
             try {
                 pyodideInstance = await loadPyodide();
                 pyodideReady = true;
-                document.getElementById("output").innerText = "Pyodide Ready. Click 'Run Python Code' to start.";
+                document.getElementById("output-console").innerText = "Pyodide Ready. Click 'Run Python' to execute code.";
             } catch (err) {
-                document.getElementById("output").innerText = "Error loading Pyodide: " + err.message;
+                document.getElementById("output-console").innerText = "Error initializing Pyodide: " + err.message;
             }
         }
 
-        loadPyodideEnvironment();
+        initPyodide();
 
-        async function runPython() {
-            const outputElement = document.getElementById("output");
+        async function runPythonCode() {
+            const consoleBox = document.getElementById("output-console");
             if (!pyodideReady) {
-                outputElement.innerText = "Please wait, Pyodide is still loading...";
+                consoleBox.innerText = "Please wait, Pyodide is still loading...";
                 return;
             }
 
-            const code = document.getElementById("python-code").value;
-            outputElement.innerText = "Running...\n";
+            const codeText = document.getElementById("code-editor").value;
+            consoleBox.innerText = "Executing...\n";
 
             pyodideInstance.setStdout({
                 batched: (msg) => {
-                    outputElement.innerText += msg + "\n";
+                    consoleBox.innerText += msg + "\n";
                 }
             });
 
             try {
-                await pyodideInstance.runPythonAsync(code);
+                await pyodideInstance.runPythonAsync(codeText);
             } catch (err) {
-                outputElement.innerText += "\nError: " + err.message;
+                consoleBox.innerText += "\nError: " + err.message;
             }
+        }
+
+        function refreshPreview() {
+            const codeText = document.getElementById("code-editor").value;
+            const iframe = document.getElementById("web-preview");
+            iframe.srcdoc = codeText;
         }
     </script>
 </body>
