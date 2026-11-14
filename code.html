@@ -31,7 +31,6 @@
       overflow: hidden;
     }
 
-    /* Top Navigation Bar */
     .top-bar {
       background: var(--bg-header);
       border-bottom: 1px solid var(--border-color);
@@ -90,7 +89,6 @@
       font-size: 12px;
     }
 
-    /* Menu Bar */
     .menu-bar {
       background: var(--bg-header);
       border-bottom: 1px solid var(--border-color);
@@ -166,7 +164,6 @@
       margin: 4px 0;
     }
 
-    /* Tabs Bar */
     .tabs-bar {
       background: var(--bg-main);
       border-bottom: 1px solid var(--border-color);
@@ -209,7 +206,6 @@
       color: var(--text-main);
     }
 
-    /* Workspace Main Split View */
     .workspace {
       flex: 1;
       display: grid;
@@ -286,7 +282,6 @@
       height: 100%;
     }
 
-    /* Footer Status Bar */
     .status-bar {
       background: var(--bg-header);
       border-top: 1px solid var(--border-color);
@@ -297,7 +292,6 @@
       color: var(--text-muted);
     }
 
-    /* Tool Modal Window */
     .tool-modal-overlay {
       display: none;
       position: fixed;
@@ -357,7 +351,6 @@
       padding: 20px;
     }
 
-    /* Linux Terminal Styles */
     .linux-terminal {
       background: #020617;
       color: #22c55e;
@@ -399,7 +392,6 @@
       outline: none;
     }
 
-    /* UI Inputs & Buttons */
     .tool-btn {
       background: #10b981;
       color: #020617;
@@ -433,7 +425,6 @@
 </head>
 <body>
 
-  <!-- Top Navigation Bar -->
   <div class="top-bar">
     <div class="brand">
       ⚡ <span>Kuaducode Studio Pro</span>
@@ -451,7 +442,6 @@
     </div>
   </div>
 
-  <!-- Menu Bar -->
   <div class="menu-bar">
     <button class="menu-btn">File</button>
     <button class="menu-btn">Edit</button>
@@ -459,7 +449,6 @@
     <button class="menu-btn">View</button>
     <button class="menu-btn">Help</button>
 
-    <!-- Tools Menu Dropdown -->
     <div class="menu-item-wrapper">
       <button class="menu-btn" id="toolsMenuBtn" onclick="toggleToolsMenu(event)">Tools ▾</button>
       <div class="tools-dropdown" id="toolsDropdown">
@@ -473,15 +462,12 @@
     </div>
   </div>
 
-  <!-- Tabs Bar -->
   <div class="tabs-bar">
     <div class="file-tab">index.html <span onclick="event.stopPropagation()">×</span></div>
     <button class="new-tab-btn">+</button>
   </div>
 
-  <!-- Workspace Split View -->
   <div class="workspace">
-    <!-- Editor Pane -->
     <div class="editor-pane">
       <div class="pane-header">
         <div class="pane-tab active">Editor</div>
@@ -504,7 +490,6 @@
       </div>
     </div>
 
-    <!-- Preview Pane -->
     <div class="preview-pane">
       <div class="pane-header">
         <div class="pane-tab active" id="previewTabName">Live HTML Preview</div>
@@ -513,14 +498,12 @@
     </div>
   </div>
 
-  <!-- Footer Status Bar -->
   <div class="status-bar">
     <div id="cursorInfo">Zoom: 100% | Ln 1, Col 1</div>
     <div id="editorStats">Lang: HTML | Words: 38</div>
     <div>Kuaducode Engine</div>
   </div>
 
-  <!-- Dynamic Tool Modal Overlay -->
   <div class="tool-modal-overlay" id="toolModalOverlay" onclick="closeToolOutside(event)">
     <div class="tool-modal">
       <div class="tool-modal-header">
@@ -531,15 +514,12 @@
     </div>
   </div>
 
-  <!-- JavaScript Application Logic -->
   <script>
-    // Initialize Live Preview on load
     window.onload = () => {
       runWorkspace();
       updateEditorStats();
     };
 
-    // Toggle Tools Dropdown
     function toggleToolsMenu(e) {
       e.stopPropagation();
       const dropdown = document.getElementById('toolsDropdown');
@@ -561,7 +541,6 @@
       if (e.target.id === 'toolModalOverlay') closeTool();
     }
 
-    // Run & Output Preview
     function runWorkspace() {
       const code = document.getElementById('codeEditor').value;
       const iframe = document.getElementById('previewFrame');
@@ -571,7 +550,6 @@
       doc.close();
     }
 
-    // Editor Stats & Line Numbers
     function updateEditorStats() {
       const textarea = document.getElementById('codeEditor');
       const lines = textarea.value.split('\n').length;
@@ -596,14 +574,12 @@
       updateEditorStats();
     }
 
-    // Virtual Linux File System
     const virtualFS = {
       'index.html': '<!DOCTYPE html><html><body><h1>Kuaducode Workspace</h1></body></html>',
       'README.md': '# Kuaducode Studio Pro\nBuilt-in Linux Environment v1.0',
       'script.js': 'console.log("Kuaducode Engine Ready");'
     };
 
-    // Open Tools Modals
     function openTool(toolName) {
       const overlay = document.getElementById('toolModalOverlay');
       const title = document.getElementById('toolModalTitle');
@@ -681,7 +657,6 @@
       }
     }
 
-    // Linux Terminal Command Handler
     function handleTerminalCmd(e) {
       if (e.key !== 'Enter') return;
       const input = document.getElementById('termInput');
@@ -751,7 +726,6 @@
       term.scrollTop = term.scrollHeight;
     }
 
-    // Code Debugger Inspector
     function runCodeDebugger() {
       const code = document.getElementById('codeEditor').value;
       const resultsEl = document.getElementById('debugResults');
@@ -792,7 +766,6 @@
       }
     }
 
-    // Password Generator
     function generatePassword() {
       const len = parseInt(document.getElementById('passLen').value) || 16;
       const useSym = document.getElementById('passSymbols').checked;
@@ -817,7 +790,6 @@
       navigator.clipboard.writeText(el.value);
     }
 
-    // JSON Formatter
     function formatJSON(spaces) {
       const input = document.getElementById('jsonInput');
       const status = document.getElementById('jsonStatus');
@@ -832,7 +804,6 @@
       }
     }
 
-    // Base64
     function runBase64(mode) {
       const input = document.getElementById('b64Input').value;
       const output = document.getElementById('b64Output');
