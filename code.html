@@ -7,7 +7,7 @@
     <!-- Pyodide for Python execution in browser -->
     <script src="https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js"></script>
     <!-- sql.js for SQL execution in browser -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libsjs/sql.js/1.8.0/sql-wasm.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
     <style>
         :root {
             --bg-dark: #0f172a;
@@ -87,13 +87,22 @@
             background-color: #334155;
         }
 
+        /* Split main view into Left (Editors) and Right (Previews/Consoles) */
         .main-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
             flex: 1;
             gap: 1px;
             background-color: var(--border-color);
+            overflow: hidden;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            background-color: var(--border-color);
+            height: 100%;
             overflow: hidden;
         }
 
@@ -101,12 +110,13 @@
             background-color: var(--bg-dark);
             display: flex;
             flex-direction: column;
+            flex: 1;
             overflow: hidden;
         }
 
         .panel-header {
             background-color: var(--bg-panel);
-            padding: 8px 15px;
+            padding: 6px 12px;
             font-size: 0.85rem;
             font-weight: 600;
             color: var(--text-muted);
@@ -119,6 +129,8 @@
         .editor-container {
             flex: 1;
             position: relative;
+            display: flex;
+            flex-direction: column;
         }
 
         textarea {
@@ -127,12 +139,12 @@
             background-color: #090d16;
             color: #e2e8f0;
             border: none;
-            padding: 12px;
+            padding: 10px;
             font-family: 'Courier New', Courier, monospace;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             resize: none;
             outline: none;
-            line-height: 1.5;
+            line-height: 1.4;
         }
 
         iframe {
@@ -147,18 +159,14 @@
             background-color: #090d16;
             color: #38bdf8;
             font-family: 'Courier New', Courier, monospace;
-            padding: 12px;
+            padding: 10px;
             overflow-y: auto;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             white-space: pre-wrap;
         }
 
         .console-output.error {
             color: var(--danger);
-        }
-
-        .console-output.success {
-            color: var(--success);
         }
 
         table.sql-table {
@@ -169,9 +177,9 @@
 
         table.sql-table th, table.sql-table td {
             border: 1px solid var(--border-color);
-            padding: 6px 10px;
+            padding: 5px 8px;
             text-align: left;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
 
         table.sql-table th {
@@ -179,10 +187,10 @@
             color: var(--text-main);
         }
 
-        @media (max-width: 900px) {
+        @media (max-width: 1024px) {
             .main-container {
                 grid-template-columns: 1fr;
-                grid-template-rows: repeat(4, 1fr);
+                grid-template-rows: 1fr 1fr;
             }
         }
     </style>
@@ -190,7 +198,7 @@
 <body>
 
     <header>
-        <div class="logo"><span>KuaduCode</span>™ Multi-Environment IDE</div>
+        <div class="logo"><span>KuaduCode</span>™ Professional IDE</div>
         <div class="toolbar">
             <button class="clear-btn" onclick="clearAll()">Clear All</button>
             <button onclick="runAll()">▶ Run Web & Code</button>
@@ -198,75 +206,85 @@
     </header>
 
     <div class="main-container">
-        <!-- HTML / CSS / JS Editor Panel -->
-        <div class="panel">
-            <div class="panel-header">
-                <span>HTML / CSS / JS Source</span>
-            </div>
-            <div class="editor-container">
-                <textarea id="html-editor" placeholder="Write HTML/CSS/JS here...">&lt;!DOCTYPE html&gt;
+        <!-- LEFT COLUMN: Code Editors -->
+        <div class="column">
+            <!-- HTML / CSS / JS Editor Panel -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span>HTML / CSS / JS Source</span>
+                </div>
+                <div class="editor-container">
+                    <textarea id="html-editor" placeholder="Write HTML/CSS/JS here...">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
   &lt;style&gt;
-    body { font-family: sans-serif; text-align: center; padding-top: 40px; background: #f0fdf4; color: #166534; }
-    h1 { font-size: 1.5rem; }
+    body { font-family: sans-serif; text-align: center; padding-top: 30px; background: #f0fdf4; color: #166534; }
+    h1 { font-size: 1.3rem; }
   &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
-  &lt;h1&gt;Hello from KuaduCode Live Preview!&lt;/h1&gt;
-  &lt;p&gt;Edit code above to test live changes.&lt;/p&gt;
+  &lt;h1&gt;KuaduCode Live View Active!&lt;/h1&gt;
 &lt;/body&gt;
 &lt;/html&gt;</textarea>
+                </div>
+            </div>
+
+            <!-- Python Editor Panel -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span>Python 3 Workspace</span>
+                    <button style="padding: 2px 8px; font-size: 0.75rem;" onclick="runPython()">Run Python</button>
+                </div>
+                <div class="editor-container">
+                    <textarea id="python-editor" placeholder="# Write Python code here...">import math
+print("Circle area r=4:", round(math.pi * 16, 2))</textarea>
+                </div>
+            </div>
+
+            <!-- SQL Editor Panel -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span>SQL Workspace (SQLite)</span>
+                    <button style="padding: 2px 8px; font-size: 0.75rem;" onclick="runSQL()">Run SQL</button>
+                </div>
+                <div class="editor-container">
+                    <textarea id="sql-editor" placeholder="-- Write SQL queries here...">CREATE TABLE items (id INTEGER, name TEXT);
+INSERT INTO items VALUES (1, 'Keyboard');
+INSERT INTO items VALUES (2, 'Monitor');
+SELECT * FROM items;</textarea>
+                </div>
             </div>
         </div>
 
-        <!-- Live Preview Panel -->
-        <div class="panel">
-            <div class="panel-header">
-                <span>Live Web View</span>
+        <!-- RIGHT COLUMN: Previews & Consoles -->
+        <div class="column">
+            <!-- Live Preview Panel -->
+            <div class="panel" style="flex: 1.5;">
+                <div class="panel-header">
+                    <span>Live Web View</span>
+                </div>
+                <iframe id="live-preview"></iframe>
             </div>
-            <iframe id="live-preview"></iframe>
-        </div>
 
-        <!-- Python Editor & Console Panel -->
-        <div class="panel">
-            <div class="panel-header">
-                <span>Python 3 Workspace</span>
-                <button style="padding: 2px 8px; font-size: 0.75rem;" onclick="runPython()">Run Python</button>
+            <!-- Python Output Panel -->
+            <div class="panel" style="flex: 1;">
+                <div class="panel-header">
+                    <span>Python Console Output</span>
+                </div>
+                <div id="python-console" class="console-output">Initializing Pyodide...</div>
             </div>
-            <div class="editor-container" style="display: flex; flex-direction: column;">
-                <textarea id="python-editor" style="height: 50%;" placeholder="# Write Python code here...">import math
 
-def calculate_circle(r):
-    return math.pi * (r ** 2)
-
-print("Radius 5 Area:", round(calculate_circle(5), 2))
-print("Python environment ready!")</textarea>
-                <div class="panel-header" style="border-top: 1px solid var(--border-color);">Python Console Output</div>
-                <div id="python-console" class="console-output">Initializing Pyodide Python Engine...</div>
-            </div>
-        </div>
-
-        <!-- SQL Editor & Console Panel -->
-        <div class="panel">
-            <div class="panel-header">
-                <span>SQL Workspace (SQLite)</span>
-                <button style="padding: 2px 8px; font-size: 0.75rem;" onclick="runSQL()">Run SQL</button>
-            </div>
-            <div class="editor-container" style="display: flex; flex-direction: column;">
-                <textarea id="sql-editor" style="height: 50%;" placeholder="-- Write SQL queries here...">CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT, role TEXT);
-INSERT INTO users (name, role) VALUES ('Alice', 'Developer');
-INSERT INTO users (name, role) VALUES ('Bob', 'Engineer');
-
-SELECT * FROM users;</textarea>
-                <div class="panel-header" style="border-top: 1px solid var(--border-color);">SQL Query Result</div>
-                <div id="sql-console" class="console-output">Initializing SQL.js Engine...</div>
+            <!-- SQL Output Panel -->
+            <div class="panel" style="flex: 1;">
+                <div class="panel-header">
+                    <span>SQL Query Result</span>
+                </div>
+                <div id="sql-console" class="console-output">Initializing SQL.js...</div>
             </div>
         </div>
     </div>
 
     <script>
-        // Live Preview Real-time updater
         const htmlEditor = document.getElementById('html-editor');
         const livePreview = document.getElementById('live-preview');
 
@@ -296,7 +314,7 @@ SELECT * FROM users;</textarea>
             }
         }
 
-        // --- Python Engine Setup (Pyodide) ---
+        // --- Python Engine Setup ---
         let pyodideReady = false;
         let pyodideInstance = null;
 
@@ -305,33 +323,25 @@ SELECT * FROM users;</textarea>
             try {
                 pyodideInstance = await loadPyodide();
                 pyodideReady = true;
-                consoleEl.innerText = "Python Environment Ready. Click 'Run Python' to execute.";
+                consoleEl.innerText = "Python Environment Ready.";
             } catch (err) {
                 consoleEl.className = "console-output error";
-                consoleEl.innerText = "Failed to load Python environment: " + err.message;
+                consoleEl.innerText = "Error loading Python: " + err.message;
             }
         }
 
         async function runPython() {
             const consoleEl = document.getElementById('python-console');
             if (!pyodideReady) {
-                consoleEl.innerText = "Python is still initializing, please wait...";
+                consoleEl.innerText = "Python is still initializing...";
                 return;
             }
 
             consoleEl.className = "console-output";
             consoleEl.innerText = "Running...";
-
             let code = document.getElementById('python-editor').value;
-            
-            // Redirect stdout to capture prints
-            let output = "";
-            pyodideInstance.globals.set("print_to_console", (text) => {
-                output += text + "\n";
-            });
 
             try {
-                // Intercept stdout
                 pyodideInstance.runPython(`
                     import sys
                     import io
@@ -349,7 +359,7 @@ SELECT * FROM users;</textarea>
             }
         }
 
-        // --- SQL Engine Setup (sql.js) ---
+        // --- SQL Engine Setup ---
         let db = null;
 
         async function initSQL() {
@@ -359,10 +369,10 @@ SELECT * FROM users;</textarea>
                     locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}`
                 });
                 db = new SQL.Database();
-                consoleEl.innerText = "SQL Engine Ready. Click 'Run SQL' to execute queries.";
+                consoleEl.innerText = "SQL Engine Ready.";
             } catch (err) {
                 consoleEl.className = "console-output error";
-                consoleEl.innerText = "Failed to load SQL engine: " + err.message;
+                consoleEl.innerText = "Error loading SQL: " + err.message;
             }
         }
 
@@ -377,26 +387,21 @@ SELECT * FROM users;</textarea>
             const query = document.getElementById('sql-editor').value;
 
             try {
-                // Exec can return multiple results if there are multiple statements
                 const results = db.exec(query);
                 if (results.length === 0) {
-                    consoleEl.innerText = "Query executed successfully (No tabular output).";
+                    consoleEl.innerText = "Query executed successfully.";
                     return;
                 }
 
                 let htmlOutput = "";
                 results.forEach(res => {
                     let table = '<table class="sql-table"><thead><tr>';
-                    res.columns.forEach(col => {
-                        table += `<th>${col}</th>`;
-                    });
+                    res.columns.forEach(col => table += `<th>${col}</th>`);
                     table += '</tr></thead><tbody>';
 
                     res.values.forEach(row => {
                         table += '<tr>';
-                        row.forEach(val => {
-                            table += `<td>${val !== null ? val : 'NULL'}</td>`;
-                        });
+                        row.forEach(val => table += `<td>${val !== null ? val : 'NULL'}</td>`);
                         table += '</tr>';
                     });
                     table += '</tbody></table>';
@@ -410,7 +415,6 @@ SELECT * FROM users;</textarea>
             }
         }
 
-        // Initialize engines on load
         initPython();
         initSQL();
     </script>
