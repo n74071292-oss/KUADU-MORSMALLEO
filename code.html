@@ -84,9 +84,10 @@
             flex-direction: column;
             border-right: 1px solid var(--border-color);
             background-color: var(--bg-editor);
-        }
-        .pane.hidden {
             display: none;
+        }
+        .pane.active-pane {
+            display: flex;
         }
         .tab-bar {
             background-color: var(--bg-panel);
@@ -122,32 +123,25 @@
             outline: none;
             line-height: 1.5;
         }
-        .preview-container {
+        .preview-wrapper {
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 16px;
-            gap: 16px;
             background-color: rgba(9, 13, 22, 0.85);
-            overflow-y: auto;
         }
         iframe {
+            flex: 1;
             width: 100%;
-            height: 50%;
             background: white;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
+            border: none;
         }
         pre {
-            flex: 1;
             background: var(--bg-editor);
             color: var(--output-color);
             font-family: 'Courier New', Courier, monospace;
             padding: 16px;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
-            min-height: 120px;
-            max-height: 250px;
+            border-top: 1px solid var(--border-color);
+            max-height: 200px;
             overflow-y: auto;
             white-space: pre-wrap;
             font-size: 13px;
@@ -163,38 +157,51 @@
         <div class="logo">Kuaducode</div>
         <div class="toolbar">
             <button onclick="runPythonCode()">Run Python</button>
-            <button onclick="refreshPreview()">Update WebView</button>
+            <button onclick="refreshWebView()">Update Web Preview</button>
         </div>
     </header>
 
     <div class="main-layout">
-        <div id="editor-pane" class="pane">
+        <div id="python-pane" class="pane active-pane">
             <div class="tab-bar">
-                <div class="tab active" onclick="switchTab('editor')">Code Editor</div>
+                <div class="tab active" onclick="switchTab('python')">Python Workspace</div>
             </div>
-            <textarea id="code-editor">
-import js
+            <textarea id="python-editor">import js
 
 name = js.prompt("Enter your full name:")
 age = js.prompt("Enter your age:")
-city = js.prompt("Enter your city/location:")
-profession = js.prompt("Enter your profession:")
 
-print("=== USER PROFILE SUMMARY ===")
-print(f"Name      : {name}")
-print(f"Age       : {age}")
-print(f"City      : {city}")
-print(f"Profession: {profession}")
-            </textarea>
+print("=== KUADUCODE PYTHON EXECUTION ===")
+print(f"Developer Name: {name}")
+print(f"Age: {age}")</textarea>
+            <pre id="output-console">Initializing Pyodide environment...</pre>
+        </div>
+
+        <div id="html-pane" class="pane">
+            <div class="tab-bar">
+                <div class="tab active" onclick="switchTab('html')">HTML Workspace</div>
+            </div>
+            <textarea id="html-editor"><!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding-top: 50px; background: #f0fdf4; color: #166534; }
+        h1 { font-size: 2.5rem; }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Kuaducode Live View!</h1>
+    <p>Edit your HTML code in the HTML tab and click 'Update Web Preview'.</p>
+</body>
+</html></textarea>
         </div>
 
         <div id="preview-pane" class="pane">
             <div class="tab-bar">
-                <div class="tab active" onclick="switchTab('preview')">Live WebView & Console</div>
+                <div class="tab active" onclick="switchTab('preview')">Live Web Preview</div>
             </div>
-            <div class="preview-container">
-                <iframe id="web-preview" srcdoc="<h3>Live WebView Preview</h3><p>Run code or edit content to preview live output here.</p>"></iframe>
-                <pre id="output-console">Initializing Pyodide environment...</pre>
+            <div class="preview-wrapper">
+                <iframe id="web-preview"></iframe>
             </div>
         </div>
     </div>
@@ -216,14 +223,15 @@ print(f"Profession: {profession}")
         initPyodide();
 
         async function runPythonCode() {
+            switchTab('python');
             const consoleBox = document.getElementById("output-console");
             if (!pyodideReady) {
                 consoleBox.innerText = "Please wait, Pyodide is still loading...";
                 return;
             }
 
-            const codeText = document.getElementById("code-editor").value;
-            consoleBox.innerText = "Executing...\n";
+            const codeText = document.getElementById("python-editor").value;
+            consoleBox.innerText = "Executing Python...\n";
 
             pyodideInstance.setStdout({
                 batched: (msg) => {
@@ -238,24 +246,28 @@ print(f"Profession: {profession}")
             }
         }
 
-        function refreshPreview() {
-            const codeText = document.getElementById("code-editor").value;
+        function refreshWebView() {
+            const codeText = document.getElementById("html-editor").value;
             const iframe = document.getElementById("web-preview");
             iframe.srcdoc = codeText;
+            switchTab('preview');
         }
 
-        function switchTab(target) {
-            const editorPane = document.getElementById("editor-pane");
-            const previewPane = document.getElementById("preview-pane");
+        function switchTab(targetName) {
+            document.getElementById('python-pane').classList.remove('active-pane');
+            document.getElementById('html-pane').classList.remove('active-pane');
+            document.getElementById('preview-pane').classList.remove('active-pane');
 
-            if (target === 'editor') {
-                editorPane.classList.remove('hidden');
-                previewPane.classList.add('hidden');
-            } else {
-                previewPane.classList.remove('hidden');
-                editorPane.classList.add('hidden');
+            if (targetName === 'python') {
+                document.getElementById('python-pane').classList.add('active-pane');
+            } else if (targetName === 'html') {
+                document.getElementById('html-pane').classList.add('active-pane');
+            } else if (targetName === 'preview') {
+                document.getElementById('preview-pane').classList.add('active-pane');
             }
         }
+
+        refreshWebView();
     </script>
 </body>
 </html>
