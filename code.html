@@ -255,9 +255,16 @@
             background: white;
         }
 
-        .console-output {
+        .console-wrapper {
             flex: 1;
             background-color: #070a12;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .console-output {
+            flex: 1;
             color: #38bdf8;
             font-family: 'Fira Code', 'JetBrains Mono', 'Courier New', Courier, monospace;
             padding: 14px;
@@ -273,6 +280,35 @@
 
         .console-output.success {
             color: var(--success);
+        }
+
+        .console-input-bar {
+            display: flex;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-dark);
+            padding: 8px;
+            gap: 8px;
+        }
+
+        .console-input-bar input {
+            flex: 1;
+            background: var(--bg-deep);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: var(--text-main);
+            font-family: 'Fira Code', 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            outline: none;
+        }
+
+        .console-input-bar input:focus {
+            border-color: var(--accent);
+        }
+
+        .console-input-bar button {
+            padding: 6px 14px;
+            font-size: 0.8rem;
         }
 
         ::-webkit-scrollbar {
@@ -387,11 +423,23 @@
                 </div>
 
                 <div id="tab-python" class="tab-content">
-                    <div id="python-console" class="console-output">Loading Pyodide runtime environment...</div>
+                    <div class="console-wrapper">
+                        <div id="python-console" class="console-output">Loading Pyodide runtime environment...</div>
+                        <div class="console-input-bar">
+                            <input type="text" id="python-input" placeholder="Type input here..." onkeydown="handlePythonInputKey(event)">
+                            <button onclick="submitPythonInput()">Send Input</button>
+                        </div>
+                    </div>
                 </div>
 
                 <div id="tab-sql" class="tab-content">
-                    <div id="sql-console" class="console-output">Loading SQLite WASM engine...</div>
+                    <div class="console-wrapper">
+                        <div id="sql-console" class="console-output">Loading SQLite WASM engine...</div>
+                        <div class="console-input-bar">
+                            <input type="text" id="sql-input" placeholder="Type quick SQL query here..." onkeydown="handleSQLInputKey(event)">
+                            <button onclick="submitSQLInput()">Execute</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -437,6 +485,7 @@
 
         let pyodideReady = false;
         let pyodideInstance = null;
+        let pythonInputResolve = null;
 
         async function initPython() {
             const consoleEl = document.getElementById('python-console');
@@ -453,95 +502,37 @@
             }
         }
 
+        function customInput(promptText = "") {
+            return new Promise((resolve) => {
+                const consoleEl = document.getElementById('python-console');
+                if (promptText) {
+                    consoleEl.innerText += promptText;
+                }
+                pythonInputResolve = resolve;
+                document.getElementById('python-input').focus();
+            });
+        }
+
+        function submitPythonInput() {
+            const inputField = document.getElementById('python-input');
+            const val = inputField.value;
+            inputField.value = "";
+
+            const consoleEl = document.getElementById('python-console');
+            consoleEl.innerText += val + "\n";
+
+            if (pythonInputResolve) {
+                const resolve = pythonInputResolve;
+                pythonInputResolve = null;
+                resolve(val);
+            }
+        }
+
+        function handlePythonInputKey(event) {
+            if (event.key === 'Enter') {
+                submitPythonInput();
+            }
+        }
+
         async function runPython() {
             const consoleEl = document.getElementById('python-console');
-            if (!pyodideReady) {
-                consoleEl.innerText = "Python engine is still loading...";
-                return;
-            }
-
-            consoleEl.className = "console-output";
-            consoleEl.innerText = "Executing python code...";
-            let code = document.getElementById('python-editor').value;
-
-            try {
-                pyodideInstance.runPython(`
-                    import sys
-                    import io
-                    sys.stdout = io.StringIO()
-                `);
-
-                await pyodideInstance.loadPackagesFromImports(code);
-                await pyodideInstance.runPythonAsync(code);
-
-                let stdout = pyodideInstance.runPython("sys.stdout.getvalue()");
-                consoleEl.innerText = stdout || "Executed successfully with no output.";
-            } catch (err) {
-                consoleEl.className = "console-output error";
-                consoleEl.innerText = err.message;
-            }
-        }
-
-        let db = null;
-
-        async function initSQL() {
-            const consoleEl = document.getElementById('sql-console');
-            const statusEl = document.getElementById('sql-status');
-            try {
-                const SQL = await initSqlJs({
-                    locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}`
-                });
-                db = new SQL.Database();
-                statusEl.style.color = "var(--success)";
-                consoleEl.innerText = "SQL engine ready. Click 'Run SQL Query' to execute.";
-            } catch (err) {
-                statusEl.style.color = "var(--danger)";
-                consoleEl.className = "console-output error";
-                consoleEl.innerText = "Failed to load SQL engine: " + err.message;
-            }
-        }
-
-        function runSQL() {
-            const consoleEl = document.getElementById('sql-console');
-            if (!db) {
-                consoleEl.innerText = "SQL engine is still loading...";
-                return;
-            }
-
-            consoleEl.className = "console-output";
-            const query = document.getElementById('sql-editor').value;
-
-            try {
-                const results = db.exec(query);
-                if (results.length === 0) {
-                    consoleEl.innerText = "Query executed successfully.";
-                    return;
-                }
-
-                let htmlOutput = "";
-                results.forEach(res => {
-                    let table = '<table class="sql-table"><thead><tr>';
-                    res.columns.forEach(col => table += `<th>${col}</th>`);
-                    table += '</tr></thead><tbody>';
-
-                    res.values.forEach(row => {
-                        table += '<tr>';
-                        row.forEach(val => table += `<td>${val !== null ? val : 'NULL'}</td>`);
-                        table += '</tr>';
-                    });
-                    table += '</tbody></table>';
-                    htmlOutput += table + "<br>";
-                });
-
-                consoleEl.innerHTML = htmlOutput;
-            } catch (err) {
-                consoleEl.className = "console-output error";
-                consoleEl.innerText = err.message;
-            }
-        }
-
-        initPython();
-        initSQL();
-    </script>
-</body>
-</html>
