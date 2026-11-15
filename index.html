@@ -6,25 +6,23 @@
   <meta name="description" content="Learn programming languages by category with beginner-friendly paths, lessons, and examples.">
   <meta name="theme-color" content="#10131c">
   <title>KuaduCode — Learn to Code</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="#" aria-label=" KuaduCode home">
+    <a class="brand" href="#" aria-label="KuaduCode home">
       <span class="brand-mark" aria-hidden="true">&lt;/&gt;</span>
       <span>Kuadu<span class="brand-accent">code</span></span>
     </a>
     <nav class="nav-links" id="navLinks" aria-label="Main navigation">
-      <a href="#explore">🔍Explore</a>
-      <a href="video-lessons.html">▶️Video lessons</a>
-        <a href="code.html">🧑‍💻Code Lab</a>
-      <a href="#premium">🏆Premium</a>
+      <a href="#explore">🔍 Explore</a>
+      <a href="#premium">🏆 Premium</a>
       <a href="#learning-path">🪜Learning paths</a>
       <a href="#about">🏢About</a>
     </nav>
     <a class="top-cta" href="#explore">Start learning <span aria-hidden="true">↗</span></a>
-    <button class="mobile-menu" id="mobileMenu" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <button class="mobile-menu" id="mobileMenu" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navLinks">☰</button>
   </header>
 
   <main>
@@ -42,7 +40,7 @@
           <p><strong>Start at your own pace</strong><br><small>Beginner-friendly guides and examples</small></p>
         </div>
       </div>
-      <div class="hero-art" aria-label="Illustration of code on a computer screen"><img class="hero-image" src="images/hero-coding.svg" alt="Colourful illustration of a code editor on a computer screen" fetchpriority="high">
+      <div class="hero-art" role="img" aria-label="Illustration of code on a computer screen">
         <div class="glow glow-one"></div><div class="glow glow-two"></div>
         <div class="code-window">
           <div class="window-bar"><div class="window-dots"><i></i><i></i><i></i></div><span>hello_world.js</span><span class="window-menu">•••</span></div>
@@ -75,11 +73,11 @@
         <div><span class="eyebrow">FIND YOUR STARTING POINT</span><h2>Explore coding <span>categories</span></h2><p>Choose what you want to create. We'll help you find the right language.</p></div>
       </div>
       <div class="category-grid" id="categoryGrid">
-        <button class="category-card active" data-category="all"><span class="category-symbol">✳</span><span><strong>All languages</strong><small>Explore everything</small></span><span class="category-arrow">↗</span></button>
-        <button class="category-card" data-category="web"><img class="category-thumb" src="images/web-development.svg" alt="" loading="lazy"><span class="category-symbol orange">&lt;/&gt;</span><span><strong>Web development</strong><small>Websites & web apps</small></span><span class="category-arrow">↗</span></button>
-        <button class="category-card" data-category="data"><img class="category-thumb" src="images/data-ai.svg" alt="" loading="lazy"><span class="category-symbol blue">▥</span><span><strong>Data & AI</strong><small>Data, automation & AI</small></span><span class="category-arrow">↗</span></button>
-        <button class="category-card" data-category="mobile"><img class="category-thumb" src="images/mobile-apps.svg" alt="" loading="lazy"><span class="category-symbol pink">▣</span><span><strong>Mobile apps</strong><small>Apps for phones</small></span><span class="category-arrow">↗</span></button>
-        <button class="category-card" data-category="systems"><img class="category-thumb" src="images/systems-games.svg" alt="" loading="lazy"><span class="category-symbol green">⌘</span><span><strong>Systems & games</strong><small>Games & low-level code</small></span><span class="category-arrow">↗</span></button>
+        <button class="category-card active" type="button" data-category="all"><span class="category-symbol">✳</span><span><strong>All languages</strong><small>Explore everything</small></span><span class="category-arrow">↗</span></button>
+        <button class="category-card" type="button" data-category="web"><span class="category-symbol orange">&lt;/&gt;</span><span><strong>Web development</strong><small>Websites & web apps</small></span><span class="category-arrow">↗</span></button>
+        <button class="category-card" type="button" data-category="data"><span class="category-symbol blue">▥</span><span><strong>Data & AI</strong><small>Data, automation & AI</small></span><span class="category-arrow">↗</span></button>
+        <button class="category-card" type="button" data-category="mobile"><span class="category-symbol pink">▣</span><span><strong>Mobile apps</strong><small>Apps for phones</small></span><span class="category-arrow">↗</span></button>
+        <button class="category-card" type="button" data-category="systems"><span class="category-symbol green">⌘</span><span><strong>Systems & games</strong><small>Games & low-level code</small></span><span class="category-arrow">↗</span></button>
       </div>
 
       <div class="language-toolbar">
@@ -105,16 +103,16 @@
 
     <section class="about-section section" id="about">
       <div class="about-icon">&lt;?&gt;</div>
-      <div><span class="eyebrow">CODE WITH CONFIDENCE</span><h2>Every expert was once a beginner.</h2><p>CodePath helps you discover programming languages and choose what to learn next. The included lessons are starter guides; keep practising and consult official documentation as you grow.</p></div>
+      <div><span class="eyebrow">CODE WITH CONFIDENCE</span><h2>Every expert was once a beginner.</h2><p>KuaduCode helps you discover programming languages and choose what to learn next. The included lessons are starter guides; keep practising and consult official documentation as you grow.</p></div>
     </section>
   
     <section class="section premium-section" id="premium">
-      <div class="section-heading"><div><span class="eyebrow">LEVEL UP YOUR SKILLS</span><h2>CodePath <span>Premium</span></h2><p>Choose a learning package from GHS 20, with MTN Mobile Money checkout interface.</p></div></div>
+      <div class="section-heading"><div><span class="eyebrow">LEVEL UP YOUR SKILLS</span><h2>KuaduCode <span>Premium</span></h2><p>Explore the planned premium learning packages. Online plans and MTN Mobile Money checkout are not available yet.</p></div></div>
       <div class="premium-card">
         <div><span class="premium-badge">PREMIUM MEMBERSHIP</span><h3>Build beyond the basics</h3><p class="premium-price">From GHS 20 <span>per package</span></p><p>Choose Starter, Practice Plus, Project Builder, or Pro Learning Pack.</p>
         <ul><li>Advanced project briefs across all 13 languages</li><li>Beginner, intermediate and advanced challenge paths</li><li>Project checklists and debugging exercises</li><li>Video lesson directory and guided study plans</li><li>Progress review checklist</li></ul>
-        <a class="btn btn-primary" href="premium.html">View plans & MTN MoMo <span aria-hidden="true">→</span></a>
-        <small class="premium-note">MTN MoMo API integration is required before real payments can be collected.</small></div>
+        <a class="btn btn-primary" href="#learning-path">Explore learning paths <span aria-hidden="true">→</span></a>
+        <small class="premium-note">Online plans and MTN MoMo checkout are not available yet. No payment will be collected.</small></div>
         <div class="premium-art" aria-hidden="true"><span>$_</span><span>{ }</span><span>01</span><span>⚡</span></div>
       </div>
     </section>
@@ -123,72 +121,17 @@
   <footer class="footer"><a class="brand" href="#"><span class="brand-mark">&lt;/&gt;</span><span>Kuadu<span class="brand-accent">code</span></span></a><p>Small steps. Real skills. Big ideas.</p><span>© <span id="year"></span> KuaduCode Learning</span></footer>
 
   <dialog class="lesson-dialog" id="lessonDialog" aria-labelledby="dialogTitle">
-    <button class="dialog-close" id="dialogClose" aria-label="Close lesson">×</button>
+    <button class="dialog-close" id="dialogClose" type="button" aria-label="Close lesson">×</button>
     <div class="dialog-icon" id="dialogIcon">JS</div>
     <span class="eyebrow" id="dialogCategory">WEB DEVELOPMENT</span>
     <h2 id="dialogTitle">Learn JavaScript</h2>
     <p id="dialogDescription"></p>
-    <div class="lesson-block"><h3>Your first concept</h3><p id="dialogLesson"></p><pre><code id="dialogCode"></code></pre><button class="copy-button" id="copyCode">Copy example</button></div>
+    <div class="lesson-block"><h3>Your first concept</h3><p id="dialogLesson"></p><pre><code id="dialogCode"></code></pre><button class="copy-button" id="copyCode" type="button">Copy example</button></div>
     <div class="lesson-tip"><strong>Practice tip</strong><p id="dialogTip"></p></div>
-    <button class="btn btn-primary complete-button" id="completeLesson">Mark lesson complete ✓</button>
+    <button class="btn btn-primary complete-button" id="completeLesson" type="button">Mark lesson complete ✓</button>
     <p class="dialog-note" id="dialogNote"></p>
   </dialog>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 </body>
 </html>
-<script>
-  const AudioContext = window.AudioContext || window.webkitAudioContext;
-const audioCtx = new AudioContext();
-
-const gainNode = audioCtx.createGain();
-gainNode.gain.value = 0.6;
-gainNode.connect(audioCtx.destination);
-
-let audioBuffer = null;
-let sourceNode = null;
-let isPlaying = false;
-
-async function loadBackgroundAudio(url) {
-    try {
-        const response = await fetch(url);
-        const arrayBuffer = await response.arrayBuffer();
-        audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-function playBackgroundAudio() {
-    if (!audioBuffer || isPlaying) return;
-
-    if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-    }
-
-    sourceNode = audioCtx.createBufferSource();
-    sourceNode.buffer = audioBuffer;
-    sourceNode.loop = true;
-    sourceNode.connect(gainNode);
-    sourceNode.start(0);
-    isPlaying = true;
-}
-
-function setVolume(level, fadeTime = 1) {
-    gainNode.gain.setTargetAtTime(level, audioCtx.currentTime, fadeTime);
-}
-
-loadBackgroundAudio('https://wikimedia.org');
-
-function unlockAudio() {
-    playBackgroundAudio();
-    document.removeEventListener('click', unlockAudio);
-    document.removeEventListener('keydown', unlockAudio);
-    document.removeEventListener('touchstart', unlockAudio);
-}
-
-document.addEventListener('click', unlockAudio);
-document.addEventListener('keydown', unlockAudio);
-document.addEventListener('touchstart', unlockAudio);
-
-</script>
