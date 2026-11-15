@@ -32,6 +32,7 @@
             overflow-x: hidden;
         }
 
+        /* Navbar */
         header {
             display: flex;
             justify-content: space-between;
@@ -94,6 +95,7 @@
             background-color: #7b1fa2;
         }
 
+        /* Hero Section */
         .hero {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -153,6 +155,7 @@
         .btn-primary:hover { background-color: #7b1fa2; }
         .btn-secondary:hover { border-color: var(--text-muted); }
 
+        /* Code Preview Card */
         .code-preview {
             background-color: var(--bg-surface);
             border: 1px solid var(--border-color);
@@ -217,88 +220,27 @@
         .str { color: #a5d6ff; }
         .func { color: #d2a8ff; }
 
-        .music-player-card {
+        .progress-box {
             margin-top: 15px;
-            padding: 14px;
-            background: #1f242c;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
             display: flex;
-            flex-direction: column;
-            gap: 10px;
+            align-items: center;
+            gap: 12px;
             font-family: sans-serif;
+            font-size: 0.9rem;
         }
 
-        .player-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .track-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .play-btn {
-            background: var(--accent-purple);
+        .check-icon {
+            background: var(--accent-green);
             color: white;
-            border: none;
-            width: 32px;
-            height: 32px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
-            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.9rem;
-            transition: transform 0.1s;
-        }
-
-        .play-btn:active {
-            transform: scale(0.95);
-        }
-
-        .visualizer {
-            display: flex;
-            align-items: flex-end;
-            gap: 3px;
-            height: 20px;
-            padding: 2px 0;
-        }
-
-        .bar {
-            width: 4px;
-            background: var(--accent-blue);
-            height: 4px;
-            border-radius: 2px;
-            transition: height 0.2s ease;
-        }
-
-        body.playing .bar {
-            animation: bounce 0.8s infinite ease-in-out alternate;
-        }
-
-        body.playing .bar:nth-child(2) { animation-delay: 0.2s; }
-        body.playing .bar:nth-child(3) { animation-delay: 0.4s; }
-        body.playing .bar:nth-child(4) { animation-delay: 0.1s; }
-        body.playing .bar:nth-child(5) { animation-delay: 0.3s; }
-
-        @keyframes bounce {
-            0% { height: 4px; }
-            100% { height: 18px; }
-        }
-
-        .track-select {
-            background: var(--bg-base);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 6px 10px;
-            border-radius: 6px;
             font-size: 0.8rem;
-            outline: none;
-            width: 100%;
         }
 
         @media (max-width: 900px) {
@@ -353,107 +295,29 @@
                     <div class="dot dot-yellow"></div>
                     <div class="dot dot-green"></div>
                 </div>
-                <div class="code-title">studio_rhythm.js</div>
-                <div class="code-badge">🎵 Coding Vibe</div>
+                <div class="code-title">hello_world.js</div>
+                <div class="code-badge">⚡ Learn by doing</div>
             </div>
             <div class="code-body">
-                <div><span class="line-num">01</span><span class="kw">const</span> <span class="var">rhythm</span> = <span class="str">"Afrobeat Flow"</span>;</div>
+                <div><span class="line-num">01</span><span class="kw">const</span> <span class="var">dream</span> = <span class="str">"developer"</span>;</div>
                 <div><span class="line-num">02</span></div>
-                <div><span class="line-num">03</span><span class="kw">function</span> <span class="func">playFocusBeat</span>() {</div>
-                <div><span class="line-num">04</span>    <span class="func">loadTrack</span>(<span class="var">selectedStar</span>);</div>
-                <div><span class="line-num">05</span>    <span class="kw">return</span> <span class="str">"Coding session active 🚀"</span>;</div>
+                <div><span class="line-num">03</span><span class="kw">function</span> <span class="func">startJourney</span>() {</div>
+                <div><span class="line-num">04</span>    <span class="func">learn</span>(<span class="str">"every day"</span>);</div>
+                <div><span class="line-num">05</span>    <span class="kw">return</span> <span class="str">"You can do it!"</span>;</div>
                 <div><span class="line-num">06</span>}</div>
-
-                <div class="music-player-card">
-                    <div class="player-top">
-                        <div class="track-info">
-                            <button class="play-btn" id="playToggleBtn" onclick="toggleMusic()">▶</button>
-                            <div>
-                                <strong id="currentTrackName" style="font-size: 0.85rem;">Kudus & Partey Groove</strong><br>
-                                <span style="color: var(--text-muted); font-size: 0.75rem;" id="playerStatus">Paused</span>
-                            </div>
-                        </div>
-                        <div class="visualizer">
-                            <div class="bar"></div>
-                            <div class="bar"></div>
-                            <div class="bar"></div>
-                            <div class="bar"></div>
-                            <div class="bar"></div>
-                        </div>
+                <div><span class="line-num">07</span></div>
+                <div><span class="line-num">08</span><span style="color: var(--text-muted)">// Your story starts now ✨</span></div>
+                
+                <div class="progress-box">
+                    <div class="check-icon">✓</div>
+                    <div>
+                        <strong>Your progress</strong><br>
+                        <span style="color: var(--text-muted); font-size: 0.8rem;">1 lesson completed</span>
                     </div>
-                    <select class="track-select" id="trackSelector" onchange="changeTrack(this)">
-                        <option value="Kudus & Partey Groove">🎵 Kudus & Partey Focus Beat</option>
-                        <option value="Jordan Ayew Rhythm">🎵 Jordan Ayew Smooth Vibe</option>
-                        <option value="Accra Dev Lo-Fi">🎵 Accra Dev Lo-Fi Beat</option>
-                    </select>
                 </div>
             </div>
         </div>
     </main>
 
-    <script>
-        let isPlaying = false;
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        let oscillator = null;
-        let gainNode = null;
-
-        function toggleMusic() {
-            isPlaying = !isPlaying;
-            const btn = document.getElementById('playToggleBtn');
-            const status = document.getElementById('playerStatus');
-            
-            if (isPlaying) {
-                document.body.classList.add('playing');
-                btn.textContent = '⏸';
-                status.textContent = 'Playing rhythm...';
-                startSynthBeat();
-            } else {
-                document.body.classList.remove('playing');
-                btn.textContent = '▶';
-                status.textContent = 'Paused';
-                stopSynthBeat();
-            }
-        }
-
-        function changeTrack(select) {
-            document.getElementById('currentTrackName').textContent = select.value;
-            if (isPlaying) {
-                stopSynthBeat();
-                startSynthBeat();
-            }
-        }
-
-        function startSynthBeat() {
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-            try {
-                oscillator = audioCtx.createOscillator();
-                gainNode = audioCtx.createGain();
-                
-                oscillator.type = 'sine';
-                oscillator.frequency.setValueAtTime(220, audioCtx.currentTime);
-                
-                gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
-                
-                oscillator.connect(gainNode);
-                gainNode.connect(audioCtx.destination);
-                
-                oscillator.start();
-            } catch (e) {
-                console.log("Audio context prevented");
-            }
-        }
-
-        function stopSynthBeat() {
-            if (oscillator) {
-                try {
-                    oscillator.stop();
-                    oscillator.disconnect();
-                } catch(e) {}
-                oscillator = null;
-            }
-        }
-    </script>
 </body>
 </html>
