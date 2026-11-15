@@ -1,301 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KuaduCode — Premium </title>
-    <style>
-        :root {
-            --bg-base: #f4f7fa;
-            --bg-surface: #ffffff;
-            --border-color: #d1d9e0;
-            --text-main: #1f2328;
-            --text-muted: #57606a;
-            --accent-blue: #0969da;
-            --accent-purple: #8250df;
-            --accent-green: #1a7f37;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-base);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            border-bottom: 1px solid var(--border-color);
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            color: var(--text-main);
-            font-weight: bold;
-            font-size: 1.25rem;
-        }
-
-        .logo-badge {
-            background: var(--accent-purple);
-            color: #fff;
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-size: 1rem;
-        }
-
-        nav {
-            display: flex;
-            gap: 25px;
-            align-items: center;
-        }
-
-        nav a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: color 0.2s;
-        }
-
-        nav a:hover {
-            color: var(--accent-blue);
-        }
-
-        .main-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 60px 20px;
-            flex: 1;
-            width: 100%;
-        }
-
-        .page-header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .page-header h1 {
-            font-size: 2.75rem;
-            margin-bottom: 15px;
-            letter-spacing: -1px;
-            color: var(--text-main);
-        }
-
-        .page-header p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 25px;
-        }
-
-        .pricing-card {
-            background-color: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s, box-shadow 0.2s;
-            position: relative;
-        }
-
-        .pricing-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-        }
-
-        .pricing-card.featured {
-            border: 2px solid var(--accent-purple);
-        }
-
-        .popular-badge {
-            position: absolute;
-            top: -12px;
-            right: 25px;
-            background: var(--accent-purple);
-            color: white;
-            font-size: 0.75rem;
-            font-weight: bold;
-            padding: 4px 10px;
-            border-radius: 20px;
-            text-transform: uppercase;
-        }
-
-        .plan-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .plan-price {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--text-main);
-            margin-bottom: 20px;
-        }
-
-        .plan-price span {
-            font-size: 0.9rem;
-            font-weight: normal;
-            color: var(--text-muted);
-        }
-
-        .features-list {
-            list-style: none;
-            margin-bottom: 30px;
-            flex: 1;
-        }
-
-        .features-list li {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .features-list li::before {
-            content: "✓";
-            color: var(--accent-green);
-            font-weight: bold;
-        }
-
-        .btn-plan {
-            width: 100%;
-            background-color: var(--bg-base);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            transition: background 0.2s, color 0.2s;
-        }
-
-        .btn-plan:hover {
-            background-color: var(--text-main);
-            color: white;
-        }
-
-        .pricing-card.featured .btn-plan {
-            background-color: var(--accent-purple);
-            color: white;
-            border: none;
-        }
-
-        .pricing-card.featured .btn-plan:hover {
-            background-color: #6e3fc5;
-        }
-
-        @media (max-width: 768px) {
-            header { padding: 15px 20px; }
-            nav { display: none; }
-            .page-header h1 { font-size: 2rem; }
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-        <a href="index.html" class="logo-container">
-            <div class="logo-badge">&lt;/&gt;</div>
-            Kuaducode
-        </a>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="code.html">Code Lab</a>
-            <a href="premium.html" style="color: var(--accent-purple); font-weight: 600;">Premium</a>
-        </nav>
-        <a href="code.html" class="btn-plan" style="width: auto; padding: 8px 16px;">Get Started</a>
-    </header>
-
-    <main class="main-container">
-        <div class="page-header">
-            <h1>Invest in Your Coding Journey</h1>
-            <p>Choose the tier that fits your ambitions. Unlock specialized resources, mentorship, and opportunities to accelerate your career.</p>
-        </div>
-
-        <div class="pricing-grid">
-            <div class="pricing-card">
-                <div class="plan-title">Starter Pass</div>
-                <div class="plan-price">GH₵ 20.00 <span>/ month</span></div>
-                <ul class="features-list">
-                    <li>Access to basic code editors</li>
-                    <li>Community forum access</li>
-                    <li>Standard coding templates</li>
-                    <li>Weekly coding challenges</li>
-                </ul>
-                <a href="#" class="btn-plan">Select Starter</a>
-            </div>
-
-            <div class="pricing-card">
-                <div class="plan-title">Builder Tier</div>
-                <div class="plan-price">GH₵ 60.00 <span>/ month</span></div>
-                <ul class="features-list">
-                    <li>All Starter opportunities</li>
-                    <li>Unlimited cloud code storage</li>
-                    <li>Interactive video walkthroughs</li>
-                    <li>Priority project feedback</li>
-                </ul>
-                <a href="#" class="btn-plan">Select Builder</a>
-            </div>
-
-            <div class="pricing-card featured">
-                <div class="popular-badge">Most Popular</div>
-                <div class="plan-title">Pro Developer</div>
-                <div class="plan-price">GH₵ 120.00 <span>/ month</span></div>
-                <ul class="features-list">
-                    <li>All Builder opportunities</li>
-                    <li>1-on-1 monthly code reviews</li>
-                    <li>Advanced algorithmic paths</li>
-                    <li>Exclusive tech workshop invites</li>
-                    <li>Certificate of completion</li>
-                </ul>
-                <a href="#" class="btn-plan">Select Pro</a>
-            </div>
-
-            <div class="pricing-card">
-                <div class="plan-title">Master / Elite</div>
-                <div class="plan-price">GH₵ 180.00 <span>/ month</span></div>
-                <ul class="features-list">
-                    <li>All Pro Developer opportunities</li>
-                    <li>Direct career & internship referrals</li>
-                    <li>Personalized portfolio critique</li>
-                    <li>VIP Discord support channel</li>
-                    <li>Lifetime resource archive access</li>
-                </ul>
-                <a href="#" class="btn-plan">Select Elite</a>
-            </div>
-        </div>
-    </main>
-
-</body>
-</html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="CodePath Premium plans priced in Ghana cedis"><title>CodePath Premium — Ghana Cedis</title><link rel="stylesheet" href="style.css"></head>
+<body><header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">&lt;/&gt;</span><span>Kuadu<span class="brand-accent">code</span></span></a><nav class="nav-links" aria-label="Main navigation"><a href="index.html#explore">Explore</a><a href="video-lessons.html">Video lessons</a><a href="index.html#premium">Premium</a></nav><a class="top-cta" href="index.html">Home ↗</a></header>
+<main class="page-wrap"><span class="eyebrow">KUADUCODE MEMBERSHIP</span><h1>Choose your <span class="brand-accent">Premium plan</span></h1><p class="hero-text">Pick the learning package that fits your goals. Prices are shown in Ghana cedis (GHS).</p>
+<div class="plan-grid">
+<article class="plan-card"><span class="premium-badge">STARTER</span><h2>GHS 20</h2><p>Starter access</p><ul><li>Extra practice tasks</li><li>Beginner project checklist</li><li>Self-study plan</li></ul><button class="btn btn-primary choose-plan" data-plan="Starter" data-price="20">Choose Starter</button></article>
+<article class="plan-card"><span class="premium-badge">POPULAR</span><h2>GHS 40</h2><p>Practice Plus</p><ul><li>Starter benefits</li><li>Intermediate project briefs</li><li>Debugging exercises</li><li>Progress review checklist</li></ul><button class="btn btn-primary choose-plan" data-plan="Practice Plus" data-price="40">Choose Practice Plus</button></article>
+<article class="plan-card"><span class="premium-badge">BUILDER</span><h2>GHS 75</h2><p>Project Builder</p><ul><li>Practice Plus benefits</li><li>Advanced project challenges</li><li>Testing and code review guides</li><li>Portfolio project roadmap</li></ul><button class="btn btn-primary choose-plan" data-plan="Project Builder" data-price="75">Choose Project Builder</button></article>
+<article class="plan-card"><span class="premium-badge">PRO</span><h2>GHS 120</h2><p>Pro Learning Pack</p><ul><li>Project Builder benefits</li><li>Full multi-language project path</li><li>Deployment and security checklist</li><li>Capstone project rubric</li></ul><button class="btn btn-primary choose-plan" data-plan="Pro Learning Pack" data-price="120">Choose Pro</button></article>
+</div>
+<section class="payment-panel" id="payment"><span class="eyebrow">PAYMENT METHOD</span><h2>MTN Mobile Money (MoMo)</h2><p>Select a package above, then enter the MTN MoMo number you want to use. The selected amount will be displayed before continuing.</p>
+<form id="momoForm">
+<label for="selectedPlan">Selected plan</label><input id="selectedPlan" name="plan" value="Starter" readonly>
+<label for="selectedPrice">Amount (GHS)</label><input id="selectedPrice" name="amount" value="20.00" readonly>
+<label for="momoNumber">MTN MoMo phone number</label><input id="momoNumber" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="e.g. 0241234567" pattern="(0[0-9]{9}|\+233[0-9]{9})" required>
+<label for="payerName">Name (optional)</label><input id="payerName" name="payer" autocomplete="name" placeholder="Name on your learning account">
+<button class="btn btn-primary" type="submit">Continue with MTN MoMo →</button>
+<p id="momoMessage" class="payment-message" role="status" aria-live="polite"></p>
+</form>
+</section>
+<p><a href="index.html">← Return to KuaduCode</a></p></main>
+<script>
+const planButtons=document.querySelectorAll('.choose-plan');
+planButtons.forEach(button=>button.addEventListener('click',()=>{
+ document.getElementById('selectedPlan').value=button.dataset.plan;
+ document.getElementById('selectedPrice').value=Number(button.dataset.price).toFixed(2);
+ document.getElementById('payment').scrollIntoView({behavior:'smooth',block:'start'});
+}));
+document.getElementById('momoForm').addEventListener('submit',event=>{
+ event.preventDefault();
+ const phone=document.getElementById('momoNumber').value.trim();
+ if(!/^(0[0-9]{9}|\+233[0-9]{9})$/.test(phone)){
+  document.getElementById('momoMessage').textContent='Enter a valid Ghanaian phone number, for example 0241234567 or +233241234567.';
+  return;
+ }
+ document.getElementById('momoMessage').textContent='Demo checkout only: GHS '+document.getElementById('selectedPrice').value+' for '+document.getElementById('selectedPlan').value+' is selected. No payment has been requested and your wallet has not been charged. MTN MoMo API credentials and server-side transaction verification must be configured to enable real payment.';
+});
+</script></body></html>
