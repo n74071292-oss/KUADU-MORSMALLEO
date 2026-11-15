@@ -957,6 +957,59 @@ server.listen(port);
         }
     });
 })();
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioContext();
+
+const gainNode = audioCtx.createGain();
+gainNode.gain.value = 0.25;
+gainNode.connect(audioCtx.destination);
+
+let audioBuffer = null;
+let sourceNode = null;
+let isPlaying = false;
+
+async function loadBackgroundAudio(url) {
+    try {
+        const response = await fetch(url);
+        const arrayBuffer = await response.arrayBuffer();
+        audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+function playBackgroundAudio() {
+    if (!audioBuffer || isPlaying) return;
+
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+
+    sourceNode = audioCtx.createBufferSource();
+    sourceNode.buffer = audioBuffer;
+    sourceNode.loop = true;
+    sourceNode.connect(gainNode);
+    sourceNode.start(0);
+    isPlaying = true;
+}
+
+function setVolume(level, fadeTime = 1) {
+    gainNode.gain.setTargetAtTime(level, audioCtx.currentTime, fadeTime);
+}
+
+loadBackgroundAudio('https://wikimedia.org');
+
+function unlockAudio() {
+    playBackgroundAudio();
+    document.removeEventListener('click', unlockAudio);
+    document.removeEventListener('keydown', unlockAudio);
+    document.removeEventListener('touchstart', unlockAudio);
+}
+
+document.addEventListener('click', unlockAudio);
+document.addEventListener('keydown', unlockAudio);
+document.addEventListener('touchstart', unlockAudio);
+
 
 
 
