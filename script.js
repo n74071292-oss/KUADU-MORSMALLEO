@@ -763,6 +763,29 @@ const server = http.createServer(async (req, res) => {
 
 const port = Number.parseInt(process.env.PORT || '8000', 10);
 server.listen(port);
+(function () {
+    const music = document.getElementById("kuaduMusic");
+
+    music.volume = 0.12;
+    music.loop = true;
+    music.controls = false;
+    music.removeAttribute("controls");
+
+    function startMusic() {
+        if (music.paused) {
+            music.play().catch(() => {});
+        }
+    }
+
+    window.addEventListener("load", startMusic);
+
+    ["click", "keydown", "touchstart"].forEach(event => {
+        document.addEventListener(event, startMusic, {
+            once: true,
+            passive: true
+        });
+    });
+})();
 
 
 
