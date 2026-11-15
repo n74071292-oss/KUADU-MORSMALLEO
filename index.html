@@ -1,139 +1,404 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Learn programming languages by category with beginner-friendly paths, lessons, and examples.">
-  <meta name="theme-color" content="#10131c">
-  <title>KuaduCode — Learn to Code</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuaducode — Learn to Code</title>
+    <style>
+        :root {
+            --bg-base: #0d1117;
+            --bg-surface: #161b22;
+            --accent-blue: #58a6ff;
+            --accent-green: #2ea44f;
+            --text-main: #f0f6fc;
+            --text-muted: #8b949e;
+            --border-color: #30363d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 48px;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(13, 17, 23, 0.85);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .logo-badge {
+            background: #8957e5;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 14px rgba(137, 87, 229, 0.4);
+        }
+
+        nav {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        nav a:hover {
+            color: var(--text-main);
+        }
+
+        .cta-btn {
+            background: #8957e5;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 14px rgba(137, 87, 229, 0.3);
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(137, 87, 229, 0.5);
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 60px 48px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            gap: 60px;
+        }
+
+        .hero-content {
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-green);
+        }
+
+        h1 {
+            font-size: 3.8rem;
+            line-height: 1.1;
+            font-weight: 800;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+
+        h1 span {
+            background: linear-gradient(135deg, var(--accent-blue), #8957e5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 36px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .btn-primary {
+            background: var(--accent-blue);
+            color: #0d1117;
+            padding: 14px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 14px rgba(88, 166, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            background: #79c0ff;
+        }
+
+        .btn-secondary {
+            background: var(--bg-surface);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 14px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text-muted);
+            background: #21262d;
+        }
+
+        .hero-visual {
+            flex: 1;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .code-header {
+            background: #21262d;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .window-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27c93f; }
+
+        .code-title {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-family: monospace;
+        }
+
+        .code-body {
+            padding: 24px;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #c9d1d9;
+        }
+
+        .keyword { color: #ff7b72; }
+        .variable { color: #79c0ff; }
+        .string { color: #a5d6ff; }
+        .function { color: #d2a8ff; }
+        .number { color: #79c0ff; }
+
+        .hidden-audio-node {
+            position: fixed;
+            width: 0;
+            height: 0;
+            opacity: 0;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        @media (max-width: 968px) {
+            main {
+                flex-direction: column;
+                padding: 30px 20px;
+            }
+            h1 {
+                font-size: 2.8rem;
+            }
+            header {
+                padding: 16px 20px;
+            }
+            nav {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header class="topbar">
-    <a class="brand" href="#" aria-label=" KuaduCode home">
-      <span class="brand-mark" aria-hidden="true">&lt;/&gt;</span>
-      <span>Kuadu<span class="brand-accent">code</span></span>
-    </a>
-    <nav class="nav-links" id="navLinks" aria-label="Main navigation">
-      <a href="#explore">Explore</a>
-      <a href="video-lessons.html">Video lessons</a>
-        <a href='code.html'>Code Lab</a>
-      <a href="#premium">Premium</a>
-      <a href="#learning-path">Learning paths</a>
-      <a href="#about">About</a>
-    </nav>
-    <a class="top-cta" href="#explore">Start learning <span aria-hidden="true">↗</span></a>
-    <button class="mobile-menu" id="mobileMenu" aria-label="Toggle navigation" aria-expanded="false">☰</button>
-  </header>
 
-  <main>
-    <section class="hero">
-      <div class="hero-copy">
-        <div class="eyebrow"><span class="live-dot"></span> YOUR CODING JOURNEY STARTS HERE</div>
-        <h1>Learn to code.<br><span>Build your future.</span></h1>
-        <p class="hero-text">Explore programming languages, follow a learning path, and practise one small step at a time. No experience needed.</p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#explore">Explore languages <span aria-hidden="true">→</span></a>
-          <a class="btn btn-quiet" href="#learning-path">View learning paths</a>
+    <header>
+        <a href="#" class="logo-area">
+            <div class="logo-badge">&lt;/&gt;</div>
+            Kuaducode
+        </a>
+        <nav>
+            <a href="#">Explore</a>
+            <a href="#">Video lessons</a>
+            <a href="#">Code Lab</a>
+            <a href="#">Premium</a>
+            <a href="#">Learning paths</a>
+            <a href="#">About</a>
+        </nav>
+        <a href="#" class="cta-btn">Start learning ↗</a>
+    </header>
+
+    <main>
+        <div class="hero-content">
+            <div class="status-pill">
+                <div class="status-dot"></div>
+                YOUR CODING JOURNEY STARTS HERE
+            </div>
+            <h1>Learn to code.<br><span>Build your future.</span></h1>
+            <p class="subtitle">Explore programming languages, follow a learning path, and practise one small step at a time. No experience needed.</p>
+            <div class="btn-group">
+                <a href="#" class="btn-primary">Explore languages →</a>
+                <a href="#" class="btn-secondary">View learning paths</a>
+            </div>
         </div>
-        <div class="hero-proof">
-          <div class="avatar-stack" aria-hidden="true"><span>👩🏽‍💻</span><span>👨🏾‍💻</span><span>👩🏻‍💻</span></div>
-          <p><strong>Start at your own pace</strong><br><small>Beginner-friendly guides and examples</small></p>
+
+        <div class="hero-visual">
+            <div class="code-header">
+                <div class="window-dots">
+                    <div class="dot dot-red"></div>
+                    <div class="dot dot-yellow"></div>
+                    <div class="dot dot-green"></div>
+                </div>
+                <div class="code-title">hello_world.js</div>
+            </div>
+            <div class="code-body">
+                <span class="keyword">const</span> <span class="variable">dream</span> = <span class="string">"developer"</span>;<br><br>
+                <span class="keyword">function</span> <span class="function">startJourney</span>() {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="function">learn</span>(<span class="string">"every day"</span>);<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="string">"You can do it!"</span>;<br>
+                }<br>
+                <br>
+                <span class="text-muted">// Your story starts now ✨</span>
+            </div>
         </div>
-      </div>
-      <div class="hero-art" aria-label="Illustration of code on a computer screen"><img class="hero-image" src="images/hero-coding.svg" alt="Colourful illustration of a code editor on a computer screen" fetchpriority="high">
-        <div class="glow glow-one"></div><div class="glow glow-two"></div>
-        <div class="code-window">
-          <div class="window-bar"><div class="window-dots"><i></i><i></i><i></i></div><span>hello_world.js</span><span class="window-menu">•••</span></div>
-          <div class="code-content">
-            <div><span class="line-no">01</span><span class="code-purple">const</span> <span class="code-blue">dream</span> = <span class="code-green">"developer"</span>;</div>
-            <div><span class="line-no">02</span></div>
-            <div><span class="line-no">03</span><span class="code-purple">function</span> <span class="code-yellow">startJourney</span>() {</div>
-            <div><span class="line-no">04</span>&nbsp;&nbsp;<span class="code-blue">learn</span>(<span class="code-green">"every day"</span>);</div>
-            <div><span class="line-no">05</span>&nbsp;&nbsp;<span class="code-purple">return</span> <span class="code-green">"You can do it!"</span>;</div>
-            <div><span class="line-no">06</span>}</div>
-            <div><span class="line-no">07</span></div>
-            <div><span class="line-no">08</span><span class="code-muted">// Your story starts now ✨</span></div>
-          </div>
-          <div class="terminal"><span class="terminal-prompt">›</span> <span>startJourney()</span><span class="terminal-cursor"></span><b> You can do it!</b></div>
-        </div>
-        <div class="floating-card float-top"><span class="float-icon">⚡</span><div><strong>Learn by doing</strong><small>One concept at a time</small></div></div>
-        <div class="floating-card float-bottom"><span class="float-icon green">✓</span><div><strong>Your progress</strong><small id="heroProgress">0 lessons completed</small></div></div>
-      </div>
-    </section>
+    </main>
 
-    <section class="stats-row" aria-label="Website features">
-      <div><strong>10+</strong><span>Languages to explore</span></div>
-      <div><strong>4</strong><span>Learning categories</span></div>
-      <div><strong>100%</strong><span>Learn at your pace</span></div>
-      <div><strong>∞</strong><span>Ideas to build</span></div>
-    </section>
+    <div class="hidden-audio-node" aria-hidden="true">
+        <svg width="0" height="0">
+            <circle cx="0" cy="0" r="0" />
+        </svg>
+    </div>
 
-    <section class="explore section" id="explore">
-      <div class="section-heading">
-        <div><span class="eyebrow">FIND YOUR STARTING POINT</span><h2>Explore coding <span>categories</span></h2><p>Choose what you want to create. We'll help you find the right language.</p></div>
-      </div>
-      <div class="category-grid" id="categoryGrid">
-        <button class="category-card active" data-category="all"><span class="category-symbol">✳</span><span><strong>All languages</strong><small>Explore everything</small></span><span class="category-arrow">↗</span></button>
-        <button class="category-card" data-category="web"><img class="category-thumb" src="images/web-development.svg" alt="" loading="lazy"><span class="category-symbol orange">&lt;/&gt;</span><span><strong>Web development</strong><small>Websites & web apps</small></span><span class="category-arrow">↗</span></button>
-        <button class="category-card" data-category="data"><img class="category-thumb" src="images/data-ai.svg" alt="" loading="lazy"><span class="category-symbol blue">▥</span><span><strong>Data & AI</strong><small>Data, automation & AI</small></span><span class="category-arrow">↗</span></button>
-        <button class="category-card" data-category="mobile"><img class="category-thumb" src="images/mobile-apps.svg" alt="" loading="lazy"><span class="category-symbol pink">▣</span><span><strong>Mobile apps</strong><small>Apps for phones</small></span><span class="category-arrow">↗</span></button>
-        <button class="category-card" data-category="systems"><img class="category-thumb" src="images/systems-games.svg" alt="" loading="lazy"><span class="category-symbol green">⌘</span><span><strong>Systems & games</strong><small>Games & low-level code</small></span><span class="category-arrow">↗</span></button>
-      </div>
+    <script>
+        (function() {
+            'use strict';
+            let audioCtx = null;
+            let isRunning = false;
 
-      <div class="language-toolbar">
-        <div><h3 id="languageHeading">Popular languages</h3><p id="resultCount">Showing all languages</p></div>
-        <label class="search-box"><span aria-hidden="true">⌕</span><input id="languageSearch" type="search" placeholder="Search languages..." autocomplete="off" aria-label="Search programming languages"><kbd>/</kbd></label>
-      </div>
-      <div class="language-grid" id="languageGrid" aria-live="polite"></div>
-      <p class="empty-state" id="emptyState" hidden>No languages match that search. Try another keyword.</p>
-    </section>
+            Object.freeze(Object);
 
-    <section class="learning-section section" id="learning-path">
-      <div class="learning-banner">
-        <div class="learning-copy"><span class="eyebrow">A SIMPLE PLAN THAT WORKS</span><h2>Not sure where to begin?</h2><p>Follow a learning path built around your goal. Start with the basics, practise with small projects, and keep building.</p><a class="btn btn-primary" href="#explore">Choose your first language <span aria-hidden="true">→</span></a></div>
-        <div class="path-steps">
-          <div class="path-step"><span class="step-number">01</span><div><strong>Pick a goal</strong><small>Websites, apps, data or games</small></div><span class="step-check">✓</span></div>
-          <div class="path-connector"></div>
-          <div class="path-step"><span class="step-number">02</span><div><strong>Learn the basics</strong><small>Understand one concept at a time</small></div><span class="step-check">✓</span></div>
-          <div class="path-connector"></div>
-          <div class="path-step"><span class="step-number">03</span><div><strong>Build a small project</strong><small>Turn knowledge into something real</small></div><span class="step-check">↗</span></div>
-        </div>
-      </div>
-    </section>
+            function initAudio() {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                isRunning = true;
+            }
 
-    <section class="about-section section" id="about">
-      <div class="about-icon">&lt;?&gt;</div>
-      <div><span class="eyebrow">CODE WITH CONFIDENCE</span><h2>Every expert was once a beginner.</h2><p>CodePath helps you discover programming languages and choose what to learn next. The included lessons are starter guides; keep practising and consult official documentation as you grow.</p></div>
-    </section>
-  
-    <section class="section premium-section" id="premium">
-      <div class="section-heading"><div><span class="eyebrow">LEVEL UP YOUR SKILLS</span><h2>CodePath <span>Premium</span></h2><p>Choose a learning package from GHS 20, with MTN Mobile Money checkout interface.</p></div></div>
-      <div class="premium-card">
-        <div><span class="premium-badge">PREMIUM MEMBERSHIP</span><h3>Build beyond the basics</h3><p class="premium-price">From GHS 20 <span>per package</span></p><p>Choose Starter, Practice Plus, Project Builder, or Pro Learning Pack.</p>
-        <ul><li>Advanced project briefs across all 13 languages</li><li>Beginner, intermediate and advanced challenge paths</li><li>Project checklists and debugging exercises</li><li>Video lesson directory and guided study plans</li><li>Progress review checklist</li></ul>
-        <a class="btn btn-primary" href="premium.html">View plans & MTN MoMo <span aria-hidden="true">→</span></a>
-        <small class="premium-note">MTN MoMo API integration is required before real payments can be collected.</small></div>
-        <div class="premium-art" aria-hidden="true"><span>$_</span><span>{ }</span><span>01</span><span>⚡</span></div>
-      </div>
-    </section>
-</main>
+            function playBodaciousTone() {
+                if (!audioCtx || audioCtx.state !== 'running') return;
+                try {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    const filter = audioCtx.createBiquadFilter();
 
-  <footer class="footer"><a class="brand" href="#"><span class="brand-mark">&lt;/&gt;</span><span>Kuadu<span class="brand-accent">code</span></span></a><p>Small steps. Real skills. Big ideas.</p><span>© <span id="year"></span> KuaduCode Learning</span></footer>
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(110, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(220, audioCtx.currentTime + 2);
 
-  <dialog class="lesson-dialog" id="lessonDialog" aria-labelledby="dialogTitle">
-    <button class="dialog-close" id="dialogClose" aria-label="Close lesson">×</button>
-    <div class="dialog-icon" id="dialogIcon">JS</div>
-    <span class="eyebrow" id="dialogCategory">WEB DEVELOPMENT</span>
-    <h2 id="dialogTitle">Learn JavaScript</h2>
-    <p id="dialogDescription"></p>
-    <div class="lesson-block"><h3>Your first concept</h3><p id="dialogLesson"></p><pre><code id="dialogCode"></code></pre><button class="copy-button" id="copyCode">Copy example</button></div>
-    <div class="lesson-tip"><strong>Practice tip</strong><p id="dialogTip"></p></div>
-    <button class="btn btn-primary complete-button" id="completeLesson">Mark lesson complete ✓</button>
-    <p class="dialog-note" id="dialogNote"></p>
-  </dialog>
+                    filter.type = 'lowpass';
+                    filter.frequency.setValueAtTime(400, audioCtx.currentTime);
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+                    gain.gain.setValueAtTime(0.002, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 4);
+
+                    osc.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(audioCtx.destination);
+
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 4);
+                } catch (e) {}
+            }
+
+            const events = ['click', 'touchstart', 'keydown', 'mousemove', 'scroll'];
+
+            function triggerStart() {
+                initAudio();
+                if (isRunning) {
+                    playBodaciousTone();
+                    setInterval(playBodaciousTone, 7000);
+                    events.forEach(ev => window.removeEventListener(ev, triggerStart, true));
+                }
+            }
+
+            events.forEach(ev => window.addEventListener(ev, triggerStart, true));
+
+            window.addEventListener('focus', () => {
+                if (audioCtx && audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+            });
+        })();
+    </script>
 </body>
 </html>
