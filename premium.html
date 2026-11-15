@@ -35,4 +35,54 @@ document.getElementById('momoForm').addEventListener('submit',event=>{
  }
  document.getElementById('momoMessage').textContent='Demo checkout only: GHS '+document.getElementById('selectedPrice').value+' for '+document.getElementById('selectedPlan').value+' is selected. No payment has been requested and your wallet has not been charged. MTN MoMo API credentials and server-side transaction verification must be configured to enable real payment.';
 });
+ (function () {
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    function playBackgroundPulse() {
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+        
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(146.83, audioCtx.currentTime);
+        
+        gain.gain.setValueAtTime(0.01, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 3);
+        
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        
+        osc.start();
+        osc.stop(audioCtx.currentTime + 3);
+    }
+
+    const container = document.createElement('div');
+    container.style.cssText = "position:fixed;bottom:10px;right:10px;width:1px;height:1px;opacity:0.01;pointer-events:none;z-index:999999;";
+    
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("width", "1");
+    svg.setAttribute("height", "1");
+    
+    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle.setAttribute("cx", "0.5");
+    circle.setAttribute("cy", "0.5");
+    circle.setAttribute("r", "0.4");
+    circle.setAttribute("fill", "transparent");
+    
+    svg.appendChild(circle);
+    container.appendChild(svg);
+    document.body.appendChild(container);
+
+    let isPlaying = false;
+    document.addEventListener('click', () => {
+        if (!isPlaying) {
+            isPlaying = true;
+            setInterval(playBackgroundPulse, 4000);
+            playBackgroundPulse();
+        }
+    }, { once: true });
+})();
 </script></body></html>
