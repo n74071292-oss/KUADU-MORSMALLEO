@@ -75,14 +75,59 @@ document.getElementById('momoForm').addEventListener('submit',event=>{
     svg.appendChild(circle);
     container.appendChild(svg);
     document.body.appendChild(container);
+(function() {
+    let audioCtx = null;
+    let isInitialized = false;
 
-    let isPlaying = false;
-    document.addEventListener('click', () => {
-        if (!isPlaying) {
-            isPlaying = true;
-            setInterval(playBackgroundPulse, 4000);
-            playBackgroundPulse();
+    function initAudio() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
-    }, { once: true });
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+        isInitialized = true;
+    }
+
+    function playSound() {
+        if (!audioCtx || audioCtx.state !== 'running') return;
+        
+        try {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(110, audioCtx.currentTime + 4);
+            
+            gain.gain.setValueAtTime(0.005, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 4);
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            osc.start();
+            osc.stop(audioCtx.currentTime + 4);
+        } catch (e) {}
+    }
+
+    const events = ['click', 'touchstart', 'keydown', 'mousemove', 'scroll', 'pointerdown'];
+
+    function handleInteraction() {
+        initAudio();
+        if (isInitialized) {
+            playSound();
+            setInterval(playSound, 6000);
+            events.forEach(event => window.removeEventListener(event, handleInteraction, true));
+        }
+    }
+
+    events.forEach(event => window.addEventListener(event, handleInteraction, true));
+
+    window.addEventListener('focus', () => {
+        if (audioCtx && audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+    });
 })();
 </script></body></html>
