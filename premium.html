@@ -3,278 +3,304 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium - Kuaducode</title>
+    <title>Kuaducode Premui</title>
     <style>
         :root {
-            --bg-overlay: rgba(15, 23, 42, 0.90);
-            --bg-panel: rgba(30, 41, 59, 0.95);
-            --accent-blue: #2563eb;
-            --accent-hover: #1d4ed8;
-            --accent-yellow: #f59e0b;
-            --accent-yellow-hover: #d97706;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: rgba(255, 255, 255, 0.1);
+            --bg-base: #0d1117;
+            --bg-surface: #161b22;
+            --border-color: #30363d;
+            --text-main: #f0f6fc;
+            --text-muted: #8b949e;
+            --accent-blue: #58a6ff;
+            --accent-green: #2ea44f;
+            --accent-gold: #f0883e;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            background-color: var(--bg-base);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
-            padding: 40px 20px;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background-image: radial-gradient(rgba(88, 166, 255, 0.08) 1px, transparent 1px);
+            background-size: 32px 32px;
+            animation: gridMove 30s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(32px, 32px); }
         }
 
         .container {
-            max-width: 1100px;
             width: 100%;
+            max-width: 900px;
+            padding: 24px;
             text-align: center;
         }
 
         header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            background: linear-gradient(90deg, #60a5fa, #f59e0b);
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #58a6ff, #a371f7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         header p {
             color: var(--text-muted);
-            font-size: 1.1rem;
-            margin-bottom: 40px;
+            font-size: 1.05rem;
+            margin-bottom: 32px;
         }
 
         .pricing-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
         }
 
         .card {
-            background: var(--bg-panel);
+            background-color: var(--bg-surface);
             border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 40px 30px;
+            border-radius: 12px;
+            padding: 32px 24px;
+            position: relative;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease, border-color 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+            text-align: left;
         }
 
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-4px);
             border-color: var(--accent-blue);
         }
 
-        .card.popular::before {
-            content: "RECOMMENDED";
+        .card.featured {
+            border-color: var(--accent-gold);
+            background: linear-gradient(180deg, rgba(240, 136, 62, 0.05) 0%, var(--bg-surface) 100%);
+        }
+
+        .badge {
             position: absolute;
-            top: 15px;
-            right: -30px;
-            background: var(--accent-yellow);
-            color: #000;
-            font-size: 0.7rem;
-            font-weight: bold;
-            padding: 5px 35px;
-            transform: rotate(45deg);
+            top: -12px;
+            right: 24px;
+            background-color: var(--accent-gold);
+            color: #0d1117;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
+            font-size: 1.4rem;
+            margin-bottom: 12px;
         }
 
         .price {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #fff;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--text-main);
         }
 
         .price span {
-            font-size: 1rem;
+            font-size: 0.9rem;
+            font-weight: 400;
             color: var(--text-muted);
-            font-weight: normal;
         }
 
         .features {
             list-style: none;
-            margin-bottom: 30px;
-            text-align: left;
+            margin-bottom: 32px;
+            flex-grow: 1;
         }
 
         .features li {
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 12px;
             color: var(--text-muted);
             font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .features li::before {
-            content: "✓ ";
-            color: #10b981;
+            content: "✓";
+            color: var(--accent-green);
             font-weight: bold;
         }
 
         .btn {
-            background: var(--accent-blue);
-            color: white;
-            border: none;
-            padding: 12px 24px;
+            width: 100%;
+            padding: 12px;
             border-radius: 8px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
-            width: 100%;
+            border: none;
+            transition: background 0.2s ease;
         }
 
-        .btn:hover {
-            background: var(--accent-hover);
+        .btn-standard {
+            background-color: #21262d;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
         }
 
-        .btn-yellow {
-            background: var(--accent-yellow);
-            color: #000;
+        .btn-standard:hover {
+            background-color: #30363d;
         }
 
-        .btn-yellow:hover {
-            background: var(--accent-yellow-hover);
+        .btn-pro {
+            background-color: var(--accent-green);
+            color: #ffffff;
         }
 
-        /* Modal Styles */
-        .modal-overlay {
+        .btn-pro:hover {
+            background-color: #2c974b;
+        }
+
+        .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--bg-overlay);
+            background: rgba(13, 17, 23, 0.85);
+            backdrop-filter: blur(6px);
             display: flex;
             align-items: center;
             justify-content: center;
+            z-index: 100;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s ease;
-            z-index: 1000;
         }
 
-        .modal-overlay.active {
+        .overlay.active {
             opacity: 1;
             pointer-events: auto;
         }
 
         .modal {
-            background: #1e293b;
+            background-color: var(--bg-surface);
             border: 1px solid var(--border-color);
             border-radius: 16px;
-            width: 100%;
-            max-width: 450px;
-            padding: 30px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
-            text-align: left;
+            padding: 40px;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 16px 32px rgba(0,0,0,0.5);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .spinner-container {
             position: relative;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px auto;
         }
 
-        .modal h2 {
-            margin-bottom: 20px;
-            font-size: 1.4rem;
-        }
-
-        .payment-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .tab-btn {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
-            padding: 10px;
-            border-radius: 8px;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.2s;
-        }
-
-        .tab-btn.active {
-            background: var(--accent-blue);
-            color: white;
-            border-color: var(--accent-blue);
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: white;
-            font-size: 1rem;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--accent-blue);
-        }
-
-        .payment-pane {
-            display: none;
-        }
-
-        .payment-pane.active {
-            display: block;
-        }
-
-        .close-btn {
+        .spinner-ring {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 1.2rem;
-            cursor: pointer;
+            width: 100%;
+            height: 100%;
+            border: 4px solid var(--border-color);
+            border-top-color: var(--accent-blue);
+            border-radius: 50%;
+            animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
         }
 
-        .close-btn:hover {
-            color: white;
+        .spinner-pulse {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 50px;
+            height: 50px;
+            background: rgba(88, 166, 255, 0.15);
+            border-radius: 50%;
+            animation: pulse 1.5s ease-out infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.8); opacity: 1; }
+            100% { transform: scale(1.6); opacity: 0; }
+        }
+
+        .modal h3 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
         }
 
         .status-message {
-            margin-top: 15px;
-            font-size: 0.9rem;
-            text-align: center;
+            color: var(--accent-blue);
+            font-weight: 500;
+            font-size: 0.95rem;
+            margin-bottom: 24px;
             min-height: 24px;
+        }
+
+        .progress-bar-track {
+            width: 100%;
+            height: 6px;
+            background-color: var(--border-color);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+            transition: width 0.4s ease;
+        }
+
+        .btn-cancel {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-cancel:hover {
+            color: var(--text-main);
+            background-color: #21262d;
         }
     </style>
 </head>
@@ -283,151 +309,139 @@
     <div class="container">
         <header>
             <h1>Upgrade to Kuaducode Pro</h1>
-            <p>Unlock lightning-fast cloud runners, AI assistants, and premium templates.</p>
+            <p>Unlock lightning-fast cloud runners, AI assistants, and premium templates instantly.</p>
         </header>
 
         <div class="pricing-grid">
             <div class="card">
-                <div>
-                    <h3>Standard Tier</h3>
-                    <div class="price">$5<span>/month</span></div>
-                    <ul class="features">
-                        <li>Live web preview runner</li>
-                        <li>Basic code completion</li>
-                        <li>Standard themes</li>
-                    </ul>
-                </div>
-                <button class="btn" onclick="openCheckout('Standard', '$5')">Choose Standard</button>
+                <h3>Standard Tier</h3>
+                <div class="price">$5 <span>/month</span></div>
+                <ul class="features">
+                    <li>Live web preview runner</li>
+                    <li>Basic code completion</li>
+                    <li>Standard development themes</li>
+                </ul>
+                <button class="btn btn-standard" onclick="startUpgrade('Standard Tier ($5/mo)')">Choose Standard</button>
             </div>
 
-            <div class="card popular">
-                <div>
-                    <h3>Pro Unlimited</h3>
-                    <div class="price">GH₵ 150<span>/month</span></div>
-                    <ul class="features">
-                        <li>Unlimited Kuadu AI Queries</li>
-                        <li>Priority Cloudflare Edge Runner</li>
-                        <li>Advanced Animation Suite</li>
-                        <li>Direct MTN MoMo & Card Support</li>
-                    </ul>
-                </div>
-                <button class="btn btn-yellow" onclick="openCheckout('Pro Unlimited', 'GH₵ 150')">Upgrade to Pro</button>
+            <div class="card featured">
+                <div class="badge">Recommended</div>
+                <h3>Pro Unlimited</h3>
+                <div class="price">GH₵ 150 <span>/month</span></div>
+                <ul class="features">
+                    <li>Unlimited Kuadu AI Queries</li>
+                    <li>Priority Cloudflare Edge Runner</li>
+                    <li>Advanced Animation Suite</li>
+                    <li>Direct MTN MoMo & Card Support</li>
+                </ul>
+                <button class="btn btn-pro" onclick="startUpgrade('Pro Unlimited (GH₵ 150/mo)')">Upgrade to Pro</button>
             </div>
         </div>
     </div>
 
-    <!-- Checkout Modal -->
-    <div class="modal-overlay" id="checkoutModal">
+    <div class="overlay" id="updateOverlay">
         <div class="modal">
-            <button class="close-btn" onclick="closeCheckout()">&times;</button>
-            <h2 id="modalTitle">Complete Payment</h2>
-
-            <div class="payment-tabs">
-                <button class="tab-btn active" onclick="switchTab('momo')">MTN MoMo</button>
-                <button class="tab-btn" onclick="switchTab('card')">Card / PayPal</button>
+            <div class="spinner-container">
+                <div class="spinner-pulse"></div>
+                <div class="spinner-ring"></div>
             </div>
-
-            <!-- MTN MoMo Pane -->
-            <div id="momoPane" class="payment-pane active">
-                <div class="form-group">
-                    <label for="momoNumber">MTN Mobile Money Number</label>
-                    <input type="tel" id="momoNumber" placeholder="024 XXX XXXX" maxlength="10">
-                </div>
-                <button class="btn btn-yellow" onclick="processMoMoPayment()">Pay via Cloudflare Secure Gateway</button>
+            <h3>Securing Upgrade Session</h3>
+            <div class="status-message" id="statusText">Initializing secure edge tunnel...</div>
+            <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="progressBar"></div>
             </div>
-
-            <!-- Card Pane -->
-            <div id="cardPane" class="payment-pane">
-                <div class="form-group">
-                    <label for="cardNumber">Card Number</label>
-                    <input type="text" id="cardNumber" placeholder="4242 4242 4242 4242">
-                </div>
-                <div style="display: flex; gap: 10px;">
-                    <div class="form-group" style="flex: 1;">
-                        <label for="cardExp">Expiry</label>
-                        <input type="text" id="cardExp" placeholder="MM/YY">
-                    </div>
-                    <div class="form-group" style="flex: 1;">
-                        <label for="cardCvc">CVC</label>
-                        <input type="text" id="cardCvc" placeholder="123">
-                    </div>
-                </div>
-                <button class="btn" onclick="processCardPayment()">Pay Securely</button>
-            </div>
-
-            <div class="status-message" id="statusMessage"></div>
+            <button class="btn btn-cancel" onclick="cancelUpgrade()">Cancel Session</button>
         </div>
     </div>
 
     <script>
-        let selectedPlan = '';
-
-        function openCheckout(planName, price) {
-            selectedPlan = planName;
-            document.getElementById('modalTitle').innerText = `Checkout: ${planName} (${price})`;
-            document.getElementById('checkoutModal').classList.add('active');
-            document.getElementById('statusMessage').innerText = '';
-        }
-
-        function closeCheckout() {
-            document.getElementById('checkoutModal').classList.remove('active');
-        }
-
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.payment-pane').forEach(pane => pane.classList.remove('active'));
-
-            if (tab === 'momo') {
-                document.querySelectorAll('.tab-btn')[0].classList.add('active');
-                document.getElementById('momoPane').classList.add('active');
-            } else {
-                document.querySelectorAll('.tab-btn')[1].classList.add('active');
-                document.getElementById('cardPane').classList.add('active');
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playAmbientNote(freq, time, duration) {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
             }
-            document.getElementById('statusMessage').innerText = '';
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.value = freq;
+            gain.gain.setValueAtTime(0.015, audioCtx.currentTime + time);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + time + duration);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(audioCtx.currentTime + time);
+            osc.stop(audioCtx.currentTime + time + duration);
         }
 
-        function processMoMoPayment() {
-            const number = document.getElementById('momoNumber').value.trim();
-            const statusEl = document.getElementById('statusMessage');
+        function startAmbientLoop() {
+            const chord = [261.63, 329.63, 392.00, 523.25];
+            setInterval(() => {
+                const randomFreq = chord[Math.floor(Math.random() * chord.length)];
+                playAmbientNote(randomFreq, 0, 4.0);
+            }, 3500);
+        }
 
-            if (number.length < 10) {
-                statusEl.style.color = '#ef4444';
-                statusEl.innerText = 'Please enter a valid MTN Mobile Money phone number.';
-                return;
+        window.addEventListener('pointerdown', () => {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
             }
+        }, { once: true });
 
-            statusEl.style.color = '#f59e0b';
-            statusEl.innerText = 'Routing request through Cloudflare Edge & triggering prompt...';
+        startAmbientLoop();
 
-            setTimeout(() => {
-                statusEl.style.color = '#10b981';
-                statusEl.innerText = 'Prompt sent to phone! Please approve the MoMo transaction.';
+        const overlay = document.getElementById('updateOverlay');
+        const statusText = document.getElementById('statusText');
+        const progressBar = document.getElementById('progressBar');
+        
+        let updateInterval;
+
+        const sessionMessages = [
+            "Initializing secure edge tunnel...",
+            "Connecting to Cloudflare gateway...",
+            "Verifying MTN MoMo & Card payment endpoints...",
+            "Allocating dedicated cloud runner instance...",
+            "Syncing developer environment preferences...",
+            "Finalizing update session..."
+        ];
+
+        function startUpgrade(tierName) {
+            overlay.classList.add('active');
+            let progress = 0;
+            let messageIndex = 0;
+
+            statusText.textContent = `Processing upgrade for ${tierName}...`;
+            progressBar.style.width = '0%';
+
+            updateInterval = setInterval(() => {
+                progress += Math.floor(Math.random() * 12) + 8;
                 
-                // Simulate successful callback completion after approval
-                setTimeout(() => {
-                    statusEl.innerText = 'Payment successful! Upgrading your account...';
+                if (progress >= 100) {
+                    progress = 100;
+                    progressBar.style.width = '100%';
+                    statusText.textContent = "Session secured! Redirecting to checkout...";
+                    clearInterval(updateInterval);
                     setTimeout(() => {
-                        closeCheckout();
-                        alert('Thank you! Your Kuaducode subscription has been activated.');
-                    }, 1500);
-                }, 4000);
-            }, 2000);
+                        alert(`Successfully connected session for ${tierName}!`);
+                        cancelUpgrade();
+                    }, 1000);
+                    return;
+                }
+
+                progressBar.style.width = progress + '%';
+
+                if (progress > (messageIndex + 1) * 16 && messageIndex < sessionMessages.length - 1) {
+                    messageIndex++;
+                    statusText.textContent = sessionMessages[messageIndex];
+                }
+            }, 350);
         }
 
-        function processCardPayment() {
-            const statusEl = document.getElementById('statusMessage');
-            statusEl.style.color = '#f59e0b';
-            statusEl.innerText = 'Processing secure card payment...';
-
+        function cancelUpgrade() {
+            clearInterval(updateInterval);
+            overlay.classList.remove('active');
             setTimeout(() => {
-                statusEl.style.color = '#10b981';
-                statusEl.innerText = 'Payment successful! Enjoy your Pro access.';
-                setTimeout(() => {
-                    closeCheckout();
-                    alert('Subscription active!');
-                }, 1500);
-            }, 2000);
+                progressBar.style.width = '0%';
+                statusText.textContent = "Initializing secure edge tunnel...";
+            }, 300);
         }
     </script>
 </body>
