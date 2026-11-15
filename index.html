@@ -1,1 +1,332 @@
-<!DOCTYPE html><html lang="en"><head>  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9583679349976543"     crossorigin="anonymous"></script>  <script src="https-redirect.js"></script>    <meta charset="UTF-8">  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <meta name="description" content="Learn programming languages by category with beginner-friendly paths, lessons, and examples.">  <meta name="theme-color" content="#10131c">  <title>KuaduCode — Learn to Code</title>  <link rel="stylesheet" href="style.css">  <script src="script.js" defer></script>    <meta charset="UTF-8">    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>Kuaducode -Learn to code</title>    <style>        :root {            --bg-base: #0d1117;            --bg-surface: #161b22;            --border-color: #30363d;            --text-main: #f0f6fc;            --text-muted: #8b949e;            --accent-blue: #58a6ff;            --accent-green: #2ea44f;            --accent-gold: #f0883e;        }        * {            box-sizing: border-box;            margin: 0;            padding: 0;            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;        }        body {            background-color: var(--bg-base);            color: var(--text-main);            min-height: 100vh;            display: flex;            flex-direction: column;            align-items: center;            justify-content: center;            overflow-x: hidden;            position: relative;        }        body::before {            content: "";            position: absolute;            width: 200%;            height: 200%;            background-image: radial-gradient(rgba(88, 166, 255, 0.08) 1px, transparent 1px);            background-size: 32px 32px;            animation: gridMove 30s linear infinite;            z-index: -1;        }        @keyframes gridMove {            0% { transform: translate(0, 0); }            100% { transform: translate(32px, 32px); }        }        .container {            width: 100%;            max-width: 900px;            padding: 24px;            text-align: center;        }        header h1 {            font-size: 2.2rem;            font-weight: 700;            margin-bottom: 8px;            background: linear-gradient(135deg, #58a6ff, #a371f7);            -webkit-background-clip: text;            -webkit-text-fill-color: transparent;        }        header p {            color: var(--text-muted);            font-size: 1.05rem;            margin-bottom: 32px;        }        .pricing-grid {            display: grid;            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));            gap: 24px;            margin-bottom: 32px;        }        .card {            background-color: var(--bg-surface);            border: 1px solid var(--border-color);            border-radius: 12px;            padding: 32px 24px;            position: relative;            display: flex;            flex-direction: column;            justify-content: space-between;            transition: transform 0.2s ease, border-color 0.2s ease;            text-align: left;        }        .card:hover {            transform: translateY(-4px);            border-color: var(--accent-blue);        }        .card.featured {            border-color: var(--accent-gold);            background: linear-gradient(180deg, rgba(240, 136, 62, 0.05) 0%, var(--bg-surface) 100%);        }        .badge {            position: absolute;            top: -12px;            right: 24px;            background-color: var(--accent-gold);            color: #0d1117;            font-size: 0.75rem;            font-weight: 700;            padding: 4px 12px;            border-radius: 20px;            text-transform: uppercase;            letter-spacing: 0.5px;        }        .card h3 {            font-size: 1.4rem;            margin-bottom: 12px;        }        .price {            font-size: 2rem;            font-weight: 700;            margin-bottom: 24px;            color: var(--text-main);        }        .price span {            font-size: 0.9rem;            font-weight: 400;            color: var(--text-muted);        }        .features {            list-style: none;            margin-bottom: 32px;            flex-grow: 1;        }        .features li {            margin-bottom: 12px;            color: var(--text-muted);            font-size: 0.95rem;            display: flex;            align-items: center;            gap: 10px;        }        .features li::before {            content: "✓";            color: var(--accent-green);            font-weight: bold;        }        .btn {            width: 100%;            padding: 12px;            border-radius: 8px;            font-size: 1rem;            font-weight: 600;            cursor: pointer;            border: none;            transition: background 0.2s ease;        }        .btn-standard {            background-color: #21262d;            color: var(--text-main);            border: 1px solid var(--border-color);        }        .btn-standard:hover {            background-color: #30363d;        }        .btn-pro {            background-color: var(--accent-green);            color: #ffffff;        }        .btn-pro:hover {            background-color: #2c974b;        }        .overlay {            position: fixed;            top: 0;            left: 0;            width: 100%;            height: 100%;            background: rgba(13, 17, 23, 0.85);            backdrop-filter: blur(6px);            display: flex;            align-items: center;            justify-content: center;            z-index: 100;            opacity: 0;            pointer-events: none;            transition: opacity 0.3s ease;        }        .overlay.active {            opacity: 1;            pointer-events: auto;        }        .modal {            background-color: var(--bg-surface);            border: 1px solid var(--border-color);            border-radius: 16px;            padding: 40px;            max-width: 420px;            width: 90%;            text-align: center;            box-shadow: 0 16px 32px rgba(0,0,0,0.5);            transform: scale(0.95);            transition: transform 0.3s ease;        }        .overlay.active .modal {            transform: scale(1);        }        .spinner-container {            position: relative;            width: 80px;            height: 80px;            margin: 0 auto 24px auto;        }        .spinner-ring {            position: absolute;            width: 100%;            height: 100%;            border: 4px solid var(--border-color);            border-top-color: var(--accent-blue);            border-radius: 50%;            animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;        }        .spinner-pulse {            position: absolute;            top: 15px;            left: 15px;            width: 50px;            height: 50px;            background: rgba(88, 166, 255, 0.15);            border-radius: 50%;            animation: pulse 1.5s ease-out infinite;        }        @keyframes spin {            0% { transform: rotate(0deg); }            100% { transform: rotate(360deg); }        }        @keyframes pulse {            0% { transform: scale(0.8); opacity: 1; }            100% { transform: scale(1.6); opacity: 0; }        }        .modal h3 {            font-size: 1.3rem;            margin-bottom: 8px;        }        .status-message {            color: var(--accent-blue);            font-weight: 500;            font-size: 0.95rem;            margin-bottom: 24px;            min-height: 24px;        }        .progress-bar-track {            width: 100%;            height: 6px;            background-color: var(--border-color);            border-radius: 3px;            overflow: hidden;            margin-bottom: 24px;        }        .progress-bar-fill {            height: 100%;            width: 0%;            background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));            transition: width 0.4s ease;        }        .btn-cancel {            background: transparent;            color: var(--text-muted);            border: 1px solid var(--border-color);        }        .btn-cancel:hover {            color: var(--text-main);            background-color: #21262d;        }    </style></head><body >  <header class="topbar">    <a class="brand" href="#" aria-label="KuaduCode home">      <span class="brand-mark" aria-hidden="true">&lt;/&gt;</span>      <span>Kuadu<span class="brand-accent">code</span></span>    </a>    <nav class="nav-links" id="navLinks" aria-label="Main navigation">      <a href="#explore">Explore</a>	  <a             <a href="video-lessons.html">Video lessons</a>		<a href="code.html">Code Lab</a>	      <a href="#premium">Premium</a>      <a href="#learning-path">Learning paths</a>      <a href="#about">About</a>    </nav>     <a class="top-cta" href="#explore">Start learning <span aria-hidden="true">↗</span></a>    <button class="mobile-menu" id="mobileMenu" aria-label="Toggle navigation" aria-expanded="false">☰</button>  </header>  <main>    <section class="hero">      <div class="hero-copy">        <div class="eyebrow"><span class="live-dot"></span> YOUR CODING JOURNEY STARTS HERE</div>        <h1>Learn to code.<br><span>Build your future.</span></h1>        <p class="hero-text">Explore programming languages, follow a learning path, and practise one small step at a time. No experience needed.</p>        <div class="hero-actions">          <a class="btn btn-primary" href="#explore">Explore languages <span aria-hidden="true">→</span></a>          <a class="btn btn-quiet" href="#learning-path">View learning paths</a>        </div>        <div class="hero-proof">          <div class="avatar-stack" aria-hidden="true"><span>👩🏽‍💻</span><span>👨🏾‍💻</span><span>👩🏻‍💻</span></div>          <p><strong>Start at your own pace</strong><br><small>Beginner-friendly guides and examples</small></p>        </div>      </div>      <div class="hero-art" aria-label="Illustration of code on a computer screen"><img class="hero-image" src="images/hero-coding.svg" alt="Colourful illustration of a code editor on a computer screen" fetchpriority="high">        <div class="glow glow-one"></div><div class="glow glow-two"></div>        <div class="code-window">          <div class="window-bar"><div class="window-dots"><i></i><i></i><i></i></div><span>hello_world.js</span><span class="window-menu">•••</span></div>          <div class="code-content">            <div><span class="line-no">01</span><span class="code-purple">const</span> <span class="code-blue">dream</span> = <span class="code-green">"developer"</span>;</div>            <div><span class="line-no">02</span></div>            <div><span class="line-no">03</span><span class="code-purple">function</span> <span class="code-yellow">startJourney</span>() {</div>            <div><span class="line-no">04</span>&nbsp;&nbsp;<span class="code-blue">learn</span>(<span class="code-green">"every day"</span>);</div>            <div><span class="line-no">05</span>&nbsp;&nbsp;<span class="code-purple">return</span> <span class="code-green">"You can do it!"</span>;</div>            <div><span class="line-no">06</span>}</div>            <div><span class="line-no">07</span></div>            <div><span class="line-no">08</span><span class="code-muted">// Your story starts now ✨</span></div>          </div>          <div class="terminal"><span class="terminal-prompt">›</span> <span>startJourney()</span><span class="terminal-cursor"></span><b> You can do it!</b></div><body>    <div class="container">        <header>            <h1>Upgrade to Kuaducode Pro</h1>            <p>Unlock lightning-fast cloud runners, AI assistants, and premium templates instantly.</p>        </header>        <div class="pricing-grid">            <div class="card">                <h3>Standard Tier</h3>                <div class="price">$5 <span>/month</span></div>                <ul class="features">                    <li>Live web preview runner</li>                    <li>Basic code completion</li>                    <li>Standard development themes</li>                </ul>                <button class="btn btn-standard" onclick="startUpgrade('Standard Tier ($5/mo)')">Choose Standard</button>            </div>            <div class="card featured">                <div class="badge">Recommended</div>                <h3>Pro Unlimited</h3>                <div class="price">GH₵ 150 <span>/month</span></div>                <ul class="features">                    <li>Unlimited Kuadu AI Queries</li>                    <li>Priority Cloudflare Edge Runner</li>                    <li>Advanced Animation Suite</li>                    <li>Direct MTN MoMo & Card Support</li>                </ul>                <button class="btn btn-pro" onclick="startUpgrade('Pro Unlimited (GH₵ 150/mo)')">Upgrade to Pro</button>            </div>        </div>        <div class="floating-card float-top"><span class="float-icon">⚡</span><div><strong>Learn by doing</strong><small>One concept at a time</small></div></div>        <div class="floating-card float-bottom"><span class="float-icon green">✓</span><div><strong>Your progress</strong><small id="heroProgress">0 lessons completed</small></div></div>      </div>    </section>    <section class="stats-row" aria-label="Website features">      <div><strong>10+</strong><span>Languages to explore</span></div>      <div><strong>4</strong><span>Learning categories</span></div>      <div><strong>100%</strong><span>Learn at your pace</span></div>      <div><strong>∞</strong><span>Ideas to build</span></div>    </section>    <section class="explore section" id="explore">      <div class="section-heading">        <div><span class="eyebrow">FIND YOUR STARTING POINT</span><h2>Explore coding <span>categories</span></h2><p>Choose what you want to create. We'll help you find the right language.</p></div>      </div>      <div class="category-grid" id="categoryGrid">        <button class="category-card active" data-category="all"><span class="category-symbol">✳</span><span><strong>All languages</strong><small>Explore everything</small></span><span class="category-arrow">↗</span></button>        <button class="category-card" data-category="web"><img class="category-thumb" src="images/web-development.svg" alt="" loading="lazy"><span class="category-symbol orange">&lt;/&gt;</span><span><strong>Web development</strong><small>Websites & web apps</small></span><span class="category-arrow">↗</span></button>        <button class="category-card" data-category="data"><img class="category-thumb" src="images/data-ai.svg" alt="" loading="lazy"><span class="category-symbol blue">▥</span><span><strong>Data & AI</strong><small>Data, automation & AI</small></span><span class="category-arrow">↗</span></button>        <button class="category-card" data-category="mobile"><img class="category-thumb" src="images/mobile-apps.svg" alt="" loading="lazy"><span class="category-symbol pink">▣</span><span><strong>Mobile apps</strong><small>Apps for phones</small></span><span class="category-arrow">↗</span></button>        <button class="category-card" data-category="systems"><img class="category-thumb" src="images/systems-games.svg" alt="" loading="lazy"><span class="category-symbol green">⌘</span><span><strong>Systems & games</strong><small>Games & low-level code</small></span><span class="category-arrow">↗</span></button>      </div>      <div class="language-toolbar">        <div><h3 id="languageHeading">Popular languages</h3><p id="resultCount">Showing all languages</p></div>        <label class="search-box"><span aria-hidden="true">⌕</span><input id="languageSearch" type="search" placeholder="Search languages..." autocomplete="off" aria-label="Search programming languages"><kbd>/</kbd></label>      </div>      <div class="language-grid" id="languageGrid" aria-live="polite"></div>      <p class="empty-state" id="emptyState" hidden>No languages match that search. Try another keyword.</p>    </section>    <section class="learning-section section" id="learning-path">      <div class="learning-banner">        <div class="learning-copy"><span class="eyebrow">A SIMPLE PLAN THAT WORKS</span><h2>Not sure where to begin?</h2><p>Follow a learning path built around your goal. Start with the basics, practise with small projects, and keep building.</p><a class="btn btn-primary" href="#explore">Choose your first language <span aria-hidden="true">→</span></a></div>        <div class="path-steps">          <div class="path-step"><span class="step-number">01</span><div><strong>Pick a goal</strong><small>Websites, apps, data or games</small></div><span class="step-check">✓</span></div>          <div class="path-connector"></div>          <div class="path-step"><span class="step-number">02</span><div><strong>Learn the basics</strong><small>Understand one concept at a time</small></div><span class="step-check">✓</span></div>          <div class="path-connector"></div>          <div class="path-step"><span class="step-number">03</span><div><strong>Build a small project</strong><small>Turn knowledge into something real</small></div><span class="step-check">↗</span></div>    </div>    <div class="overlay" id="updateOverlay">        <div class="modal">            <div class="spinner-container">                <div class="spinner-pulse"></div>                <div class="spinner-ring"></div>            </div>            <h3>Securing Upgrade Session</h3>            <div class="status-message" id="statusText">Initializing secure edge tunnel...</div>            <div class="progress-bar-track">                <div class="progress-bar-fill" id="progressBar"></div>            </div>            <button class="btn btn-cancel" onclick="cancelUpgrade()">Cancel Session</button>        </div>      </div>    </section>    <section class="about-section section" id="about">      <div class="about-icon">&lt;?&gt;</div>      <div><span class="eyebrow">CODE WITH CONFIDENCE</span><h2>Every expert was once a beginner.</h2><p>KuaduCode helps you discover programming languages and choose what to learn next. The included lessons are starter guides; keep practising and consult official documentation as you grow.</p></div>    </section>      <section class="section premium-section" id="premium">      <div class="section-heading"><div><span class="eyebrow">LEVEL UP YOUR SKILLS</span><h2>KuaduCode <span>Premium</span></h2><p>Choose a learning package from GHS 20, with MTN Mobile Money checkout interface.</p></div></div>      <div class="premium-card">        <div><span class="premium-badge">PREMIUM MEMBERSHIP</span><h3>Build beyond the basics</h3><p class="premium-price">From GHS 20 <span>per package</span></p><p>Choose Starter, Practice Plus, Project Builder, or Pro Learning Pack.</p>        <ul><li>Advanced project briefs across all 13 languages</li><li>Beginner, intermediate and advanced challenge paths</li><li>Project checklists and debugging exercises</li><li>Video lesson directory and guided study plans</li><li>Progress review checklist</li></ul>        <a class="btn btn-primary" href="premium.html">View plans & MTN MoMo <span aria-hidden="true">→</span></a>               <div class="premium-art" aria-hidden="true"><span>$_</span><span>{ }</span><span>01</span><span>⚡</span></div>      </div>    </section></main>  <footer class="footer"><a class="brand" href="#"><span class="brand-mark">&lt;/&gt;</span><span>Kuadu<span class="brand-accent">code</span></span></a><p>Small steps. Real skills. Big ideas.</p><span>© <span id="year"></span> KuaduCode Learning</span></footer>  <dialog class="lesson-dialog" id="lessonDialog" aria-labelledby="dialogTitle">    <button class="dialog-close" id="dialogClose" aria-label="Close lesson">×</button>    <div class="dialog-icon" id="dialogIcon">JS</div>    <span class="eyebrow" id="dialogCategory">WEB DEVELOPMENT</span>    <h2 id="dialogTitle">Learn JavaScript</h2>    <p id="dialogDescription"></p>    <div class="lesson-block"><h3>Your first concept</h3><p id="dialogLesson"></p><pre><code id="dialogCode"></code></pre><button class="copy-button" id="copyCode">Copy example</button></div>    <div class="lesson-tip"><strong>Practice tip</strong><p id="dialogTip"></p></div>    <button class="btn btn-primary complete-button" id="completeLesson">Mark lesson complete ✓</button>    <p class="dialog-note" id="dialogNote"></p>  </dialog>  <div class="toast" id="toast" role="status" aria-live="polite">      </div>    <script>        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();                function playTone(freq, time, duration, vol = 0.015) {            if (audioCtx.state === 'suspended') {                audioCtx.resume();            }            const osc = audioCtx.createOscillator();            const gain = audioCtx.createGain();            osc.type = 'triangle';            osc.frequency.value = freq;            gain.gain.setValueAtTime(vol, audioCtx.currentTime + time);            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + time + duration);            osc.connect(gain);            gain.connect(audioCtx.destination);            osc.start(audioCtx.currentTime + time);            osc.stop(audioCtx.currentTime + time + duration);        }        function playMelodyBar() {            const scale = [220, 246.94, 277.18, 329.63, 369.99, 440, 493.88, 554.37];            const progression = [0, 3, 5, 4, 2, 3, 1, 0];            let now = 0;            progression.forEach((index, i) => {                const note = scale[index % scale.length];                playTone(note, now, 1.2, 0.018);                if (i % 2 === 0) {                    playTone(note * 1.5, now + 0.3, 0.8, 0.008);                }                now += 1.5;            });        }        function startBackgroundSong() {            playMelodyBar();            setInterval(() => {                playMelodyBar();            }, 12000);        }        window.addEventListener('pointerdown', () => {            if (audioCtx.state === 'suspended') {                audioCtx.resume();            }        }, { once: true });        startBackgroundSong();        const overlay = document.getElementById('updateOverlay');        const statusText = document.getElementById('statusText');        const progressBar = document.getElementById('progressBar');                let updateInterval;        const sessionMessages = [            "Initializing secure edge tunnel...",            "Connecting to Cloudflare gateway...",            "Verifying MTN MoMo & Card payment endpoints...",            "Allocating dedicated cloud runner instance...",            "Syncing developer environment preferences...",            "Finalizing update session..."        ];        function startUpgrade(tierName) {            overlay.classList.add('active');            let progress = 0;            let messageIndex = 0;            statusText.textContent = `Processing upgrade for ${tierName}...`;            progressBar.style.width = '0%';            updateInterval = setInterval(() => {                progress += Math.floor(Math.random() * 12) + 8;                                if (progress >= 100) {                    progress = 100;                    progressBar.style.width = '100%';                    statusText.textContent = "Session secured! Redirecting to checkout...";                    clearInterval(updateInterval);                    setTimeout(() => {                        alert(`Successfully connected session for ${tierName}!`);                        cancelUpgrade();                    }, 1000);                    return;                }                progressBar.style.width = progress + '%';                if (progress > (messageIndex + 1) * 16 && messageIndex < sessionMessages.length - 1) {                    messageIndex++;                    statusText.textContent = sessionMessages[messageIndex];                }            }, 350);        }        function cancelUpgrade() {            clearInterval(updateInterval);            overlay.classList.remove('active');            setTimeout(() => {                progressBar.style.width = '0%';                statusText.textContent = "Initializing secure edge tunnel...";            }, 300);        }    </script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuaducode Studio - Code Editor & Video Lessons</title>
+    <style>
+        :root {
+            --bg-base: #0d1117;
+            --bg-surface: #161b22;
+            --border-color: #30363d;
+            --text-main: #f0f6fc;
+            --text-muted: #8b949e;
+            --accent-blue: #58a6ff;
+            --accent-green: #2ea44f;
+            --accent-gold: #f0883e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background-image: radial-gradient(rgba(88, 166, 255, 0.08) 1px, transparent 1px);
+            background-size: 32px 32px;
+            animation: gridMove 30s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(32px, 32px); }
+        }
+
+        header {
+            background-color: var(--bg-surface);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, #58a6ff, #a371f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 12px;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background-color: #21262d;
+            color: var(--text-main);
+            border-color: var(--accent-blue);
+        }
+
+        main {
+            flex-grow: 1;
+            padding: 32px;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .lab-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .lab-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel h3 {
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            color: var(--accent-blue);
+        }
+
+        textarea {
+            width: 100%;
+            height: 250px;
+            background-color: #0d1117;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px;
+            font-family: monospace;
+            resize: vertical;
+            margin-bottom: 12px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 250px;
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+        }
+
+        .btn {
+            background-color: var(--accent-green);
+            color: #ffffff;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            align-self: flex-start;
+        }
+
+        .btn:hover {
+            background-color: #2c974b;
+        }
+
+        .explore-grid, .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .explore-card, .video-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .explore-thumb, .video-thumb {
+            width: 100%;
+            height: 160px;
+            background: linear-gradient(135deg, #1f242c, #30363d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-blue);
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .explore-info, .video-info {
+            padding: 16px;
+        }
+
+        .explore-info h4, .video-info h4 {
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .explore-info p, .video-info p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Kuaducode Studio</h1>
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('lab', event)">Coding Lab</button>
+            <button class="tab-btn" onclick="switchTab('explore', event)">Explore</button>
+            <button class="tab-btn" onclick="switchTab('videos', event)">Video Lessons</button>
+            <button class="tab-btn" onclick="switchTab('ai', event)">Kuadu AI</button>
+        </div>
+    </header>
+
+    <main>
+        <div id="lab" class="tab-content active">
+            <div class="lab-grid">
+                <div class="panel">
+                    <h3>Source Editor</h3>
+                    <textarea id="codeEditor">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+body { background: #0d1117; color: #58a6ff; font-family: sans-serif; text-align: center; padding-top: 50px; }
+h1 { text-shadow: 0 0 10px rgba(88,166,255,0.5); }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Hello from Kuaducode!&lt;/h1&gt;
+&lt;p&gt;Live preview active.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                    <button class="btn" onclick="runCode()">Run Code</button>
+                </div>
+                <div class="panel">
+                    <h3>Live Output Preview</h3>
+                    <iframe id="previewFrame"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div id="explore" class="tab-content">
+            <div class="explore-grid">
+                <div class="explore-card">
+                    <div class="explore-thumb">🚀</div>
+                    <div class="explore-info">
+                        <h4>Trending Repositories</h4>
+                        <p>Discover community-built web utilities, games, and templates shared on Kuaducode.</p>
+                    </div>
+                </div>
+                <div class="explore-card">
+                    <div class="explore-thumb">💡</div>
+                    <div class="explore-info">
+                        <h4>Code Snippets & Challenges</h4>
+                        <p>Sharpen your skills with interactive JavaScript challenges and quick UI components.</p>
+                    </div>
+                </div>
+                <div class="explore-card">
+                    <div class="explore-thumb">🌐</div>
+                    <div class="explore-info">
+                        <h4>Cloudflare & GitHub Pages</h4>
+                        <p>Learn how to connect custom domains, configure DNS A/MX records, and publish instantly.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="videos" class="tab-content">
+            <div class="video-grid">
+                <div class="video-card">
+                    <div class="video-thumb">▶</div>
+                    <div class="video-info">
+                        <h4>HTML & CSS Fundamentals</h4>
+                        <p>Learn layout structures, CSS variables, and modern responsive grid design.</p>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumb">▶</div>
+                    <div class="video-info">
+                        <h4>JavaScript Asynchronous Engines</h4>
+                        <p>Master promises, async/await handlers, and client-side web architectures.</p>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumb">▶</div>
+                    <div class="video-info">
+                        <h4>Cloudflare & Edge Deployment</h4>
+                        <p>Configure custom DNS routing, SSL certificates, and fast GitHub Pages hosting.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="ai" class="tab-content">
+            <div class="panel" style="max-width: 600px; margin: 0 auto;">
+                <h3>Kuadu AI Assistant</h3>
+                <p style="color: var(--text-muted); margin-bottom: 16px;">Ask questions about code architecture, debugging, or optimization.</p>
+                <textarea style="height: 120px;" placeholder="Type your programming question here..."></textarea>
+                <button class="btn">Send Query</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function switchTab(tabId, event) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        function runCode() {
+            const code = document.getElementById('codeEditor').value;
+            const iframe = document.getElementById('previewFrame');
+            const frameDoc = iframe.contentDocument || iframe.contentWindow.document;
+            frameDoc.open();
+            frameDoc.write(code);
+            frameDoc.close();
+        }
+
+        window.onload = runCode;
+    </script>
+</body>
+</html>
