@@ -786,6 +786,177 @@ server.listen(port);
         });
     });
 })();
+(function() {
+    'use strict';
+
+    const sanitizeInput = (str) => {
+        if (typeof str !== 'string') return str;
+        return str
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#x27;')
+            .replace(/\//g, '&#x2F;');
+    };
+
+    const deepSanitize = (obj) => {
+        if (obj === null || typeof obj !== 'object') {
+            return typeof obj === 'string' ? sanitizeInput(obj) : obj;
+        }
+        const sanitized = Array.isArray(obj) ? [] : {};
+        for (const key of Object.keys(obj)) {
+            const safeKey = sanitizeInput(key);
+            sanitized[safeKey] = deepSanitize(obj[key]);
+        }
+        return sanitized;
+    };
+
+    const originalParse = JSON.parse;
+    JSON.parse = function(text, reviver) {
+        try {
+            const parsed = originalParse.call(JSON, text, reviver);
+            return deepSanitize(parsed);
+        } catch (e) {
+            throw e;
+        }
+    };
+
+    const originalStringify = JSON.stringify;
+    JSON.stringify = function(value, replacer, space) {
+        return originalStringify.call(JSON, deepSanitize(value), replacer, space);
+    };
+
+    const blockEval = (code) => {
+        if (typeof code === 'string' && (code.includes('document.cookie') || code.includes('localStorage') || code.includes('eval('))) {
+            return '';
+        }
+        return code;
+    };
+
+    const originalEval = window.eval;
+    window.eval = function(str) {
+        return originalEval.call(window, blockEval(str));
+    };
+
+    // Advanced: Secure Storage Access (localStorage & sessionStorage)
+    const secureStorage = (storage) => {
+        return {
+            getItem: function(key) {
+                const val = storage.getItem(key);
+                return val ? decodeURIComponent(val) : val;
+            },
+            setItem: function(key, value) {
+                storage.setItem(key, encodeURIComponent(sanitizeInput(String(value))));
+            }
+        };
+    };
+
+    try {
+        Object.defineProperty(window, 'localStorage', {
+            value: {
+                ...window.localStorage,
+                setItem: secureStorage(window.localStorage).setItem,
+                getItem: secureStorage(window.localStorage).getItem
+            },
+            writable: false,
+            configurable: true
+        });
+    } catch(e) {}
+
+    const observer = new MutationObserver((mutations) => {
+        for (const mutation of mutations) {
+            for (const node of mutation.addedNodes) {
+                if (node.nodeType === Node.ELEMENT_NODE) {
+                    if (node.tagName === 'SCRIPT') {
+                        const src = node.getAttribute('src') || '';
+                        const isCdn = src.includes('cloudflare') || src.includes('jsdelivr') || src.includes('cdnjs') || src.includes('googleapis');
+                        if (!node.hasAttribute('data-safe') && !isCdn) {
+                            node.remove();
+                            continue;
+                        }
+                    }
+                    if (node.hasAttribute && (node.hasAttribute('onload') || node.hasAttribute('onerror') || node.hasAttribute('onclick') || node.hasAttribute('onmouseover'))) {
+                        node.removeAttribute('onload');
+                        node.removeAttribute('onerror');
+                        node.removeAttribute('onclick');
+                        node.removeAttribute('onmouseover');
+                    }
+                    if (node.tagName === 'IFRAME') {
+                        if (!node.hasAttribute('sandbox')) {
+                            node.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+                        }
+                        const src = node.getAttribute('src') || '';
+                        if (src.startsWith('javascript:') || src.startsWith('data:text/html')) {
+                            node.remove();
+                            continue;
+                        }
+                    }
+                    const inputs = node.querySelectorAll ? node.querySelectorAll('input, textarea, [contenteditable="true"]') : [];
+                    inputs.forEach(input => {
+                        input.addEventListener('input', (e) => {
+                            if (e.target.value) {
+                                e.target.value = sanitizeInput(e.target.value);
+                            }
+                        }, true);
+                    });
+                }
+            }
+        }
+    });
+
+    if (document.body) {
+        observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['onload', 'onerror', 'onclick', 'onmouseover'] });
+    } else {
+        window.addEventListener('DOMContentLoaded', () => {
+            observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['onload', 'onerror', 'onclick', 'onmouseover'] });
+        });
+    }
+
+    document.addEventListener('submit', (e) => {
+        const form = e.target;
+        const elements = form.elements;
+        for (let i = 0; i < elements.length; i++) {
+            if (elements[i].value && typeof elements[i].value === 'string') {
+                elements[i].value = sanitizeInput(elements[i].value);
+            }
+        }
+    }, true);
+
+    const originalFetch = window.fetch;
+    window.fetch = async function(...args) {
+        if (args[1] && args[1].body && typeof args[1].body === 'string') {
+            try {
+                const parsed = JSON.parse(args[1].body);
+                args[1].body = originalStringify(deepSanitize(parsed));
+            } catch (err) {}
+        }
+        return originalFetch.apply(this, args);
+    };
+
+    const originalOpen = XMLHttpRequest.prototype.open;
+    XMLHttpRequest.prototype.open = function(method, url, ...rest) {
+        this._method = method;
+        return originalOpen.apply(this, [method, url, ...rest]);
+    };
+
+    const originalSend = XMLHttpRequest.prototype.send;
+    XMLHttpRequest.prototype.send = function(body) {
+        if (body && typeof body === 'string') {
+            try {
+                const parsed = JSON.parse(body);
+                body = originalStringify(deepSanitize(parsed));
+            } catch (err) {}
+        }
+        return originalSend.apply(this, [body]);
+    };
+
+    window.addEventListener('error', (e) => {
+        if (e.message && (e.message.includes('XSS') || e.message.includes('eval') || e.message.includes('injection'))) {
+            e.preventDefault();
+        }
+    });
+})();
 
 
 
